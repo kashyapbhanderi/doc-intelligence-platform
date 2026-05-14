@@ -1,0 +1,16 @@
+[
+  {
+    "file": "sample.pdf",
+    "status": "success",
+    "pages": 1,
+    "chunks": 1,
+    "output": "data/processed/sample_chunks.json"
+  },
+  {
+    "file": "sample3.pdf",
+    "status": "success",
+    "pages": 1,
+    "chunks": 1,
+    "output": "data/processed/sample3_chunks.json"
+  }
+]
