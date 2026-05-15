@@ -1,11 +1,11 @@
 {
   "source": "sample3.pdf",
-  "full_path": "data\\raw\\sample3.pdf",
+  "full_path": "data/raw/sample3.pdf",
   "total_pages": 1,
   "text_chunks": 1,
   "vision_chunks": 0,
   "total_chunks": 1,
-  "embedded_images": 0,
+  "embedded_images": 15,
   "chunks": [
     {
       "chunk_id": 0,
@@ -16,5 +16,19 @@
       "chunk_type": "text"
     }
   ],
-  "vision_data": []
+  "vision_data": [
+    {
+      "page": 1,
+      "method": "gpt4o_vision",
+      "error": "Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-or-v1*************************************************************316b. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}",
+      "has_charts": false,
+      "has_tables": false,
+      "has_diagrams": false,
+      "charts": [],
+      "tables": [],
+      "diagrams": [],
+      "key_text": [],
+      "summary": ""
+    }
+  ]
 }

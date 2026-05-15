@@ -66,22 +66,32 @@ pytest tests/ -v
 
 ## Results So Far
 
-### Week 1 Complete ✅
+### Week 1 — Data Pipeline Complete
 
 | Metric | Value |
 |--------|-------|
-| PDFs downloaded | 52 |
-| PDFs processed | YOUR_NUMBER |
+| PDFs downloaded | 500 |
+| PDFs processed | 100 |
+| Total pages processed | YOUR_NUMBER |
 | Total chunks created | YOUR_NUMBER |
 | Avg chunks per doc | YOUR_NUMBER |
 | Tests passing | 17/17 |
 | CI pipeline | ✅ Green |
-| OCR fallback | ✅ Working |
-| Vision LLM | ✅ GPT-4o |
+| Supports scanned PDFs | ✅ OCR fallback |
+| Supports charts/tables | ✅ GPT-4o Vision |
 
-### Pipeline Flow
+### Pipeline Architecture
+
 ```
-PDF → Smart Extractor → Chunker → Vision → Merger → JSON
-         ↓                                    ↓
-    (PyMuPDF or OCR)              (text + visual chunks)
+PDF File
+   ↓
+Smart Extractor (PyMuPDF → PaddleOCR fallback)
+   ↓
+Text Chunker (512 tokens, 50 overlap)
+   ↓
+Vision Extractor (GPT-4o — charts, tables, diagrams)
+   ↓
+Merger (text chunks + vision chunks combined)
+   ↓
+Unified Document Object (JSON)
 ```
