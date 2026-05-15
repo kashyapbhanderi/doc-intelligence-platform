@@ -1,0 +1,1180 @@
+{
+  "source": "mteb.pdf",
+  "full_path": "data\\raw\\mteb.pdf",
+  "total_pages": 24,
+  "text_chunks": 146,
+  "vision_chunks": 0,
+  "total_chunks": 146,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Information Retrieval manuscript No.\n(will be inserted by the editor)\nComposite Code Sparse Autoencoders for ﬁrst stage\nretrieval\nCarlos Lassance · Thibault Formal ·\nSt´ephane Clinchant\nReceived: date / Accepted: date\nAbstract We propose a Composite Code Sparse Autoencoder (CCSA) ap-\nproach for Approximate Nearest Neighbor (ANN) search of document rep-\nresentations based on Siamese-BERT models. In Information Retrieval (IR),\nthe ranking pipeline is generally decomposed in two stages: the ﬁrst stage",
+      "source": "mteb.pdf",
+      "page": 1,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "focus on retrieving a candidate set from the whole collection. The second\nstage re-ranks the candidate set by relying on more complex models. Recently,\nSiamese-BERT models have been used as ﬁrst stage ranker to replace or com-\nplement the traditional bag-of-word models. However, indexing and searching\na large document collection require eﬃcient similarity search on dense vec-\ntors and this is why ANN techniques come into play. Since composite codes",
+      "source": "mteb.pdf",
+      "page": 1,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "are naturally sparse, we ﬁrst show how CCSA can learn eﬃcient parallel in-\nverted index thanks to an uniformity regularizer. Second, CCSA can be used\nas a binary quantization method and we propose to combine it with the re-\ncent graph based ANN techniques. Our experiments on MSMARCO dataset\nreveal that CCSA outperforms IVF with product quantization. Furthermore,\nCCSA binary quantization is beneﬁcial for the index size, and memory usage",
+      "source": "mteb.pdf",
+      "page": 1,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "for the graph-based HNSW method, while maintaining a good level of recall\nand MRR. Third, we compare with recent supervised quantization methods\nfor image retrieval and ﬁnd that CCSA is able to outperform them.\nKeywords composite code · indexing · sparse representations · autoencoders\n1 Introduction\nModern search engines rank documents in two stages. The ﬁrst retriever op-\nerates on eﬃcient inverted indexes with probabilistic models based on the",
+      "source": "mteb.pdf",
+      "page": 1,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "distribution of word frequencies such as the seminal BM25 model (Robertson\nCarlos Lassance, Thibault Formal, St´ephane Clinchant\nNaver Labs Europe 6 Chemin de Maupertuis, 38240 Meylan\nE-mail: ﬁrst dot last at naverlabs dot com\narXiv:2204.07023v1  [cs.IR]  14 Apr 2022",
+      "source": "mteb.pdf",
+      "page": 1,
+      "char_count": 267,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "2\nCarlos Lassance et al.\n2009). After ﬁltering a reduced candidate document set to re-rank, the second\nstep employs more complex learning to rank models with handcrafted fea-\ntures, neural ranking architectures, to BERT-based dense rerankers (Nogueira\net al. 2019a) that recently achieved state-of-the-art results on several bench-\nmarks (Nogueira and Cho 2019).\nQuestion answering systems also operate in two stages (Guu et al. 2020)\nand rely on Siamese architectures to speed up the retrieval time for the ﬁrst",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "ranker. Similarly, the recent developments on the TREC Deep Learning chal-\nlenge (Craswell et al. 2020) have revealed the preeminent use of Siamese BERT\narchitecture (Reimers and Gurevych 2019) to complement a BM25 model.\nSimilarity search with dense vectors is a common practice in computer vision\nbut less used in textual information retrieval. The adoption of dense retrieval\nmodels represent a major shift on indexing strategies. Instead of exact search",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "methods, Approximate Nearest Neighbor(ANN) search can be employed but\nwith a slight degradation of performance. Many optimized similarity search\nlibraries exist, with the most used one being FAISS (Johnson et al. 2017).\nIn this paper, we show how Composite Code Sparse Autoencoders (CCSA)\ncan be used as an eﬃcient ANN method. CCSA transforms the dense repre-\nsentations in composite codes\n(Shu and Nakayama 2018): composite codes\nare naturally sparse and can generate eﬃcient and parallel inverted indexes.",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "Furthermore, we propose an uniformity regularizer to balance the inverted in-\ndex posting lists and therefore optimize latency. First, we demonstrate that\nCCSA can learn to compress dense representations into sparse indexable ones.\nIt outperforms the standard baseline composed by inverted ﬁle indexes (IVF)\nwith product quantization (PQ) methods (Jegou et al. 2010). Second, we show\nhow to combine CCSA with the seminal work on Hierarchical Navigable Small",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "World (HNSW). HNSW is a powerful ANN technique, constructing a graph\nof objects at indexing but negatively impact the memory and index sizes for\nlarge collection (Malkov and Yashunin 2020). Thanks to CCSA, this limita-\ntions can be mitigated by generating eﬃcient quantized representations which\nare comparable to PQ.\nWe are mostly interested by the following research questions: whether tra-\nditional IR models could be fully and eﬃciently replaced by powerful neural",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "models and how to to compress dense representations into sparse indexable\nones. Our work studies and benchmarks a ﬁrst stage retriever that could be\nfully deployed on cpu, with appropriate latency and high throughput.\nNote that while our model is ﬁrst motivated by text ranking, it can also be\napplied to recommendation, or ANN in computer vision as well. In order to\nshowcase this, we compare with traditional supervised quantization methods",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "for image retrieval (Jain et al. 2017; Klein and Wolf 2019) and demonstrate\nthe eﬃciency of the method on a recommendation scenario.\nWe now summarize our contributions:\n1. We propose an autoencoder scheme that transforms dense representations\ninto compositional codes that are eﬃcient for indexing.",
+      "source": "mteb.pdf",
+      "page": 2,
+      "char_count": 298,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n3\n2. We deﬁne a regularizing scheme for this autoencoder that enforces unifor-\nmity between the diﬀerent dimensions, so that each dimension is activated\nby a comparable number of documents and thus increases the eﬃciency of\nour indexing. Compared to existing approaches, ours has the advantage of\ntreating directly with binary values for each batch item, which allows for\na more precise approximation of the overall index-balance.",
+      "source": "mteb.pdf",
+      "page": 3,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "3. We propose a retrieval scheme using the embeddings generated by the en-\ncoder of the proposed regularized autoencoder and demonstrate empirically\nits eﬃciency and ease of parallelization\n4. We evaluate the proposed method on MSMARCO and TREC 2019/20 to\ndemonstrate its gains in eﬃciency and reduced computational cost when\ncompared to approximate (product quantization with inverted and graph\nbased indexes) and exact nearest neighbor search on dense embeddings.",
+      "source": "mteb.pdf",
+      "page": 3,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "5. We compare with traditional deep quantization and hashing methods on\nimage retrieval scenarios in order to show the competitiveness of the pro-\nposed method.\n2 Related Works\nIn the following we ﬁrst discuss the related works on sparse IR, then we discuss\nthe use of ANN in combination with BERT-Siamese models and ﬁnally we\ncompare our method with recent works in deep supervised quantization and\nhashing.\n2.1 Sparse IR Models\nIn IR, ﬁrst stage retrievers are typically implemented with traditional sparse IR",
+      "source": "mteb.pdf",
+      "page": 3,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "models, such as BM25 (Robertson 2009) or DFR models (Amati and Van Ri-\njsbergen 2002). To improve their performance, query expansion, document\nexpansion or pseudo relevance feedback\n(Kurland and Lee 2004; Azad and\nDeepak 2019), can address partially the vocabulary mismatch problem. For in-\nstance, (Berger and Laﬀerty 1999) proposed a noisy channel model to mitigate\nthe vocabulary mismatch problem, which would capture a “translation” prob-",
+      "source": "mteb.pdf",
+      "page": 3,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "ability between two words. More recently, Doc2Query and DocT5 (Nogueira\net al. 2019b; Nogueira 2019) learn to generate queries from a document by\nusing a pretrained sequence to sequence model such as T5 (Raﬀel et al. 2020).\nFinally, one important measure for this ﬁrst stage ranker seems to be re-\ncall@k especially when they are combined with a reranker, this is because the\nﬁrst stage ranker should concentrate on sending relevant documents to the",
+      "source": "mteb.pdf",
+      "page": 3,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "reranker, instead of properly ranking them as the most important one, which\nis represented by the recall@k measure.\nJust before the success of BERT in IR, the SNRM model (Zamani et al.\n2018) proposed to use a classical autoencoder that directly learns to index\ndocuments. In order to preserve eﬃciency, representations are learned con-\nstrained with a l1 loss, enforcing representations for documents and queries to",
+      "source": "mteb.pdf",
+      "page": 3,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "4\nCarlos Lassance et al.\nbe sparse, mimicking the sparsity of standard BOW representations, and al-\nlowing to build a new (latent) inverted index. While this idea was interesting,\nour experiments to reproduce this paper did not succeed, a concern shared by\nother works (Medini et al. 2021; Paria et al. 2020). Due to tremendous impact\nof BERT on performances, the computational cost of dense models has sparked\nagain interest in designing sparse models. For instance, DeepCT use BERT to",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "regress the term weight for term in an inverted index (Dai and Callan 2019).\nSparterm (Bai et al. 2020) is similar to DeepCT, except that it is trained with\na pairwise loss and computes a term score for each subword, that is later used\nin an inverted index. Finally, (Zhao et al. 2020) simpliﬁed the query encoder\nto precompute inverted index for colbert contextualized embeddings. In this\nwork we mostly compare against docT5, leaving the possibility of combining",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "traditional sparse IR models and CCSA as future work.\n2.2 Siamese Bert and ANN\nSiamese BERT (Reimers and Gurevych 2019) has been the standard approach\nfor ﬁrst stage dense retrieval in many works (Ding et al. 2020; Xiong et al.\n2020, 2021). There seems to be very few study about Approximate Nearest\nNeighbor (ANN) search for text retrieval (Boytsov 2018; Tu et al. 2020), due\nto the prevalence of inverted indexed. Furthermore, most works adopted exact",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "search with GPU on the MSMARCO collection due to its moderate size.\nThe computer vision community has contributed a rich literature on ANN.\nThe seminal work on Product Quantization (PQ) (J´egou et al. 2011) eﬃciently\nencodes high dimensional vector by partitioning each vector into chunks that\nare further quantized. Quantization in each local space is performed by k-\nmeans clustering. PQ embeddings can then be combined with other ANN",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "techniques in order to improve the speed of retrieval, using techniques such as\ninverted indexes or graph-based methods. The combination of PQ and inverted\nindexes has been extensively studied, with the simpler versions consisting of\njust storing elements assigned to k-means centroids (most of the time a global\nk-means clustering) with authors also proposing the use of a locally opti-\nmized PQ technique (Kalantidis and Avrithis 2014) or multi-inverted index",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "(Babenko and Lempitsky 2014). However, these inverted index ANN search\nwere recently outperformed by a graph based approach called HNSW (Malkov\nand Yashunin 2020), that achieves better retrieval speed with a trade-oﬀof\nhaving a larger memory overhead. The idea of HNSW is to build a multi-\nlevel graph at indexing time connecting similar elements. Retrieval is then\nperformed by traversing the graph. In order to scale with larger datasets and",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "reduce the memory overhead trade-oﬀHNSW can be further combined with\ninverted indexing.\nMany of the recent variants of ANN are implemented in the FAISS li-\nbrary (Johnson et al. 2017), and we thus compare our implementation with\nthe FAISS implementation. It looks like that the FAISS implementations (and\nthe methods themselves) tend to i) 1) favor recall@10 instead of recall@1000,",
+      "source": "mteb.pdf",
+      "page": 4,
+      "char_count": 382,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n5\nand ii) favor throughput (queries/sec, with batch processing) and not latency\n(ms/query, with one-by-one processing)1. We demonstrate these two claims\nvia experiments in Section 4.1.1. We also note that in information retrieval\nscenarios, latency is very important as “the time required to present query re-\nsults to a user is paramount to the users satisfaction” (Hofst¨atter and Hanbury\n2019).\n2.3 Deep quantization and hashing",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "2019).\n2.3 Deep quantization and hashing\nFinally, a simple direction to follow in order to reduce the latency of deep IR\nmodels would be to borrow from the literature on compression of DL models,\nnotably on hashing and quantization to ﬁrst reduce the models size before\nindexing the document representations. One such work on quantization (Klein\nand Wolf 2019) proposed a Deep Product Quantization (DPQ) technique. that\nleads to more accurate retrieval and classiﬁcation. It is one of the ﬁrst works to",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "reproduce product quantization in an end-to-end manner and it is thus closely\nrelated to work. However, CCSA is diﬀerent as it is unsupervised in the sense\nthat it does not rely on data labels, and as with “non-deep” PQ, CCSA also\nhas the advantage of directly generating a balanced inverted index instead of\nneeding a combination with other methods.\nFinally, note that we are not the ﬁrst work to propose binary sparse embed-\ndings. Works in this sense are normally divided into two categories: i) learning",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "to hash, and ii) learning sparse embeddings. In learning to hash, SOLAR (Me-\ndini et al. 2021) argue that high-dimensional and ultra-sparse embedding is a\nsigniﬁcantly superior alternative to dense low-dimensional embedding for both\nquery eﬃciency and accuracy. The model employ a novel asymmetric mixture\nof Sparse, Orthogonal, Learned and Random (SOLAR) Embeddings where\nthe label vectors are random, sparse, and near-orthogonal by design, while the",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "query vectors are learned and sparse. It has applied to product recommenda-\ntion and large scale classiﬁcation, however it is not clear if it can be directly\napplied to retrieval tasks as learning the hash depends on a labeled signal and\nthus it is not clear what would happen with documents that do not appear as\nlabels on the training set.\nOn the other hand, other works have proposed to learn sparse embeddings.\nFor example (Paria et al. 2020) proposed a relaxation of the number of FLOPS",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "operation for sparse dot product and shows its connection to l1 regularization\nby learning end-end sparse representations for image search. Note that the\nregularization suggested in the ﬂops paper is also used in the DeepPQ (Klein\nand Wolf 2019) as “gini impurity” of the bash and is also similar to the one\nwe introduce in this paper.\nFinally SUBIC (Jain et al. 2017) also proposes the use of composite codes\nfor generating binary sparse embeddings, but diﬀers from our work in three",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "main aspects: i) they use a labelled signal to learn their embeddings, ii) they\n1 https://github.com/facebookresearch/faiss/wiki/FAQ",
+      "source": "mteb.pdf",
+      "page": 5,
+      "char_count": 132,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "6\nCarlos Lassance et al.\nuse a simple softmax function instead of our straight-through estimator over\na gumbel-softmax, and iii) as they are using a softmax function, they need\nto add a regularizing term in order to approximate their embeddings to a\nbinary function, which they show to sometimes have worse results than the\nnon binarized version..\n3 Composite Code Sparse AutoEncoders (CCSA)\nWe now present our proposed method CCSA. It is applied over pre-existing",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "dense representations documents in the collection. For instance, we can rely\non a classical Siamese BERT models that has been ﬁnetuned on relevance\ndata or any other models. We note that CCSA can be viewed as a sparse\ncompression of a dense embedding, as well as a way to perform ANN. It could\nbe argued that this sparse compression could be learned during the ﬁnetuning\nof the siamese model. If we were to do so, the computational cost would be",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "greatly impacted and the training batch-size would be severely limited due to\nthe large transformer model. However, if the sparse decomposition is learned\nafter, the computational cost is limited and the training batch size can be\nmuch bigger and, as we will discuss later, bigger batch size eases the training\nof a balanced index. Also, by doing it in a separate step it is also easier to\napply to various applications instead of needing to adapt to each individual\narchitecture/training scheme.",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "architecture/training scheme.\nLet N be the number of documents in the collections and let xi the dense\nrepresentation of document i. We now describe our method in details. First\nwe describe the architecture and training of the autoencoder, we then discuss\nhow the composite code structure can be directly used to create an inverted\nindex and ﬁnally we detail how retrieval is performed on this inverted index\nand discuss its complexity. A summary of the CCSA structure is depicted in\nFigure 1.",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "Figure 1.\n3.1 Autoencoder (Encoding)\nIn this subsection, we detail how we train the proposed composite code sparse\nautoencoder (CCSA). The autoencoder receives the dense embedding as input,\nencodes the passage as a sparse vector that can then be decoded into the\noriginal dense embedding. For the architecture we use a 1 layer encoder, with\na hard gumbel softmax activation and a linear decoder.\nWe also add batch normalization (Ioﬀe and Szegedy 2015) before the pro-",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "jection in order to improve stability and reduce the variance in representa-\ntions from the original dense inputs. Previous works also noted that the batch\nnormalization operation helps in balancing the index (Klein and Wolf 2019).\nFinally we add a load-balancing regularizer that ensures that dimensions are\nactivated by a similar amount of documents. It is of utmost importance to\nnote that diﬀerently from prior work (Shu and Nakayama 2018) the indexing",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "occurs in the code space and not in the reconstructed space.",
+      "source": "mteb.pdf",
+      "page": 6,
+      "char_count": 60,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n7\nFig. 1 Depiction of the Composite Code Sparse Autoencoders (CCSA) Model, where d is\nthe dense dimension, and the encoder and the decoder are simple linear projections.\nAll in all, the autoencoder architecture is described in Figure 1. We note\nthe encoder by e(x), the gumbel softmax activation by g(x), and the decoder\nby d(x) so that the full architecture function (f(x)) can be written as:\nf(x) = d(g(e(x))) .\n(1)",
+      "source": "mteb.pdf",
+      "page": 7,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "f(x) = d(g(e(x))) .\n(1)\nIn the following, we detail the gumbel softmax activation, the generated\ncodes and the uniformity regularization.\n3.1.1 Composite code\nWe have chosen to transform our dense representations to sparse composite\ncodes (Sobroza et al. 2019; Shu and Nakayama 2018). Composite codes are\ndeﬁned by a vector of dimension D where the vector is then decomposed in\nC chunks of size L. For each chunk C only one over the L dimensions will be",
+      "source": "mteb.pdf",
+      "page": 7,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "activated with a value of one, generating a one-hot representation per chunk\nand a C-hot representation for the overall vector.\nSuch codes are easy to store with only Clog2(L) bits needed to represent\neach passage. For eﬃcient index sake, they can also be quite easily converted\nto inverted indexes, where each dimension is a posting list and one needs only\nto storage the document ids that belong to each posting list (worst case for\nthe posting list format is Clog2(N) bits per document).",
+      "source": "mteb.pdf",
+      "page": 7,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "Retrieval on this index can be done eﬃciently (at most\nCN\nL\ndocuments\nneed to be scored) and in perfectly parallel fashion as each chunk C can be\ncomputed and accessed separately from all the others. It can also be easily\ndivided into multiple ’weak’ machines, requiring only simple operations from\neach machine in order to be computed. As the activations are one-hot at each\nchunk, we can use softmax-based activations to discretize each chunk.",
+      "source": "mteb.pdf",
+      "page": 7,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "8\nCarlos Lassance et al.\n3.1.2 Gumbel-softmax activation\nIn order to convert our dense representations to a series of one-hot discrete\ndistributions the gumbel-softmax (Maddison et al. 2014) emerges as a strong\ncandidate. As described by the reparametrization trick (Jang et al. 2016) such\nan activation function is ideal for parametrizing discrete distributions into\nsequences of one-hot vectors.\nIn our case we use the a straight-through estimator (Bengio et al. 2013),",
+      "source": "mteb.pdf",
+      "page": 8,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "where the forward pass has the “hard” (binary) output of the gumbel-softmax\nand the backward gradients are computed via the distributional reparametriza-\ntion trick. The forward pass for each chunk c ∈C can be described by:\ng(x)c = onehot\n\u0012\narg max\nj∈1...L\n(Gc,j + log(x)c,j))\n\u0013\n(2)\nwhere Gc,j is a sample from the gumbel-softmax distribution associated with\nchunk c and coordinate j. On the other hand, gradients for each coordinate\nl ∈1...L of a chunk c ∈C are computed based on on the gumbel-softmax",
+      "source": "mteb.pdf",
+      "page": 8,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "approximation:\ng(x)c,l =\nexp ((log(xc,l) + Gc,l) /τ)\nPL\nk=1 exp((log(xc,k) + Gc,k)/τ)\nfor j ∈1...L ,\n(3)\nwhere τ is the softmax temperature.\n3.1.3 Uniformity regularizer\nEven if the composite codes have the properties that we need for eﬃcient\ninverted indexing, we still need to ensure that the documents are well dis-\ntributed in the sparse space. The network could for example ignore most of\nthe dimensions and only use a subset in order to encode the documents in the",
+      "source": "mteb.pdf",
+      "page": 8,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "database. Indeed that is the behavior we found when we trained the proposed\nautoencoder without any regularization (see Section 4.1.3 for experiments).\nIn order to avoid such case, we propose to use a “fairness regularization”,\nthat is similar to the “gini-batch” regularization in (Klein and Wolf 2019) and\nFLOPS in (Paria et al. 2020). But in our case, this load-balancing regular-\nization has the advantage of working directly with batch binary activations,",
+      "source": "mteb.pdf",
+      "page": 8,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "creating a more precise approximation of the overall index.\nRecall that ideally we would like to force all dimensions to be activated by\nthe same amount of documents ( N\nL ), which would create a perfectly balanced\nindex. One way to do so is to use a regularization of the RMSE between the\nindex statistics and the desired ones:\nLUR(X) =\nv\nu\nu\nu\nt\nPD\nj=1\n\u0012\u0010PN\ni=1 g(e(Xi))\n\u0011\nj −N\nL\n\u00132\nN\n,\n(4)",
+      "source": "mteb.pdf",
+      "page": 8,
+      "char_count": 392,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n9\nwhere D is the total amount of dimensions, X is the matrix containing all\nthe document embeddings and g(e(x)) is the output of the gumbel softmax\napplied over the encoder projection of the input embeddings. Unfortunately,\nwe are not able to access the whole index statistics during training, as this\nwould either require using outdated statistics (with a memory of the last time",
+      "source": "mteb.pdf",
+      "page": 9,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "the document was seen during training) or computing the representations for\nall documents after each weight update. So, in order to mitigate this problem,\nwe use an approximation based on the batch (B) statistics:\nLUR(x) =\nv\nu\nu\nu\nt\nPD\nj=1\n\u0012\u0010PB\ni=1 g(e(xi))\n\u0011\nj −B\nL\n\u00132\nB\n,\n(5)\nwhere x is a batch of documents. Note that in this case, the higher is the\nbatch size, the smaller is the approximation error between batch statistics and",
+      "source": "mteb.pdf",
+      "page": 9,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "index statistics. We can then describe the overall objective function (L(x)) of\nthe autoencoder as:\nL(x) = LMSE(x, f(x)) + λLUR(x) .\n(6)\nThe ﬁrst term is the reconstruction loss (mean squared error over the batch)\nand the second term is the regularization, which is a root mean squared error\nbetween the optimal mean activation ( B\nL ) and the mean amount of activations\nof each dimension ( P\nx e(x)D′).\n3.1.4 Discussion\nOur method draw its inspiration from (Shu and Nakayama 2018), where com-",
+      "source": "mteb.pdf",
+      "page": 9,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "posite codes are used to compress the input word embedding matrices for\nsentiment analysis and machine translation tasks. Since our goal is indexing,\nwe do not compress internal model parameter but the ﬁnal output of the model\nfor ANN tasks. Note that diﬀerently from recently proposed methods (Paria\net al. 2020; Klein and Wolf 2019; Medini et al. 2021), we focus on unsupervised\nlearning of the embedding, which allows us to adapt to any given task, instead",
+      "source": "mteb.pdf",
+      "page": 9,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "of needing to adapt the method to each one. This decision surely can come\nwith a cost in overall performance.\nIn addition, we add the uniformity regularization which has the same form\nas the ones proposed in (Paria et al. 2020; Klein and Wolf 2019). The main\nadvantage of the proposed regularization schema compared to previous work\nis that we work directly on binarized inputs (equivalent to L0 norm), instead\nof using approximations (L1 or L2 norms). Using the aforementioned structure",
+      "source": "mteb.pdf",
+      "page": 9,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "allows us to have binary representations during the training of the network,\nwhile still keeping gradients that resemble those from a max function. Having\na binary representation from the start, allows CCSA models to better estimate\nthe load balance of the ﬁnal index and thus help the regularizer in enforcing\na balanced index.",
+      "source": "mteb.pdf",
+      "page": 9,
+      "char_count": 328,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "10\nCarlos Lassance et al.\nNote that the previously cited load-balancing regularizations from (Paria\net al. 2020; Klein and Wolf 2019) as well as ours, use an approximation of the\noverall index distribution by the distribution of the batch. Therefore, increas-\ning the batch size should lead to improvements in the index balance for all\nmethods (c.f. Section 4.1.3). Which is why we focus on reﬁning the represen-\ntations, instead of end-to-to learning, which allows for larger batch sizes.",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "Also, while our embedding method performs binary quantization of the\nembeddings, it also increases the query embedding time/memory size due to\nthe additional CCSA encoding layer, but instead focuses on reducing the in-\nverted indexing retrieval and indexing costs. In this sense, in future work, we\nshould be able to combine our approach with both distillation techniques for\nBERT models (aiming at reducing the size of the DL model) (Sanh et al.",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "2019; Lin et al. 2020; Hofst¨atter et al. 2020) and quantization techniques (ei-\nther to reduce the size of the Transformer model or to allow for more eﬃcient\ncomputation).\nNote that for completion, we also demonstrate the quantization abilities\nof the method using a graph-based ANN (ref Section 4.1.2) and comparing\nwith traditional OPQPQ methods, but it is not the focus of this contribution.\nWe believe that integrating these techniques should lead to faster/cheaper",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "inference (Lin et al. 2020; Hofst¨atter et al. 2020), which would help reducing\nthe query latency.\n3.1.5 Optimized Product Quantization and Inverted Index Files (OPQ IVF\nPQ)\nFinally, there are many similarities between our method and the approxi-\nmate NN combination implemented in FAISS of inverted index ﬁles (IVF) and\nproduct quantization (PQ) (Jegou et al. 2010). In the following paragraphs\nwe explain the IVFPQ index quickly and the diﬀerences with the proposed\nmethod.",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "method.\nIn inverted index ﬁles (IVF), a clustering algorithm separates the examples\nof the support set (our documents) in a number of centroids (c), opposite to\nour method that learns how to separate examples directly on the sparse rep-\nresentations. These clusters are optimized to minimize the distance between\ntheir members and to keep a well balanced index (documents per cluster ap-\nproximately N\nc . In order to avoid “missed by one” errors it is also common to",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "search a number of closest centroids (w) instead of retrieving only the closest\none. This implementation diﬀers from ours as our inverted index is based on\nthe learnt representations instead of clustering the documents.\nTo compute eﬃciently the distances between the found elements in the\ncentroids and the query, one can use product quantization (PQ). Product\nquantization separates the embedding of D into C representations of size L,",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "and then quantizes the L-sized subpartitions to b bits. In this work, we con-\nsider b = 8, so that a PQ with C representations is encoded in C bytes, and\nthus we use PQ(C) to describe this behavior. This diﬀers from the proposed\nmethod as we compute distances in the sparse binarized domain, while PQ",
+      "source": "mteb.pdf",
+      "page": 10,
+      "char_count": 300,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n11\ndistances are computed on the whole D (but with quantized representations\nand look-up tables). An IVFPQ index will thus search based on the quantized\nrepresentations and will limit the amount of searches based on c and w, while\nreducing the storage and amount of operations per distance computation using\nC and L. Finally OPQ (optimized product quantization) (Ge et al. 2013) is",
+      "source": "mteb.pdf",
+      "page": 11,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "a method for ﬁnding a suitable projection that will optimize the performance\nof the following PQ. In a very rough comparison with our work OPQ would\nbe related to our encoder, PQ would be related to the activation function and\nﬁnally IVF would be related to the optimized retrieval.\n3.2 Retrieval\nWe either index our vectors using an inverted index or a graph-based method.\nIn the case of inverted indexes, we have developed a prototype implementation",
+      "source": "mteb.pdf",
+      "page": 11,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "(using numpy and numba), which turns out to be already competitive, while\nfor graph-based methods we used FAISS to perform retrieval.\nOur solution for inverted indexing using CCSA vectors, consists on using a\nset of lists where each dimension is associated to a list of documents. For each\ndimension activated by a document, its ID is added to the list correspond-\ning to that dimension. Which means that while each document is encoded by",
+      "source": "mteb.pdf",
+      "page": 11,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "Clog2(L) bits, our implementation actually stores Clog2(N) bits of informa-\ntion for each document and that ideally each list would contain N\nL documents.\nOur retrieval is divided into 4 phases: i) encoding, ii) scoring, iii) thresh-\nolding, and iv) top k sorting. All phases are run in CPUs, with the encoding\none dominating time of retrieval. Reducing the computational cost of encod-\ning is left as future work. Our retrieval is implemented using pytorch for the 1",
+      "source": "mteb.pdf",
+      "page": 11,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "phase, numba for phases 2 and 3 and numpy for the last phase. We summarize\nthe computational cost and potential cost under parallelization of phases 2\nthrough 4 in Table 1.\nTable 1 Summary of the worst case complexity (WCC), amount of processes (P) and\ncomplexity of each individual process (CP) for phases 2 through 4 of the proposed retrieval\nmethod.\nPhase\nWCC\nP\nCP\nScoring\nO\n\u0010\nC N\nL\n\u0011\nC\nO( N\nL )\nThresholding\nO (N)\nN\nO(1)\nTopkSort\nO\n\u0010\nC N\nL log\n\u0010\nC N\nL\n\u0011\u0011\n1\nO\n\u0010\nC N\nL log\n\u0010\nC N\nL\n\u0011\u0011\n3.2.1 Encoding",
+      "source": "mteb.pdf",
+      "page": 11,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "L\n\u0011\u0011\n1\nO\n\u0010\nC N\nL log\n\u0010\nC N\nL\n\u0011\u0011\n3.2.1 Encoding\nThe ﬁrst part of the retrieval process is to encode the text of the query to\nour composite codes. To do so, we have to ﬁrst encode the text using a pre-",
+      "source": "mteb.pdf",
+      "page": 11,
+      "char_count": 199,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "12\nCarlos Lassance et al.\ntrained transformer (Devlin et al. 2018) to generate dense representations, and\nthen pass these representations to the proposed autoencoder scheme. This is\nthe most cost intensive part of our setup, which is a contrast to other dense\napproaches where most of the time is taken on the other three steps. Our\nimplementation of the encoding has a latency of roughly 42 ms, while all the\nfollowing steps combined have a latency of 13ms. This is a contrast with the",
+      "source": "mteb.pdf",
+      "page": 12,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "compared IVF ANN approaches, where the other steps of retrieval are more\ncostly than the encoding\n3.2.2 Scoring\nThe second step is to score the documents based on the inverted index. If the\ninverted index is well-behaved we can expect a complexity of O(C N\nL ) which is\nsmaller than when using a dense embedding O(NDdense) where Ddense is the\nnumber of dimensions of the dense embedding. Note that we are able to twice\nparallelize our scoring: ﬁrst by dividing into C threads (one per activated",
+      "source": "mteb.pdf",
+      "page": 12,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "chunk), and then each one of those threads can be divided into N\nL threads\n(one per document activated by the combination CL) with only a very small\nprobability of collision (two threads scoring the same document at the same\ntime).\n3.2.3 Thresholding\nAfter scoring, we remove candidates that are known to be outside of the top k\nsorting range via score thresholding. This step has a complexity of O(N) and\nis an embarrassingly parallel task. We can easily divide the documents over",
+      "source": "mteb.pdf",
+      "page": 12,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "multiple processes and remove from consideration all document that have a\nscore that is less or equal to t. This threshold score can chosen using the\ntraining set queries and aiming for a minimum of k documents retrieved over\nall training queries.\n3.2.4 Top k sorting\nThe ﬁnal step is to then sort the obtained scores in order to obtain the\nmost relevant k documents. Doing so without any thresholding would be the\nmost expensive of the last 3 retrievals steps, with a worst-case complexity of",
+      "source": "mteb.pdf",
+      "page": 12,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "O(Nlog(N)). However, after we apply threshold (with at least t = 0) this\ncomplexity is reduced. In the worst case where each accessed inverted index\nentry has the mean amount of documents N\nL and they are all unique the com-\nplexity reduces to O(C N\nL log(C N\nL )). For example during our experiments we\nwere able to ﬁnd values of threshold where the median amount of documents\nto sort is smaller than 20k ( approximately 400 times less than N and C N\nL ).",
+      "source": "mteb.pdf",
+      "page": 12,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "L ).\nWe note that linear sorting algorithms exists, such as radix sort (Lee et al.\n2002), unfortunately it is not implemented in numba (Lam et al. 2015) and\nit is not clear if it is used by numpy (Harris et al. 2020), with conﬂicting\ndocumentation between argsort and sort. Thus, we prefer to detail traditional",
+      "source": "mteb.pdf",
+      "page": 12,
+      "char_count": 311,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n13\nO(Nlog(N)) techniques as we believe they are the ones we use in our imple-\nmentation. Note that as our scores are integers, there is a higher probability of\nties when compared to other retrieval methods, which makes our results pos-\nsibly non-deterministic depending on the tie-breaking mechanism. In practice,\nit has little impact on retrieval performances.\n4 Experiment\nWe ﬁrst perform experiments on IR tasks, as this is the original goal of the",
+      "source": "mteb.pdf",
+      "page": 13,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "proposed method. Due to its generality, we also showcase how it can be applied\nto image retrieval.\n4.1 Information retrieval\nFor the information retrieval task we perform experiments using the MS-\nMARCO dataset (Bajaj et al. 2016), and evaluate on the devset of the MS-\nMARCO (Bajaj et al. 2016) and TREC2019 (Voorhees and Ellis 2019). For\nthis task we pursue 4 main research questions:\nRQ1 Is CCSA comparable to traditional BOW inverted indexes and ANN\ninverted indexes?",
+      "source": "mteb.pdf",
+      "page": 13,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "inverted indexes?\nRQ2 Are CCSA codes comparable to product quantization for graph-based\nANN methods?\nRQ3 Is our index well-balanced, i.e do we need the uniformity regularization?\nIn order to evaluate our experiments, we compare two types of methods\nfor ﬁrst stage rankers:\nBOW Traditional IR methods based on inverted index such as BM25 (tuned\nby anserini) (Yang et al. 2017) and BM25 with document expansion as done\nin the docT5query model (Nogueira 2019). Retrieval using these methods",
+      "source": "mteb.pdf",
+      "page": 13,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "is implemented with Anserini (Yang et al. 2017).\nSiamese-Bert Our baseline is a standard siamese transformer model with CLS\npooling (Reimers and Gurevych 2019). for which the models are imple-\nmented in pytorch (Paszke et al. 2019).\nFor the siamese model, we then compare the diﬀerent ANN or indexing tech-\nniques:\nOPQ(C)-X-PQ : Quantization method where data is ﬁrst projected and ro-\ntated so that it can be better quantized into C bytes (OPQ) and then",
+      "source": "mteb.pdf",
+      "page": 13,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "quantized to C bits(PQ) in an unsupervised manner. Data is then indexed\nusing X that can be either IVF or HNSW. We use the FAISS (Johnson\net al. 2017) library implementation of this quantization method.",
+      "source": "mteb.pdf",
+      "page": 13,
+      "char_count": 202,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "14\nCarlos Lassance et al.\nIVF(c,w) : Inverted index method where data is clusterized into c clusters\nusing k-means, and we compare all elements in the closest w clusters to\nthe query. Most of the distance computations can be accelerated by pre-\ncomputing lookup tables (LUT). We use the FAISS (Johnson et al. 2017)\nimplementation of this index. There is almost no memory overhead in the\ncreation of the index (8 bytes per document in the database and 256C for\nthe lookup tables).",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "the lookup tables).\nHNSW(m, efSearch, efConstruction) A hierarchical graph-based ANN (Malkov\nand Yashunin 2020). In this graph nodes are the indexed documents and\nedges are generated in order to allow for easy traversal from a source node\n(either random or heuristically chosen) to the closest neighbors of a query.\nThe graph is created so that each node has a maximum m edges, which\nleads to an overhead of 8m bytes per element in the database. The param-",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "eters efConstruction and efSearch perform a trade-oﬀbetween index\nprecision and computational cost on the indexing and retrieval steps. We\nuse the FAISS (Johnson et al. 2017) implementation of this index. Given\nthe amount of memory overhead generated by this method, we evaluate it\nseparatly from IVF.\nCCSA(C,L) Our proposed model.\nRetrieval Metrics First stage rankers are evaluated with the ranking\naccuracy using MRR@10 and Recall@1000, where the latter is the most im-",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "portant measure. We also report mean latency on 1 query at a time and\nthroughput using “full batches” (6980 queries per batch for MSMARCO and\n200 for TREC). Recall that our goal is to improve the latency of retrieval, while\nmaximizing Recall@1000. We also present throughput and either MRR@10\nfor MSMARCO or NDCG@10 for TREC, however they are not the metrics\nthat we focus on this paper.\nIn this work we use the following deﬁnitions: i) latency: the mean time it",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "took to process a query, with only one query per batch, and ii) throughput:\nthe mean amount of queries per second, while processing all the queries as a\nsingle batch. In the case of MSMARCO this means 6980 queries in a batch\nand in the case of TREC, 200 queries in the batch.\nWe follow (Hofst¨atter and Hanbury 2019) and report all results using the\nsame machine, so that they are comparable to each other and that they can\nbe reproduced. All tasks are executed on a Intel(R) Xeon(R) E5-2670 v3 @",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "2.30GHz CPU, with no access to gpu2, and with 250GB of RAM available.3\nHyper Parameters and Implementations The proposed method is ab-\nbreviated to CCSA (Composite Code Sparse Autoencoders) on the displayed\ntables and ﬁgures. For RQ1 we use D = 65536, C = 256, L = 256 so that the\ndocuments are quantized to 256 bits. For RQ2, we use two diﬀerent construc-\n2 We consider only cpu-based retrieval, in order to compare all elements using the same",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "hardware. Note that this greatly favors BOW implementations as the Siamese-Bert encoder\nis optimized for GPU use.\n3 Note that none of the approaches reached even half of the total available ram, for the\n8.8M document collection.",
+      "source": "mteb.pdf",
+      "page": 14,
+      "char_count": 228,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n15\ntions, one with 256 bytes (D = 4096, C = 2048, L = 2) and one with 64 bytes\nper document (D = 768, C = 384, L = 2).\nThe models for CCSA are implemented using pytorch (Paszke et al. 2019)\nand the retrieval is implemented using numpy (Harris et al. 2020) and numba (Lam\net al. 2015). The networks are trained using the training queries and docu-\nments from MSMARCO, with ADAM (Kingma and Ba 2014) optimization",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "using a learning rate of 0.0001. The training is considered ﬁnished after 10\nepochs (RQ1) and 100 epochs (RQ2), using a gumbel-softmax temperature\nof 100(RQ1) and 1(RQ2) and a regularization factor λ of 100 (RQ1) and 0\n(RQ2)4.\nFor BOW methods we use Anserini (Yang et al. 2017) and FlexNeuArt (Boytsov\nand Nyberg 2020), and use the same parameters for BM25 and docT5 (k1 =\n0.82, b = 0.62).\n4.1.1 RQ1: How does our approach compare to traditional BOW inverted\nindexes and ANN inverted indexes",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "indexes and ANN inverted indexes\nFirst, we compare the proposed method with its baselines (networks that gen-\nerate the dense embeddings) and other methods of sparse retrieval that do\nnot use dense embeddings. To avoid unfair comparisons we do not compare\nwith other sparse embedding methods, as they are either not suited for the\ntask (e.g. the learning to hash from (Medini et al. 2021) would need all docu-\nments on the support set to have an associated query on the training set) or",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "have problems on MSMARCO (e.g. the relu sparse embedding from (Zamani\net al. 2018) does not behave correctly on MSMARCO as noted by the au-\nthors from (Medini et al. 2021) and our internal experiments). We do proper\ncomparisons with supervised approaches in the image retrieval scenario (c.f.\nSection 4.2).\nAs we have stated in the introduction, our main objective is to improve the\nlatency of deep information retrieval as we consider the most important metric",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "for user satisfaction. However we also present the throughput of all methods\nfor 1) demonstrate the capacity of our method to retrieve queries in parallel\nand 2) for a more fair comparison with the BOW sparse retrieval methods\nwhere we use Anserini that does not allow for intra-query parallelism and the\nFAISS indexes that are not optimized for latency.\nThe results are presented in Table 2. First, we can see that the ANN\nmethods lose some performance compared to the brute force dense embeddings",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "(↓0.3 MRR@10 and ↓3% Recall@1000 for BERTSiamese).\nSecond, when compared to SoTA sparse retrieval methods we are able to\ngreatly outperform BM25 on Recall@1000 (on MSMARCO), while keeping\nsimilar latency (but losing heavily on throughput). Compared to docT5 we\nachieve comparable retrieval latency (approximately 15ms)5, with the caveat\n4 RQ2 needs no regularization factor as we only exploit the binarization part of CCSA\nand not the sparsiﬁcation one.",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "and not the sparsiﬁcation one.\n5 but not overall latency, as the encoding and projection phases have a latency of 42 ms.",
+      "source": "mteb.pdf",
+      "page": 15,
+      "char_count": 120,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "16\nCarlos Lassance et al.\nthat Anserini does not perform intra-query parallelism. We also achieve bet-\nter MRR@10, but we lose in Recall@1000 (where docT5 is better than our\ndense baseline) and batched-throughput. Note that as our method approxi-\nmates BERTSiamese embeddings, we should be able to improve our results\nby combining with recent improvements such as (Hofst¨atter et al. 2020; Xiong\net al. 2021).\nFinally, we compare to ANN inverted indexing using FAISS. In order to",
+      "source": "mteb.pdf",
+      "page": 16,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "have a fair comparison, we set the same quantization budget for both indexes\n(256 bytes per document) and we then search diﬀerent hyperparameters for\nIVF (c ∈[256, 1000],w ∈[1, 10, 25, 50, 100, 200, 500]) and present the one with\nthe closest Recall@1000 to CCSA6, while maintaining reasonable latency and\nthroughput. In both datasets we are able to improve latency and achieve sim-\nilar throughput and Recall@1000 (the latter is done by design) and having a\nreduced MRR/NDCG@10.",
+      "source": "mteb.pdf",
+      "page": 16,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "reduced MRR/NDCG@10.\nAlso, recent works (Hofst¨atter et al. 2020) have shown that the ideal 1st\nstage is actually a combination of BOW+Siamese Embeddings, which should\nimprove our results with minimal change in latency (as BOW do not perform\nintra-query parallelism) and throughput (as the method would be capped by\nthe performance of CCSA and not the BOW retrieval).\nTable 2 Results on MSMARCO dev and TREC-2019. Latency and throughput evaluated",
+      "source": "mteb.pdf",
+      "page": 16,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "on the MSMARCO dataset using only CPU. Pyserini results come from (Lin et al. 2020).\nMethod\nLatency (↓)\nThroughput (↑)\nMSMARCO dev\nTREC 2019\nEncoding\nRetrieval\nTotal\nMRR@10\nR@1k\nNDCG@10\nR@1k\nSparse retrieval (FlexNeuART†, Pyserini‡)\nBM25\n0\n15†/55‡\n15†/55‡\n1396†/200‡\n0.188\n86.0%\n0.501\n74.5%\ndocT5\n0\n24†/64‡\n24†/64‡\n615†/100‡\n0.277\n94.7%\n0.648\n82.7%\nDense embeddings (Brute Force)\nSiamBERT\n35\n2944\n2979\n19.2\n0.317\n93.8%\n0.637\n73.3%\nANN Inverted Indexing\nOPQIVFPQ\n35\n316\n313.7\n36.6\n0.302\n90.3%\n0.613\n67.5%",
+      "source": "mteb.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "35\n316\n313.7\n36.6\n0.302\n90.3%\n0.613\n67.5%\n(ours) CCSA\n42\n13\n55\n45.2\n0.289\n90.6%\n0.583\n69.0%\n4.1.2 RQ2: Are CCSA codes comparable to product quantization for\ngraph-based ANN methods?\nNow that we have shown the interest of the method in the inverted indexing\nscenario, we also consider the possibility of combining with ANN graph based\nmethods. In this case a solution is to focus on the binary quantization of the\nembeddings, without enforcing sparsity (with L = 2 we have a fully binarized",
+      "source": "mteb.pdf",
+      "page": 16,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "embedding that occupies C\n8 bytes). This can be seen as quantizing the original\nembedding vectors from 768 × 4 bytes to a smaller footprint. In other words\n6 C = 256, c = 1000 and ,w = 100.",
+      "source": "mteb.pdf",
+      "page": 16,
+      "char_count": 189,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n17\nin this scenario we only use the ﬁrst step of CCSA retrieval combined with\nHNSW.\nWe compare with OPQHNSWPQ in two scenarios, one where we have the\nsame budget as in the previous section (256 bytes per document) and a more\ncompressed one with only 64 bytes. We set the parameters of HNSW so that\nthe total overhead is of 256 bytes per document (m = 32), indexing takes less\nthan 20 minutes (efConstruction = 80) and search using CCSA quantized",
+      "source": "mteb.pdf",
+      "page": 17,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "embeddings is fast and accurate (efSearch = 512).\nWe detail the results in Table 3 (MSMARCO) and Table 4 (TREC2019).\nNote that diﬀerently from the previous research question, we omit the over-\nhead of Bert-Siamese encoding in order to better compare the models (as all\nmodels are subjected to it, but note that we keep the overhead caused by the\nprojection). For the MSMARCO dataset, we note that CCSA performs very\nwell for the larger budget, being able to outperform OPQPQ on almost all",
+      "source": "mteb.pdf",
+      "page": 17,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "metrics, except for MRR@10. However, on the smaller memory budget, the\nresults are inverted and it loses to OPQPQ in most metrics, safe for recall\nwhere they are approximately the same. On the latency and throughput side,\nthis change comes mostly from the projection overhead becoming too costly,\nwhile for the ranking metrics there is a very small loss in Recall, but a larger\none in MRR@10.\nOn the TREC2019 queries, the results are more streamlined: there is a",
+      "source": "mteb.pdf",
+      "page": 17,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "larger diﬀerence in both NDCG@10 and Recall@1000. Note that as before\nCCSA achieves better recall and OPQPQ better NDCG. However it is still\nholds that for smaller memory budgets OPQPQ is able to outpace the proposed\nmethod in both latency and throughput, given the added computations from\nthe encoder (sparse projection). Also, we note a strange interaction between\nHNSW and the quantization methods, where NDCG@10 is actually better",
+      "source": "mteb.pdf",
+      "page": 17,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "for the smaller budget scenario. Further study on these interactions is left as\nfuture work, but could allow for a better understanding of this performant\nindex combination7.\nTable 3 RQ2 on MSMARCO. Note that diﬀerently from the results in RQ1, we do not add\nthe overhead from the BERTSiamese encoding (only the sparse projection one).\nMethod\nLatency\nThroughput\nMRR@10\nRecall@1000\n256 bytes per document\nCCSA HNSW\n10.3\n1718.5\n0.3023\n92.01%\nOPQPQ HNSW\n12.4\n1346.0\n0.3099\n91.61%\n64 bytes per document\nCCSA HNSW",
+      "source": "mteb.pdf",
+      "page": 17,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "0.3099\n91.61%\n64 bytes per document\nCCSA HNSW\n10.3\n2036.8\n0.2727\n90.03%\nOPQPQ HNSW\n7.7\n3530\n0.3011\n90.17%\n7 The HNSW indexes with 64 bytes per document have a total index size of 2.8GB, where\n2.3GB are the overhead from the graph construction",
+      "source": "mteb.pdf",
+      "page": 17,
+      "char_count": 242,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "18\nCarlos Lassance et al.\nTable 4 RQ2 on TREC-2019.Note that diﬀerently from the results in RQ1, we do not add\nthe overhead from the BERTSiamese encoding (only the sparse projection one).\nMethod\nLatency\nThroughput\nNDCG@10\nRecall@1000\n256 bytes per document\nCCSA HNSW\n11.4\n720.9\n0.5796\n64.38%\nOPQPQ HNSW\n13.5\n954\n0.6076\n60.70%\n64 bytes per document\nCCSA HNSW\n11.0\n904.7\n0.5916\n62.60%\nOPQPQ HNSW\n7.9\n2370\n0.6153\n60.55%\n4.1.3 RQ3: Is our index well-behaved/do we need the added regularization",
+      "source": "mteb.pdf",
+      "page": 18,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "One of the main contributions of CCSA is that by using a straight-through\nestimator we are able to directly deal with the binary representations and thus\nbetter control the index uniformity. In order to verify these claims, we now\ncompare the index uniformity ﬁrst by varying the regularization parameter λ\nand second by varying the batch size.\nWe ﬁrst train CCSA networks with the hyperparameters used for RQ1\nand changing the value of λ so that λ ∈[0, 0.1, 1, 10, 100]. Note that 100 is the",
+      "source": "mteb.pdf",
+      "page": 18,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "default value we used for our experiments and 0 refers to no index-balancing\nregularization. We depict the index balance for the various networks in Figure 2\nand display the Recall@1000 of each network in the legend. We are able to\nverify that as we increase λ the balance of the index improves, with a very\nsmall variation between the most used dimensions and the lowest ones for\nλ = 100 and a very large one for λ = 0. Moreover, the Recall@1000 increases",
+      "source": "mteb.pdf",
+      "page": 18,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "as λ increases, showing another interest of a well-behaved index.\nNow that we have veriﬁed the interest of the parameter λ, we evaluate\nif we need a large batch size as described in Section 3.1.3. We vary B ∈\n[100, 1000, 10000] and depict the results in Figure 3. Recall that 10000 is the\nbatch size we used for the experiments in RQ1 and in the previous experiment\nof varying λ. As expected, the best Recall@1000 and balance of index are",
+      "source": "mteb.pdf",
+      "page": 18,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "achieved by the greater batch size. Moreover, the network actually has trouble\nconverging with the smaller batch sizes, which could mean that a smaller\nregularization factor or more intricate hyperparameter search would be needed.\n4.2 Image retrieval\nGiven the generality of our method we extend our experiments to image re-\ntrieval settings. In this setting the goal is to ﬁnd the closest images in a support\ndatabase to a given query image. This setting also allow us to fairly compare",
+      "source": "mteb.pdf",
+      "page": 18,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "with supervised binary embedding methods and deep hashing.\nWe compare against SUBIC (Jain et al. 2017) and E2EPQ (Klein and\nWolf 2019) following their experimental setting: i) Extract features using",
+      "source": "mteb.pdf",
+      "page": 18,
+      "char_count": 198,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n19\n0\n20\n40\n60\n80\n100\n0%\n0.4%\n1%\n2%\n3%\n4%\n5%\n6%\nDimension percentile\nPercentage of documents that activate dimension\nλ = 0 R@1000: 89.39%\nλ = 0.1 R@1000: 89.72%\nλ = 1 R@1000: 90.03%\nλ = 10 R@1000: 90.43%\nλ = 100 R@1000: 90.67%\nFig. 2 Eﬀect of varying the regularizing factor λ on MSMARCO. Recall that a perfectly\nbalanced index would have all dimensions activated by\n1\nL ≈0.4% of the documents.\n0\n20\n40\n60\n80\n100\n0%\n0.4%\n1%\n2%\nDimension percentile",
+      "source": "mteb.pdf",
+      "page": 19,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "40\n60\n80\n100\n0%\n0.4%\n1%\n2%\nDimension percentile\nPercentage of documents that activate dimension\nB = 100 R@1000: 84.22%\nB = 1000 R@1000: 76.52%\nB = 10000 R@1000: 90.67%\nFig. 3 Eﬀect of varying the batch size B on MSMARCO. Recall that a perfectly balanced\nindex would have all dimensions activated by 1\nL ≈0.4% of the documents.\nVGG-128 (Chatﬁeld et al. 2014) extracted features, ii) Fine tune the features\nin a supervised fashion on the landmarks dataset () using 60k batches of 200",
+      "source": "mteb.pdf",
+      "page": 19,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "images., iii) Compress the embeddings to 64 bits (8 bytes), and iv) Evaluate\nthe mAP on the Paris6k and Oxford5k datasets. Note that in their case, on\nstep (ii), they directly train the embeddings in a supervised fashion. In our case",
+      "source": "mteb.pdf",
+      "page": 19,
+      "char_count": 233,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "20\nCarlos Lassance et al.\nwe substitute this step (ii) by a simple linear encoder (VGG-128 embeddings-\n¿128 dimension) trained in a supervised fashion. We then add an extra step\n(ii.2) where we use this new 128 dimensional embeddings to train CCSA on the\nlandmarks dataset. Furthermore, as CCSA is fully unsupervised we can also\nperform this last step directly on the Paris6k and Oxford5k support databases,\nwhich allows for a great improvement of our results. We present the results in",
+      "source": "mteb.pdf",
+      "page": 20,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "Table 5. We are able to show that CCSA can achieve similar results to both\nSUBIC (Jain et al. 2017) and E2EPQ (Klein and Wolf 2019) when trained only\non landmarks and that if we use the advantage of being fully unsupervised and\ntrain on Oxford/Paris we are able to greatly outperform their approaches. Un-\nfortunately it is not possible to compare the latency of these methods as the\ndatabases are too small (5k documents).\nTable 5 mean Average Precision (MAP) comparison on image retrieval scenarios. Italic",
+      "source": "mteb.pdf",
+      "page": 20,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "numbers show similar results of the not-ﬁnetuned versions while bold results show the best\nresults overall.\nMethod\nParis6k\nOxford5k\nPQ (reported (Jain et al. 2017))\n0.3597\n0.2374\nSUBIC (Jain et al. 2017)\n0.4116\n0.2626\nPQ-normalized (reported (Klein and Wolf 2019))\n0.4249\n0.2646\nE2EPQ (Klein and Wolf 2019)\n0.4262\n0.2643\nCCSA\n0.4253\n0.2671\nFinetuned CCSA\n0.5343\n0.2987\n4.2.1 Fair comparison with product quantization on the image retrieval\nscenario",
+      "source": "mteb.pdf",
+      "page": 20,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "scenario\nNow we need to do some proper comparison to the product quantization\nmethod (Jegou et al. 2010). We noted that already product quantization was\nas good as the supervised approaches on this task, and that there was a very\nlarge diﬀerence between the PQ numbers reported between the SUBIC and\nthe E2EPQ papers. This very large diﬀerence comes from the fact that PQ\nis better suited to L2 normalized inputs (PQ-normalized line on the previous",
+      "source": "mteb.pdf",
+      "page": 20,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "table). However there were still 3 things that make the comparison with PQ\nunfair:i) PQ was applied directly to the VGG-128 output, instead of on a su-\npervised model trained over those inputs on the landmarks dataset, ii) OPQ\nwas not added to PQ, and iii) As PQ is an unsupervised method it can be\nﬁnetuned directly on the Oxford/Paris datasets We display the results on Ta-\nble 6 with “Fair” OPQPQ being the one that solves unfairnesses i and ii and",
+      "source": "mteb.pdf",
+      "page": 20,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "Finetuned being the one that solves all the fairnesses problems listed above.\nIn summary, CCSA is able to outperform all the previous supervised methods,\nbut fails to outperform a properly optimized PQ method on a ranking mea-\nsure, which follows our results from Information Retrieval. Due to the size of",
+      "source": "mteb.pdf",
+      "page": 20,
+      "char_count": 305,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n21\nthe database we are not able to compare neither Recall@k or latency, which\nare the measures that we optimize for and had shown the advantages of CCSA\nin the IR experiments.\nTable 6 mean Average Precision (MAP) comparison\nMethod\nParis6k\nOxford 5k\nPQ (reported SUBIC)\n0.3597\n0.2374\nSUBIC (ICCV 2017)\n0.4116\n0.2626\nPQ-normalized (reported E2EPQ)\n0.4249\n0.2646\nE2EPQ (CVPR 2019)\n0.4262\n0.2643\nCCSA\n0.4253\n0.2671\nFinetuned CCSA\n0.5343\n0.2987\n“Fair” OPQPQ",
+      "source": "mteb.pdf",
+      "page": 21,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "0.2671\nFinetuned CCSA\n0.5343\n0.2987\n“Fair” OPQPQ\n0.5212\n0.3047\nFinetuned “Fair” OPQPQ\n0.5776\n0.3642\n5 Conclusion\nRecent siamese Bert models for IR require an eﬃcient ANN search technique\nfor ﬁrst stage retrieval. In this paper, we have propose a novel method based\non composite codes, that can learn eﬃcient inverted indexes by design. Fur-\nthermore, we have shown via extensive experiments the interest of CCSA,\nwhich opens a new research direction on training deep unsupervised binary",
+      "source": "mteb.pdf",
+      "page": 21,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "sparse embeddings. In particular, our results show that CCSA outperform\nIVF techniques for latency on IR datasets. Future work includes improving\nthe training of CCSA, to allow for better performance with a small memory\nbudget per document, reduce the overall overhead of Bert-encoding and the\nCCSA projection (either via distillation/quantization or by learning a smaller\nquery encoder following (Li 2011)) and ﬁnally devising better ways to com-",
+      "source": "mteb.pdf",
+      "page": 21,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "bine with graph-based methods as we have done for the inverted index one\n(for example combining CCSA with routing-GCNs (Baranchuk et al. 2019)).\nAcknowledgements We would like to thank Yannis Kalantidis, Joo Hee Park and Tae\nwon Yoon for their helpful comments and discussion on this work.\nConﬂict of interest\nThe authors declare that they have no conﬂict of interest.",
+      "source": "mteb.pdf",
+      "page": 21,
+      "char_count": 368,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "22\nCarlos Lassance et al.\nReferences\nAmati G, Van Rijsbergen CJ (2002) Probabilistic models of information retrieval based on\nmeasuring the divergence from randomness. ACM Trans Inf Syst 20(4):357–389, DOI\n10.1145/582415.582416, URL http://doi.acm.org/10.1145/582415.582416\nAzad DHK, Deepak A (2019) Query expansion techniques for information retrieval: a survey.\nInf Process Manag 56:1698–1735\nBabenko A, Lempitsky V (2014) The inverted multi-index. IEEE transactions on pattern",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "analysis and machine intelligence 37(6):1247–1260\nBai Y, Li X, Wang G, Zhang C, Shang L, Xu J, Wang Z, Wang F, Liu Q (2020) Sparterm:\nLearning term-based sparse representation for fast text retrieval. 2010.00768\nBajaj P, Campos D, Craswell N, Deng L, Gao J, Liu X, Majumder R, McNamara A, Mitra B,\nNguyen T, et al. (2016) Ms marco: A human generated machine reading comprehension\ndataset. arXiv preprint arXiv:161109268\nBaranchuk D, Persiyanov D, Sinitsin A, Babenko A (2019) Learning to route in similarity",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "graphs. In: International Conference on Machine Learning, PMLR, pp 475–484\nBengio Y, L´eonard N, Courville A (2013) Estimating or propagating gradients through\nstochastic neurons for conditional computation. 1308.3432\nBerger A, Laﬀerty J (1999) Information retrieval as statistical translation. In: Proceedings of\nthe 22nd Annual International ACM SIGIR Conference on Research and Development\nin Information Retrieval, Association for Computing Machinery, New York, NY, USA,",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "SIGIR ’99, p 222–229, DOI 10.1145/312624.312681, URL https://doi.org/10.1145/\n312624.312681\nBoytsov L (2018) Eﬃcient and accurate non-metric k-nn search with applications to text\nmatching. PhD thesis, Carnegie Mellon University\nBoytsov L, Nyberg E (2020) Flexible retrieval with NMSLIB and FlexNeuART. In: Proceed-\nings of Second Workshop for NLP Open Source Software (NLP-OSS), Association for\nComputational Linguistics, Online, pp 32–43, DOI 10.18653/v1/2020.nlposs-1.6, URL",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "https://aclanthology.org/2020.nlposs-1.6\nChatﬁeld K, Simonyan K, Vedaldi A, Zisserman A (2014) Return of the devil in the details:\nDelving deep into convolutional nets. arXiv preprint arXiv:14053531\nCraswell N, Mitra B, Yilmaz E, Campos D, Voorhees EM (2020) Overview of the trec 2019\ndeep learning track. arXiv preprint arXiv:200307820\nDai Z, Callan J (2019) Context-aware sentence/passage term importance estimation for ﬁrst\nstage retrieval. arXiv preprint arXiv:191010687",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "stage retrieval. arXiv preprint arXiv:191010687\nDevlin J, Chang M, Lee K, Toutanova K (2018) BERT: pre-training of deep bidirectional\ntransformers for language understanding. CoRR abs/1810.04805, URL http://arxiv.\norg/abs/1810.04805, 1810.04805\nDing YQY, Liu J, Liu K, Ren R, Zhao X, Dong D, Wu H, Wang H (2020) Rocketqa:\nAn optimized training approach to dense passage retrieval for open-domain question\nanswering. 2010.08191\nGe T, He K, Ke Q, Sun J (2013) Optimized product quantization. IEEE transactions on",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "pattern analysis and machine intelligence 36(4):744–755\nGuu K, Lee K, Tung Z, Pasupat P, Chang MW (2020) Realm: Retrieval-augmented language\nmodel pre-training. 2002.08909\nHarris CR, Millman KJ, van der Walt SJ, Gommers R, Virtanen P, Cournapeau D, Wieser\nE, Taylor J, Berg S, Smith NJ, Kern R, Picus M, Hoyer S, van Kerkwijk MH, Brett\nM, Haldane A, del R’ıo JF, Wiebe M, Peterson P, G’erard-Marchant P, Sheppard K,\nReddy T, Weckesser W, Abbasi H, Gohlke C, Oliphant TE (2020) Array programming",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "with NumPy. Nature 585(7825):357–362, DOI 10.1038/s41586-020-2649-2, URL https:\n//doi.org/10.1038/s41586-020-2649-2\nHofst¨atter S, Hanbury A (2019) Let’s measure run time! extending the ir replicability infras-\ntructure to include performance aspects. SIGIR Open-Source IR Replicability Challenge\n(OSIRRC)\nHofst¨atter S, Althammer S, Schr¨oder M, Sertkan M, Hanbury A (2020) Improving eﬃcient\nneural ranking models with cross-architecture knowledge distillation. 2010.02666",
+      "source": "mteb.pdf",
+      "page": 22,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "Composite Code Sparse Autoencoders for ﬁrst stage retrieval\n23\nIoﬀe S, Szegedy C (2015) Batch normalization: Accelerating deep network training by re-\nducing internal covariate shift. In: International conference on machine learning, PMLR,\npp 448–456\nJain H, Zepeda J, P´erez P, Gribonval R (2017) Subic: A supervised, structured binary code\nfor image search. In: Proceedings of the IEEE International Conference on Computer\nVision, pp 833–842",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "Vision, pp 833–842\nJang E, Gu S, Poole B (2016) Categorical reparameterization with gumbel-softmax. arXiv\npreprint arXiv:161101144\nJegou H, Douze M, Schmid C (2010) Product quantization for nearest neighbor search.\nIEEE transactions on pattern analysis and machine intelligence 33(1):117–128\nJohnson J, Douze M, J´egou H (2017) Billion-scale similarity search with gpus. CoRR\nabs/1702.08734, URL http://arxiv.org/abs/1702.08734, 1702.08734",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "J´egou H, Douze M, Schmid C (2011) Product quantization for nearest neighbor search.\nIEEE Trans Pattern Anal Mach Intell 33(1):117–128\nKalantidis Y, Avrithis Y (2014) Locally optimized product quantization for approximate\nnearest neighbor search. 2014 IEEE Conference on Computer Vision and Pattern Recog-\nnition pp 2329–2336\nKingma DP, Ba J (2014) Adam: A method for stochastic optimization. arXiv preprint\narXiv:14126980\nKlein B, Wolf L (2019) End-to-end supervised product quantization for image search and",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "retrieval. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition\n(CVPR) pp 5036–5045\nKurland O, Lee L (2004) Corpus structure, language models, and ad hoc information re-\ntrieval. ArXiv cs.IR/0405044\nLam SK, Pitrou A, Seibert S (2015) Numba: A llvm-based python jit compiler. In: Pro-\nceedings of the Second Workshop on the LLVM Compiler Infrastructure in HPC, pp\n1–6\nLee SJ, Jeon M, Kim D, Sohn A (2002) Partitioned parallel radix sort. Journal of Parallel\nand Distributed Computing 62(4):656–668",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "and Distributed Computing 62(4):656–668\nLi H (2011) Learning to Rank for Information Retrieval and Natural Language Processing.\nMorgan & Claypool Publishers\nLin SC, Yang JH, Lin J (2020) Distilling dense representations for ranking using tightly-\ncoupled teachers. 2010.11386\nMaddison CJ, Tarlow D, Minka T (2014) A* sampling. In: Proceedings of the 27th Interna-\ntional Conference on Neural Information Processing Systems-Volume 2, pp 3086–3094",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "Malkov YA, Yashunin D (2020) Eﬃcient and robust approximate nearest neighbor search\nusing hierarchical navigable small world graphs. IEEE Transactions on Pattern Analysis\nand Machine Intelligence 42:824–836\nMedini T, Chen B, Shrivastava A (2021) {SOLAR}: Sparse orthogonal learned and random\nembeddings. In: International Conference on Learning Representations, URL https:\n//openreview.net/forum?id=fw-BHZ1KjxJ\nNogueira R (2019) From doc2query to doctttttquery",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "Nogueira R (2019) From doc2query to doctttttquery\nNogueira R, Cho K (2019) Passage re-ranking with bert. 1901.04085\nNogueira R, Yang W, Cho K, Lin J (2019a) Multi-stage document ranking with bert. 1910.\n14424\nNogueira R, Yang W, Lin J, Cho K (2019b) Document expansion by query prediction. CoRR\nabs/1904.08375, URL http://arxiv.org/abs/1904.08375, 1904.08375\nParia B, Yeh CK, Yen IE, Xu N, Ravikumar P, P´oczos B (2020) Minimizing ﬂops to learn ef-",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "ﬁcient sparse representations. In: International Conference on Learning Representations,\nURL https://openreview.net/forum?id=SygpC6Ntvr\nPaszke A, Gross S, Massa F, Lerer A, Bradbury J, Chanan G, Killeen T, Lin Z, Gimelshein\nN, Antiga L, et al. (2019) Pytorch: An imperative style, high-performance deep learning\nlibrary. In: NeurIPS\nRaﬀel C, Shazeer N, Roberts A, Lee K, Narang S, Matena M, Zhou Y, Li W, Liu PJ (2020)\nExploring the limits of transfer learning with a uniﬁed text-to-text transformer. Journal",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "of Machine Learning Research 21:1–67\nReimers N, Gurevych I (2019) Sentence-bert: Sentence embeddings using siamese bert-\nnetworks. In: Proceedings of the 2019 Conference on Empirical Methods in Natural",
+      "source": "mteb.pdf",
+      "page": 23,
+      "char_count": 201,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "24\nCarlos Lassance et al.\nLanguage Processing, Association for Computational Linguistics, URL http://arxiv.\norg/abs/1908.10084\nRobertson S (2009) The Probabilistic Relevance Framework: BM25 and Beyond. Founda-\ntions and Trends® in Information Retrieval 3(4):333–389\nSanh V, Debut L, Chaumond J, Wolf T (2019) Distilbert, a distilled version of bert: smaller,\nfaster, cheaper and lighter. arXiv preprint arXiv:191001108\nShu R, Nakayama H (2018) Compressing word embeddings via deep compositional code",
+      "source": "mteb.pdf",
+      "page": 24,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "learning. In: International Conference on Learning Representations, URL https://\nopenreview.net/forum?id=BJRZzFlRb\nSobroza MR, Marra T, Kim-Dufor DH, Berrou C (2019) Sparse associative memory\nbased on contextual code learning for disambiguating word senses. arXiv preprint\narXiv:191106415\nTu Z, Yang W, Fu Z, Xie Y, Tan L, Xiong K, Li M, Lin J (2020) Approximate nearest\nneighbor search and lightweight dense vector reranking in multi-stage retrieval architec-",
+      "source": "mteb.pdf",
+      "page": 24,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "tures. In: Proceedings of the 2020 ACM SIGIR on International Conference on Theory\nof Information Retrieval, pp 97–100\nVoorhees EM, Ellis A (eds) (2019) Proceedings of the Twenty-Eighth Text REtrieval Confer-\nence, TREC 2019, Gaithersburg, Maryland, USA, November 13-15, 2019, NIST Special\nPublication, vol 1250, National Institute of Standards and Technology (NIST), URL\nhttps://trec.nist.gov/pubs/trec28/trec2019.html\nXiong L, Xiong C, Li Y, Tang KF, Liu J, Bennett P, Ahmed J, Overwijk A (2020) Approxi-",
+      "source": "mteb.pdf",
+      "page": 24,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "mate nearest neighbor negative contrastive learning for dense text retrieval. 2007.00808\nXiong L, Xiong C, Li Y, Tang KF, Liu J, Bennett PN, Ahmed J, Overwikj A (2021) Ap-\nproximate nearest neighbor negative contrastive learning for dense text retrieval. In:\nInternational Conference on Learning Representations, URL https://openreview.net/\nforum?id=zeFrfgyZln\nYang P, Fang H, Lin J (2017) Anserini: Enabling the use of lucene for information retrieval",
+      "source": "mteb.pdf",
+      "page": 24,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "research. In: Proceedings of the 40th International ACM SIGIR Conference on Research\nand Development in Information Retrieval, pp 1253–1256\nZamani H, Dehghani M, Croft WB, Learned-Miller E, Kamps J (2018) From neural re-\nranking to neural ranking: Learning a sparse representation for inverted indexing. In:\nProceedings of the 27th ACM International Conference on Information and Knowledge\nManagement, Association for Computing Machinery, New York, NY, USA, CIKM ’18,",
+      "source": "mteb.pdf",
+      "page": 24,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "p 497–506, DOI 10.1145/3269206.3271800, URL https://doi.org/10.1145/3269206.\n3271800\nZhao T, Lu X, Lee K (2020) Sparta: Eﬃcient open-domain question answering via sparse\ntransformer matching retrieval. 2009.13013",
+      "source": "mteb.pdf",
+      "page": 24,
+      "char_count": 212,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

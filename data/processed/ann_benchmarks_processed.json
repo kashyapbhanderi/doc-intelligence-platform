@@ -1,0 +1,1276 @@
+{
+  "source": "ann_benchmarks.pdf",
+  "full_path": "data\\raw\\ann_benchmarks.pdf",
+  "total_pages": 34,
+  "text_chunks": 158,
+  "vision_chunks": 0,
+  "total_chunks": 158,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "arXiv:2010.08241v1  [math.DS]  16 Oct 2020\nDetecting invariant expanding cones for generating word\nsets to identify chaos in piecewise-linear maps.\nD.J.W. Simpson\nSchool of Fundamental Sciences\nMassey University\nPalmerston North\nNew Zealand\nOctober 19, 2020\nAbstract\nWe show how the existence of three objects, Ωtrap, W, and C, for a continuous\npiecewise-linear map f on RN, implies that f has a topological attractor with a positive\nLyapunov exponent.\nFirst, Ωtrap ⊂RN is trapping region for f.\nSecond, W is a",
+      "source": "ann_benchmarks.pdf",
+      "page": 1,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "Second, W is a\nﬁnite set of words that encodes the forward orbits of all points in Ωtrap. Finally, C ⊂\nTRN is an invariant expanding cone for derivatives of compositions of f formed by the\nwords in W. We develop an algorithm that identiﬁes these objects for two-dimensional\nhomeomorphisms comprised of two aﬃne pieces.\nThe main eﬀort is in the explicit\nconstruction of Ωtrap and C. Their existence is equated to a set of computable conditions\nin a general way.",
+      "source": "ann_benchmarks.pdf",
+      "page": 1,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "in a general way.\nThis results in a computer-assisted proof of chaos throughout a\nrelatively large regime of parameter space. We also observe how the failure of C to\nbe expanding can coincide with a bifurcation of f. Lyapunov exponents are evaluated\nusing one-sided directional derivatives so that forward orbits that intersect a switching\nmanifold (where f is not diﬀerentiable) can be included in the analysis.\n1\nIntroduction",
+      "source": "ann_benchmarks.pdf",
+      "page": 1,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "1\nIntroduction\nPiecewise-linear maps form canonical representations of nonlinear dynamics and provide eﬀec-\ntive models of diverse physical systems [10]. Much work has been done to identify properties\nthat imply a piecewise-linear map has a chaotic attractor.\nThese include Markov parti-\ntions [15], homoclinic connections [26], and situations where the dynamics is eﬀectively one-\ndimensional [21]. In the context of ergodic theory, an attractor with an absolutely continuous",
+      "source": "ann_benchmarks.pdf",
+      "page": 1,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "invariant measure exists for piecewise-expanding maps [7, 35] and piecewise-smooth maps\nwith certain expansion properties [31, 38]. However, when applied to the two-dimensional\nborder-collision normal form (2d BCNF) such properties have only been veriﬁed over regions\n1",
+      "source": "ann_benchmarks.pdf",
+      "page": 1,
+      "char_count": 269,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "of parameter space that are small in comparison to where numerical simulations suggest\nchaotic attractors actually exist [12, 13]. To address this issue we use invariant expanding\ncones to bound Lyapunov exponents. We show that this appears to be a highly eﬀective\nmethod for identifying chaotic attractors in a formal way.\nFor a continuous map f on RN, the Lyapunov exponent λ(x, v) characterises the asymp-\ntotic rate of separation of the forward orbits of arbitrarily close points x and x + δv:",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "∥f n(x + δv) −f n(x)∥∼eλn∥δv∥.\n(1.1)\nA positive Lyapunov exponent for bounded orbits is a standard indicator of chaos [24]. Now\nsuppose there exist N × N matrices Ai such that\nf n(x + δv) −f n(x) = δAn−1 · · · A1A0v + o(δ),\n(1.2)\nwhere o(δ) vanishes faster than δ as δ →0. These matrices exist if f is C1: each Ai is the\nJacobian matrix Df evaluated at f i(x). If M denotes the set of all Ai and there exists c > 1\nand a cone C ⊂TRN with the property that\nMv ∈C and ∥Mv∥≥c∥v∥, for all v ∈C and all M ∈M,\n(1.3)",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "(1.3)\nthen immediately we have λ(x, v) > 0 for any v ∈C. This idea is attributed to Alekseev [1]\n(see [5, 37]) and is useful for establishing splitting and hyperbolicity in smooth dynamical\nsystems [8, 27, 34].\nCondition (1.3) is rather strong as it requires C to be invariant and expanding for every\nmatrix in the possibly inﬁnite set M. But if f is piecewise-linear then M contains only as\nmany matrices as pieces in the map. For this reason invariant expanding cones are perfectly",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "suited, and perhaps under-utilised, for analysing piecewise-linear maps. Invariant cones were\ncentral to Misiurewicz’s strategy for establishing hyperbolicity and transitivity in the Lozi\nmap [26].\nMore recently in [16] an invariant expanding cone was constructed for the 2d\nBCNF to ﬁnally prove the widely held conjecture that a chaotic attractor exists throughout\na physically-important parameter regime RBYG that was ﬁrst highlighted in [4].",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "In this paper we present a simple but powerful generalisation of the above approach and\nuse it to show that chaotic attractors persist beyond RBYG, in fact in some places right up\nto where there exist stable low-period solutions.\nThe idea is to let M consist of certain\nproducts of the Ai, rather than of the Ai themselves. Each product M ∈M is characterised\nby a word W connecting its constitute matrices to the pieces of f. As long as the set of all",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "such words W generates the symbolic itinerary of the forward orbit of x, then again (1.3)\nimplies λ(x, v) > 0. This approach is quite ﬂexible because there is a large amount of freedom\nin our choice of the set of words W.\nTo prove f has a chaotic attractor one needs to identify a trapping region Ωtrap ⊂RN\n(which ensures there exists a topological attractor), a set of words W that generates the\nsymbolic itineraries for all x ∈Ωtrap, and an invariant expanding cone C for the matrices",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "corresponding to the words in W. Below we ﬁnd these objects for the 2d BCNF. More\nprecisely, we propose a way by which Ωtrap and C can be constructed for a particular word set\nW and prove that all three objects have the required properties if a certain set of computable\n2",
+      "source": "ann_benchmarks.pdf",
+      "page": 2,
+      "char_count": 272,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "conditions are met. While, for a given combination of parameter values, these conditions\ncould be checked by hand, it is more appropriate to check them numerically.\nBelow we\nformulate this as an algorithm (Algorithm 7.1).\nThe remainder of this paper is organised as follows. We start in §2 by showing where\nAlgorithm 7.1 detects a chaotic attractor in a typical two-dimensional slice of the parameter\nspace of the 2d BCNF. Then in §3 we clarify technical features mentioned above (cones,",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "words, trapping regions, etc) and express λ(x, v) in terms of one-sided directional derivatives\nin order to accommodate points whose forward orbits intersect a switching manifold (where\nDf is not deﬁned). The result λ(x, v) > 0 is formalised by Theorem 3.2 for N-dimensional,\ncontinuous, piecewise-linear maps with two pieces. The theorem is framed in terms of W-\nrecurrent sets (these are sets to which forward orbits return following one or more words in",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "W). Such sets provide a practical way by which the approach can be applied to concrete\nexamples, and in §4 we show they imply that W generates symbolic itineraries as needed.\nHere we also characterise the matrices Ai in the expression (1.2). This is quite subtle because\nif f i(x) lies on a switching manifold then Ai depends on v as well as x. Section 4 concludes\nwith a proof of Theorem 3.2.\nIn subsequent sections we work to apply this methodology to the 2d BCNF. In §5 we",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "consider sets of 2 × 2 matrices and devise a set of conditions for the existence of an invariant\nexpanding cone. In §6 we connect consecutive points of an orbit to construct a polygon Ω.\nWe then identify conditions implying Ωis forward invariant and can be perturbed into a\ntrapping region Ωtrap. In §7 we state Algorithm 7.1 and prove its validity. Here we comment\nfurther on the application of the algorithm to the 2d BCNF and discuss instances in which",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "failure of the algorithm coincides with a bifurcation of f at which the chaotic attractor is\ndestroyed. Concluding remarks are provided in §8.\n2\nChaotic attractors in the two-dimensional border-\ncollision normal form\nLet f be a continuous map on R2 that is aﬃne on each side of a line Σ. Assume coordinates\nx = (x1, x2) ∈R2 are chosen so that Σ =\n\b\nx\n\f\f x1 = 0\n\t\n. If f is generic in the sense that f(Σ)\nintersects Σ at exactly one point, and this point is not a ﬁxed point of f, then there exists",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "an aﬃne coordinate change that puts f into the form\nf(x) =\n\n\n\n\n\n\n\n\n\n\n\n\"\nτL\n1\n−δL\n0\n#\"\nx1\nx2\n#\n+\n\"\n1\n0\n#\n,\nx1 ≤0,\n\"\nτR\n1\n−δR\n0\n#\"\nx1\nx2\n#\n+\n\"\n1\n0\n#\n,\nx1 ≥0,\n(2.1)\nwhere τL, τR, δL, δR ∈R. The coordinate change required to arrive at (2.1) is provided in\nAppendix A.\nThe four parameter family (2.1) is the 2d BCNF of [28] except the value of the border-\ncollision bifurcation parameter (usually denoted µ) is ﬁxed at 1. The family (2.1) has been",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "studied extensively to understand border-collision bifurcations (where a ﬁxed point collides\n3",
+      "source": "ann_benchmarks.pdf",
+      "page": 3,
+      "char_count": 94,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "with a switching manifold) arising in many applications, particularly vibrating mechanical\nsystems with impacts or friction [10, 32]. If τL = −τR and δL = δR then (2.1) reduces to the\nLozi map [23].\nFig. 1 shows a two-dimensional slice of the parameter space of (2.1) deﬁned by ﬁxing\nδL = 0.3,\nδR = 0.3.\n(2.2)\nDiﬀerent values of δL, δR ∈(0, 1) produce qualitatively similar pictures. In the blue regions\n(2.1) has a stable period-n solution for 1 ≤n ≤5. To the right of the curve labelled HC",
+      "source": "ann_benchmarks.pdf",
+      "page": 4,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "(where the ﬁxed point in x1 < 0 attains a homoclinic connection) there is no attractor.\nNumerical explorations suggest that in all other areas of Fig. 1 (i.e. left of the HC curve\nand not inside a blue region) (2.1) has a chaotic attractor [3]. These parameter values are\nphysically relevant because (2.1) is orientation-preserving and dissipative whenever δL, δR ∈\n(0, 1).\nThe two striped regions of Fig. 1 are of particular interest. In the central striped region",
+      "source": "ann_benchmarks.pdf",
+      "page": 4,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "numerical simulations indicate that (2.1) has two chaotic attractors [17]. The region RBYG\n0.4\n0.6\n0.8\n1\n1.2\n1.4\n1.6\n-4\n-3.5\n-3\n-2.5\n-2\n-1.5\nτL\nτR\nn = 1\nn = 2\nn = 3\nn = 4\nn = 5\npmax = 1\npmax = 2\npmax = 3\npmax = 4\npmax = 5\nB1\nB2\nB3\nB4\nB5\nτR = −δR −1\nτL = δL + 1\nHC\nRBYG\nFigure 1:\nA two-parameter bifurcation diagram of the 2d BCNF (2.1) with (2.2). In the\nblue regions (2.1) has a stable period-n solution for some n ≥1 (in places where the n = 3",
+      "source": "ann_benchmarks.pdf",
+      "page": 4,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "and n = 4 regions overlap only the n = 4 region is shown). In the red regions Algorithm\n7.1 establishes the existence of chaotic attractor by using (2.3) for some pmax ≥1. The three\nblack dots indicate the parameter combinations examined in Figs. 15–17 (see also Fig. 2b).\nThe boundaries B1 to B5 are discussed in §7.\n4",
+      "source": "ann_benchmarks.pdf",
+      "page": 4,
+      "char_count": 319,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "(bounded by the HC curve and the lines τL = δL + 1 and τR = −δR −1) is the ‘robust chaos’\nparameter regime of [4] (restricted to (2.2)). This parameter regime is exactly where (2.1)\nhas two saddle ﬁxed points, one with positive eigenvalues and one with negative eigenvalues.\nFig. 2a shows a typical chaotic attractor in RBYG.\nIn [16] it was shown that throughout RBYG (2.1) has an attractor with a positive Lyapunov\nexponent. This was achieved by constructing a trapping region and an invariant expanding",
+      "source": "ann_benchmarks.pdf",
+      "page": 5,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "cone for both matrices in (2.1).\nThat is, the methodology of this paper was used with\nW = {L, R}. In [16] it was not necessary to show that the symbolic itineraries of the forward\norbits of points in the trapping region are generated by W, because here W generates all\nsymbolic itineraries.\nThe approach of [16] fails to ﬁnd a chaotic attractor in τL < δL + 1 because here both\neigenvalues of AL =\n\u0014 τL\n1\n−δL\n0\n\u0015\nhave modulus less than 1, so there does not exist an invariant",
+      "source": "ann_benchmarks.pdf",
+      "page": 5,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "expanding cone for AL. Therefore, if we are to show that (2.1) has a chaotic attractor with\nτL < δL + 1, we cannot include L in our word set W. We instead use word sets of the form\nW =\n\b\nRLp \f\f 0 ≤p ≤pmax\n\t\n.\n(2.3)\nThis is clariﬁed in §3.5. The red regions of Fig. 1 show where Algorithm 7.1 ﬁnds an attractor\nwith a positive Lyapunov exponent by using (2.3) with some pmax ≥1 over a 1024 × 512\ngrid of (τL, τR)-values (see Fig. 2b for a typical attractor). The algorithm is highly eﬀective",
+      "source": "ann_benchmarks.pdf",
+      "page": 5,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "in that it establishes chaos over about 90% of parameter space between the blue regions and\nτL = δL + 1 (and also succeeds in part of RBYG). In fact in some places there is no gap\nbetween the blue and red regions meaning that the algorithm ﬁnds a chaotic attractor right\nup to the bifurcation at which the attractor is destroyed (this is discussed further in §7).\nb)\nτL = 1, τR = −2\nx1\nx2\nΣ\na)\nτL = 1.4, τR = −2\nx1\nx2\nΣ\nFigure 2:\nChaotic attractors of (2.1) with (2.2). More precisely, these plots show 5000",
+      "source": "ann_benchmarks.pdf",
+      "page": 5,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "iterates of the forward orbit of the origin with some transient points removed.\n5",
+      "source": "ann_benchmarks.pdf",
+      "page": 5,
+      "char_count": 81,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "3\nMain deﬁnitions and a bound on the Lyapunov ex-\nponent\nIn this section we deﬁne the main objects and state the main theoretical result, Theorem 3.2.\nIn order to arrive at Theorem 3.2 quickly some discussion is deferred to §4.\n3.1\nTrapping regions and topological attractors\nHere we provide topological deﬁnitions for a continuous map f on RN, see for instance [18, 29]\nfor further details.\nDeﬁnition 3.1. A set Ω⊆RN is forward invariant if f(Ω) ⊆Ω.",
+      "source": "ann_benchmarks.pdf",
+      "page": 6,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "Deﬁnition 3.2. A compact set Ωtrap ⊂RN is a trapping region if f(Ωtrap) ⊆int(Ωtrap).\n(where int(·) denotes interior).\nDeﬁnition 3.3. An attracting set is Λ = ∩∞\ni=0f i(Ωtrap) for some trapping region Ωtrap ⊂RN.\nTopological attractors are invariant subsets of an attracting set that satisfy some kind of\nindivisibility condition (e.g. they contain a dense orbit) [24]. In this paper it is not necessary\nto consider such conditions as we only seek to show that f has an attractor and this is",
+      "source": "ann_benchmarks.pdf",
+      "page": 6,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "achieved by showing that f has a trapping region.\n3.2\nCones\nWe denote the tangent space to a point x ∈RN by TRN. The tangent space is isomorphic\nto RN and indeed we often treat tangent vectors v ∈TRN as elements of RN, as in the\nexpression x + δv.\nDeﬁnition 3.4. A nonempty set C ⊆TRN is said be to a cone if tv ∈C for all v ∈C and\nall t ∈R.\nDeﬁnition 3.5. Let M be an N ×N matrix. A cone C ⊆TRN is said to be invariant under\nM if\nMv ∈C,\nfor all v ∈C.\n(3.1)",
+      "source": "ann_benchmarks.pdf",
+      "page": 6,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "M if\nMv ∈C,\nfor all v ∈C.\n(3.1)\nThe cone is said to be expanding under M if there exists c > 1 such that\n∥Mv∥≥c∥v∥,\nfor all v ∈C,\n(3.2)\nsee Fig. 3. For a ﬁnite set of real-valued N × N matrices M, we say C is invariant [resp. ex-\npanding] if it is invariant [resp. expanding] under every M ∈M.\n6",
+      "source": "ann_benchmarks.pdf",
+      "page": 6,
+      "char_count": 295,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "C\nMC\nFigure 3:\nA sketch of an invariant expanding cone C and its image MC =\n\b\nMv\n\f\f v ∈C\n\t\n.\n3.3\nOne-sided directional derivatives and Lyapunov exponents\nThe one-sided directional derivative of a function φ : RN →RN at x ∈RN in a direction\nv ∈TRN is deﬁned as\nD+\nv φ(x) = lim\nδ→0+\nφ(x + δv) −φ(x)\nδ\n,\n(3.3)\nif this limit exists [9, 30]. If D+\nv f n(x) exists for all n ≥1, then taking δ →0+ in (1.1) gives\n\r\rD+\nv f n(x)\n\r\r ∼eλn∥v∥.\nBy further taking n →∞we arrive at\nλ(x, v) = lim sup\nn→∞\n1\nn ln\n\u0000\r\rD+\nv f n(x)",
+      "source": "ann_benchmarks.pdf",
+      "page": 7,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "λ(x, v) = lim sup\nn→∞\n1\nn ln\n\u0000\r\rD+\nv f n(x)\n\r\r\u0001\n,\n(3.4)\nwhere, following usual convention, the supremum limit is taken because from the point of\nview of ascertaining stability one wants to record the largest possible ﬂuctuations.\nIf f is C1 then the Jacobian matrix Df exists everywhere and (3.4) becomes\nλ(x, v) = lim sup\nn→∞\n1\nn ln(∥Df n(x)v∥).\nOseledet’s theorem gives conditions under which λ(x, v) takes at most N values for almost",
+      "source": "ann_benchmarks.pdf",
+      "page": 7,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "all x in an invariant set [6, 36]. But this is often not the case for piecewise-linear maps. As\na minimal example, consider the one-dimensional map\nf(x) =\n(\naLx,\nx ≤0,\naRx,\nx ≥0,\n(3.5)\nshown in Fig. 4. If aL, aR > 0 and aL ̸= aR then the ﬁxed point x = 0 has two diﬀerent\nLyapunov exponents: λ(0, −1) = ln(aL) and λ(0, 1) = ln(aR).\n3.4\nTwo-piece, piecewise-linear, continuous maps\nFor ease of explanation we develop our methodology for piecewise-linear maps comprised",
+      "source": "ann_benchmarks.pdf",
+      "page": 7,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "of only two pieces. The extension to maps with more pieces is expected to be reasonably\n7",
+      "source": "ann_benchmarks.pdf",
+      "page": 7,
+      "char_count": 89,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "x\nf(x)\nFigure 4:\nA sketch of the one-dimensional map (3.5).\nstraight-forward. Speciﬁcally we consider maps of the form\nf(x) =\n(\nALx + b,\nx1 ≤0,\nARx + b,\nx1 ≥0,\n(3.6)\nwhere AL and AR are N × N matrices and b ∈RN. The assumption that f is continuous\non the switching manifold Σ =\n\b\nx\n\f\f x1 = 0\n\t\nimplies that AL and AR diﬀer in only their ﬁrst\ncolumns. That is,\nAR −AL = ζeT\n1 ,\n(3.7)\nfor some ζ ∈RN, where e1 is the ﬁrst standard basis vector of RN.",
+      "source": "ann_benchmarks.pdf",
+      "page": 8,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "If det(AL) ̸= 0 and det(AR) ̸= 0 then f maps the half-spaces x1 ≤0 and x1 ≥0 in\na one-to-one fashion to half-spaces with boundary f(Σ). If det(AL) det(AR) < 0 then f is\nnot invertible (it is of type Z0-Z2 [25]) because x1 ≤0 and x1 ≥0 are mapped to the same\nhalf-space. If det(AL) det(AR) > 0 then f is invertible (see [32] for an explicit expression for\nf −1) and so we have the following result.\nLemma 3.1. The map (3.6) is invertible if and only if det(AL) det(AR) > 0.\n3.5",
+      "source": "ann_benchmarks.pdf",
+      "page": 8,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "3.5\nWords as symbolic representations of ﬁnite parts of orbits\nTo describe the symbolic itineraries of orbits of (3.6) relative to Σ we use words (deﬁned\nhere) and symbol sequences (deﬁned in §4.1) on the alphabet {L, R}.\nDeﬁnition 3.6. A word of length n ≥1 is a function W : {0, 1, . . . , n −1} →{L, R} and\nwe write W = W0W1 · · ·Wn−1.\nSometimes we abbreviate k consecutive instances of a symbol by putting k as a super-\nscript. For example W = RL3 = RLLL is a word of length four with W0 = R, W1 = L,",
+      "source": "ann_benchmarks.pdf",
+      "page": 8,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "W2 = L, and W3 = L.\nIn order to obtain words from orbits we ﬁrst deﬁne the following set-valued function on\nRN:\nγset(x) =\n\n\n\n\n\n{L},\nx1 < 0,\n{L, R},\nx1 = 0,\n{R},\nx1 > 0.\n(3.8)\n8",
+      "source": "ann_benchmarks.pdf",
+      "page": 8,
+      "char_count": 181,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "Then, given x ∈RN and n ≥1, we deﬁne\nΓ(x; n) =\nn\nW : {0, 1, . . . , n −1} →{L, R}\n\f\f\f Wi ∈γset\n\u0000f i(x)\n\u0001\nfor all i = 0, 1, . . . , n −1\no\n.\n(3.9)\nNotice that if f i(x) ∈Σ for m values of i ∈{0, 1, . . . , n−1}, then Γ(x; n) contains 2m words.\nFor example for Fig. 5 we have Γ(x; 3) = {RLL, RRL}.\nSymbolic representations are often instead deﬁned in a way that produces a unique word\nfor every x and n [19]. In §4.2 we will see how the above formulation is particularly convenient\nfor describing D+\nv f n(x).\n3.6",
+      "source": "ann_benchmarks.pdf",
+      "page": 9,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "for describing D+\nv f n(x).\n3.6\nSuﬃcient conditions for a positive Lyapunov exponent\nHere we state our main result for obtaining λ(x, v) > 0. To do this we ﬁrst provide a few\nmore deﬁnitions that are discussed further in §4.\nGiven a ﬁnite set of words W, let\nM = {Φ(W) | W ∈W},\n(3.10)\nwhere\nΦ(W) = AWn−1 · · · AW1AW0 .\n(3.11)\nRoughly speaking, Φ(W) is equal to Df n for orbits that map under f following the word W.\nDeﬁnition 3.7. A set Ωrec ⊂RN is said to be W-recurrent if for all x ∈Ωrec there exists",
+      "source": "ann_benchmarks.pdf",
+      "page": 9,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "n ≥1 such that f n(x) ∈Ωrec and every W ∈Γ(x; n) can be written as a concatenation of\nwords in W.\nTheorem 3.2. Suppose Ωrec is W-recurrent. Suppose there exists an invariant expanding\ncone for M. Then there exists λbound > 0 such that for all x ∈Ωrec\nlim inf\nn→∞\n1\nn ln\n\u0000\r\rD+\nv f n(x)\n\r\r\u0001\n≥λbound ,\nfor some v ∈TRN.\n(3.12)\nMoreover, if f is invertible and Ωtrap ⊂S∞\ni=−∞f i(Ωrec) is a trapping region for f, then f has\nan attractor Λ ⊂Ωtrap and (3.12) holds for all x ∈Λ.",
+      "source": "ann_benchmarks.pdf",
+      "page": 9,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "Observe (3.12) implies λ(x, v) > 0 because the supremum limit is greater than or equal\nto the inﬁmum limit. Theorem 3.2 is proved in the next section.\nx\nf(x)\nf 2(x)\nΣ\nFigure 5:\nPart of an orbit for which Γ(x; 3) = {RLL, RRL}, see (3.9).\n9",
+      "source": "ann_benchmarks.pdf",
+      "page": 9,
+      "char_count": 238,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "4\nRelationships between words, recurrent sets, and di-\nrectional derivatives\nHere we look deeper at the concepts introduced in the previous section for maps of the form\n(3.6). First in §4.1 we take the limit n →∞in (3.9) to obtain a set of symbol sequences\nfor the forward orbit of a point x ∈RN. The key observation is that these sequences are\ngenerated by W whenever x belongs to a W-recurrent set.\nThen in §4.2 we show that\nD+",
+      "source": "ann_benchmarks.pdf",
+      "page": 10,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "Then in §4.2 we show that\nD+\nv f n(x) exists for all x, v, and n, and describe it in terms of the product (3.11). Finally in\n§4.3 we prove Theorem 3.2.\n4.1\nSymbol sequences and generating word sets\nDeﬁnition 4.1. A symbol sequence is a function S : N →{L, R} and we write S =\nS0S1S2 · · · .\nDeﬁnition 4.2. Let W = {W(1), . . . , W(k)} be a ﬁnite set of words.\nWe say that W\ngenerates a symbol sequence S if there exists a sequence α : N →{1, . . . , k} such that\nS = W(α0)W(α1)W(α2) · · · .",
+      "source": "ann_benchmarks.pdf",
+      "page": 10,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "S = W(α0)W(α1)W(α2) · · · .\nFor example the set W = {R, RL, RLL} generates S if and only if S0 = R and S does\nnot contain the word LLL. In the language of coding LLL is a forbidden word and the set\nof sequences generated by W is a run-length limited shift [22].\nNext deﬁne\nΓ(x) =\nn\nS : N →{L, R}\n\f\f\f Si ∈γset\n\u0000f i(x)\n\u0001\nfor all i ≥0\no\n,\n(4.1)\nwhich represents the n →∞limit of (3.9).\nLemma 4.1. Let Ωrec be W-recurrent. Then W generates every S ∈Γ(x) for all x ∈Ωrec.",
+      "source": "ann_benchmarks.pdf",
+      "page": 10,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "Proof. Choose any x ∈Ωrec and S ∈Γ(x). Let x0 = x and S(0) = S. By an inductive\nargument we have that for all j ≥0 there exists nj ≥1 such that xj+1 = f nj(xj) ∈Ωrec and\nS(j) = X (j)S(j+1), where S(j+1) ∈Γ(xj+1) and X (j) is a word of length nj that can be written\nas a concatenation of words in W. Then S = X (0)X (1)X (2) · · · as required.\n4.2\nA characterisation of one-sided directional derivatives\nSo far we have constructed sets of words Γ(x; n) and sets of symbol sequences Γ(x) to describe",
+      "source": "ann_benchmarks.pdf",
+      "page": 10,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "the forward orbit of a point x. These have the advantage that they only depend on x, so\nthey are relatively simple to describe and analyse. However, in order to identify the matrices\nAi in the expression (1.2) (which we use to evaluate D+\nv f n(x)), we also require knowledge of\nv (albeit only for forward orbits that intersect Σ). To this end we deﬁne\nγ((x, v)) =\n(\nL ,\nx1 < 0, or x1 = 0 and v1 < 0,\nR ,\nx1 > 0, or x1 = 0 and v1 ≥0,\n(4.2)\n10",
+      "source": "ann_benchmarks.pdf",
+      "page": 10,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "where (x, v) is an element of the tangent bundle RN × TRN. The choice of the symbol R\nwhen x1 = v1 = 0 is not important to the results below because in this case ALv = ARv by\n(3.7). We then have the following result (given also in [33]).\nLemma 4.2. For any x ∈RN and v ∈TRN,\nD+\nv f(x) = Aγ((x,v))v.\n(4.3)\nProof. If x1 > 0 then (x + δv)1 > 0 for suﬃciently small values of δ > 0. In this case\nf(x+δv)−f(x) = fR(x+δv)−fR(x) = δARv, and so D+\nv f(x) = ARv. The same calculation",
+      "source": "ann_benchmarks.pdf",
+      "page": 11,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "v f(x) = ARv. The same calculation\noccurs in the case x1 = 0 and v1 ≥0 because we may take f(x) = fR(x) (by the continuity\nof f on Σ) and (x + δv)1 ≥0 so we may similarly take f(x + δv) = fR(x + δv). The same\narguments apply to f L if x1 < 0, or x1 = 0 and v1 < 0, and result in D+\nv f(x) = ALv.\nHigher directional derivatives are dictated by the evolution of tangent vectors. For this\nreason we deﬁne the following map on RN × TRN:\nh((x, v)) =\n\u0000f(x), D+\nv f(x)\n\u0001\n.\n(4.4)\nSince D+ satisﬁes composition rule\nD+",
+      "source": "ann_benchmarks.pdf",
+      "page": 11,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "\u0001\n.\n(4.4)\nSince D+ satisﬁes composition rule\nD+\nv f i+j(x) = D+\nD+\nv fi(x)f j\u0000f i(x)\n\u0001\n,\nfor any i, j ≥1,\n(4.5)\nthe nth iterate of h is\nhn((x, v)) =\n\u0000f n(x), D+\nv f n(x)\n\u0001\n.\n(4.6)\nThen Lemma 4.2 implies\nD+\nv f n(x) = Aγ(hn−1((x,v))) · · · Aγ(h((x,v)))Aγ((x,v))v.\nFinally we can use (3.11) to write this as\nD+\nv f n(x) = Φ(W)v,\nwhere Wi = γ\n\u0000hi((x, v))\n\u0001\nfor each i ∈{0, . . . , n −1}.\n(4.7)\nEquation (4.7) characterises the derivative D+\nv f n(x) and shows it exists for all x ∈RN,\nv ∈TRN, and n ≥1.\n4.3",
+      "source": "ann_benchmarks.pdf",
+      "page": 11,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "v ∈TRN, and n ≥1.\n4.3\nA lower bound on the Lyapunov exponent\nHere we work towards a proof of Theorem 3.2. Note that in Lemma 4.4 the bound on the\nLyapunov exponent does not require that the cone is expanding, but gives λbound > 0 if c > 1.\nLemma 4.3. The map h is invertible if and only if f is invertible.\n11",
+      "source": "ann_benchmarks.pdf",
+      "page": 11,
+      "char_count": 309,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "Proof. The ﬁrst component of h is f. If det(AL) det(AR) ≤0 then f −1 is not well-deﬁned by\nLemma 3.1 and thus h−1 is also not well-deﬁned.\nNow suppose det(AL) det(AR) > 0.\nBy Lemma 3.1 the ﬁrst component of h is well-\ndeﬁned. By Lemma 4.2 the second component of h is h2(x, v) = Aγ((x,v))v. If x1 < 0 then\nh2(x, v) = ALv is invertible because det(AL) ̸= 0. Similarly if x1 > 0 then h2(x, v) = ARv is\ninvertible because det(AR) ̸= 0. If x1 = 0 then\nh2(x, v) =\n(\nALv,\nv1 < 0,\nARv,\nv1 ≥0,",
+      "source": "ann_benchmarks.pdf",
+      "page": 12,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "h2(x, v) =\n(\nALv,\nv1 < 0,\nARv,\nv1 ≥0,\nwhich is equal to (3.6) with b = 0 (the zero vector) and so is invertible by Lemma 3.1.\nLemma 4.4. Let W be a ﬁnite set of words and M be given by (3.10). Suppose there exists\nan invariant cone C satisfying (3.2) with some c > 0 for all M ∈M. Let x ∈RN and\nsuppose W generates every S ∈Γ(x). Then (3.12) is satisﬁed with λbound =\nln(c)\nLmax , where\nLmax is the length of the longest word(s) in W. If f is invertible the same bound applies to\nf i(x) for any i ∈Z.",
+      "source": "ann_benchmarks.pdf",
+      "page": 12,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "f i(x) for any i ∈Z.\nProof. Let W(1), . . . , W(k) be the words in W and let L1, . . . , Lk be their lengths. Let v ∈C\nwith v ̸= 0. Deﬁne the sequence\nS = γ((x, v))γ\n\u0000h((x, v))\n\u0001\nγ\n\u0000h2((x, v))\n\u0001\n· · · .\nThen S ∈Γ(x) thus there exists a sequence αj such that\nS = W(α0)W(α1)W(α2) · · · .\nFor each j ≥1, let nj = Lα0 + Lα1 + · · · + Lαj−1 and let\nvj = D+\nv f nj(x).\n(4.8)\nBy (4.7) we have vj = Φ\n\u0000W(α0)W(α1) · · · W(αj−1)\u0001\nv. By (3.11) we have\nΦ\n\u0000W(α0)W(α1) · · · W(αj−1)\u0001\n= Φ\n\u0000W(αj−1)\u0001\nΦ",
+      "source": "ann_benchmarks.pdf",
+      "page": 12,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "Φ\n\u0000W(α0)W(α1) · · · W(αj−1)\u0001\n= Φ\n\u0000W(αj−1)\u0001\nΦ\n\u0000W(α0)W(α1) · · · W(αj−2)\u0001\nand thus, for all j ≥1,\nvj = Φ\n\u0000W(αj−1)\u0001\nvj−1 ,\n(4.9)\nwhere v0 = v. Since v0 ∈C and C is invariant under each Φ\n\u0000W(αi)\u0001\n, we have vj ∈C for all\nj ≥1. Moreover ∥vj∥≥c∥vj−1∥and so ∥vj∥≥cj∥v0∥. Then by (4.8)\nlim inf\nn→∞\n1\nn ln\n\u0000\r\rD+\nv f n(x)\n\r\r\u0001\n= lim inf\nj→∞\n1\nnj\nln(∥vj∥)\n≥lim inf\nj→∞\n1\njLmax\nln\n\u0000cj∥v∥\n\u0001\n= λbound .\n12",
+      "source": "ann_benchmarks.pdf",
+      "page": 12,
+      "char_count": 389,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "Finally suppose f is invertible and choose any i ∈Z. Write (˜x, ˜v) = hi(x, v). In the case\ni < 0 this is well-deﬁned by Lemma 4.3. By the composition rule (4.5) we have\nD+\n˜v f n(˜x) = D+\nv f n+i(x),\nfor any n ≥0 for which n + i ≥0. Thus by taking n →∞we obtain at the same bound for\n˜x = f i(x).\nProof of Theorem 3.2. Choose any x ∈Ωrec. By Lemma 4.1, W generates every S ∈Γ(x).\nThus by Lemma 4.4, inequality (3.12) holds for some λbound > 0. For the second part of the",
+      "source": "ann_benchmarks.pdf",
+      "page": 13,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "theorem, an attractor Λ ⊂Ωtrap exists because Ωtrap is a trapping region. Choose any y ∈Λ.\nWe can write y = f i(x) for some i ∈R, thus (3.12) holds for y by the second part of Lemma\n4.4.\n5\nCones for sets of 2 × 2 matrices\nFor the remainder of the paper we apply the above methodology to maps on R2 with the\nEuclidean norm ∥· ∥.\nLet M be a real-valued 2 × 2 matrix. We are interested in the behaviour of v 7→Mv,\nwhere v ∈R2, in regards to cones. We start in §5.1 by deriving properties of this map for",
+      "source": "ann_benchmarks.pdf",
+      "page": 13,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "vectors of the form v = (1, m), where m ∈R is the slope of v. The behaviour of scalar\nmultiples of (1, m) follows trivially by linearity. The behaviour of e2 = (0, 1) can be inferred\nby considering the limit m →∞. However, this vector will not be of interest to us because\nif W is given by (2.3), then it contains R. Notice ∥ARe2∥= ∥e2∥so e2 cannot belong to an\ninvariant expanding cone for M given by (3.10).\nIn §5.2 we consider several matrices M(i). We use ﬁxed points of v 7→M(i)v to construct",
+      "source": "ann_benchmarks.pdf",
+      "page": 13,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "a cone and derive conditions suﬃcient for the cone to be invariant and expanding.\n5.1\nResults for a single matrix M\nWrite v = (1, m) and\nM =\n\u0014a\nb\nc\nd\n\u0015\n.\n(5.1)\nWe ﬁrst decompose v 7→Mv into two real-valued functions G and H. Let\nH(m) = ∥Mv∥2 −∥v∥2.\n(5.2)\nThis function is particularly amenable to analysis because it is quadratic in m:\nH(m) =\n\u0000b2 + d2 −1\n\u0001\nm2 + 2(ab + cd)m + a2 + c2 −1.\n(5.3)\nThe factor ∥Mv∥\n∥v∥\nby which the norm of v changes under multiplication by M is less than 1 if",
+      "source": "ann_benchmarks.pdf",
+      "page": 13,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "H(m) < 0, and greater than 1 if H(m) > 0.\nThe slope of Mv is\nG(m) = c + dm\na + bm,\n(5.4)\n13",
+      "source": "ann_benchmarks.pdf",
+      "page": 13,
+      "char_count": 91,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "assuming a + bm ̸= 0. That is, Mv is a scalar multiple of (1, G(m)). From (5.4),\ndG\ndm =\ndet(M)\n(a + bm)2,\n(5.5)\nand so if det(M) > 0 (which is the case below where M is a product instances of AL and AR\nwith det(AL) > 0 and det(AR) > 0) then G is increasing on any interval for which a+bm ̸= 0.\nFixed points of G satisfy\nbm2 + (a −d)m −c = 0.\n(5.6)\nNote that m ∈R is a ﬁxed point of G if and only if v = (1, m) is an eigenvector of M.\nLemma 5.1. Suppose\n0 < det(M) < 1\n4 trace(M)2 and b ̸= 0.\n(5.7)",
+      "source": "ann_benchmarks.pdf",
+      "page": 14,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "0 < det(M) < 1\n4 trace(M)2 and b ̸= 0.\n(5.7)\nThen G has exactly two ﬁxed points. At one ﬁxed point, call it mstab, we have dG\ndm = η, for\nsome 0 < η < 1, and at the other ﬁxed point, call it munstab, we have\ndG\ndm = 1\nη. Moreover,\nmunstab lies between mstab and mblow-up = −a\nb (see for example Fig. 6).\nProof. By (5.7) M has distinct eigenvalues λ1, λ2 ∈R with λ1λ2 = det(M) > 0. Without\nloss of generality assume |λ1| > |λ2|. It is a simple exercise to show that mstab = λ1−a\nb\nand\nmunstab = λ2−a\nb",
+      "source": "ann_benchmarks.pdf",
+      "page": 14,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "b\nand\nmunstab = λ2−a\nb\nsatisfy the ﬁxed point equation (5.6). These are only ﬁxed points of G(m)\nbecause (5.6) is quadratic. By evaluating (5.5) at m = mstab we obtain dG\ndm = det(M)\nλ2\n1\n= λ2\nλ1.\nSo η = λ2\nλ1 and indeed η ∈(0, 1). Similarly at m = m2 we have dG\ndm = λ1\nλ2 = 1\nη.\nNow suppose mstab < mblow-up. By the intermediate value theorem, G(m) has a ﬁxed point\nbetween mstab and mblow-up because dG\ndm < 1 at mstab whereas G(m) →∞as m converges to",
+      "source": "ann_benchmarks.pdf",
+      "page": 14,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "dm < 1 at mstab whereas G(m) →∞as m converges to\nmblow-up from the right. This ﬁxed point must be munstab, thus we have mstab < munstab <\nmblow-up. If instead mstab > mblow-up, an analogous argument produces mblow-up < munstab <\nmstab.\nm\nG(m)\nmstab\nmunstab\nmblow-up\nFigure 6:\nA sketch of the slope map (5.4) when the stable ﬁxed point mstab has a smaller\nvalue than the unstable ﬁxed point munstab.\n14",
+      "source": "ann_benchmarks.pdf",
+      "page": 14,
+      "char_count": 401,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "5.2\nResults for a set of matrices M\nLet M =\n\b\nM(1), . . . , M(k)\t\nbe a set of real-valued 2 × 2 matrices. Write\nM(j) =\n\u0014\naj\nbj\ncj\ndj\n\u0015\n,\n(5.8)\nfor each j ∈{1, . . . , k}, and let\nGj(m) = cj + djm\naj + bjm,\n(5.9)\nHj(m) =\n\u0000b2\nj + d2\nj −1\n\u0001\nm2 + 2(ajbj + cjdj)m + a2\nj + c2\nj −1,\n(5.10)\ndenote (5.3) and (5.4) applied to (5.8). Assume\n0 < det\n\u0000M(j)\u0001\n< 1\n4 trace\n\u0000M(j)\u00012 and bj ̸= 0,\n(5.11)\nfor each j so that each M(j) satisﬁes the assumptions of Lemma 5.1. Let m(j)\nstab and m(j)\nunstab",
+      "source": "ann_benchmarks.pdf",
+      "page": 15,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "stab and m(j)\nunstab\ndenote the stable and unstable ﬁxed points of (5.9) and let mstab,min and mstab,max de-\nnote the minimum and maximum values of\nn\nm(1)\nstab, . . . , m(k)\nstab\no\n.\nDeﬁne the interval J =\n[mstab,min, mstab,max], see Fig. 7, and the cone\nCJ =\n\b\nt (1, m)\n\f\f t ∈R, m ∈J\n\t\n.\n(5.12)\nProposition 5.2. If\nm(j)\nunstab /∈J,\nfor each j ∈{1, . . . , k},\n(5.13)\nthen CJ is invariant under M. If also\nHj(m) > 0,\nfor each j ∈{1, . . . , k} and all m ∈J,\n(5.14)\nthen CJ is expanding under M.\nm\nGj(m)\nJ",
+      "source": "ann_benchmarks.pdf",
+      "page": 15,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "(5.14)\nthen CJ is expanding under M.\nm\nGj(m)\nJ\nmstab,min\nmstab,max\nFigure 7: A sketch of ﬁve slope maps (5.9). Here condition (5.13) is satisﬁed, thus Gj(J) ⊂J,\nfor each j, and so the cone CJ (5.12) is invariant under M, by Proposition 5.2.\n15",
+      "source": "ann_benchmarks.pdf",
+      "page": 15,
+      "char_count": 243,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "Proof. Choose any j ∈{1, . . . , k}. Let m(j)\nblow-up be the value of m at which (5.9) is undeﬁned.\nBy assumption m(j)\nunstab /∈J, so by Lemma 5.1 if m(j)\nunstab < mstab,min, then m(j)\nblow-up < m(j)\nunstab,\nwhile if m(j)\nunstab > mstab,max, then m(j)\nblow-up > m(j)\nunstab. In either case m(j)\nblow-up /∈J, thus Gj\n\f\f\nJ\n(the restriction of Gj to J) is continuous.\nWe now show that\nmin\nm∈J Gj(m) ≥mstab,min .\n(5.15)\nBy (5.5) Gj\n\f\f\nJ is increasing because det\n\u0000M(j)\u0001\n> 0. Thus Gj\n\f\f\nJ achieves its minimum at",
+      "source": "ann_benchmarks.pdf",
+      "page": 16,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "\u0000M(j)\u0001\n> 0. Thus Gj\n\f\f\nJ achieves its minimum at\nm = mstab,min. If m(j)\nstab ̸= mstab,min (otherwise (5.15) is trivial) then, since dGj\ndm\n\f\f\nm=m(j)\nstab < 1\nby Lemma 5.1, we have Gj(m) > m for some values of m < m(j)\nstab close to m(j)\nstab. Thus\nGj(mstab,min) > mstab,min, for otherwise Gj would have another ﬁxed point in J by the im-\nmediate value theorem and this is not possible because m(j)\nstab is unique ﬁxed point of Gj\n\f\f\nJ.",
+      "source": "ann_benchmarks.pdf",
+      "page": 16,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "stab is unique ﬁxed point of Gj\n\f\f\nJ.\nThis veriﬁes (5.15). We similarly have maxm∈J Gj(m) ≤mstab,max. Thus Gj(m) ∈J for all\nm ∈J. Thus M(j)u ∈CJ for all u ∈CJ. Since j is arbitrary, CJ is forward invariant under\nM.\nFinally, with v = (1, m) we have\nmin\nu∈CJ\\{0}\n\r\rM(j)u\n\r\r\n∥u∥\n= min\nm∈J\n\r\rM(j)v\n\r\r\n∥v∥\n= min\nm∈J\ns\nHj(m)\n∥v∥2\n+ 1 = cj ,\nwhere the minimum value cj is achieved because J is compact. If (5.14) is satisﬁed then\ncj > 1. Thus with c = min\nj\ncj, CJ is expanding under M.",
+      "source": "ann_benchmarks.pdf",
+      "page": 16,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "j\ncj, CJ is expanding under M.\nWe complete this section by showing how the expansion condition (5.14) can be checked\nwith a ﬁnite set of calculations based on the fact that each Hj is quadratic in m. If Hj has\ntwo distinct real roots, then Hj is increasing at one root, call it m(j)\nincr, and decreasing at the\nother root, call it m(j)\ndecr.\nProposition 5.3. Suppose Hj has two distinct real roots. Then\nHj(m) > 0,\nfor all m ∈J,\n(5.16)\nif and only if two of the following inequalities are satisﬁed",
+      "source": "ann_benchmarks.pdf",
+      "page": 16,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "mstab,max < m(j)\ndecr ,\n(5.17)\nm(j)\ndecr < m(j)\nincr ,\n(5.18)\nm(j)\nincr < mstab,min .\n(5.19)\nNotice (5.17)–(5.19) cannot all be satisﬁed because mstab,min < mstab,max.\n16",
+      "source": "ann_benchmarks.pdf",
+      "page": 16,
+      "char_count": 170,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "Proof. The proof is achieved by brute-force; there are six cases to consider.\nIf (5.17) and (5.18) are true, then Hj(m) > 0 for all m < m(j)\ndecr, which includes all m ∈J,\nthus (5.16) is true. If (5.17) and (5.19) are true, then Hj(m) > 0 for all m ∈\n\u0010\nm(j)\nincr, m(j)\ndecr\n\u0011\nso (5.16) is true. If (5.18) and (5.19) are true, then Hj(m) > 0 for all m > m(j)\nincr so (5.16) is\ntrue.\nIf (5.17) and (5.18) are false, then Hj(m) < 0 at m = mstab,max so (5.16) is false. If (5.17)",
+      "source": "ann_benchmarks.pdf",
+      "page": 17,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "and (5.19) are false then Hj(m) ≤0 at m = min\n\u0002\nm(j)\nincr, mstab,max\n\u0003\n, which belongs to J, thus\n(5.16) is false. If (5.18) and (5.19) are false, then Hj(m) < 0 at m = mstab,min so (5.16) is\nfalse.\nRemark 5.1. In the special case that b2\nj + d2\nj −1 = 0 and ajbj + cjdj ̸= 0, the function Hj has\nexactly one root:\nm(j)\nroot = −a2\nj + c2\nj −1\n2(ajbj + cjdj).\n(5.20)\nIf ajbj + cjdj < 0 [resp. ajbj + cjdj > 0] then Hj(m) > 0 for all m ∈J if and only if",
+      "source": "ann_benchmarks.pdf",
+      "page": 17,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "mroot > mstab,max [resp. mroot < mstab,min]. This case arises in the implementation below\nbecause with M(1) = AR we have b1 = 1 and d1 = 0.\n6\nThe construction of a trapping region\nIn this section we study the 2d BCNF (2.1) in the orientation-preserving case: δL > 0 and\nδR > 0. In this case the sign of f(x)2 is opposite to the sign of x1. This implies points\nmap between the quadrants of R2 as shown in Fig. 8. For example if x belongs to the ﬁrst",
+      "source": "ann_benchmarks.pdf",
+      "page": 17,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "quadrant, then f(x) belongs to either the third quadrant or the fourth quadrant.\nLet\nΠL =\n\b\nx ∈R2 \f\f x1 ≤0\n\t\n,\nΠR =\n\b\nx ∈R2 \f\f x1 ≥0\n\t\n,\nx1\nx2\nQ1\nQ2\nQ3\nQ4\nFigure 8:\nThe action of the map (2.1) between the quadrants of R2 in the orientation-\npreserving setting, δL > 0 and δR > 0. Here Qi denotes the closure of the ith quadrant of R2.\nFor example if x ∈Q1 then f(x) ∈Q3 ∪Q4.\n17",
+      "source": "ann_benchmarks.pdf",
+      "page": 17,
+      "char_count": 377,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "denote the closed left and right half-planes. Also write\nfL(x) = ALx + b,\nfR(x) = ARx + b,\nfor the left and right half-maps of (2.1).\n6.1\nPreimages of the switching manifold under fL\nWith δL ̸= 0 the set f −p\nL (Σ) is a line for all p ≥1. Below we use these lines to partition ΠL\ninto regions Dp whose points escape ΠL after exactly p iterations of f, see already Fig. 11.\nIf f −p\nL (Σ) is not vertical, let mp denote its slope and let cp denote its x2-intercept with Σ.\nThat is,\nf −p\nL (Σ) =\n\b",
+      "source": "ann_benchmarks.pdf",
+      "page": 18,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "That is,\nf −p\nL (Σ) =\n\b\nx ∈R2 \f\f x2 = mpx1 + cp\n\t\n.\n(6.1)\nIt is a simple exercise to show that m1 = −τL, c1 = −1, and for all p ≥1,\nmp+1 = −δL\nmp\n−τL ,\n(6.2)\ncp+1 = −cp\nmp\n−1,\n(6.3)\nwhenever mp ̸= 0. Fig. 9 shows a typical plot of (6.2).\nDeﬁnition 6.1. Let p∗be the smallest p ≥1 for which mp ≥0, with p∗= ∞if mp < 0 for\nall p ≥1.\nNext we establish monotonicity of f −p\nL (Σ) in ΠL and provide an explicit expression for\np∗.\nLemma 6.1. The sequence {mp}p∗\np=1 is increasing; the sequence {cp}p∗",
+      "source": "ann_benchmarks.pdf",
+      "page": 18,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "p=1 is increasing; the sequence {cp}p∗\np=1 is decreasing.\nmp\nmp+1\nm1= −τL\nm2\nm3\nFigure 9:\nA typical plot of (6.2). Here p∗= 3 (see Deﬁnition 6.1).\n18",
+      "source": "ann_benchmarks.pdf",
+      "page": 18,
+      "char_count": 149,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "Proof. Since m1 = −τL, if τL ≤0 then p∗= 1 and the result is trivial. Suppose τL > 0 (for\nwhich p∗≥2). Let g(m) = −δL\nm −τL denote the map (6.2). Since g(m1) −m1 = δL\nτL > 0 and\ndg\ndm = δL\nm2 > 0 for all m < 0, the forward orbit of m1 under g is increasing while m < 0. That\nis, {mp}p∗\np=1 is increasing.\nWe now prove {cp}p∗\np=1 is decreasing by induction. Observe c1 > c2 because c1 = −1 and\nc2 = −1\nτL −1 (where τL > 0). Thus it remains to consider p∗≥3. Suppose cp > cp+1 for",
+      "source": "ann_benchmarks.pdf",
+      "page": 19,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "some p ∈{1, . . . , p∗−2} (this is our induction hypothesis). It remains to show cp+1 > cp+2.\nRearranging (6.3) produces\ncp+1 + 1\n−cp\n= 1\nmp\n.\nBut cp+1 < cp < 0 and mp < mp+1 < 0 thus\ncp+1 + 1\n−cp+1\n>\n1\nmp+1\n,\nwhich is equivalent to cp+1 > −cp+1\nmp+1 −1 = cp+2.\nProposition 6.2. The value p∗of Deﬁnition 6.1 is given by\np∗=\n\n\n\n\n\n\n\n1,\nτL ≤0,\nl\nπ\nφ −1\nm\n,\n0 < τL < 2√δL ,\n∞,\nτL ≥2√δL ,\n(6.4)\nwhere φ = cos−1\u0010\nτL\n2√δL\n\u0011\n∈\n\u00000, π\n2\n\u0001\n, see Fig. 10.",
+      "source": "ann_benchmarks.pdf",
+      "page": 19,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "τL\n2√δL\n\u0011\n∈\n\u00000, π\n2\n\u0001\n, see Fig. 10.\nProof. Since m1 = −τL, if τL ≤0 then p∗= 1. If τL ≥2√δL then m∞= 1\n2\n\u0010\n−τL −\np\nτ 2\nL −4δL\n\u0011\nis a ﬁxed point of (6.2), call this map g(m). Moreover m1 < m∞< 0 and g(m) > m for all\nm1 ≤m < m∞so mp →m∞as p →∞. Thus p∗= ∞in this case.\nτL\nδL\n1\n2\n3 4\n∞\nδL = τ2\nL\n4\nFigure 10:\nThe value p∗of Deﬁnition 6.1 as given by Lemma 6.1.\n19",
+      "source": "ann_benchmarks.pdf",
+      "page": 19,
+      "char_count": 361,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "If 0 < τL < 2√δL then the eigenvalues of AL are λ1 = √δL eiφ and λ2 = √δL e−iφ. Then\nm1 = −(λ1 +λ2) and (6.2) can be written as mp+1 = −λ1λ2\nmp −(λ1 +λ2). It is a simple exercise\nto show from these (using induction on p) that while λp\n1 ̸= λp\n2 we have\nmp = λp+1\n1\n−λp+1\n2\nλp\n2 −λp\n1\n,\nwhich we can rewrite as\nmp = −sin((p + 1)φ)\nsin(pφ)\np\nδL .\n(6.5)\nBy (6.5), if\nπ\np+1 ≤φ < π\np, then mp ≥0 and mj < 0 for all j ∈{1, . . . , p −1}, so p∗= p. Since\nπ\np+1 ≤φ < π\np is equivalent to p =\nl\nπ\nφ −1\nm",
+      "source": "ann_benchmarks.pdf",
+      "page": 20,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "π\np+1 ≤φ < π\np is equivalent to p =\nl\nπ\nφ −1\nm\n, the proof is completed.\n6.2\nPartitioning the left half-plane by the number of iterations\nrequired to escape\nBy Lemma 6.1, in ΠL each f −p\nL (Σ) is located below f −(p−1)\nL\n(Σ), for p = 2, . . . , p∗, see Fig. 11.\nThis implies that the regions Dp ⊂ΠL, deﬁned below, are disjoint.\nDeﬁnition 6.2. Let\nD1 =\n\b\nx ∈ΠL\n\f\f x2 > m1x1 + c1\n\t\n.\n(6.6)\nFor all ﬁnite p ∈{2, . . . , p∗} let\nDp =\n\b\nx ∈ΠL\n\f\f mpx1 + cp < x2 ≤mp−1x1 + cp−1\n\t\n.\n(6.7)\nIf p∗< ∞also let\nDp∗+1 =\n\b",
+      "source": "ann_benchmarks.pdf",
+      "page": 20,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": ".\n(6.7)\nIf p∗< ∞also let\nDp∗+1 =\n\b\nx ∈ΠL\n\f\f x2 ≤mp∗x1 + cp∗\t\n.\n(6.8)\nx1\nx2\nΣ\nf−1\nL (Σ)\nf−2\nL (Σ)\nf−3\nL (Σ)\nf−4\nL (Σ)\n(0, c1)\n(0, c2)\n(0, c3)\n(0, c4)\nD1\nD2\nD3\nD4\nD5\nFigure 11:\nA typical plot of the ﬁrst few preimages of the switching manifold Σ under the\nleft half-map fL. These lines are described by (6.1) and bound the regions Dp of Deﬁnition\n6.2.\n20",
+      "source": "ann_benchmarks.pdf",
+      "page": 20,
+      "char_count": 352,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "Notice that if p∗< ∞then D1, . . . , Dp∗+1 partition ΠL. We now look the number of\niterations of fL required for x ∈ΠL to escape ΠL.\nDeﬁnition 6.3. Given x ∈ΠL let χL(x) be the smallest p ≥1 for which f p\nL(x) /∈ΠL, with\nχL(x) = ∞if there exists no such p.\nProposition 6.3. Let x ∈ΠL and p ∈{1, . . . , p∗+ 1} be ﬁnite. Then x ∈Dp if and only if\nχL(x) = p.\nProof. We ﬁrst show that x ∈Dp implies χL(x) = p for all p ∈{1, . . . , p∗+1} by induction on",
+      "source": "ann_benchmarks.pdf",
+      "page": 21,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "p. If x ∈D1, then x2 > −τLx1 −1 (recalling m1 = −τL and c1 = −1) and so fL(x)1 = τLx1 +\nx2+1 > 0, hence χL(x) = 1. Suppose x ∈Dp implies χL(x) = p for some p ∈{1, . . . , p∗} (this\nis our induction hypothesis). Choose any x ∈Dp+1. Then mp+1x1 + cp+1 < x2 ≤mpx1 + cp.\nBy using (2.1), (6.2), and (6.3) we obtain mpfL(x)1 + cp < fL(x)2 ≤mp−1fL(x)1 + cp−1,\nexcept if p = 1 the latter inequality is absent. Thus fL(x) ∈Dp and so χL(fL(x)) = p by the",
+      "source": "ann_benchmarks.pdf",
+      "page": 21,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "induction hypothesis. Also fL(x)1 ≤0 (because x /∈D1), therefore χL(x) = p + 1.\nIf p∗< ∞the converse is true because D1, . . . , Dp∗+1 partition ΠL. It remains show in\nthe case p∗= ∞that if x ∈E = ΠL \\ S∞\np=1 Dp, then χL(x) = ∞. We have\nE =\n\b\nx ∈ΠL\n\f\f x2 ≤m∞x1 + c∞\n\t\n,\nwhere m∞= limp→∞mp is given in the proof of Proposition 6.2 and c∞= limp→∞cp =\n−m∞\nm∞+1.\nIf x ∈E then fL(x)2 ≤m∞fL(x)1 + c∞(obtained by repeating the calculations in the above",
+      "source": "ann_benchmarks.pdf",
+      "page": 21,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "induction step) and fL(x)1 = τLx1 + x2 + 1 ≤c∞+ 1 (obtained by using also x1 ≤0). Thus\nfL(x)1 < 0 (because c∞< −1 by Lemma 6.1). Therefore fL(x) ∈E which shows that E is\nforward invariant under fL. Therefore χL(x) = ∞for any x ∈E.\n6.3\nA forward invariant region and a trapping region\nLet β > 0 and X = (0, β). Here we use the ﬁrst few images and preimages of X to form a\npolygon Ω. To do this we require the following assumption on X:\nThere exist i, j ≥1 such that f i(X) ∈ΠL and f −j(X) ∈ΠR .\n(6.9)",
+      "source": "ann_benchmarks.pdf",
+      "page": 21,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "(6.9)\nDeﬁnition 6.4. Let r and ℓbe the smallest values of i and j satisfying (6.9), respectively.\nThat is, f i(X)1 > 0 for all i = 1, . . . , r −1 and f r(X)1 ≤0. Also f −j(X)1 < 0 for all\nj = 1, . . . , ℓ−1 and f −ℓ(X)1 ≥0. Notice r ≥2 because f(X)1 = β + 1 > 0. Also ℓ≥2\nbecause f −1(X)1 = −β\nδL < 0.\nIn what follows\n←−→\nPQ denotes the line through distinct points P, Q ∈R2. Proofs of the\nnext three results are deferred to the end of this section.",
+      "source": "ann_benchmarks.pdf",
+      "page": 21,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "Lemma 6.4. Suppose (6.9) is satisﬁed. Let Z = f r(X) and let Y denote the intersection of\n←−−−−−−−→\nZf −1(Z) with Σ. Let V = f −(ℓ−1)(X) and let U denote the intersection of\n←−−−−−→\nV f(V ) with f(Σ),\nsee Fig. 12. The closed polygonal chain formed by connecting the points\nU, f −(ℓ−2)(X), . . . , f −1(X), X, f(X), . . ., f r−1(X), Z,\n(6.10)\nin order, and then from Z back to U, has no self-intersections (it is a Jordan curve).\n21",
+      "source": "ann_benchmarks.pdf",
+      "page": 21,
+      "char_count": 431,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Deﬁnition 6.5. Let Ωbe the polygonal chain of Lemma 6.4 and its interior.\nNow we show that if three conditions are satisﬁed then Ωis forward invariant and we can\nshrink it by an arbitrarily small amount to obtain a trapping region, Ωtrap.\nProposition 6.5. Suppose (6.9) is satisﬁed and\nY lies above f −1(U),\n(6.11)\nZ lies above\n←−−−−−−−→\nf −1(U)V ,\n(6.12)\nZ lies to the right of\n←−−−−−→\nV f(V ).\n(6.13)\nThen Ωis forward invariant under f. Moreover, for all ε > 0 there exists a trapping region",
+      "source": "ann_benchmarks.pdf",
+      "page": 22,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "Ωtrap ⊂Ωfor f with dH(Ω, Ωtrap) ≤ε, where dH denotes Hausdorﬀdistance1.\nThe next result allows us to apply Theorem 3.2. The actual application to Theorem 3.2\nis detailed in the next section.\nProposition 6.6. Suppose (6.9), (6.11), (6.12), and (6.13) are satisﬁed. Let\nΩrec =\n\b\nx ∈Ω\n\f\f x1 > 0\n\t\n,\n(6.14)\n1The Hausdorﬀdistance between sets Ω1 and Ω2 is deﬁned as\ndH(Ω1, Ω2) = max\n\u0014\nsup\nx∈Ω1\ninf\ny∈Ω2 ∥x −y∥, sup\ny∈Ω2\ninf\nx∈Ω1 ∥x −y∥\n\u0015\n.\nx1\nx2\nΩ\nf(Ω)\nΣ\nf−1(U)\nV\nU\nf(V )\nf(U)\nf−2(X)\nf−1(X)\nX\nf(X)\nf2(X)\nf−1(Z)\nY\nZ",
+      "source": "ann_benchmarks.pdf",
+      "page": 22,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "f(V )\nf(U)\nf−2(X)\nf−1(X)\nX\nf(X)\nf2(X)\nf−1(Z)\nY\nZ\nf(Y )\nf(Z)\nO\nf(O)\nFigure 12:\nA plot of Ω(shaded) and f(Ω) (striped). The values in Deﬁnition 6.4 are r = 4\n(so Z = f 4(X)) and ℓ= 5 (so V = f −4(X)). Here (6.11)–(6.13) are satisﬁed so f(Ω) ⊂Ωby\nProposition 6.5.\n22",
+      "source": "ann_benchmarks.pdf",
+      "page": 22,
+      "char_count": 263,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "and W be given by (2.3) with\npmax = max[χL(Y ), χL(Z)].\n(6.15)\nThen Ωrec is W-recurrent and Ω⊂S0\ni=−ℓf i(Ωrec).\nProof of Lemma 6.4. Here we use the notation [A, B) to denote the line segment {(1−s)A+\nsB | 0 ≤s < 1} for points A, B ∈R2.\nThe points X and f(X) belong to ΠR, thus the line segment [X, f(X)), call it ζ, is\ncontained in ΠR. The points f −(ℓ−1)(X), . . . , f −2(X), f −1(X) all belong to int(ΠL), thus for\neach i ∈{1, . . . , ℓ−1} the line segment Li =\n\u0002\nf −i(X), f −(i−1)(X)\n\u0001",
+      "source": "ann_benchmarks.pdf",
+      "page": 23,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "\u0002\nf −i(X), f −(i−1)(X)\n\u0001\nis contained in int(ΠL).\nThese line segments are mutually disjoint because if Li and Lj, with i < j, intersect at\nsome point P, then P ∈Li implies f i(P) ∈ζ and so f i(P)1 ≥0, while P ∈Lj implies\nf i(P) ∈Lj−i and so f i(P)1 < 0, which is a contradiction. By a similar argument the line\nsegments\n\u0002\nf i(X), f i+1(X)\n\u0001\n, for i ∈{1, . . . , r −1}, are mutually disjoint and contained in\nx2 ≤0 (whereas ζ is contained in x2 > 0). This shows that the chain formed by connecting",
+      "source": "ann_benchmarks.pdf",
+      "page": 23,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "the points (6.10) has no self-intersections. The addition of [Z, U) introduces no intersections\nbecause [Z, U) and part of\n\u0002\nf r−1\nR\n(X), Z\n\u0001\nare the only components of the chain that belong\nto the third quadrant.\nProof of Proposition 6.5.\nStep 1 — Interior angles of Ω.\nDeﬁne θ : R2 →[0, 2π) as follows: θ(x) is the angle at x from\n\u0002\nf −1\nL (x), x\n\u0003\nanticlockwise to\n[x, fL(x)], see Fig. 13. Also deﬁne g(x) = fL(x) −x and\nS(x) = g(x) ∧g\n\u0000f −1\nL (x)\n\u0001\n,\n(6.16)",
+      "source": "ann_benchmarks.pdf",
+      "page": 23,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "S(x) = g(x) ∧g\n\u0000f −1\nL (x)\n\u0001\n,\n(6.16)\nwhere we have deﬁned the wedge product A ∧B = A1B2 −A2B1. It is a simple exercise to\nshow that2\nsin(θ(x)) =\nS(x)\n∥g(x)∥\n\r\rg\n\u0000f −1\nL (x)\n\u0001\r\r.\n(6.17)\n2Equation (6.17) is a version of the well-known formula sin(θ) = ∥u×v∥\n∥u∥∥v∥for the sine of the angle between\nu, v ∈R3.\nθ(x)\nf −1\nL (x)\nx\nfL(x)\nFigure 13:\nThe angle θ(x) formed at a point x by its preimage and image under fL.\n23",
+      "source": "ann_benchmarks.pdf",
+      "page": 23,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "From fL(x) = ALx + b we obtain the formula g(fL(x)) = ALg(x). From this and (6.16) we\nobtain\nS(fL(x)) = det(AL)S(x).\n(6.18)\nSince det(AL) > 0 we can conclude that sign of S (and thus also the sign of sin(θ)) is\nconstant along orbits of fL. In particular, sin\n\u0000θ\n\u0000f −i\nL (X)\n\u0001\u0001\nhas the same sign for each i ∈\n{0, 1, . . ., ℓ−2}. Thus the angles θ\n\u0000f −i\nL (X)\n\u0001\nmust be all less than π, all equal to π, or all\ngreater than π. But the path connecting X, f −1(X), . . . , f −ℓ(X) (where f = fL) includes X",
+      "source": "ann_benchmarks.pdf",
+      "page": 24,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "on the positive x2-axis, U on the negative x1-axis, and f −1\nL (U) on the negative x2-axis, and\nhas no self-intersections (Lemma 6.4). Therefore the angles are all less than π. By applying\na similar argument to fR we conclude that all interior angles of Ωare less than π, except\npossibly at the points U and Z.\nStep 2 — Convex subsets of Ω.\nWe now deﬁne two convex subsets of Ω(one in x2 ≤0 and one in x2 ≥0). Let Ωupper be the\npolygon formed by connecting the points\nU, f −(ℓ−2)(X), . . . , f −1(X), X, f(X),",
+      "source": "ann_benchmarks.pdf",
+      "page": 24,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "U, f −(ℓ−2)(X), . . . , f −1(X), X, f(X),\n(6.19)\nin order, and from f(X) back to U. Let Ωlower be the polygon formed by connecting the\npoints\nf(X), f 2(X), . . . , f r−1(X), Z, f(Y ),\n(6.20)\nin order, and from f(Y ) back to f(X). Since U and f(X) lie on x2 = 0 while all other\nvertices of Ωupper lie in x2 ≥0, the interior angles of Ωupper at U and fR(x) are less than π.\nThus by the previous result Ωupper is convex. For similar reasons, Ωlower is also convex.",
+      "source": "ann_benchmarks.pdf",
+      "page": 24,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "Step 3 — Consequences of assumptions (6.11)–(6.13).\nAll points between U = (U1, 0), where U1 < 0, and fR(X) = (β + 1, 0), where β > 0, belong\nto int(Ω). This includes O = (0, 0) and f(O) = (1, 0). Also f(Y ) ∈int(Ω) because (6.11)\nimplies that f(Y ) lies between U and f(O). We now show f(Z) ∈int(Ω). Assumptions\n(6.12) and (6.13) imply that either Z = Y (in which case f(Z) ∈int(Ω) is immediate) or Z\nbelongs to the interior of the quadrilateral Q = f −1(U)V UO. Each vertex of Q belongs to",
+      "source": "ann_benchmarks.pdf",
+      "page": 24,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "ΠL where f = fL is aﬃne, thus f(Q) is the quadrilateral Uf(V )f(U)f(O). Each vertex of\nf(Q) belongs to Ωupper, which is convex, thus f(Q) ⊂Ωupper. Since Z ∈int(Q) we have that\nf(Z) ∈int(Ωupper) ⊂int(Ω).\nStep 4 — Forward invariance of Ω.\nWrite Ω= ΩL ∪ΩR where\nΩL = Ω∩ΠL ,\nΩR = Ω∩ΠR .\nObserve f(Ω) = fL(ΩL) ∪fR(ΩR). Since fL is aﬃne, fL(ΩL) is a polygon. Evidently its\nvertices all belong to Ωupper. Since Ωupper is convex, fL(ΩL) ⊂Ωupper ⊂Ω. By a similar\nargument, fR(ΩR) ⊂Ωlower ⊂Ω, thus Ωis forward invariant.",
+      "source": "ann_benchmarks.pdf",
+      "page": 24,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "Step 5 — Deﬁne Ωtrap.\nLet P (1), . . . , P (ℓ+r) denote the points (6.10) in order. That is, P (1) = U around to P (ℓ+r) = Z.\n24",
+      "source": "ann_benchmarks.pdf",
+      "page": 24,
+      "char_count": 128,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "For each j ∈{1, . . . , ℓ+ r} deﬁne\nP (j)\nε\n=\n\u0012\n1 −\nεj\n∥P (j)∥\n\u0013\nP (j),\n(6.21)\nand assume ε is small enough that 1 −\nεj\n∥P (j)∥> 0 for each j. Each P (j)\nε\nis the result of\nmoving from P (j) a distance εj towards O, see Fig. 14. Let Ωtrap be the polygon with vertices\nP (j)\nε\n(connected in the same order as for Ω). Immediately we have dH(Ω, Ωtrap) ≤ε. Also\nΩtrap ⊂Ωbecause\n\u0002\nP (j), O\n\u0003\n⊂Ωfor each j.\nStep 6 — Convex subsets of Ωtrap.",
+      "source": "ann_benchmarks.pdf",
+      "page": 25,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "\u0003\n⊂Ωfor each j.\nStep 6 — Convex subsets of Ωtrap.\nAnalogous to Ωupper and Ωlower, let Ωtrap,upper ⊂Ωtrap be the polygon in x2 ≥0 formed by\nconnecting the points\nP (1)\nε , P (2)\nε , . . . , P (ℓ+1)\nε\n,\n(6.22)\nin order, and from P (ℓ+1)\nε\nback to P (1)\nε . Notice P (1)\nε\nand P (ℓ+1)\nε\nlie on x2 = 0. Also let Yε ∈Σ\ndenote the intersection of\n\u0002\nP (ℓ+r)\nε\n, P (ℓ+r−1)\nε\n\u0003\nwith Σ and let Ωtrap,lower ⊂Ωtrap be the polygon\nin x2 ≤0 formed by connecting the points\nP (ℓ+1)\nε\n, P (ℓ+2)\nε\n, . . . , P (ℓ+r)\nε\n, f(Yε),",
+      "source": "ann_benchmarks.pdf",
+      "page": 25,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "ε\n, P (ℓ+2)\nε\n, . . . , P (ℓ+r)\nε\n, f(Yε),\n(6.23)\nin order, and from f(Yε) back to P (ℓ+1)\nε\n. Notice f(Yε) lies on x2 = 0 close to f(Y ). Each inte-\nrior angle of Ωtrap,upper and Ωtrap,lower is at most an order-ε perturbation of the corresponding\ninterior angle of Ωupper or Ωlower. All interior angles of Ωupper and Ωlower are less than π, so the\nsame is true for Ωtrap,upper and Ωtrap,lower assuming ε is suﬃciently small. That is, Ωtrap,upper\nand Ωtrap,lower are convex.\nx1\nx2\nΩ\nΩtrap\nf(Ωtrap)\nΣ\nf−1(U)\nV\nU",
+      "source": "ann_benchmarks.pdf",
+      "page": 25,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "x1\nx2\nΩ\nΩtrap\nf(Ωtrap)\nΣ\nf−1(U)\nV\nU\nf(V )\nf−2(X)\nf−1(X)\nX\nf(X)\nf2(X)\nf−1(Z)\nY\nZ\nO\nFigure 14:\nA plot of Ω(unshaded), Ωtrap (shaded), and f(Ωtrap) (striped). Here r = 4 and\nℓ= 5 as in Fig. 12. The set Ωtrap is plotted by using ε = 0.5 in (6.21).\n25",
+      "source": "ann_benchmarks.pdf",
+      "page": 25,
+      "char_count": 246,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "Step 7 — The set Ωtrap is a trapping region.\nWrite Ωtrap = Ωtrap,L ∪Ωtrap,R where\nΩtrap,L = Ωtrap ∩ΠL ,\nΩtrap,R = Ωtrap ∩ΠR ,\nand observe f(Ωtrap) = fL(Ωtrap,L) ∪fR(Ωtrap,R).\nThe vertices of Ωtrap,L are Yε, P (ℓ+r)\nε\n, and P (j)\nε\nfor j = 1, . . . , ℓ. We now show that, if ε\nis suﬃciently small, then these vertices all map under f = fL to either int(Ωtrap,upper) or to\na point on x2 = 0 in the open line segment I =\n\u0000P (1)\nε , P (ℓ+1)\nε\n\u0001\n. Since Ωtrap,upper is convex",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "ε , P (ℓ+1)\nε\n\u0001\n. Since Ωtrap,upper is convex\nthis implies fL(Ωtrap,L) ⊂int(Ωtrap,upper) ∪I. Consequently fL(Ωtrap,L) ⊂int(Ωtrap) because\nI ⊂int(Ωtrap).\nCertainly f(Yε), f\n\u0000P (ℓ)\nε\n\u0001\n∈I, assuming ε is suﬃciently small. If Z ̸= Y then f\n\u0000P (ℓ+r)\nε\n\u0001\n∈\nint(Ωtrap,upper), assuming ε is suﬃciently small, because f(Z) ∈int(Ω).\nIf Z = Y then\nf\n\u0000P (ℓ+r)\nε\n\u0001\n∈I. Now choose any j = 1, . . . , ℓ−1. By deﬁnition, P (j)\nε\n= (1 −s)P (j) + sO, with\ns =\nεj\n∥P (j)∥. In ΠL, f = fL is aﬃne, so we have\nf\n\u0000P (j)\nε\n\u0001\n=\n(",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "f\n\u0000P (j)\nε\n\u0001\n=\n(\n(1 −s)f(U) + sf(O),\nj = 1,\n(1 −s)P (j+1) + sf(O),\nj = 2, . . . , ℓ−1,\n(6.24)\nTherefore, for j ̸= 1, f\n\u0000P (j)\nε\n\u0001\nis the result of moving from P (j+1) a distance εj∥P (j+1)−f(O)∥\n∥P (j)∥\ntowards f(O).\nThus f\n\u0000P (j)\nε\n\u0001\nbelongs to the triangle P (j+1)P (j+2)O, assuming ε is suﬃ-\nciently small, because P (j+1) and P (j+2) lie in x2 ≥0 with P (j+2) located clockwise (with\nrespect to O) from P (j+1). This is true in the case j = 1 also. The distance from f\n\u0000P (j)\nε\n\u0001\nto\n\u0002\nP (j+1), P (j+2)\u0003",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "\u0000P (j)\nε\n\u0001\nto\n\u0002\nP (j+1), P (j+2)\u0003\nis proportional to εj, while dH\n\u0000\u0002\nP (j+1)\nε\n, P (j+2)\nε\n\u0003\n,\n\u0002\nP (j+1), P (j+2)\u0003\u0001\nis pro-\nportional to εj+1. Therefore, assuming ε is suﬃciently small, f\n\u0000P (j)\nε\n\u0001\nlies in the triangle\nP (j+1)\nε\nP (j+2)\nε\nO and not on the line segment\n\u0002\nP (j+1)\nε\n, P (j+2)\nε\n\u0003\n. Thus f\n\u0000P (j)\nε\n\u0001\n∈int(Ωtrap,upper)\nand this completes our demonstration that fL(Ωtrap,L) ⊂int(Ωtrap).\nFrom similar arguments it follows that fR(Ωtrap,R) ⊂int(Ωtrap,lower) ∪I, assuming ε is",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "suﬃciently small, and so fR(Ωtrap,R) ⊂int(Ωtrap). Hence Ωtrap is a trapping region for f.\nProof of Proposition 6.6. We ﬁrst show Ω⊂S0\ni=−ℓf i(Ωrec). Choose any x ∈Ω. If x1 > 0\nthen x ∈Ωrec. If x1 ≤0 then x ∈Di, for some i ∈{1, . . . , ℓ}. The upper bound i = ℓ\nis a consequence of (6.11)–(6.13) because V lies above f −ℓ\nL (Σ) and f −1(U) lies on or above\nf −ℓ\nL (Σ). Thus by Proposition 6.3, f i(x)1 > 0, and so f i(x) ∈Ωrec because Ωis forward\ninvariant.",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "invariant.\nNow choose any y ∈Ωrec. If f(y) ∈Ωrec, let n = 1 and observe that the ﬁrst symbol\nof any S ∈Γ(y) is R, which belongs to W. So now suppose f(y) /∈Ωrec. Also suppose\nf(Y )1 < 0, so then f(y) belongs to the quadrilateral Y Zf(Y )O (if instead f(Y )1 ≥0 then\nthe following arguments can be applied to the part of Y Zf(Y )O that belongs to ΠL). We\nhave χL(f(y)) ≤max[χL(Y ), χL(Z), χL(f(Y )), χL(O)] (this follows from the linear ordering",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "of the regions Dp). But χL(f(Y )) = χL(Y ) −1 and χL(O) = 1, thus χL(f(y)) ≤pmax.\n26",
+      "source": "ann_benchmarks.pdf",
+      "page": 26,
+      "char_count": 84,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "Let n = χL(f(y)) + 1.\nThen f n(y)1 > 0 and so f n(y) ∈Ωrec because Ωis forward\ninvariant. Also f j(y)1 ≤0 for all j = 1, . . . , n−1 with f j(y)1 = 0 only possible for j = 1 and\nj = n −1. In summary, y1 > 0, f(y)1 ≤0, f j(y)1 < 0 for all j = 2, . . . , n −2, f n−1(y)1 ≤0,\nand f n(y) ∈Ωrec. Thus there are four possibilities for the ﬁrst n symbols of S ∈Γ(y):\nRLn−1, RRLn−2, RLn−2R, and RRLn−3R (the last possibility can only arise if f(y)1 = 0 and",
+      "source": "ann_benchmarks.pdf",
+      "page": 27,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "f n−1(y)1 = 0). All four words can be expressed as a concatenation of words in W (because\nn −1 ≤pmax). Thus Ωrec is W-recurrent.\n7\nAn algorithm for detecting a chaotic attractor\nIn the previous two sections we obtained suﬃcient conditions for the assumptions of Theorem\n3.2 to hold with a trapping region for the 2d BCNF (2.1).\nIn §7.1 we summarise these\nconditions and state Algorithm 7.1 (in pseudo-code) for testing their validity. In §7.2 we",
+      "source": "ann_benchmarks.pdf",
+      "page": 27,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "further discuss the application of the algorithm to the slice of parameter space shown in\nFig. 1.\n7.1\nStatement and proof of the algorithm\nThe polygon Ωconstructed in §6.3 typically satisﬁes (6.11)–(6.13) for some interval of β-\nvalues (where X = (0, β)). Within this interval, smaller values of β tend to correspond to\nsmaller values of χL(Y ) and χL(Z) and so produce a smaller value for pmax, (6.15). Smaller\nvalues of pmax are more favourable for the cone CJ (5.12) to be well-deﬁned, invariant, and",
+      "source": "ann_benchmarks.pdf",
+      "page": 27,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "expanding. This is because with a smaller value of pmax there are less matrices in M and\ntherefore fewer inequalities that need to be satisﬁed.\nFor these reasons we search for a suitable value of β by iteratively increasing its value in\nsteps of size βstep from βmin up to (at most) βmax. To produce Fig. 1 we used\nβstep = 0.01,\nβmin = 0.01,\nβmax = 5.\n(7.1)\nFor a given value of β there are ﬁve groups of conditions that need to be checked. These",
+      "source": "ann_benchmarks.pdf",
+      "page": 27,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "are labelled (C1)–(C5) in Algorithm 7.1 below. First we require Ωto be well-deﬁned. This\nis established by showing that r and ℓof Deﬁnition 6.4 exist. To produce Fig. 1 this was\nimplemented by iterating X backwards and forwards up to maximum allowed values\nrmax = 15,\nℓmax = 15.\n(7.2)\nSecond we check conditions (6.11)–(6.13). If these are satisﬁed then Ωis forward invariant\nand in Algorithm 7.1 this ﬁxes the value of β. We then evaluate pmax by iterating Y and Z",
+      "source": "ann_benchmarks.pdf",
+      "page": 27,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "under f, (6.15). The remaining three conditions are that the cone CJ is well-deﬁned, that\nCJ is invariant, and that CJ is expanding. The computations involved in the last two steps\nare elementary because Gj(m) and Hj(m) are polynomials of degree two or less. Algorithm\n7.1 registers its success or failure by the termination value of the Boolean variable χchaos.\n27",
+      "source": "ann_benchmarks.pdf",
+      "page": 27,
+      "char_count": 365,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "Algorithm 7.1.\nset χchaos = false\nset β = βmin > 0\nWhile χchaos = false and β ≤βmax\nC1\nIf r or ℓdo not exist\nset β = β + βstep\nelse\nC2\nIf any of (6.11)–(6.13) are false\nset β = β + βstep\nelse\nset χchaos = true\nend\nend\nend\nIf χchaos = true\nEvaluate pmax (6.15).\nC3\nIf (5.11) is false for some M(j) = Aj−1\nL AR with j ∈{1, . . . , pmax + 1}\nset χchaos = false\nelse\nEvaluate m(j)\nstab and m(j)\nunstab for each j.\nEvaluate mstab,min and mstab,max.\nC4\nIf mstab,min ≤m(j)",
+      "source": "ann_benchmarks.pdf",
+      "page": 28,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "C4\nIf mstab,min ≤m(j)\nunstab ≤mstab,max for some j ∈{1, . . . , pmax + 1}\nset χchaos = false\nelse\nC5\nIf, for some j ∈{1, . . . , pmax +1}, Hj does not have two distinct\nreal roots or two of (5.17)–(5.19) are false (or, if\nb2\nj + d2\nj = 1, the condition in Remark 5.1 is false)\nset χchaos = false\nend\nend\nend\nend\nThe theorem below assumes calculations are done exactly. For Fig. 1 calculations were\nperformed with rounding at 16 digits.",
+      "source": "ann_benchmarks.pdf",
+      "page": 28,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "performed with rounding at 16 digits.\nTheorem 7.2. Let f be a map of the form (2.1) with δL, δR > 0. If Algorithm 7.1 outputs\nχchaos = true then f has an attractor with a positive Lyapunov exponent.\nProof. Suppose Algorithm 7.1 outputs χchaos = true. Then (C1)–(C5) all hold for some\nﬁxed β > 0. Since (C1) holds, Ωis well-deﬁned by Lemma 6.4. Since (C2) holds, f has a\ntrapping region Ωtrap ⊂Ωby Proposition 6.5. Thus f has an attractor Λ ⊂Ωtrap. Let W",
+      "source": "ann_benchmarks.pdf",
+      "page": 28,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "be given by (2.3) and Ωrec be given by (6.14). Then, by Proposition 6.6, Λ ⊂S∞\ni=−∞f i(Ωrec)\nand W generates Γ(y) for all y ∈Ωrec.\n28",
+      "source": "ann_benchmarks.pdf",
+      "page": 28,
+      "char_count": 133,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "Since (C3) holds, the cone CJ is well-deﬁned. Since (C4) holds, CJ is forward invariant\nunder M = {Φ(W) | W ∈W} by Proposition 5.2. Since (C5) holds, CJ is also expanding\nunder M by Propositions 5.2 and 5.3.\nThen by Theorem 3.2 for all x ∈Λ there exists\nv ∈TR2 such that λ(x, v) > 0.\n7.2\nComments on the results of Algorithm 7.1\nAs mentioned in §2, for (2.1) with δL = δR = 0.3, Algorithm 7.1 outputs χchaos = true\nthroughout the red regions of Fig. 1. Here we examine three sample parameter combinations",
+      "source": "ann_benchmarks.pdf",
+      "page": 29,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "in detail. For each of the three black dots in Fig. 1, the polygon Ωis well-deﬁned and forward\ninvariant. Figs. 15a–17a show Ωusing the value of β > 0 generated by Algorithm 7.1.\nIn Fig. 15a we have Y, Z ∈D1, so pmax = 1 and W = {R, RL}. Fig. 15b shows how\n(C5) is satisﬁed. With j = 1 we have W = R, so H1(m) is linear, see Remark 5.1, and\nmroot > mstab,max. With j = 2 we have W = RL with which H2(m) is quadratic and (5.17)",
+      "source": "ann_benchmarks.pdf",
+      "page": 29,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "and (5.19) are satisﬁed. Numerical simulations suggest that at these parameter values f\nhas a unique two-piece chaotic attractor with one piece intersecting f(Σ) (as shown in the\nmagniﬁcation of Fig. 15a), and its image intersecting Σ.\nIn Fig. 16a we have Y ∈D1 and Z ∈D2, so pmax = 2 and W = {R, RL, RL2}. Here\nAlgorithm 7.1 returns χchaos = false because (C5) is not satisﬁed. This is because H3(m)\nhas no real roots, and this is evident in Fig. 16b. Indeed at these parameter values f has",
+      "source": "ann_benchmarks.pdf",
+      "page": 29,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "a stable period-3 solution corresponding to the word RL2. Nevertheless, f does appear to\nhave a chaotic attractor contained in D1 ∪ΠR. It may be possible to prove this attractor\nhas a positive Lyapunov exponent by constructing a trapping region in D1 ∪ΠR. For the\nparameter values of Fig. 17 we again have pmax = 2 but now H3(m) has real roots satisfying\n-2\n-1\n0\n1\n-2\n-1\n0\n-1\n-0.5\n0\n0.5\n1\n1.5\n-1\n-0.5\n0\n0.5\n1\n1.5\nτL\nτR\na)\nΩ\nΣ\nV\nU\nX\nY\nZ\nD1\nD2\nD3\nb)\nm\nJ\nG1(m)\nH1(m)\nG2(m)\nH2(m)\nFigure 15:",
+      "source": "ann_benchmarks.pdf",
+      "page": 29,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "D2\nD3\nb)\nm\nJ\nG1(m)\nH1(m)\nG2(m)\nH2(m)\nFigure 15:\nConstructive elements produced by Algorithm 7.1 for (2.1) with (2.2) and\n(τL, τR) = (0.7, −1.4). Here the algorithm obtains β = 0.25 and returns χchaos = true.\nPanel (a) shows the forward invariant region Ω(see Fig. 12), the regions Dp (see Fig. 11),\nand a numerically computed attractor. Panel (b) shows the slope maps Gj (5.9) and the\nfunctions Hj (5.10) for j = 1, 2.\n29",
+      "source": "ann_benchmarks.pdf",
+      "page": 29,
+      "char_count": 421,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "(5.17) and (5.19) and Algorithm 7.1 terminates with χchaos = true.\nWe now discuss the region boundaries in Fig. 1 labelled B1 to B5. Boundary B1 is the\nhorizontal line τR = −δR −1. Below B1, and for τL > 0.7 approximately, Algorithm 7.1\nterminates with χchaos = true. On B1 (C5) is not satisﬁed because AR has an eigenvalue of\n−1 so H1(m) = 0 at m = m(1)\nstab. Indeed above B1 the map f has an asymptotically stable\n-2\n-1\n0\n1\n-2\n-1\n0\n-1\n-0.5\n0\n0.5\n1\n1.5\n-1\n-0.5\n0\n0.5\n1\n1.5\nτL\nτR\na)\nΩ\nΣ\nV\nU\nX\nY\nZ\nD1\nD2\nD3\nb)\nm\nJ",
+      "source": "ann_benchmarks.pdf",
+      "page": 30,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "0.5\n1\n1.5\nτL\nτR\na)\nΩ\nΣ\nV\nU\nX\nY\nZ\nD1\nD2\nD3\nb)\nm\nJ\nG1(m)\nG2(m)\nG3(m)\nH1(m)\nH2(m)\nH3(m)\nFigure 16:\nConstructive elements produced by Algorithm 7.1 for (2.1) with (2.2) and\n(τL, τR) = (0.7, −1.8). Here the algorithm obtains β = 0.65 and returns χchaos = false.\nPanel (a) shows the forward invariant region Ω, the regions Dp, a numerically computed\nattractor, and a stable period-3 solution (blue circles).\nPanel (b) shows Gj and Hj for\nj = 1, 2, 3.\n-2\n-1\n0\n1\n-2\n-1\n0\n-1\n-0.5\n0\n0.5\n1\n1.5\n-1\n-0.5\n0\n0.5\n1\n1.5\nτL\nτR\na)",
+      "source": "ann_benchmarks.pdf",
+      "page": 30,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "-1\n-0.5\n0\n0.5\n1\n1.5\n-1\n-0.5\n0\n0.5\n1\n1.5\nτL\nτR\na)\nΩ\nΣ\nV\nU\nX\nY\nZ\nD1\nD2\nD3\nb)\nm\nJ\nG1(m)\nG2(m)\nG3(m)\nH1(m)\nH2(m)\nH3(m)\nFigure 17:\nConstructive elements produced by Algorithm 7.1 for (2.1) with (2.2) and\n(τL, τR) = (1, −2). Here the algorithm obtains β = 0.49 and returns χchaos = true. Panel (a)\nshows the forward invariant region Ω, the regions Dp, and a numerically computed attractor\n(shown also in Fig. 2b). Panel (b) shows Gj and Hj for j = 1, 2, 3.\n30",
+      "source": "ann_benchmarks.pdf",
+      "page": 30,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "ﬁxed point in x1 > 0. In this way Algorithm 7.1 detects a true bifurcation boundary between\nchaotic and non-chaotic dynamics.\nOn B2 (C5) is not satisﬁed because H2(m) = 0 at m = m(1)\nstab. Thus to the left of B2,\nAlgorithm 7.1 terminates with χchaos = false because some v ∈CJ do not expand when\nmultiplied by M = ALAR. Nevertheless numerical results suggest f has a chaotic attractor\nhere. It may be possible to prove this by using a diﬀerent word set W.",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "Boundary B3 is the upper boundary of the blue region in which there exists a stable\nperiod-3 solution of period n = 3 (corresponding to the word RL2, see Fig. 16a). On this\nboundary the periodic solution is destroyed in a border-collision bifurcation by having one\nof its points collide with Σ. Algorithm 7.1 does not detect this boundary exactly as evident\nin Fig. 1 by the presence of white pixels immediately above B3. At these pixels Algorithm",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "7.1 obtains pmax = 2 with which (C5) is not satisﬁed because H3(m) has no real roots. In\nnearby red pixels Algorithm 7.1 obtains pmax = 1 with which the behaviour of H3(m) is\nirrelevant. The number of white pixels appears to tend to zero in the limit βstep →0 because\nthe size of the interval of β-values for which Ωis forward invariant with pmax = 1 vanishes\nas we approach B3 from above. In a similar way as we approach the homoclinic bifurcation",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "HC from above the size of the interval of β-values for which (C1) and (C2) are satisﬁed\napproaches zero (in [16] a diﬀerent approach was used to construct a trapping region).\nOn B4 the period-three solution loses stability by attaining an eigenvalue of −1. For\nτR < −2.6, approximately, Algorithm 7.1 detects this boundary exactly.\nOn B4 (C5) is\nnot satisﬁed because H3(m) = 0 at m = m(3)\nstab. That is, ∥Mv∥= ∥v∥for the eigenvector\nv =\n\u00001, m(3)\nstab\n\u0001\nof M = A2",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "v =\n\u00001, m(3)\nstab\n\u0001\nof M = A2\nLAR corresponding to the eigenvalue −1. Finally, boundary B5 is\nanalogous to boundary B2. On B5 we have H3(m) = 0 at m = m(1)\nstab.\n8\nDiscussion\nWe have presented a general method by which one can prove, possibly with computer assis-\ntance, that a piecewise-linear map has a chaotic attractor. We applied the method to the 2d\nBCNF and found a chaotic attractor throughout a parameter regime that, unlike the logis-",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "tic family for example, does not contain periodic windows. Such robust chaos is typical for\npiecewise-linear maps and for this reason piecewise-linear maps are desirable in applications\nthat use chaos such as chaos-based cryptography [20].\nIn our implementation we considered only one approach for the construction of Ωtrap and\nonly word sets of the form (2.3). There is considerable room to generalise these, such as by\ndeﬁning Ωtrap be to the union of a polygon and its images under f [33].",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "A major next step would be the application of this method to families of higher-dimensional\nmaps, such the N-dimensional border-collision normal form. Results of this nature have al-\nready been achieved in [11, 14]. To construct a trapping region and a cone it may be helpful\nto work with convex polytopes [2]. It would also be useful to obtain a converse to Theorem\n3.2: if f has a topological attractor with a positive Lyapunov exponent, must some Ωtrap,\nW, and C (satisfying the required properties) exist?",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "31",
+      "source": "ann_benchmarks.pdf",
+      "page": 31,
+      "char_count": 2,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "Acknowledgements\nThis work was supported by Marsden Fund contract MAU1809, managed by Royal Society\nTe Ap¯arangi.\nA\nThe signiﬁcance of the 2d BCNF\nLet f be a continuous map on R2 that is aﬃne on each side of Σ =\n\b\nx\n\f\f x1 = 0\n\t\n. Then f has\nthe form\nf(x) =\n\n\n\n\n\n\n\n\n\n\n\n\"\naL\nb\ncL\nd\n#\"\nx1\nx2\n#\n+\n\"\np\nq\n#\n,\nx1 ≤0,\n\"\naR\nb\ncR\nd\n#\"\nx1\nx2\n#\n+\n\"\np\nq\n#\n,\nx1 ≥0,\n(A.1)\nfor some aL, aR, b, cL, cR, d, p, q ∈R. It is a simple exercise to show that f(Σ) intersects Σ at",
+      "source": "ann_benchmarks.pdf",
+      "page": 32,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "a unique point if and only if b ̸= 0. Moreover, if b ̸= 0 then this point is not a ﬁxed point of\n(A.1) if and only if ξ = (1 −d)p + bq ̸= 0.\nNow suppose b ̸= 0 and ξ ̸= 0. Then the coordinate change\n˜x = 1\nξ\n\u0012\u0014\n1\n0\n−d\nb\n\u0015\nx +\n\u0014\n0\ndp −bq\n\u0015\u0013\n,\n(A.2)\nis well-deﬁned and invertible. Also notice it leaves Σ unchanged. By directly applying (A.2)\nto (A.1) we ﬁnd that if ξ > 0 then f is transformed to (2.1) with ˜x in place of x and\nτL = aL + d, δL = aLd −bcL, τR = aR + d, and δR = aRd −bcR. If instead ξ < 0 then",
+      "source": "ann_benchmarks.pdf",
+      "page": 32,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "τL = aR + d, δL = aRd −bcR, τR = aL + d, and δR = aLd −bcL.\nReferences\n[1] V.M. Alekseev. Quasirandom dynamical systems. I. Quasirandom diﬀeomorphisms. Math. USSR Sb.,\n5:73–128, 1968.\n[2] N. Athanasopoulos and M. Lazar.\nAlternative stability conditions for switched discrete time linear\nsystems. In IFAC Proceedings Volumes, volume 47, pages 6007–6012, 2014.\n[3] S. Banerjee and C. Grebogi. Border collision bifurcations in two-dimensional piecewise smooth maps.\nPhys. Rev. E, 59(4):4052–4061, 1999.",
+      "source": "ann_benchmarks.pdf",
+      "page": 32,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "Phys. Rev. E, 59(4):4052–4061, 1999.\n[4] S. Banerjee, J.A. Yorke, and C. Grebogi. Robust chaos. Phys. Rev. Lett., 80(14):3049–3052, 1998.\n[5] L. Barreira, D. Dragiˇcevi´c, and C. Valls. Positive top Lyapunov exponents via invariant cones: Single\ntrajectories. J. Math. Anal. Appl., 423:480–496, 2015.\n[6] L. Barreira and Y. Pesin. Introduction to Smooth Ergodic Theory., volume 148. American Mathematical\nSociety, Providence, RI, 2013.",
+      "source": "ann_benchmarks.pdf",
+      "page": 32,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "Society, Providence, RI, 2013.\n[7] J. Buzzi. Absolutely continuous invariant measures for generic multi-dimensional piecewise aﬃne ex-\npanding maps. Int. J. Bifurcation Chaos, 9(9):1743–1750, 1999.\n[8] S. Das and J.A. Yorke. Multichaos from quasiperiodicity. SIAM J. Appl. Dyn. Syst., 16(4), 2017.\n32",
+      "source": "ann_benchmarks.pdf",
+      "page": 32,
+      "char_count": 300,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "[9] A. Dhara and J. Dutta. Optimality Conditions in Convex Optimization. A Finite-Dimensional View.\nCRC Press, Boca Raton, FL, 2012.\n[10] M. di Bernardo, C.J. Budd, A.R. Champneys, and P. Kowalczyk. Piecewise-smooth Dynamical Systems.\nTheory and Applications. Springer-Verlag, New York, 2008.\n[11] P. Glendinning. Bifurcation from stable ﬁxed point to N-dimensional attractor in the border collision\nnormal form. Nonlinearity, 28:3457–3464, 2015.",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "normal form. Nonlinearity, 28:3457–3464, 2015.\n[12] P. Glendinning. Bifurcation from stable ﬁxed point to 2D attractor in the border collision normal form.\nIMA J. Appl. Math., 81(4):699–710, 2016.\n[13] P. Glendinning. Robust chaos revisited. Eur. Phys. J. Special Topics, 226(9):1721–1738, 2017.\n[14] P. Glendinning and M.R. Jeﬀrey. Grazing-sliding bifurcations, border collision maps and the curse of\ndimensionality for piecewise smooth bifurcation theory. Nonlinearity, 28:263–283, 2015.",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "[15] P. Glendinning and C.H. Wong. Two dimensional attractors in the border collision normal form. Non-\nlinearity, 24:995–1010, 2011.\n[16] P.A. Glendinning and D.J.W. Simpson. Constructing robust chaos: invariant manifolds and expanding\ncones. Submitted., 2019.\n[17] P.A. Glendinning and D.J.W. Simpson. Robust chaos and the continuity of attractors. To appear:\nTransactions of Mathematics and Its Applications, 2019.\n[18] J. Guckenheimer and P.J. Holmes.",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "[18] J. Guckenheimer and P.J. Holmes.\nNonlinear Oscillations, Dynamical Systems, and Bifurcations of\nVector Fields. Springer-Verlag, New York, 1986.\n[19] B. Hao and W. Zheng. Applied Symbolic Dynamics and Chaos. World Scientiﬁc, Singapore, 1998.\n[20] L. Kocarev and S. Lian, editors.\nChaos-Based Cryptography. Theory, Algorithms and Applications.\nSpringer, New York, 2011.\n[21] P. Kowalczyk. Robust chaos and border-collision bifurcations in non-invertible piecewise-linear maps.\nNonlinearity, 18:485–504, 2005.",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "Nonlinearity, 18:485–504, 2005.\n[22] D. Lind and B. Marcus. An Introduction to Symbolic Dynamics and Coding. Cambridge University\nPress, 1995.\n[23] R. Lozi. Un attracteur ´etrange(?) du type attracteur de H´enon. J. Phys. (Paris), 39(C5):9–10, 1978.\nIn French.\n[24] J.D. Meiss. Diﬀerential Dynamical Systems. SIAM, Philadelphia, 2007.\n[25] C. Mira, L. Gardini, A. Barugola, and J. Cathala. Chaotic Dynamics in Two-Dimensional Noninvertible",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "Maps., volume 20 of Nonlinear Science. World Scientiﬁc, Singapore, 1996.\n[26] M. Misiurewicz. Strange attractors for the Lozi mappings. In R.G. Helleman, editor, Nonlinear dynamics,\nAnnals of the New York Academy of Sciences, pages 348–358, New York, 1980. Wiley.\n[27] S. Newhouse. Cone-ﬁelds, domination, and hyperbolicity. In M. Brin, B. Hasselblatt, and Y. Pesin,\neditors, University in Modern Dynamical Systems and Applications. Cambridge University Press, New\nYork, 2004.",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "York, 2004.\n[28] H.E. Nusse and J.A. Yorke. Border-collision bifurcations including “period two to period three” for\npiecewise smooth systems. Phys. D, 57:39–57, 1992.\n[29] R.C. Robinson. An Introduction to Dynamical Systems. Continuous and Discrete. Prentice Hall, Upper\nSaddle River, NJ, 2004.\n[30] R.T. Rockafellar. Convex Analysis. Princeton University Press, Princeton, NJ, 1970.\n[31] M. Rychlik.\nInvariant Measures and the Variational Principle for Lozi Mappings., pages 190–221.\nSpringer, New York, 2004.",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "Springer, New York, 2004.\n33",
+      "source": "ann_benchmarks.pdf",
+      "page": 33,
+      "char_count": 28,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "[32] D.J.W. Simpson. Border-collision bifurcations in Rn. SIAM Rev., 58(2):177–226, 2016.\n[33] D.J.W. Simpson. Chaotic attractors from border-collision bifurcations: Stable border ﬁxed points and\ndeterminant-based Lyapunov exponent bounds. To appear: NZJM, 2020.\n[34]  L. Struski and J. Tabor. Expansivity and cone-ﬁelds in metric spaces. J. Dyn. Diﬀ. Equat., 26:517–527,\n2014.\n[35] M. Tsujii. Absolutely continuous invariant measures for expanding piecewise linear maps. Invent. Math.,\n143:349–373, 2001.",
+      "source": "ann_benchmarks.pdf",
+      "page": 34,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "143:349–373, 2001.\n[36] M. Viana. Lectures on Lyapunov Exponents., volume 145 of Cambridge studies in advanced mathematics.\nCambridge University Press, Cambridge, 2014.\n[37] M. Wojtkowski.\nInvariant families of cones and Lyapunov exponents.\nErgod. Th. & Dynam. Sys.,\n5:145–161, 1985.\n[38] L.-S. Young. Bowen-Ruelle measures for certain piecewise hyperbolic maps. Trans. Amer. Math. Soc.,\n287(1):41–48, 1985.\n34",
+      "source": "ann_benchmarks.pdf",
+      "page": 34,
+      "char_count": 410,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

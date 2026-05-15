@@ -1,0 +1,780 @@
+{
+  "source": "g_eval.pdf",
+  "full_path": "data\\raw\\g_eval.pdf",
+  "total_pages": 14,
+  "text_chunks": 96,
+  "vision_chunks": 0,
+  "total_chunks": 96,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Are Emergent Abilities of Large Language Models a\nMirage?\nRylan Schaeffer, Brando Miranda, and Sanmi Koyejo\nComputer Science, Stanford University\nAbstract\nRecent work claims that large language models display emergent abilities, abil-\nities not present in smaller-scale models that are present in larger-scale models.\nWhat makes emergent abilities intriguing is two-fold: their sharpness, transition-\ning seemingly instantaneously from not present to present, and their unpredictabil-",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "ity, appearing at seemingly unforeseeable model scales. Here, we present an al-\nternative explanation for emergent abilities: that for a particular task and model\nfamily, when analyzing ﬁxed model outputs, emergent abilities appear due the\nresearcher’s choice of metric rather than due to fundamental changes in model\nbehavior with scale. Speciﬁcally, nonlinear or discontinuous metrics produce ap-\nparent emergent abilities, whereas linear or continuous metrics produce smooth,",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "continuous, predictable changes in model performance. We present our alternative\nexplanation in a simple mathematical model, then test it in three complementary\nways: we (1) make, test and conﬁrm three predictions on the effect of metric\nchoice using the InstructGPT/GPT-3 family on tasks with claimed emergent abil-\nities, (2) make, test and conﬁrm two predictions about metric choices in a meta-\nanalysis of emergent abilities on BIG-Bench; and (3) show how to choose metrics",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "to produce never-before-seen seemingly emergent abilities in multiple vision tasks\nacross diverse deep networks. Via all three analyses, we provide evidence that al-\nleged emergent abilities evaporate with different metrics or with better statistics,\nand may not be a fundamental property of scaling AI models.\n1\nIntroduction\nEmergent properties of complex systems have long been studied across disciplines, from physics to",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 423,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "biology to mathematics. The idea of emergence was popularized by Nobel Prize-winning physicist\nP.W. Anderson’s “More Is Different” [1], which argues that as the complexity of a system increases,\nnew properties may materialize that cannot be predicted even from a precise quantitative understand-\ning of the system’s microscopic details. Recently, the idea of emergence gained signiﬁcant attention\nin machine learning due to observations that large language models (LLMs) such as GPT [3], PaLM",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "[6] and LaMDA [30] exhibit so-called “emergent abilities” [33, 8, 28, 3] (Fig. 1).\nThe term “emergent abilities of LLMs” was recently and crisply deﬁned as “abilities that are not\npresent in smaller-scale models but are present in large-scale models; thus they cannot be predicted\nby simply extrapolating the performance improvements on smaller-scale models” [33]. Such emer-\ngent abilities were ﬁrst discovered in the GPT-3 family [3]. Subsequent work emphasized the discov-",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "ery, writing that “[although model] performance is predictable at a general level, performance on a\nspeciﬁc task can sometimes emerge quite unpredictably and abruptly at scale” [8]. These quotations\ncollectively identify the two deﬁning properties of emergent abilities in LLMs:\n1. Sharpness, transitioning seemingly instantaneously from not present to present\nPreprint. Under review.\narXiv:2304.15004v2  [cs.AI]  22 May 2023",
+      "source": "g_eval.pdf",
+      "page": 1,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "Figure 1: Emergent abilities of large language models. Model families display sharp and unpre-\ndictable increases in performance at speciﬁc tasks as scale increases. Source: Fig. 2 from [33].\n2. Unpredictability, transitioning at seemingly unforeseeable model scales\nThese emergent abilities have garnered signiﬁcant interest, raising questions such as: What controls\nwhich abilities will emerge? What controls when abilities will emerge? How can we make desirable",
+      "source": "g_eval.pdf",
+      "page": 2,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "abilities emerge faster, and ensure undesirable abilities never emerge? These questions are especially\npertinent to AI safety and alignment, as emergent abilities forewarn that larger models might one\nday, without warning, acquire undesired mastery over dangerous capabilities [29, 10, 17, 18].\nIn this paper, we call into question the claim that LLMs possess emergent abilities, by which we\nspeciﬁcally mean sharp and unpredictable changes in model outputs as a function of model scale",
+      "source": "g_eval.pdf",
+      "page": 2,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "on speciﬁc tasks. Our doubt stems from the observation that emergent abilities seem to appear\nonly under metrics that nonlinearly or discontinuously scale any model’s per-token error rate. For\ninstance, as we later show, > 92% of emergent abilities on BIG-Bench tasks [28] (hand-annotated\nby [32]) appear under either of these two metrics:\nMultiple Choice Grade\ndef\n=\n\u001a1\nif highest probability mass on correct option\n0\notherwise\nExact String Match\ndef\n=\n\u001a1\nif output string exactly matches target string\n0",
+      "source": "g_eval.pdf",
+      "page": 2,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "if output string exactly matches target string\n0\notherwise\nThis raises the possibility of an alternative explanation for the origin of LLMs’ emergent abilities:\nsharp and unpredictable changes might be induced by the researcher’s choice of measurement, even\nthough the model family’s per-token error rate changes smoothly, continuously and predictably with\nincreasing scale. Speciﬁcally, our alternative posits that emergent abilities are a mirage caused",
+      "source": "g_eval.pdf",
+      "page": 2,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "primarily by the researcher choosing a metric that nonlinearly or discontinuously deforms per-token\nerror rates, and secondarily by possessing too few test data to accurately estimate the performance\nof smaller models, thereby causing smaller models to appear wholly unable to perform the task.\nTo communicate our alternative explanation, we present it as a simple mathematical model and\ndemonstrate how it quantitatively reproduces the evidence offered in support of emergent abilities",
+      "source": "g_eval.pdf",
+      "page": 2,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "of LLMs. We then test our alternative explanation in three complementary ways:\n1. We make, test and conﬁrm three predictions based on our alternative hypotheses using the\nInstructGPT [24] / GPT-3 [3] model family.\n2",
+      "source": "g_eval.pdf",
+      "page": 2,
+      "char_count": 215,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "109\n1010\n1011\nModel Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nMultiple Choice Grade\nNum. Choices\n2\nD\n109\n1010\n1011\nModel Parameters\n0.3\n0.4\n0.5\n0.6\n0.7\nMultiple Choice Grade\nPublished Emergent Ability\n109\n1010\n1011\nModel Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nAccuracy\nTarget Str Len\n5\n109\n1010\n1011\nModel Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nAccuracy\nPublished Emergent Ability\nC\n109\n1010\n1011\nModel Parameters\n10\n1\n100\nCE (Per-Token)\nA\n109\n1010\n1011\nModel Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nProb Correct (Per-Token)\nB",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "0.2\n0.4\n0.6\n0.8\n1.0\nProb Correct (Per-Token)\nB\nEmergent Abilities\nNo Emergent Abilities\nDiscontinuously\nscore\nLLM outputs\n109\n1010\n1011\nModel Parameters\n4\n3\n2\n1\n0\n- Number of Incorrect Tokens\nTarget Str Len\n5\nE\nNonlinearly\nscore\nLLM outputs\nContinuously\nscore\nLLM outputs\nLinearly\nscore\nLLM outputs\n109\n1010\n1011\nModel Parameters\n0.8\n0.6\n0.4\n0.2\n0.0\n- Brier Score\nNum. Choices\n2\nF\nFigure 2: Emergent abilities of large language models are created by the researcher’s chosen",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "metrics, not unpredictable changes in model behavior with scale. (A) Suppose the per-token\ncross-entropy loss decreases monotonically with model scale, e.g., LCE scales as a power law. (B)\nThe per-token probability of selecting the correct token asymptotes towards 1. (C) If the researcher\nscores models’ outputs using a nonlinear metric such as Accuracy (which requires a sequence of\ntokens to all be correct), the metric choice nonlinearly scales performance, causing performance",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "to change sharply and unpredictably in a manner that qualitatively matches published emergent\nabilities (inset). (D) If the researcher instead scores models’ outputs using a discontinuous metric\nsuch as Multiple Choice Grade (akin to a step function), the metric choice discontinuously scales\nperformance, again causing performance to change sharply and unpredictably. (E) Changing from a\nnonlinear metric to a linear metric such as Token Edit Distance, scaling shows smooth, continuous",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "and predictable improvements, ablating the emergent ability. (F) Changing from a discontinuous\nmetric to a continuous metric such as Brier Score again reveals smooth, continuous and predictable\nimprovements in task performance. Consequently, emergent abilities are created by the researcher’s\nchoice of metrics, not fundamental changes in model family behavior on speciﬁc tasks with scale.\n2. We meta-analyze published benchmarks [28, 33] to reveal that emergent abilities only ap-",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "pear for speciﬁc metrics, not for model families on particular tasks, and that changing the\nmetric causes the emergence phenomenon to evaporate.\n3. We induce never-before-seen, seemingly emergent abilities in multiple architectures across\nvarious vision tasks by intentionally changing the metrics used for evaluation.\n2\nAlternative Explanation for Emergent Abilities\nHow might smooth, continuous, predictable changes in model family performance appear sharp and",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "unpredictable? The answer is that the researcher’s choice of a nonlinear or discontinuous metric can\ndistort the model family’s performance to appear sharp and unpredictable.\nTo expound, suppose that within a model family, the test loss falls smoothly, continuously and\npredictably with the number of model parameters. One reason to believe this is the phenomenon\nknown as neural scaling laws: empirical observations that deep networks exhibit power law scaling",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "in the test loss as a function of training dataset size, number of parameters or compute [13, 27, 11,\n16, 9, 12, 15, 34, 14, 7, 26]. For concreteness, suppose we have a model family of different numbers\nof parameters N > 0 and assume that each model’s per-token cross entropy falls as a power law\nwith the number of parameters N for constants c > 0, α < 0 (Fig. 2A):\nLCE(N) =\n\u0010N\nc\n\u0011α\n3",
+      "source": "g_eval.pdf",
+      "page": 3,
+      "char_count": 385,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "To be clear, we do not require this particular functional form to hold; rather, we use it for illustra-\ntive purposes. Let V denote the set of possible tokens, p ∈∆|V |−1 denote the true but unknown\nprobability distribution, and ˆpN ∈∆|V |−1 denote the N-parameter model’s predicted probability\ndistribution. The per-token cross entropy as a function of number of parameters N is:\nLCE(N)\ndef\n= −\nX\nv∈V\np(v) log ˆpN(v)\nIn practice, p is unknown, so we substitute a one-hot distribution of the observed token v∗:",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "LCE(N) = −log ˆpN(v∗)\nA model with N parameters then has a per-token probability of selecting the correct token (Fig. 2B):\np(single token correct) = exp\n\u0010\n−LCE(N)\n\u0011\n= exp\n\u0010\n−(N/c)α\u0011\nSuppose the researcher then chooses a metric that requires selecting L tokens correctly. For example,\nour task might be L-digit integer addition, and a model’s output is scored 1 if all L output digits\nexactly match all target digits with no additions, deletions or substitutions, 0 otherwise. If the",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "probability each token is correct is independent1, the probability of scoring 1 is:\nAccuracy(N) ≈pN(single token correct)num. of tokens = exp\n\u0010\n−(N/c)α\u0011L\nThis choice of metric nonlinearly scales performance with increasing token sequence length. When\nplotting performance on a linear-log plot, one sees a sharp, unpredictable emergent ability on longer\nsequences (Fig. 2C) that closely matches claimed emergent abilities (inset). What happens if the",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "researcher switches from a nonlinear metric like Accuracy, under which the per-token error rate\nscales geometrically in target length (App. A.3), to an approximately linear metric like Token Edit\nDistance, under which the per-token error rate scales quasi-linearly in target length (App. A.2)?\nToken Edit Distance(N) ≈L\n\u0010\n1 −pN(single token correct)\n\u0011\n= L\n\u0010\n1 −exp\n\u0000−(N/c)α\u0001\u0011\nThe linear metric reveals smooth, continuous, predictable changes in model performance (Fig. 2E).",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "Similarly, if the researcher uses a discontinuous metric like Multiple Choice Grade, the researcher\ncan ﬁnd emergent abilities (Fig. 2D), but switching to a continuous metric like Brier Score removes\nthe emergent ability (Fig. 2F). In summary, sharp and unpredictable changes with increasing scale\ncan be fully explained by three interpretable factors: (1) the researcher choosing a metric that nonlin-\nearly or discontinuously scales the per-token error rate, (2) having insufﬁcient resolution to estimate",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "model performance in the smaller parameter regime, with resolution2 set by 1/test dataset size, and\n(3) insufﬁciently sampling the larger parameter regime.\n3\nAnalyzing InstructGPT/GPT-3’s Emergent Arithmetic Abilities\nPrevious papers prominently claimed the GPT [3, 24] family3 displays emergent abilities at integer\narithmetic tasks [8, 28, 33] (Fig. 2E). We chose these tasks as they were prominently presented\n[3, 8, 28, 33], and we focused on the GPT family due to it being publicly queryable. As explained",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "mathematically and visually in Sec. 2, our alternative explanation makes three predictions:\n1. Changing the metric from a nonlinear or discontinuous metric (Fig. 2CD) to a linear or\ncontinuous metric (Fig. 2 EF) should reveal smooth, continuous, predictable performance\nimprovement with model scale.\n1While the independence assumption is not true, the approximation yields results qualitatively matching the\nobserved emergence claims.",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "observed emergence claims.\n2Resolution is deﬁned as “The smallest interval measurable by a scientiﬁc instrument; the resolving power.”\n3As of 2023-03-15, 4 models with 350M, 1.3B, 6.7B, 175B parameters are available via the OpenAI API.\n4",
+      "source": "g_eval.pdf",
+      "page": 4,
+      "char_count": 237,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "109\n1010\n1011\nModel Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nAccuracy\nTarget Str Len\n1\n2\n3\n4\n5\n109\n1010\n1011\nGPT-3 Model Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nAccuracy\nTarget Str Len\n1\n2\n3\n4\n5\nTemp\n0.0\n1.0\n109\n1010\n1011\nGPT-3 Model Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nAccuracy\nTarget Str Len\n1\n2\n3\n4\n5\nTemp\n0.0\n1.0\n109\n1010\n1011\nModel Parameters\n4\n3\n2\n1\n0\n- Token Edit Distance\nTarget Str Len\n1\n2\n3\n4\n5\n109\n1010\n1011\nGPT-3 Model Parameters\n6\n5\n4\n3\n2\n1\n0\n- Token Edit Distance\nTarget Str Len\n1\n2\n3\n4\nTemp\n0.0\n1.0\n109\n1010",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "Target Str Len\n1\n2\n3\n4\nTemp\n0.0\n1.0\n109\n1010\n1011\nGPT-3 Model Parameters\n6\n5\n4\n3\n2\n1\n0\n- Token Edit Distance\nTarget Str Len\n1\n2\n3\n4\n5\nTemp\n0.0\n1.0\nFigure 3: Claimed emergent abilities evaporate upon changing the metric. Left to Right: Math-\nematical Model, 2-Integer 2-Digit Multiplication Task, 2-Integer 4-Digit Addition Task. Top: When\nperformance is measured by a nonlinear metric (e.g., Accuracy), the InstructGPT/GPT-3 [3, 24]",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "family’s performance appears sharp and unpredictable on longer target lengths. Bottom: When per-\nformance is instead measured by a linear metric (e.g., Token Edit Distance), the family exhibits\nsmooth, predictable performance improvements.\n109\n1010\n1011\nModel Parameters\n10\n6\n10\n5\n10\n4\n10\n3\n10\n2\n10\n1\n100\nAccuracy\nTarget Str Len\n1\n2\n3\n4\n5\nFigure 4: Claimed emergent abilities evaporate upon using better statistics. Left to Right: Math-",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "ematical Model, 2-Integer 2-Digit Multiplication Task, 2-Integer 4-Digit Addition Task. Based on\nthe predictable effect Accuracy has on performance, measuring performance requires high resolu-\ntion. Generating additional test data increases the resolution and reveals that even on Accuracy,\nthe InstructGPT/GPT-3 family’s [3, 24] performance is above chance and improves in a smooth,\ncontinuous, predictable manner that qualitatively matches the mathematical model.",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "2. For nonlinear metrics, increasing the resolution of measured model performance by in-\ncreasing the test dataset size should reveal smooth, continuous, predictable model improve-\nments commensurate with the predictable nonlinear effect of the chosen metric.\n3. Regardless of metric, increasing the target string length should predictably affect the\nmodel’s performance as a function of the length-1 target performance: approximately geo-",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "metrically for accuracy and approximately quasilinearly for token edit distance.\nTo test these predictions, we collected outputs from the InstructGPT/GPT-3 family on two tasks:\n2-shot multiplication between two 2-digit integers and 2-shot addition between two 4-digit integers.\nPrediction: Emergent Abilities Disappear With Different Metrics\nOn both arithmetic tasks, the\nGPT family displays emergent abilities if the target has 4 or 5 digits and if the metric is Accuracy",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "(Fig. 3, top) [3, 8, 33]. However, if one changes from nonlinear Accuracy to linear Token Edit\nDistance while keeping the models’ outputs ﬁxed, the family’s performance smoothly, continuously\n5",
+      "source": "g_eval.pdf",
+      "page": 5,
+      "char_count": 193,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "and predictably improves with increasing scale (Fig. 3, bottom). This conﬁrms our ﬁrst prediction\nand supports our alternative explanation that the source of emergent abilities is the researcher’s\nchoice of metric, not changes in the model family’s outputs. We also observe that under Token Edit\nDistance, increasing the length of the target string from 1 to 5 predictably decreases the family’s\nperformance in an approximately quasilinear manner, conﬁrming the ﬁrst half of our third prediction.",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "Prediction: Emergent Abilities Disappear With Better Statistics\nWe next tested our second\nprediction: that even on nonlinear metrics such as accuracy, smaller models do not have zero ac-\ncuracy, but rather have non-zero above-chance accuracy commensurate with choosing to use ac-\ncuracy as the metric. In order to accurately measure models’ accuracy, we increased the resolu-\ntion by generating additional test data, and found that on both arithmetic tasks, all models in the",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "InstructGPT/GPT-3 family achieve above-chance accuracy (Fig. 4). This conﬁrms our second pre-\ndiction. We also observe that as the target string length increases, the accuracy falls approximately\ngeometrically with the length of the target string, conﬁrming the second half of our third prediction.\nThese results additionally demonstrate that the researcher’s choice of metric has the effect that one\nshould predict accuracy to have, i.e., geometric decay with the target length.\n4",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "4\nMeta-Analysis of Claimed Emergent Abilities\nAnalyzing the GPT family is possible because the models are publicly queryable. However, other\nmodel families claimed to exhibit emergent abilities are not publicly queryable, nor are their gener-\nated outputs publicly available, meaning we are limited to analyzing the published results themselves\n[8, 33, 32]. Our alternative explanation makes two predictions.\n1. At the “population level” of Task-Metric-Model Family triplets, emergent abilities should",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "appear predominantly on speciﬁc metrics, not task-model family pairs, and speciﬁcally with\nnonlinear and/or discontinuous metrics.\n2. On individual Task-Metric-Model Family triplets that display an emergent ability, changing\nthe metric to a linear and/or continuous metric should remove the emergent ability.\nTo test these predictions, we used to claimed emergent abilities on BIG-Bench [28, 33] due to the\nbenchmark being pertinent and publicly available.",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "benchmark being pertinent and publicly available.\nPrediction: Emergent Abilities Should Appear with Metrics, not Task-Model Families\nIf\nemergent abilities are real, one should expect task-model family pairs to show emergence for all\nreasonable metrics. However, if our alternative explanation is correct, we should expect emergent\nabilities to appear only under certain metrics. To test this, we analyzed on which metrics emergent",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "abilities appear. To determine whether a task-metric-model family triplet exhibits a possible emer-\ngent ability, we used a metric from previous work [28]. Letting yi ∈R denote model performance\nat model scales xi ∈R, sorted such that xi < xi+1, the emergence score is:\nEmergence Score\n\u0010n\n(xn, yn)\noN\nn=1\n\u0011\ndef\n=\nsign(arg maxi yi −arg mini yi)(maxi yi −mini yi)\np\nMedian({(yi −yi−1)2}i)\n(1)\nWe found that most metrics used in BIG-Bench have zero task-model family pairs that exhibit emer-",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "gent abilities: of the 39 preferred metrics in BIG-Bench, at most 5 display emergence (Fig. 5A).\nMany of the 5 are nonlinear and/or discontinuous, e.g., Exact String Match, Multiple Choice Grade,\nROUGE-L-Sum (App. A.4). Notably, because BIG-Bench often scores models on tasks using mul-\ntiple metrics, the lack of emergent abilities under other metrics suggests that emergent abilities do\nnot appear when model outputs are scored using other metrics.",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "Because emergence score only suggests emergence, we also analyzed hand-annotated task-metric-\nmodel family triplets [32], which revealed emergent abilities appear with 4/39 metrics (Fig. 5B), and\n2 metrics account for > 92% of claimed emergent abilities (Fig. 5C): Multiple Choice Grade and\nExact String Match. Multiple Choice Grade is discontinuous, and Exact String Match is nonlinear.\nPrediction: Changing Metric Removes Emergent Abilities\nTo test our second prediction, we",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "To test our second prediction, we\nfocused on the LaMDA family [30] because its outputs are available through BIG-Bench. For our\n6",
+      "source": "g_eval.pdf",
+      "page": 6,
+      "char_count": 129,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "0\n100\n200\n300\n400\n500\n600\nEmergence Score (Defined in Srivastava et al. 2022) Over All BIG-Bench Tasks\naccuracy\nalignment_score\naverage\naverage_log_probability\navg_acc\nbias_level\nbleu\nbleurt\nbleurt_diff\ncombined_bias\ncorrect\ncorrect_prob_mass\ncustom_score\ndifference_score\nexact_str_match\nf1\nfairness\nfull\ngender_bias_score\ngender_minority_bias_score\ngender_minority_stereotype_score\ngender_stereotype_score\nlog10_p_dev\nlog_likelihood\nmacro_f1\nmain_words_match\nmean_accuracy\nmultiple_choice_grade",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "mean_accuracy\nmultiple_choice_grade\nnormalized_aggregate_score\nnumeric_match_with_0_1_relative_error\noverall\noverall gender bias\noverall_alpha_avg\noverall_difference\npair-wise-accuracy\nrelative_score\nrougeLsum\nsequence_f1\ntargets_reached\nMetric\nFigure 5: Emergent abilities appear only for speciﬁc metrics, not task-model families. (A) Pos-\nsible emergent abilities appear with at most 5 out of 39 BIG-Bench metrics. (B) Hand-annotated data",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "by [32] reveals emergent abilities appear only under 4 preferred metrics. (C) > 92% of emergent\nabilities appear under one of two metrics: Multiple Choice Grade and Exact String Match.\nFigure 6: Changing the metric when evaluating task-model family pairs causes emergent abil-\nities to disappear. Left: The LaMDA model family displays emergent abilities when measured\nunder the discontinuous Multiple Choice Grade. Right: The LaMDA model family’s emergent abil-",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "ities disappear when measured under a continuous BIG-Bench metric: Brier Score.\nanalysis, we identiﬁed tasks on which LaMDA displays emergent abilities with Multiple Choice\nGrade, then asked whether LaMDA still displays emergent abilities on the same tasks with a different\nBIG-Bench metric: Brier Score [2]. Brier Score is a strictly proper scoring rule for predictions of\nmutually exclusive outcomes; for a binary outcome, the Brier Score simpliﬁes to the mean squared",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "error between the outcome and its predicted probability mass. LaMDA’s emergent abilities on the\ndiscontinuous Multiple Choice Grade disappeared when we changed the metric to the continuous\nBrier Score (Fig. 6). These results support our alternative explanation that emergent abilities are\ninduced by the chosen metric.\n5\nInducing Emergent Abilities in Networks on Vision Tasks\nTo demonstrate how emergent abilities can be induced by the researcher’s choice of metric, we",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "show how to produce emergent abilities in deep networks of various architectures: fully connected,\nconvolutional, self-attentional. We focus on vision tasks because abrupt transitions in vision models’\ncapabilities have not been observed to the best of our knowledge; this is one reason why emergence\nin large language models is considered so interesting. For the convolutional example, see App. B.\nEmergent Reconstruction of CIFAR100 Natural Images by Nonlinear Autoencoders\nWe ﬁrst",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "We ﬁrst\ninduce an emergent ability to reconstruct images in shallow (i.e., single hidden layer) nonlinear au-\ntoencoders trained on CIFAR100 natural images [19]. To emphasize that the sharpness of the metric\nis responsible for emergent abilities, and to show that sharpness extends to metrics beyond Accu-\nracy, we intentionally deﬁne a discontinuous metric that measures a network’s ability to reconstruct\n7",
+      "source": "g_eval.pdf",
+      "page": 7,
+      "char_count": 408,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "107\n108\n109\n1010\n1011\nLanguage Model Effective Parameters\n0\n5\n10\n15\n20\nNormalized Score\nPublished Emergent Ability\nPublished Emergent Ability\n104\n105\n106\nShallow Autoencoder Model Parameters\n10\n2\n10\n1\nTest Mean Squared Error   =   1\nN\nN\nn = 1\n||xn\nxn||2\nNo Emergent Ability\n104\n105\n106\nShallow Autoencoder Model Parameters\n0.0\n0.1\n0.2\n0.3\n0.4\nTest Reconstruction Ability   =   1\nN\nN\nn = 1\n[||xn\nxn||2 < c]\nMetric-Induced Emergent Ability\nc\n0.003\n0.004",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "Metric-Induced Emergent Ability\nc\n0.003\n0.004\nFigure 7: Induced emergent reconstruction ability in shallow nonlinear autoencoders. (A) A\npublished emergent ability at the BIG-Bench Periodic Elements task [28]. (B) Shallow nonlinear\nautoencoders trained on CIFAR100 [19] display smoothly decreasing mean squared reconstruction\nerror. (C) Using a newly deﬁned Reconstructionc metric (Eqn. 2) induces an unpredictable change.\n1010\n1011\nGPT-3 Model Parameters\n0.20\n0.25\n0.30\n0.35\n0.40\n0.45\n0.50\n0.55\n0.60",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "0.20\n0.25\n0.30\n0.35\n0.40\n0.45\n0.50\n0.55\n0.60\nTest Accuracy\nPublished Emergent Ability\nPublished Emergent Ability\n106\nCausal Transformer Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nTest Accuracy\nNo Emergent Ability\nNum. All Correct\n1\n106\nCausal Transformer Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nTest Accuracy\nMetric-Induced Emergent Ability\nNum. All Correct\n3\nFigure 8: Induced emergent classiﬁcation ability in autoregressive Transformers. (A) A pub-",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "lished emergent ability on the MMLU benchmark [8]. (B) Autoregressive transformers trained to\nclassify Omniglot images display increasing accuracy with increasing scale. (C) When accuracy is\nredeﬁned as classifying all images correctly, a seemingly emergent ability appears.\na dataset as the average number of test data with squared reconstruction error below threshold c:\nReconstructionc\n\u0010\n{xn}N\nn=1\n\u0011 def\n=\n1\nN\nX\nn\nI\nh\n||xn −ˆxn||2 < c\ni\n(2)",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "n=1\n\u0011 def\n=\n1\nN\nX\nn\nI\nh\n||xn −ˆxn||2 < c\ni\n(2)\nwhere I(·) denotes an indicator variable and ˆxn is the autoencoder’s reconstruction of xn. The\nautoencoder family displays smoothly decreasing squared reconstruction error as the number of bot-\ntleneck units increases (Fig. 7B). Under our newly deﬁned Reconstructionc metric and for particular\nchoices of c, the autoencoder family exhibits a sharp and seemingly unpredictable image reconstruc-",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "tion ability (Fig. 7C) that qualitatively matches published emergent abilities (Fig. 7A).\nEmergent Classiﬁcation of Omniglot Characters by Autoregressive Transformers\nWe next\ninduce emergent abilities in Transformers [31] trained to autoregressively classify Omniglot hand-\nwritten characters [20], in a setup inspired by recent work [5]: Omniglot images are embedded\nby convolutional layers, then sequences of embedded image-image class label pairs are fed into",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "decoder-only transformers. We measure image classiﬁcation performance on sequences of length\nL ∈[1, 5], again via subset accuracy: 1 if all L images are classiﬁed correctly (Fig. 8B), 0 oth-\nerwise. Causal transformers display a seemingly emergent ability to correctly classify Omniglot\nhandwritten characters (Fig. 8C) that qualitatively matches published emergent abilities (Fig. 8A).\n6\nRelated Work\nSrivastava et al. [28] observed that while accuracy at a particular task can empirically appear sharp",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "and unpredictable, cross entropy does not; the authors then hypothesized that emergent abilities may\nbe partially attributed to the metric. Our paper converts their discussion into precise predictions,\n8",
+      "source": "g_eval.pdf",
+      "page": 8,
+      "char_count": 203,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "then quantitatively tests the predictions to reveal that: metric choice is likely wholly responsible\nfor emergent abilities; well-known and widely-used metrics (including ones already used by [28])\ncapture graded improvements; emergent abilities do not appear only for tasks involving multiple\nsteps, and indeed appear most commonly on the discontinuous Multiple Choice Grade; metric choice\ncan be used to induce emergent abilities in a novel domain (vision) in diverse architectures and tasks.",
+      "source": "g_eval.pdf",
+      "page": 9,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "Caballero et al. [4] explain emergence by assuming a piece-wise power law functional form; under\nthis view, emergent abilities are real, caused by a change in the governing power law. In contrast,\nour work suggests that emergent abilities are induced by the researcher, even under a single power\nlaw. Michaud et al. [25] posit that emergent abilities may be real under strong data assumptions.\n7\nDiscussion\nOur paper presents an alternative explanation for claimed emergent abilities of large language mod-",
+      "source": "g_eval.pdf",
+      "page": 9,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "els. For a ﬁxed task and a ﬁxed model family, the researcher can choose a metric to create an\nemergent ability or choose a metric to ablate an emergent ability. Ergo, emergent abilities may be\ncreations of the researcher’s choices, not a fundamental property of the model family on the speciﬁc\ntask. We emphasize that nothing in this paper should be interpreted as claiming that large language\nmodels cannot display emergent abilities; rather, our message is that previously claimed emergent",
+      "source": "g_eval.pdf",
+      "page": 9,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "abilities in [3, 8, 28, 33] might likely be a mirage induced by researcher analyses.\nOur paper has several implications. Firstly, a task and a metric are distinct and meaningful choices\nwhen constructing a benchmark. Secondly, when choosing metric(s), one should consider the met-\nric’s effect on the per-token error rate and adapt their measuring process accordingly, e.g., if one\nchooses accuracy, one should make sure to have sufﬁcient data to accurately measure accuracy to",
+      "source": "g_eval.pdf",
+      "page": 9,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "avoid the risk of drawing invalid scientiﬁc conclusions. Thirdly, when making claims about capa-\nbilities of large models, including proper controls is critical. In this particular setting, emergent\nabilities claims are possibly infected by a failure to control for multiple comparisons. In BIG-Bench\nalone, there are ≥220 tasks, ∼40 metrics per task, ∼10 model families, for a total of ∼106 task-\nmetric-model family triplets, meaning probability that no task-metric-model family triplet exhibits",
+      "source": "g_eval.pdf",
+      "page": 9,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "an emergent ability by random chance might be small. Fourthly, scientiﬁc progress can be hampered\nwhen models and their outputs are not made public for independent scientiﬁc investigation.\n9",
+      "source": "g_eval.pdf",
+      "page": 9,
+      "char_count": 190,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "References\n[1] Philip W Anderson. More is different: broken symmetry and the nature of the hierarchical\nstructure of science. Science, 177(4047):393–396, 1972.\n[2] Glenn W Brier et al. Veriﬁcation of forecasts expressed in terms of probability. Monthly\nweather review, 78(1):1–3, 1950.\n[3] Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhari-\nwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Language mod-",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "els are few-shot learners. Advances in neural information processing systems, 33:1877–1901,\n2020.\n[4] Ethan Caballero, Kshitij Gupta, Irina Rish, and David Krueger. Broken neural scaling laws.\narXiv preprint arXiv:2210.14891, 2022.\n[5] Stephanie CY Chan, Adam Santoro, Andrew Kyle Lampinen, Jane X Wang, Aaditya K Singh,\nPierre Harvey Richemond, James McClelland, and Felix Hill. Data distributional properties\ndrive emergent in-context learning in transformers. In Advances in Neural Information Pro-",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "cessing Systems, 2022.\n[6] Aakanksha Chowdhery, Sharan Narang, Jacob Devlin, Maarten Bosma, Gaurav Mishra, Adam\nRoberts, Paul Barham, Hyung Won Chung, Charles Sutton, Sebastian Gehrmann, et al. Palm:\nScaling language modeling with pathways. arXiv preprint arXiv:2204.02311, 2022.\n[7] Aidan Clark, Diego De Las Casas, Aurelia Guy, Arthur Mensch, Michela Paganini, Jordan\nHoffmann, Bogdan Damoc, Blake Hechtman, Trevor Cai, Sebastian Borgeaud, et al. Uniﬁed",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "scaling laws for routed language models. In International Conference on Machine Learning,\npages 4057–4086. PMLR, 2022.\n[8] Deep Ganguli, Danny Hernandez, Liane Lovitt, Amanda Askell, Yuntao Bai, Anna Chen, Tom\nConerly, Nova Dassarma, Dawn Drain, Nelson Elhage, et al. Predictability and surprise in large\ngenerative models. In 2022 ACM Conference on Fairness, Accountability, and Transparency,\npages 1747–1764, 2022.\n[9] Mitchell A Gordon, Kevin Duh, and Jared Kaplan. Data and parameter scaling laws for neural",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "machine translation. In Proceedings of the 2021 Conference on Empirical Methods in Natural\nLanguage Processing, pages 5915–5922, 2021.\n[10] Dan Hendrycks. Detecting emergent behavior. 2022.\n[11] Tom Henighan, Jared Kaplan, Mor Katz, Mark Chen, Christopher Hesse, Jacob Jackson, Hee-\nwoo Jun, Tom B Brown, Prafulla Dhariwal, Scott Gray, et al. Scaling laws for autoregressive\ngenerative modeling. arXiv preprint arXiv:2010.14701, 2020.\n[12] Danny Hernandez, Jared Kaplan, Tom Henighan, and Sam McCandlish.",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "Scaling laws for\ntransfer. arXiv preprint arXiv:2102.01293, 2021.\n[13] Joel Hestness, Sharan Narang, Newsha Ardalani, Gregory Diamos, Heewoo Jun, Hassan Kia-\nninejad, Md Patwary, Mostofa Ali, Yang Yang, and Yanqi Zhou. Deep learning scaling is\npredictable, empirically. arXiv preprint arXiv:1712.00409, 2017.\n[14] Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza\nRutherford, Diego de Las Casas, Lisa Anne Hendricks, Johannes Welbl, Aidan Clark, et al.",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "Training compute-optimal large language models. arXiv preprint arXiv:2203.15556, 2022.\n[15] Andy L Jones. Scaling scaling laws with board games. arXiv preprint arXiv:2104.03113,\n2021.\n[16] Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon\nChild, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural\nlanguage models. arXiv preprint arXiv:2001.08361, 2020.\n[17] Victoria Krakovna, Vikrant Varma, Ramana Kumar, and Mary Phuong. Reﬁning the sharp left",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "turn threat model, part 1: claims and mechanisms. 2022.\n[18] Victoria Krakovna, Vikrant Varma, Ramana Kumar, and Mary Phuong. Reﬁning the sharp left\nturn threat model, part 2: applying alignment techniques. 2022.\n[19] Alex Krizhevsky. Learning multiple layers of features from tiny images. Technical report,\n2009.\n10",
+      "source": "g_eval.pdf",
+      "page": 10,
+      "char_count": 316,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "[20] Brenden M Lake, Ruslan Salakhutdinov, and Joshua B Tenenbaum. Human-level concept\nlearning through probabilistic program induction. Science, 350(6266):1332–1338, 2015.\n[21] Yann LeCun. The mnist database of handwritten digits. http://yann. lecun. com/exdb/mnist/,\n1998.\n[22] Yann LeCun, L´eon Bottou, Yoshua Bengio, and Patrick Haffner.\nGradient-based learning\napplied to document recognition. Proceedings of the IEEE, 86(11):2278–2324, 1998.",
+      "source": "g_eval.pdf",
+      "page": 11,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "[23] Chin-Yew Lin. Rouge: A package for automatic evaluation of summaries. In Text summariza-\ntion branches out, pages 74–81, 2004.\n[24] Ryan Lowe and Jan Leike. Aligning language models to follow instructions. 2022.\n[25] Eric J. Michaud, Ziming Liu, Uzay Girit, and Max Tegmark. The quantization model of neural\nscaling, 2023.\n[26] Oren Neumann and Claudius Gros. Scaling laws for a multi-agent reinforcement learning\nmodel. arXiv preprint arXiv:2210.00849, 2022.",
+      "source": "g_eval.pdf",
+      "page": 11,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "model. arXiv preprint arXiv:2210.00849, 2022.\n[27] Jonathan S Rosenfeld, Amir Rosenfeld, Yonatan Belinkov, and Nir Shavit. A constructive\nprediction of the generalization error across scales. arXiv preprint arXiv:1909.12673, 2019.\n[28] Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, Abu Awal Md Shoeb, Abubakar Abid,\nAdam Fisch, Adam R Brown, Adam Santoro, Aditya Gupta, Adri`a Garriga-Alonso, et al.\nBeyond the imitation game: Quantifying and extrapolating the capabilities of language models.",
+      "source": "g_eval.pdf",
+      "page": 11,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "arXiv preprint arXiv:2206.04615, 2022.\n[29] Jacob Steinhardt. Future ml systems will be qualitatively different. 2022.\n[30] Romal Thoppilan, Daniel De Freitas, Jamie Hall, Noam Shazeer, Apoorv Kulshreshtha, Heng-\nTze Cheng, Alicia Jin, Taylor Bos, Leslie Baker, Yu Du, et al. Lamda: Language models for\ndialog applications. arXiv preprint arXiv:2201.08239, 2022.\n[31] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,",
+      "source": "g_eval.pdf",
+      "page": 11,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. Advances in neural information\nprocessing systems, 30, 2017.\n[32] Jason Wei. 137 emergent abilities of large language models. 2022.\n[33] Jason Wei, Yi Tay, Rishi Bommasani, Colin Raffel, Barret Zoph, Sebastian Borgeaud, Dani\nYogatama, Maarten Bosma, Denny Zhou, Donald Metzler, et al. Emergent abilities of large\nlanguage models. arXiv preprint arXiv:2206.07682, 2022.",
+      "source": "g_eval.pdf",
+      "page": 11,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "[34] Xiaohua Zhai, Alexander Kolesnikov, Neil Houlsby, and Lucas Beyer. Scaling vision trans-\nformers. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-\nnition, pages 12104–12113, 2022.\n11",
+      "source": "g_eval.pdf",
+      "page": 11,
+      "char_count": 218,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "A\nApproximate Behavior of Metrics on Sequential Data\nHow do different metrics behave when used to measure autoregressive model outputs? Precisely\nanswering this question is tricky and possibly analytically unsolvable, so we provide an approximate\nanswer here.\nNotationally, we consider N test data of length L (here, length is measured in tokens) with tar-\ngets denoted tn\ndef\n=(tn1, tn2, ...tnL), the autoregressive model has a true-but-unknown per-token er-",
+      "source": "g_eval.pdf",
+      "page": 12,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "ror probability of ϵ ∈[0, 1] and the model outputs prediction ˆtn\ndef\n=(ˆtn1, ˆtn2, ...ˆtnL). This assumes\nthat the model’s per-token error probability is constant, which is empirically false, but modeling the\ncomplex dependencies of errors is beyond our scope.\nA.1\nPer-Token Error Probability is Resolution-Limited\nNote that because we have N test data, each of length L, our resolution for viewing the per-token",
+      "source": "g_eval.pdf",
+      "page": 12,
+      "char_count": 413,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "error probability ϵ is limited by 1/NL. Here, resolution refers to “the smallest interval measurable\nby a scientiﬁc instrument; the resolving power.” To explain what resolution means via an example,\nsuppose one wants to measure a coin’s probability of yielding heads. After a single coin ﬂip, only\ntwo outcomes are possible (H, T), so the resolution-limited probability of heads is either 0 or 1. After\ntwo coin ﬂips, four outcomes are possible (HH, HT, TH, TT), so the resolution-limited probability",
+      "source": "g_eval.pdf",
+      "page": 12,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "of heads is now one of 0, 0.5, 1. After F coin ﬂips, we can only resolve the coin’s probability of\nyielding heads up to 1/F. Consequently, we introduce a resolution-limited notation:\n⌊a⌉b\ndef\n= a rounded to the nearest integer multiple of 1/b\n(3)\nA.2\nToken Edit Distance\nWe ﬁrst consider an adaptation of the Levenshtein (string edit) distance for models that function\non tokens rather than characters, an adaptation we term the token edit distance. The token edit",
+      "source": "g_eval.pdf",
+      "page": 12,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "distance between two token sequences tn, ˆtn is deﬁned as the integer number of additions, deletions\nor substitutions necessary to transform tn into ˆtn (or vice versa).\nToken Edit Distance(tn, ˆtn)\ndef\n= Num Substitutions + Num. Additions + Num. Deletions\n(4)\n=\nL\nX\nℓ=1\nI[tnℓ̸= ˆtnℓ] + Num. Additions + Num. Deletions\n(5)\n≥\nL\nX\nℓ=1\nI[tnℓ̸= ˆtnℓ]\n(6)\nThe expected token edit distance is therefore:\nE[Token Edit Distance(tn, ˆtn)] ≥E[\nL\nX\nℓ=1\nI[tnℓ̸= ˆtnℓ]]\n(7)\n=\nL\nX\nℓ=1\np(tnℓ̸= ˆtnℓ)\n(8)\n≈L(1 −ϵ)\n(9)",
+      "source": "g_eval.pdf",
+      "page": 12,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "(7)\n=\nL\nX\nℓ=1\np(tnℓ̸= ˆtnℓ)\n(8)\n≈L(1 −ϵ)\n(9)\nThe resolution-limited expected token edit distance is therefore:\n⌊E[Token Edit Distance(tn, ˆtn)]⌉NL ≥L\n\u0010\n1 −⌊ϵ⌉NL\n\u0011\n(10)\nFrom this, we see that the expected token edit distance scales approximately linearly with the\nresolution-limited per-token probability. The real rate is slightly higher than linear because addi-\ntions and deletions contribute an additional non-negative cost, but modeling this requires a model\n12",
+      "source": "g_eval.pdf",
+      "page": 12,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "of how likely the model is to overproduce or underproduce tokens, which is something we do not\ncurrently possess.\nA.3\nAccuracy\nAccuracy(tn, ˆtn)\ndef\n= I[No additions] I[No deletions]\nL\nY\nl=1\nI[tnl = ˆtnl]\n(11)\n≈\nL\nY\nl=1\nI[tnl = ˆtnl]\n(12)\nAs with the Token Edit Distance (App. A.3), we ignore how likely the language model is to over-\nproduce or underproduce tokens because we do not have a good model of this process. Continuing\nalong,\nE[log Accuracy] =\nX\nl\nE[log I[tnl = ˆtnl]]\n(13)\n≤\nX\nl\nlog E[I[tnl = ˆtnl]]",
+      "source": "g_eval.pdf",
+      "page": 13,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "(13)\n≤\nX\nl\nlog E[I[tnl = ˆtnl]]\n(14)\n≈L log(1 −ϵ)\n(15)\nTaking an approximation that would make most mathematicians cry:\nE[Accuracy] ≈exp(E[log Accuracy])\n(16)\n= (1 −ϵ)L\n(17)\n(18)\nThis reveals that accuracy approximately falls geometrically with target token length.\nThe\nresolution-limited expected accuracy is therefore:\n⌊E[Accuracy]⌉NL = ⌊(1 −ϵ)L⌉NL\n(19)\nFrom this we can see that choosing a nonlinear metric like Accuracy is affected signiﬁcantly more",
+      "source": "g_eval.pdf",
+      "page": 13,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "by limited resolution because Accuracy forces one to distinguish quantities that decay rapidly.\nA.4\nROUGE-L-Sum\nAnother BIG-Bench metric [28] is ROUGE-L-Sum [23], a metric based on the longest common\nsubsequence (LCS) between two sequences. Section 3.2 of [23] gives the exact deﬁnition, but the\nkey property is that ROUGE-L-Sum measures the “union” LCS, which means “stitching” together\nLCSs across the candidate and multiple references. As explained in the original paper: if the candi-",
+      "source": "g_eval.pdf",
+      "page": 13,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "date sequence is c = w1w2w3w4w5, and if there are two reference sequences r1 = w1w2w6w7w8\nand r2 = w1w3w8w9w5, then LCS(r1, c) = w1w2 and LCS(r2, c) = w1w3w5, then the union\n-LCS of c, r1, r2 is w1w2w3w5, with length 4. Intuitively, this disproportionately beneﬁts models\nwith smaller error rates because their mistakes can be “stitched” across multiple references; this is\nconﬁrmed in simulation (Fig. 9).\nB\nInducing Emergent Abilities in Networks on Vision Tasks\nB.1",
+      "source": "g_eval.pdf",
+      "page": 13,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "B.1\nEmergent Classiﬁcation of MNIST Handwritten Digits by Convolutional Networks\nWe begin by inducing an emergent classiﬁcation ability in a LeNet convolutional neural network\nfamily [22], trained on the MNIST handwritten digits dataset [21]. This family displays smoothly\n13",
+      "source": "g_eval.pdf",
+      "page": 13,
+      "char_count": 275,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "0.0\n0.2\n0.4\n0.6\n0.8\n1 - Per-Token Error Probability\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nROUGE-L-Sum\n10\n2\n10\n1\n100\n1 - Per-Token Error Probability\n10\n2\n10\n1\n100\nROUGE-L-Sum\nTarget String Length\n4\n20\n36\nNum. References\n1\n4\n7\nFigure 9: ROUGE-L-Sum is a sharp metric. Simulations show that as the per-token error proba-\nbility slightly increase (e.g. from 0.05 to 0.1), the ROUGE-L-Sum metric sharply falls.\n1021\n1022\n1023\nGPT-3 Model Parameters\n0.0\n0.1\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\nTest Accuracy\nPublished Emergent Ability",
+      "source": "g_eval.pdf",
+      "page": 14,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "0.6\n0.7\nTest Accuracy\nPublished Emergent Ability\nPublished Emergent Ability\n104\n105\nLeNet Model Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nTest Accuracy\nNo Emergent Ability\nNum. All Correct\n1\n104\n105\nLeNet Model Parameters\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nTest Accuracy\nMetric-Induced Emergent Ability\nNum. All Correct\n6\n8\n10\nFigure 10: Induced emergent MNIST classiﬁcation ability in convolutional networks. (A) A\npublished emergent ability from the BIG-Bench Grounded Mappings task [33]. (B) LeNet trained",
+      "source": "g_eval.pdf",
+      "page": 14,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "on MNIST [21] displays a predictable, commonplace sigmoidal increase in test accuracy as model\nparameters increase. (C) When accuracy is redeﬁned as correctly classifying K out of K indepen-\ndent test data, this newly deﬁned metric induces a seemingly unpredictable change.\nincreasing test accuracy as the number of parameters increase (Fig. 10B). To emulate the accuracy\nmetric used by emergence papers [8, 33, 28], we use subset accuracy: 1 if the network classiﬁes K",
+      "source": "g_eval.pdf",
+      "page": 14,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "out of K (independent) test data correctly, 0 otherwise. Under this deﬁnition of accuracy, the model\nfamily displays an “emergent” ability to correctly classify sets of MNIST digits as K increases from\n1 to 5, especially when combined with sparse sampling of model sizes (Fig. 10C). This convolutional\nfamily’s emergent classiﬁcation ability qualitatively matches published emergent abilities, e.g., at\nthe BIG-Bench Grounded Mappings task [33] (Fig. 10A).\n14",
+      "source": "g_eval.pdf",
+      "page": 14,
+      "char_count": 459,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

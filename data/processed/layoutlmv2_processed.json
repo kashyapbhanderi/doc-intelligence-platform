@@ -1,0 +1,876 @@
+{
+  "source": "layoutlmv2.pdf",
+  "full_path": "data\\raw\\layoutlmv2.pdf",
+  "total_pages": 13,
+  "text_chunks": 108,
+  "vision_chunks": 0,
+  "total_chunks": 108,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "WebSRC: A Dataset for Web-Based Structural Reading Comprehension\nXingyu Chen, Zihan Zhao, Lu Chen∗,\nJiabao JI, Danyang Zhang, Ao Luo, Yuxuan Xiong and Kai Yu∗\nX-LANCE Lab, Department of Computer Science and Engineering\nMoE Key Lab of Artiﬁcial Intelligence, AI Institute, Shanghai Jiao Tong University\nShanghai Jiao Tong University, Shanghai, China\nState Key Lab of Media Convergence Production Technology and Systems, Beijing, China\n{galaxychen, zhao_mengxin, chenlusz}@sjtu.edu.cn,",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "{galaxychen, zhao_mengxin, chenlusz}@sjtu.edu.cn,\n{sjcs_jijiabao, zhang-dy20, wenzelmetternich, xiongyx, kai.yu}@sjtu.edu.cn\nAbstract\nWeb search is an essential way for humans\nto obtain information, but it’s still a great\nchallenge for machines to understand the con-\ntents of web pages. In this paper, we intro-\nduce the task of structural reading compre-\nhension (SRC) on web.\nGiven a web page\nand a question about it, the task is to ﬁnd\nthe answer from the web page. This task re-",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "the answer from the web page. This task re-\nquires a system not only to understand the\nsemantics of texts but also the structure of\nthe web page. Moreover, we proposed Web-\nSRC, a novel Web-based Structural Reading\nComprehension dataset. WebSRC consists of\n400K question-answer pairs, which are col-\nlected from 6.4K web pages. Along with the\nQA pairs, corresponding HTML source code,\nscreenshots, and metadata are also provided\nin our dataset. Each question in WebSRC re-",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "in our dataset. Each question in WebSRC re-\nquires a certain structural understanding of a\nweb page to answer, and the answer is either a\ntext span on the web page or yes/no. We eval-\nuate various baselines on our dataset to show\nthe difﬁculty of our task. We also investigate\nthe usefulness of structural information and vi-\nsual features. Our dataset and baselines have\nbeen publicly available1.\n1\nIntroduction\nWeb pages are the most common source of human\nknowledge and daily information. With the help",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "knowledge and daily information. With the help\nof modern search engines, people can easily locate\nweb pages and ﬁnd information by simply typing\nsome keywords. However, traditional search en-\ngines only retrieve web pages related to the query\nand highlight the possible answers (Chen, 2018),\nthey can’t understand the web pages and answer the\nquery based on contents. The rapid development of\nquestion answering systems and knowledge graphs\nenables search engines to answer simple questions",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "enables search engines to answer simple questions\ndirectly (Chakraborty et al., 2019), but they still\n∗The corresponding authors are Lu Chen and Kai Yu.\n1https://x-lance.github.io/WebSRC/\nFigure 1: Examples for a web page. (a) is the original\nweb page. (b) is the HTML code for the content in the\nred box. Each HTML tag begins with a starting tag\nand ends with a closing tag (with a slash in tag). <td>\nstands for a table cell and <span> stands for a content",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "span. (c) shows the text extracted from the web page.\n(d) contains some sample questions for the web page.\nfail to perform question answering on arbitrary web\npages. The difﬁculty lies in the variety of web\npages and the complexity of the web layouts, which\nrequires a system not only to consider the text but\nalso the structures of web pages.\nThere are two kinds of structures for each web\npage: spatial structure and logical structure. The\nspatial structure is how the information is visually",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "organized, and the logical structure is how the in-\nformation is organized by semantics. Figure 1(a)\nshows the spatial structure of the web page, e.g.,\nhow the texts are arranged and what are their rela-\ntive positions. The logical structure can be deduced\nby the spatial structure and the semantics of the\ntexts. For example, this image introduces the infor-\narXiv:2101.09465v2  [cs.CL]  8 Nov 2021",
+      "source": "layoutlmv2.pdf",
+      "page": 1,
+      "char_count": 399,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "Datasets\n#domain\n#website\nTask\n#Query\nWith Image\nWEIR(Bronzi et al., 2013)\n4\n40\nClosedIE\n32\nNo\nSWDE(Hao et al., 2011)\n8\n80\nClosedIE\n32\nNo\nExpanded SWDE(Lockard et al., 2019)\n3\n21\nOpenIE\n748\nNo\nWebSRC(Ours)\n11\n70\nQA\n2735\nYes\nTable 1: The comparison with datasets with HTML. The query in ClosedIE is the attributes needed to be extracted,\nin OpenIE is predicates, and in WebSRC is the questions before data augmentation.\nmation about two cars, with car names at the top",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "mation about two cars, with car names at the top\nfollowed by the detailed speciﬁcations. A human\ncan easily answer the questions in Figure 1(d) by\nreferring to the relevant section in the logical struc-\nture. But for computers, it’s hard to understand the\nlogical structure by just taking the spatial structure\n(the image) as input due to the lack of common\nsense. Computers need to infer the answers from\nthe font size, the color and the spatial relations\nbetween texts, let alone they need to extract texts",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "from the image and understand them.\nAn alternative way is to utilize the text from web\npage. Figure 1(c) shows the texts extracted from\nFigure 1(a). As we can see, the layout structure is\nlost in the plain text, and the text is just a concatena-\ntion of short phrases without a meaningful context.\nIt would be difﬁcult to answer questions only based\non such texts. Besides texts, we can also parse the\nHTML (Hypertext Markup Language) document,\ni.e. the source code of the web page. It describes",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "the structure of the webs page and uses HTML ele-\nments (tags) to display the contents. We will use the\nterm tag and element in this paper interchangeably.\nFigure 1(b) shows the HTML code corresponding\nto the part of the web page highlighted in the red\nbox. HTML is a kind of semi-structured document\n(Buneman, 1997), where tags with different struc-\ntural semantics serve as separators. It’s also called\nthe “self-describing” structure. An HTML docu-\nment can be parsed into a tree-like structure called",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "DOM2 (Document Object Model), where the tree\nnodes are elements in the HTML, and texts are\nall leaf nodes in the tree. An HTML DOM tree\ncan serve as a structural representation of the web\npage, where visually similar items on the web page\nwould be sub-trees with similar structures. For ex-\nample in Figure 1, the HTML structure is identical\nfor the segment in the blue and red boxes. They\nare only different in the text. However, due to the\ncomplexity of rendering HTML code into a web",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "complexity of rendering HTML code into a web\npage, a single HTML would not be enough to rep-\n2https://en.wikipedia.org/wiki/Document_Object_Model\nresent the full logic structure of the web page. For\nexample, in Figure 1(b), the four <span> are in the\nsame spatial level of the DOM tree, but they play\ndifferent semantic roles in the web page, i.e. the\nﬁrst span indicates an attribute and the second con-\ntains the corresponding value. We need to leverage\nboth the visual and structural information to gain a",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "comprehensive understanding.\nTo promote researches in question answering on\nweb pages, we introduce WebSRC, a dataset for\nreading comprehension on structural web pages.\nThe task is to answer questions about web pages,\nwhich requires a system to have a comprehensive\nunderstanding of the spatial structure and logical\nstructure. WebSRC consists of 6.4K web pages\nand 400K question-answer pairs about web pages.\nFor each web page, we manually chose one seg-\nment from it and saved the corresponding HTML",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "ment from it and saved the corresponding HTML\ncode, screenshot, and metadata like positions and\nsizes. Questions in WebSRC were created for each\nsegment. Answers are either text spans from web\npages or yes/no. Taking the HTML code, screen-\nshot, metadata as well as question as input, a model\nis to predict the answer from the web page. The\ncomparison of WebSRC with other datasets with\nHTML documents is illustrated in Table 1. Our\ndataset is the only one that provides HTML docu-",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "dataset is the only one that provides HTML docu-\nments and images, and is larger in the number of\ndomains and queries.\nTo summarize, our contributions are as follows:\n• We proposed the task of structural reading\ncomprehension (SRC) on web, which is a\nmulti-modal machine reading comprehension\ntask that focuses on understanding texts and\nscreenshots on web pages.\n• We created a large dataset for web-based\nstructural reading comprehension consisting\nof 400K QAs and 6.4K web page segments,",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "of 400K QAs and 6.4K web page segments,\nwhere HTML code and additional visual fea-\ntures are also provided.\n• We evaluated several baselines on WebSRC",
+      "source": "layoutlmv2.pdf",
+      "page": 2,
+      "char_count": 150,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "and the results showed that WebSRC is highly\ndifferent from the existing textual QA datasets\nand is challenging even for the leading pre-\ntrained language model.\n2\nRelated Work\nMachine reading comprehension (MRC) models\nhave achieved excellent performance on plain text\ncorpus (Zeng et al., 2020) in recent years. Tra-\nditional datasets for machine reading comprehen-\nsion (Talmor et al., 2019; Yang et al., 2018; Ra-\njpurkar et al., 2016, 2018; Choi et al., 2018; Reddy",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "et al., 2019; Lai et al., 2017) contain plain text\npassages and QAs about them. However, HTML\ncode in the form of semi-structured documents is\ndifferent from the ordinary textual corpus. Re-\ncently, multi-modal MRC has gained the inter-\nest of researchers.\nMulti-modal MRC datasets\nwith both images and texts are proposed, such as\nMovieQA (Tapaswi et al., 2016), TQA (Kembhavi\net al., 2017), COMICS (Iyyer et al., 2017) and\nRecipeQA (Yagcioglu et al., 2018). Images in these",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "datasets provide different information from texts,\nand texts are supplementary descriptions for im-\nages. Text VQA (Mishra et al., 2019; Singh et al.,\n2019; Mathew et al., 2021) is a kind of VQA (vi-\nsual question answering) task (Antol et al., 2015),\nwhose task is to answer questions about a real-\nworld image, and questions in this task are about\nthe texts in the image. However, there is no existing\ntext or layout description available in the image,\nbut we can access them easily on web pages.",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "but we can access them easily on web pages.\nInformation extraction for web pages has been\ninvestigated intensively (Chang et al., 2006). Pre-\nvious studies mainly focus on building templates\nfor HTML DOM tree, called Wrapper Induction\n(Kushmerick, 2000; Flesca et al., 2004; Kushmer-\nick et al., 1997; Muslea et al., 1999), or using well\ndesigned visual features like font sizes, element\nsizes, and positions (Zhu et al., 2005, 2006). These\nmethods require abundant human labor to label tem-",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "plates and analyze features, which makes it hard to\ngeneralize to unseen websites. Chen et al. (2021)\nproposed a program synthesis based technique to\nextract web information. Some studies focused on\nrecognizing tables from web pages (Zanibbi et al.,\n2004) and tried to model the physical and logical\nstructure of tables in HTML, Zhang et al. (2020)\nproposed to use a graph to represent the table struc-\nture. Some web QA datasets are proposed (Dunn\net al., 2017; Joshi et al., 2017; Dhingra et al., 2017;",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "Li et al., 2016), but they only contain text snippets\nextracted from web pages. Bronzi et al. (2013)\nproposed a dataset called WEIR, consisting of 40\nwebsites from 4 domains. Hao et al. (2011) pro-\nposed SWDE, which contains 124,291 web pages\nfrom 80 websites, and Lockard et al. (2019) ex-\npanded SWDE for openIE. All these datasets only\ncontain HTML code for extraction, and the task is\nto extract pre-deﬁned attributes of entities in web\npages, e.g. the author of a book. Layout analysis",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "pages, e.g. the author of a book. Layout analysis\n(Binmakhashen and Mahmoud, 2019) is the task to\nanalyze document images like contracts, bills, and\nbusiness emails. IIT-CDIP (Lewis et al., 2006) and\nRVL-CDIP (Harley et al., 2015) are two datasets\ncollected for document classiﬁcation. Jaume et al.\n(2019) proposed FUNSD for form understanding\nand Huang et al. (2019) organized SROIE competi-\ntion for receipt understanding. PubLayNet (Zhong\net al., 2019) and DocBank (Li et al., 2020) are",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "et al., 2019) and DocBank (Li et al., 2020) are\nproposed to benchmark the task of layout recog-\nnition in academic papers. However, compared to\nthe images in the layout analysis task, web pages\nare much more complex in organizing information.\nThe terms to be recognized are relatively stable\nin layout analysis, while web pages may contain\nvarious information that is hard to be pre-deﬁned.\n3\nData Collection\nThe construction of our dataset consists of ﬁve\nstages: § 3.3 web page selection, § 3.4 web page",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "stages: § 3.3 web page selection, § 3.4 web page\ncollection, § 3.5 question labeling, § 3.6 data aug-\nmentation and § 3.7 ﬁnal review. We will describe\neach stage in detail below.\n3.1\nTask Deﬁnition\nThe task of structural machine reading comprehen-\nsion on web can be described as given the context C\nand a question q, predict the answer a. In our task,\nthe context can be HTML code, screenshots, and\nthe corresponding metadata. Denote the machine\nreading comprehension model as F, our task can",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "reading comprehension model as F, our task can\nbe formulated as:\nF(C, q) = a\n(1)\n3.2\nLocating text in HTML\nTo precisely locate the text in HTML, we ﬁrst de-\nﬁne the text of an HTML node: the text of an\nHTML node is the concatenation of texts in its de-\nscendant nodes in the DOM tree, where the order\nof texts is derived by the depth-ﬁrst search. With",
+      "source": "layoutlmv2.pdf",
+      "page": 3,
+      "char_count": 351,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "Figure 2: Examples for three types of web pages. (a) and (b) are web pages of type KV, (c) is a web page of type\ncomparison, (d) is a web page of type table.\nthis deﬁnition, a text can be located by the tag con-\ntaining the text, and the beginning position in the\ntext of the node.\n3.3\nWeb page selection\nIn this phase, we choose websites for further data\ncollecting. We are interested in the structure of the\nweb page, so in the web page selection phase, we\nonly focused on websites with a relatively complex",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "structure and that have abundant information for\nquestion answering. We didn’t choose websites\nwith long textual paragraphs like Wikipedia, where\nthe structure has little inﬂuence on understanding\nthe content. We started from the website list of the\nSWDE (Hao et al., 2011) dataset, which contains\n80 websites from 8 domains. Websites on the list\nthat are no longer available are dropped. We also\nexpanded our website list by searching the domain\nkeywords and selected the most relevant websites.",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "keywords and selected the most relevant websites.\nIn total, we obtained 70 websites from 11 domains.\nWe didn’t use the whole web page but only chose\nsome segments to build our dataset, because a com-\nplete web page may contain ads or additional struc-\ntures like navigation tabs, which brings too much\nnoise into the web page and makes the task much\nharder. We admit that in the real-world scenario\nwe have to deal with the full web page, but we\nconsider the problem of question-answering in full",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "web pages can be modeled as a two-stage process:\nﬁrst, ﬁnd the relevant segment in the web page and\nthen answer the question based on the segment. In\nthis work, we will focus on learning the structure\nof a given web page segment and leave the segment\nlocating problem as future work.\nThe choice of the segment is based on the type\nof web page. We category web pages into three\ntypes, KV, comparison, and table, according to\nthe different ways to display information. We will",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "discuss different types of websites in detail below.\nKV Information in this type of web page is pre-\nsented in the form of “key: value”, where the key is\nan attribute name and the value is the corresponding\nvalue. See Figure 2(a) and Figure 2(b) for illustra-\ntion. This kind of web page can be found from the\ndetail page of an entity, e.g. a car or a book. We\nchoose the section that describes attributes about\nthe entity from the web page.\nComparison This type is similar to type KV",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "Comparison This type is similar to type KV\nbut with a major difference: web pages of type\ncomparison contain several entities with the same\nattributes. For instance, in Figure 2(c), there are\ntwo cars with same attributes in the image and they\nform a comparison. We chose the segment that at\nleast contains a comparison between two objects.\nTable Web pages of this type use a table to\npresent information. A table contains the com-\nparison between rows naturally but unlike the type",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "comparison, it uses a uniﬁed header to represent\nattributes and each row in the table only contains\nvalues. Figure 2(d) shows the statistics table of\na basketball player. The segment we chose is the\ntable area on the web page.\n3.4\nWeb page collection\nWe recruited six computer science students with\nweb crawling experience to collect the web pages.\nWe ﬁrst rendered the website in the headless\nChrome browser, then for each segment, we man-\nually wrote extracting code to crawl it. We saved",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "ually wrote extracting code to crawl it. We saved\nthe corresponding HTML and the screenshot of the\nsegment, as well as additional metadata (including\nthe location and size of each tag, the color and font\nof texts). We used Selenium3 to collect all the data.\nFor segments of type comparison or type ta-\nble, we would drop some objects in comparison\n3https://www.seleniumhq.org/",
+      "source": "layoutlmv2.pdf",
+      "page": 4,
+      "char_count": 376,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "Figure 3: The pipeline for labeling questions and augmenting data.\nor delete some rows in the table if the size of the\nsegment is too large. We crawled homogeneous\nsegments from 100 web pages under each website,\neach of them shares a common HTML structure\nbut with different content. We obtained 6447 web\npages after dropping some invalid web pages. We\nremoved all non-ascii characters and extra spaces\nin HTML. Tags that have little inﬂuence on HTML\nstructure are removed, including the <script> and",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "structure are removed, including the <script> and\nthe <style>. Properties of HTML tags are also re-\nmoved except for class, id, title and aria-label, for\nthese properties often serve as descriptions of a tag.\nWe added an additional attribute called tid to all\ntags, which was used in locating tags with answers.\n3.5\nQuestion Labeling\nWe recruited three annotators to label questions\nand answers for each crawled segment. We showed\nscreenshots to annotators and asked them to create",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "questions about the content on the image. All ques-\ntions should be answerable by the screenshot, and\nthe answer should be a text shown in the image or\nyes/no. We asked annotators to create questions in\nthe following style:\n• Ask questions about certain key-value pair.\nFor example in Figure 2 (a), what’s the engine\nspeciﬁcation of this car?\n• Ask questions about certain object in the com-\nparison. For example in Figure 2 (c), what’s\nthe price of Audi A5?\n• Ask questions about a cell value in the table.",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "• Ask questions about a cell value in the table.\nFor the table example in Figure 2 (d), what’s\nthe GP score in 2017-18?\n• Ask questions with condition. For example\nin Figure 2 (c), what’s the price of the white\ncar? with a condition \"white\".\n• Ask yes/no questions for confusing terms. For\nexample in Figure 2 (b), Is the storage 32GB?\nasks about the storage size which is similar to\nthe RAM.\nWe also asked annotators to label the answer\nin the HTML, including the answer text, the tag",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "in the HTML, including the answer text, the tag\ncontaining the answer (represented using tid) and\nthe beginning position of the answer in the text\nof the answer tag. When creating questions, we\nalso encourage annotators to ask questions that are\nmeaningful from an actual end user’s perspective.\nWe asked a different annotator to check if the\nquestion is followed one of the styles above and if\nthe answer is a valid text in the segment or yes/no.\nWe collected 460 unique questions for all segments,",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "and we called these questions meta-questions.\nTo enhance the diversity of question expression,\nwe published a question rewriting task on Amazon\nMechanical Turk (AMT) to polish meta-questions.\nWorkers on AMT were shown a screenshot and\na meta-question with the answer, and their task\nis to rewrite the given question without changing\nthe meaning. We encouraged the worker to use\nmore complex expressions and use synonyms for\nattributes if possible. Each worker should create",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "attributes if possible. Each worker should create\nthree different versions of meta-questions. 191\nworkers participated in the rewriting task, and",
+      "source": "layoutlmv2.pdf",
+      "page": 5,
+      "char_count": 145,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "we asked another four annotators to ﬁlter ques-\ntions with obvious grammar errors and inconsistent\nmeaning. About 10% questions are dropped after\nreview. Examples of rewritten questions are shown\nin Figure 3. As we can see, annotators may change\nthe way of asking, introduce subjunctive mood or\nchange the question to an imperative sentence. We\ncollected 2735 questions at this stage.\n3.6\nData Augmentation\nAlthough the structure of different websites varies\na lot, web pages under the same website have a",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "a lot, web pages under the same website have a\nsimilar structure. In this phase, we automatically\napplied collected questions to all homogeneous\nweb pages. For each question, we manually created\nextracting rules to identify answers on different\nweb pages. We generate new QA pairs for all web\npages by replacing the original answer with the\nanswer extracted from the homogeneous web page.\nIf a question contains a speciﬁc entity name, e.g. a\ncar name in the comparison, we also replace it with",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "the actual entity on the corresponding web page.\nAfter data augmentation, we obtained 400498\nquestion-answer pairs in total. The whole process\nof question labeling and data augmentation is illus-\ntrated in Figure 3.\n3.7\nFinal review\nWe wrote tests for the dataset to check the correct-\nness of the label, the completeness of saved ﬁles\nand the format of dataset. We also sample 100\nQA pairs from each website and asked four experi-\nenced annotators to double-check the correctness",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "enced annotators to double-check the correctness\nof semantics, e.g. whether the answer matches the\nquestion, whether the question is suitable for the\nweb page. Cases with errors would send back to\nannotators for a new round of labeling.\n4\nDataset Analysis\nIn this section, we conduct throughout analysis of\nWebSRC. We only show some major results here\nand for more statistics please refer to Appendix A.\n4.1\nDataset statistics\nType\n#website\n#webpage\n#QA\nKV\n34\n3207\n168606\nComparison\n15\n1339\n68578\nTable\n21\n1901",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "168606\nComparison\n15\n1339\n68578\nTable\n21\n1901\n163314\nTable 2: Statistics of different types of websites.\nThe statistics of different types of websites are\nshown in Table 2. The most common type of web-\nsite is type KV, which accounts for about a half.\nThe least type of website is type comparison with\nonly 17% of the total websites. For we can generate\nquestions for each value in a table, the proportion\nof QA pairs of type table is much bigger than its\nproportion of websites, which is about 40%.\n4.2",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "proportion of websites, which is about 40%.\n4.2\nQAs in WebSRC\nWebSRC consists of two kinds of questions: wh-\nquestions and yes-no questions. Questions starting\nwith “what” are the most common questions, and\nquestions starting with “what is the” account for\n29.3% of the whole dataset. As for yes-no ques-\ntions, words like Is, Can and Does are strong indi-\ncators. The average length of questions is 8.26.\nAnswers in WebSRC are relatively short,\n86.78% of which are within 3 words and 55.21%",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "86.78% of which are within 3 words and 55.21%\nanswers have only one word. However, a text that\nis visually a whole may be scattered in multiple\nHTML tags. The example shown in Figure 1 illus-\ntrates this phenomenon. The line “21 / 26 mpg”\nis separated by “<span>” tags. Besides, a tag\nmay contain additional texts except for the answer.\nFor example, the answer to the second question\nin Figure 1 is a sub-span of whole tag text 2L\n184hp@4800 In-Line 4. About 2.35% answers are",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "184hp@4800 In-Line 4. About 2.35% answers are\ndistributed in multiple tags and 13.21% answers\nare sub-spans of the text of HTML nodes.\n5\nBaseline Models\nWe propose three baseline models for WebSRC.\nThey take different kinds of context into considera-\ntion. We describe these models in detail below.\n5.1\nPre-trained Language Model with Text\n(T-PLM)\nIn the ﬁrst baseline, we convert the HTML code\ninto non-structural pure text by simply deleting\nall HTML tags, and utilize Pre-trained Language",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "all HTML tags, and utilize Pre-trained Language\nModels (PLM), e.g. BERT (Devlin et al., 2019),\nto predict answer spans. We regard it as an extrac-\ntive QA task. We add two additional words yes\nand no to the end of context for yes-no questions\nprediction. Here the context C in Eq. (1) is the\nresulting plain text. The resulting plain text and the\ncorresponding question are concatenated to form\nthe input sequence x. Then the probability distri-\nbutions for each token to be the start token and the",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "end token of the answer span can be obtained as",
+      "source": "layoutlmv2.pdf",
+      "page": 6,
+      "char_count": 47,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "follows:\nZ = PLM (x) ,\n(2)\nps, pe ∝SoftMax (Linear (Z)) ,\n(3)\nwhere Z is the resulting sequence representation\ncalculated by PLM; ps and pe are start and end\ndistributions. We use cross-entropy as our objective\nfunction.\nIn addition, after obtaining the predicted answer\nspans, we go over the HTML code again to ﬁnd\nthe tightest tag that contains the whole answer and\ntake it as the predicted answer tag.\n5.2\nPre-trained Language Model with HTML\n(H-PLM)\nIn the second baseline, we incorporate HTML tags",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "In the second baseline, we incorporate HTML tags\ninto PLM. We called this baseline H-PLM. The\nmodel architecture of H-PLM is identical to T-\nPLM, the only difference is we use HTML doc-\numents with HTML tags as our context C. To deal\nwith the HTML tags, we remove all attributes, leav-\ning the angle brackets, tag names, and the possible\nslashes unchanged. The resulting tag sequence\nlooks like <div>, <img/>, </p>, etc. We treat\nthese HTML tags as new special tokens in the se-",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "these HTML tags as new special tokens in the se-\nquence and randomly initialize their embedding for\ntraining.\n5.3\nVisual Information Enhanced\nPre-trained Language Model (V-PLM)\nAs introduced in Section 1, HTML is not enough to\nrepresent the whole web structure. In the third base-\nline, we take the visual information from web pages\ninto consideration. We call this model V-PLM. It\nconsists of three parts: PLM, visual information\nenhanced self-attention blocks, and a classiﬁcation\nlayer.",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "layer.\nFor each tag in HTML, we can use the bound-\ning box provided in meta data to locate the tag in\nscreenshot and obtain the visual embedding using\nthe Faster R-CNN (Ren et al., 2016). We concate-\nnate output hidden state Z from H-PLM with the\ncorresponding visual embeddings, where tokens\nwithin the same tag share the same visual embed-\nding. For the example in Figure 1, the visual em-\nbeddings of <span>, Fuel, Economy, </span> are\nall the same. For other special tokens and tokens",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "all the same. For other special tokens and tokens\nin the question, their visual embeddings are zero\nvectors.\nThe concatenated embedding is then fed into a\nself-attention block (Vaswani et al., 2017), which\nis repeated N times. We repeat the concatenation\nprocedure between each self-attention block. The\nﬁnal representation is then sent to the classiﬁcation\nlayer to produce the starting and ending probability\ndistribution, which is the same as H-PLM.\n6\nExperiments\n6.1\nDataset Splits",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "6\nExperiments\n6.1\nDataset Splits\nWe manually divide our dataset into train/dev/test\nsets at the website level, where the training set con-\ntains 50 websites, dev and test contain 10 websites\nrespectively. Both the dev set and the test set have\nall three types of websites and have a similar distri-\nbution of website types. The detailed statistics of\neach set are shown in Table 3.\nSplit\n#website\n#webpage\n#QA\nTrain\n50\n4549\n307315\nDev\n10\n913\n52826\nTest\n10\n985\n40357\nTable 3: Statistics of dataset splits.\n6.2",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "40357\nTable 3: Statistics of dataset splits.\n6.2\nEvaluate Metrics\nWe use three kinds of metrics for evaluation.\nExact match (EM) This metric is used to eval-\nuate whether a predicted answer is completely the\nsame as the ground truth. It will be challenging for\nthose answers that are only part of the tag text.\nF1 score (F1) This metric measures the overlap\nof the predicted answer and the ground truth. We\nsplit the answer and ground truth into tokens and\ncompute the F1 score on them.",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "compute the F1 score on them.\nPath overlap score (POS) When the model pre-\ndicts an answer from a wrong tag but the text of\nthe answer is identical to the ground truth, the ex-\nact match and F1 score will fail. Therefore we\nintroduce path overlap score, a tag level metric\nthat evaluates the accuracy in structure. An HTML\ndocument is a DOM tree, so for every tag, there\nexists a unique path from the root <HTML> el-\nement to the tag. We compute the path overlap\nscore (POS) between path p1 and p2 as following:",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "score (POS) between path p1 and p2 as following:\nPOS = |P1∩P2|\n|P1∪P2|, where P1 and P2 are the sets of\nelements in the path p1 and p2 respectively. | · |\ndenotes the size of a set.\n6.3\nExperiment Setup\nWe train our baselines on the training set and se-\nlect the best models on the dev set based on the",
+      "source": "layoutlmv2.pdf",
+      "page": 7,
+      "char_count": 302,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "Models\nw/ text\nw/ tag\nw/ screenshot\nDEV\nTEST\nEM\nF1\nPOS\nEM\nF1\nPOS\nT-PLM (BERT)\n√\n52.12\n61.57\n79.74\n39.28\n49.49\n67.68\nH-PLM (BERT)\n√\n√\n61.51\n67.04\n82.97\n52.61\n59.88\n76.13\nV-PLM (BERT)\n√\n√\n√\n62.07\n66.66\n83.64\n52.84\n60.80\n76.39\nT-PLM (ELECTRA)\n√\n61.67\n69.85\n84.15\n56.32\n72.35\n79.18\nH-PLM (ELECTRA)\n√\n√\n70.12\n74.14\n86.33\n66.29\n72.21\n83.17\nV-PLM (ELECTRA)\n√\n√\n√\n73.22\n76.16\n87.06\n68.07\n75.25\n84.96\nTable 4: Experimental results of various baselines on dev and test sets. EM stands for exact match score, and POS",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "stands for path overlap score.\nexact match score. We use uncased BERT-Base\nand ELECTRA-Large (Clark et al., 2020) as our\nbackbone PLM models. The learning rate is 1e-\n5. The batch size is 32. We use Adam optimizer\nwith a linear scheduler. For V-PLM, the number of\nself-attention blocks is 3.\n6.4\nResults & Discussion\nFigure 4: The performance (EM score) comparison\nof three baselines on 10 different websites on dev set.\nThese websites fall into three categories: KV, Table,\nand Comparison.",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "and Comparison.\nThe experimental results are shown in Table 4.\nWe can ﬁnd that no matter which PLM is used, the\nmore context information (i.e. text, HTML tag,\nscreenshot) yields better performance. Speciﬁcally,\ncomparing H-PLM with T-PLM, we ﬁnd that H-\nPLM outperforms T-PLM by a large margin. The\ntag information in H-PLM can implicitly model\nthe visual structure of web pages to some degree.\nComparing V-PLM with H-PLM, we ﬁnd that V-\nPLM can outperform H-PLM in almost all metrics,",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "PLM can outperform H-PLM in almost all metrics,\nwhich means explicit visual features can provide\nadditional structural information. However, we can\nalso ﬁnd that the improvement of performance is\nnot very large. This is because the Faster-RCNN\ntoolkit used here is pre-trained on nature images.\nIt may not well apply to screenshots of web pages.\nIn the future, there is a lot of room for exploration\nof how to make good use of visual information.\nFrom Table 4, we can also ﬁnd that ELECTRA-",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "From Table 4, we can also ﬁnd that ELECTRA-\nbased models consistently outperform BERT-based\nmodels. ELECTRA is the best single pre-trained\nmodel on text-based MRC tasks, e.g. SQuAD2.0\n(Rajpurkar et al., 2018). However, ELECTRA can\nachieve about 80 EM score on SQuAD2.0, while it\ncan only achieve about 60 EM score on WebSRC.\nIt indicates that WebSRC is still challenging for the\ncurrent pre-trained language models.\nIn Figure 4, we further compare the performance",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "In Figure 4, we further compare the performance\nof three baseline models on different websites. We\nﬁnd that on three websites, i.e. game10, sport09,\nand auto08, H-PLM and V-PLM outperform T-\nPLM with a large margin.\nBoth game10 and\nsport09 fall into the category of table, and auto08\nfalls into the category of comparison. We consider\nin comparison and table websites, plain text is not\nenough to answer questions and more structural\ninformation is needed. Generally, to gain good",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "information is needed. Generally, to gain good\nperformance on table and comparison web pages,\nmodels should have a good understanding of the\nglobal structure of web pages as well as the seman-\ntic of contents. From Figure 4, we can also ﬁnd\nthat among three types of web pages, these models\nperform worst on table.\nMethod/Metric\n#EM\n#F1\n#POS\nT-PLM-SQuAD\n29.68\n42.91\n62.75\nT-PLM\n54.55\n65.28\n76.44\nH-PLM\n61.83\n68.24\n78.38\nV-PLM\n64.71\n69.26\n82.81\nTable 5: Results for SQuAD model.",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "69.26\n82.81\nTable 5: Results for SQuAD model.\nThough the result has shown the difﬁculty of our\ndataset, we also wonder about the performance on\nour dataset of the model that does well on large-\nscale QA datasets. We ﬁne-tuned a pre-trained\nBERT-Base model on SQuAD 2.0 dataset, and then\nuse the parameters to initialize our baselines. For\nH-PLM and V-PLM we still randomly initialize the\ntag embedding and visual information enhanced\nself-attention blocks. The SQuAD model we used",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "self-attention blocks. The SQuAD model we used\ncan achieve an exact match score of 71 in SQuAD.\nThe result is shown in table 5. In the ﬁrst row,",
+      "source": "layoutlmv2.pdf",
+      "page": 8,
+      "char_count": 144,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "Figure 5: Case Study. The true answers are marked by green boxes, and the answers predicted by the model are\nmarked by red boxes.\nwe report the result of the SQuAD model on our\ndataset without ﬁne-tuning. The exact match score\nis only 29.68, which means the texts from HTML\nare highly different from the normal textual pas-\nsages. Though the ﬁne-tuned models almost outper-\nform the version without pretraining in all metrics,\nthere is still a large gap between their performance",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "in the textual QA dataset, which means we need\nmore advanced technology to model the HTML\nstructure.\n6.5\nCase Study\nTo further analyze the behaviors of our models,\nwe select two images from our dataset and list the\npredictions made by baselines with a BERT back-\nbone. The result is shown in Figure 5. The image\non the left shows information about two univer-\nsities. The question asked the tuition of the ﬁrst\nuniversity but none of the three baselines made the",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "right prediction. T-PLM predicted a longer string\nother than a raw price because there is no clear\nboundary of contents in the plain text, while in\nHTML the tags are natural separators for contents.\nH-PLM and V-PLM successfully fetched the en-\ntire ﬁeld of Net Price, but they failed to model the\ncorrespondence between attributes and schools and\nchose the wrong tuition. The right screenshot is\nfrom a movie website, and the question is about\nthe length of the movie. There is no leading text",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "the length of the movie. There is no leading text\nindicating which part would be the length, so the\nmodels need to infer the answer from structural\ninformation. Both T-PLM and H-PLM predicted\nthe name of the movie, which means they failed\nto recognize the time information from plain text\nor HTML. V-PLM can leverage the visual hints\nand located the right answer. These two examples\nshow that in order to make a comprehensive under-\nstanding of web page, a model should be able to",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "standing of web page, a model should be able to\nunderstand the visual layout, and group the infor-\nmation correctly according to the spatial structure.\n7\nConclusion\nIn this paper, we introduce WebSRC, a multi-modal\ndataset for web-based structural reading compre-\nhension with both HTML documents and screen-\nshots. The task is to answer questions about the\nweb pages. We evaluate several baselines on our\ndataset, and the results showed that incorporating\nlayout features with textual contents is crucial to",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "web understanding, but how to utilize such struc-\ntural information requires further investigation. We\nhope this work can push the research on web-based\nstructural reading comprehension forward. In the\nfuture, we will go beyond web pages to explore\nmore structural reading comprehension tasks.\nAcknowledgments\nWe sincerely thank the anonymous reviewers\nfor their valuable comments.\nThis work has\nbeen supported by the China NSFC Projects (No.\n62120106006 and No. 62106142), CCF-Tencent",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "62120106006 and No. 62106142), CCF-Tencent\nOpen Fund and Startup Fund for Youngman Re-\nsearch at SJTU (SFYR at SJTU).",
+      "source": "layoutlmv2.pdf",
+      "page": 9,
+      "char_count": 117,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "References\nStanislaw Antol, Aishwarya Agrawal, Jiasen Lu, Mar-\ngaret Mitchell, Dhruv Batra, C. Lawrence Zitnick,\nand Devi Parikh. 2015. VQA: Visual Question An-\nswering. In International Conference on Computer\nVision (ICCV).\nGalal M Binmakhashen and Sabri A Mahmoud. 2019.\nDocument layout analysis: A comprehensive survey.\nACM Computing Surveys (CSUR), 52(6):1–36.\nMirko Bronzi, Valter Crescenzi, Paolo Merialdo, and\nPaolo Papotti. 2013. Extraction and integration of",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "partially overlapping web sources. Proceedings of\nthe VLDB Endowment, 6(10):805–816.\nPeter Buneman. 1997. Semistructured data. In Pro-\nceedings of the sixteenth ACM SIGACT-SIGMOD-\nSIGART symposium on Principles of database sys-\ntems, pages 117–121.\nNilesh Chakraborty, Denis Lukovnikov, Gaurav Ma-\nheshwari, Priyansh Trivedi, Jens Lehmann, and Asja\nFischer. 2019. Introduction to neural network based\napproaches for question answering over knowledge\ngraphs. arXiv preprint arXiv:1907.09361.",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "graphs. arXiv preprint arXiv:1907.09361.\nChia-Hui Chang, Mohammed Kayed, Moheb R Gir-\ngis, and Khaled F Shaalan. 2006. A survey of web\ninformation extraction systems. IEEE transactions\non knowledge and data engineering, 18(10):1411–\n1428.\nDanqi Chen. 2018. Neural reading comprehension and\nbeyond. Stanford University.\nQiaochu Chen, Aaron Lamoreaux, Xinyu Wang, Greg\nDurrett, Osbert Bastani, and Isil Dillig. 2021. Web\nQuestion Answering with Neurosymbolic Program",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "Question Answering with Neurosymbolic Program\nSynthesis, page 328–343. Association for Comput-\ning Machinery, New York, NY, USA.\nEunsol Choi, He He, Mohit Iyyer, Mark Yatskar, Wen-\ntau Yih, Yejin Choi, Percy Liang, and Luke Zettle-\nmoyer. 2018. Quac: Question answering in context.\nIn Proceedings of the 2018 Conference on Empiri-\ncal Methods in Natural Language Processing, pages\n2174–2184.\nKevin Clark, Minh-Thang Luong, Quoc V. Le, and\nChristopher D. Manning. 2020.\nELECTRA: Pre-",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "Christopher D. Manning. 2020.\nELECTRA: Pre-\ntraining text encoders as discriminators rather than\ngenerators. In ICLR.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2019.\nBert: Pre-training of\ndeep bidirectional transformers for language under-\nstanding. In Proceedings of the 2019 Conference of\nthe North American Chapter of the Association for\nComputational Linguistics: Human Language Tech-\nnologies, Volume 1 (Long and Short Papers), pages\n4171–4186.",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "4171–4186.\nBhuwan Dhingra, Kathryn Mazaitis, and William W\nCohen. 2017.\nQuasar: Datasets for question an-\nswering by search and reading.\narXiv preprint\narXiv:1707.03904.\nMatthew Dunn, Levent Sagun, Mike Higgins, V Ugur\nGuney, Volkan Cirik, and Kyunghyun Cho. 2017.\nSearchqa:\nA new q&a dataset augmented with\ncontext from a search engine.\narXiv preprint\narXiv:1704.05179.\nSergio Flesca, Giuseppe Manco, Elio Masciari, Euge-\nnio Rende, and Andrea Tagarelli. 2004. Web wrap-",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "nio Rende, and Andrea Tagarelli. 2004. Web wrap-\nper induction: a brief survey. AI communications,\n17(2):57–61.\nQiang Hao, Rui Cai, Yanwei Pang, and Lei Zhang.\n2011. From one tree to a forest: a uniﬁed solution\nfor structured web data extraction. In Proceedings\nof the 34th international ACM SIGIR conference on\nResearch and development in Information Retrieval,\npages 775–784.\nAdam W. Harley, Alex Ufkes, and Konstantinos G. Der-\npanis. 2015. Evaluation of deep convolutional nets",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "for document image classiﬁcation and retrieval. In\n13th International Conference on Document Analy-\nsis and Recognition, ICDAR 2015, Nancy, France,\nAugust 23-26, 2015, pages 991–995. IEEE Com-\nputer Society.\nZheng Huang, Kai Chen, Jianhua He, Xiang Bai, Di-\nmosthenis Karatzas, Shijian Lu, and C. V. Jawahar.\n2019. ICDAR2019 competition on scanned receipt\nOCR and information extraction. In 2019 Interna-\ntional Conference on Document Analysis and Recog-\nnition, ICDAR 2019, Sydney, Australia, September",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "nition, ICDAR 2019, Sydney, Australia, September\n20-25, 2019, pages 1516–1520. IEEE.\nMohit Iyyer, Varun Manjunatha, Anupam Guha, Yog-\narshi Vyas, Jordan Boyd-Graber, Hal Daume, and\nLarry S Davis. 2017. The amazing mysteries of the\ngutter: Drawing inferences between panels in comic\nbook narratives. In Proceedings of the IEEE Confer-\nence on Computer Vision and Pattern Recognition,\npages 7186–7195.\nGuillaume Jaume, Hazim Kemal Ekenel, and Jean-\nPhilippe Thiran. 2019. FUNSD: A dataset for form",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "Philippe Thiran. 2019. FUNSD: A dataset for form\nunderstanding in noisy scanned documents. In 2nd\nInternational Workshop on Open Services and Tools\nfor Document Analysis, OST@ICDAR 2019, Sydney,\nAustralia, September 22-25, 2019, pages 1–6. IEEE.\nMandar Joshi, Eunsol Choi, Daniel Weld, and Luke\nZettlemoyer. 2017.\nTriviaQA: A large scale dis-\ntantly supervised challenge dataset for reading com-\nprehension. In Proceedings of the 55th Annual Meet-\ning of the Association for Computational Linguistics",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "(Volume 1: Long Papers), pages 1601–1611, Van-\ncouver, Canada. Association for Computational Lin-\nguistics.\nAniruddha Kembhavi, Minjoon Seo, Dustin Schwenk,\nJonghyun Choi, Ali Farhadi, and Hannaneh Ha-\njishirzi. 2017. Are you smarter than a sixth grader?",
+      "source": "layoutlmv2.pdf",
+      "page": 10,
+      "char_count": 254,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "textbook question answering for multimodal ma-\nchine comprehension. In Proceedings of the IEEE\nConference on Computer Vision and Pattern Recog-\nnition, pages 4999–5007.\nNicholas Kushmerick. 2000. Wrapper induction: Ef-\nﬁciency and expressiveness. Artiﬁcial intelligence,\n118(1-2):15–68.\nNicholas Kushmerick, Daniel S Weld, and Robert\nDoorenbos. 1997. Wrapper induction for informa-\ntion extraction. University of Washington Washing-\nton.\nGuokun Lai, Qizhe Xie, Hanxiao Liu, Yiming Yang,",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "Guokun Lai, Qizhe Xie, Hanxiao Liu, Yiming Yang,\nand Eduard Hovy. 2017. Race: Large-scale reading\ncomprehension dataset from examinations. In Pro-\nceedings of the 2017 Conference on Empirical Meth-\nods in Natural Language Processing, pages 785–\n794.\nDavid D. Lewis, Gady Agam, Shlomo Argamon, Ophir\nFrieder, David A. Grossman, and Jefferson Heard.\n2006. Building a test collection for complex docu-\nment information processing. In SIGIR 2006: Pro-\nceedings of the 29th Annual International ACM SI-",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "ceedings of the 29th Annual International ACM SI-\nGIR Conference on Research and Development in In-\nformation Retrieval, Seattle, Washington, USA, Au-\ngust 6-11, 2006, pages 665–666. ACM.\nMinghao Li, Yiheng Xu, Lei Cui, Shaohan Huang,\nFuru Wei, Zhoujun Li, and Ming Zhou. 2020.\nDocbank: A benchmark dataset for document lay-\nout analysis.\nIn Proceedings of the 28th Inter-\nnational Conference on Computational Linguistics,\npages 949–960.\nPeng Li, Wei Li, Zhengyan He, Xuguang Wang, Ying",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "Peng Li, Wei Li, Zhengyan He, Xuguang Wang, Ying\nCao, Jie Zhou, and Wei Xu. 2016.\nDataset and\nneural recurrent sequence labeling model for open-\ndomain factoid question answering. arXiv preprint\narXiv:1607.06275.\nColin Lockard, Prashant Shiralkar, and Xin Luna Dong.\n2019. Openceres: When open information extrac-\ntion meets the semi-structured web.\nIn Proceed-\nings of the 2019 Conference of the North American\nChapter of the Association for Computational Lin-\nguistics: Human Language Technologies, Volume 1",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "guistics: Human Language Technologies, Volume 1\n(Long and Short Papers), pages 3047–3056.\nMinesh Mathew, Dimosthenis Karatzas, and C.V. Jawa-\nhar. 2021. Docvqa: A dataset for vqa on document\nimages. In WACV, pages 2200–2209.\nAnand Mishra, Shashank Shekhar, Ajeet Kumar Singh,\nand Anirban Chakraborty. 2019.\nOcr-vqa: Visual\nquestion answering by reading text in images.\nIn\nICDAR.\nIon Muslea, Steve Minton, and Craig Knoblock. 1999.\nA hierarchical approach to wrapper induction.\nIn",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "A hierarchical approach to wrapper induction.\nIn\nProceedings of the third annual conference on Au-\ntonomous Agents, pages 190–197.\nPranav Rajpurkar, Robin Jia, and Percy Liang. 2018.\nKnow what you don’t know: Unanswerable ques-\ntions for squad. In Proceedings of the 56th Annual\nMeeting of the Association for Computational Lin-\nguistics (Volume 2: Short Papers), pages 784–789.\nPranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and\nPercy Liang. 2016. Squad: 100,000+ questions for",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "Percy Liang. 2016. Squad: 100,000+ questions for\nmachine comprehension of text. In Proceedings of\nthe 2016 Conference on Empirical Methods in Natu-\nral Language Processing, pages 2383–2392.\nSiva Reddy, Danqi Chen, and Christopher D Manning.\n2019. Coqa: A conversational question answering\nchallenge. Transactions of the Association for Com-\nputational Linguistics, 7:249–266.\nShaoqing Ren, Kaiming He, Ross Girshick, and Jian\nSun. 2016.\nFaster r-cnn: Towards real-time ob-",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Sun. 2016.\nFaster r-cnn: Towards real-time ob-\nject detection with region proposal networks. IEEE\ntransactions on pattern analysis and machine intelli-\ngence, 39(6):1137–1149.\nAmanpreet Singh,\nVivek Natarajan,\nMeet Shah,\nYu Jiang, Xinlei Chen, Dhruv Batra, Devi Parikh,\nand Marcus Rohrbach. 2019. Towards vqa models\nthat can read. In Proceedings of the IEEE Confer-\nence on Computer Vision and Pattern Recognition,\npages 8317–8326.\nAlon Talmor, Jonathan Herzig, Nicholas Lourie, and",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "Jonathan Berant. 2019. Commonsenseqa: A ques-\ntion answering challenge targeting commonsense\nknowledge. In Proceedings of the 2019 Conference\nof the North American Chapter of the Association\nfor Computational Linguistics: Human Language\nTechnologies, Volume 1 (Long and Short Papers),\npages 4149–4158.\nMakarand Tapaswi, Yukun Zhu, Rainer Stiefelhagen,\nAntonio Torralba, Raquel Urtasun, and Sanja Fidler.\n2016.\nMovieqa: Understanding stories in movies\nthrough question-answering. In Proceedings of the",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "through question-answering. In Proceedings of the\nIEEE conference on computer vision and pattern\nrecognition, pages 4631–4640.\nAshish Vaswani, Noam Shazeer, Niki Parmar, Jakob\nUszkoreit, Llion Jones, Aidan N Gomez, Łukasz\nKaiser, and Illia Polosukhin. 2017. Attention is all\nyou need. In Advances in neural information pro-\ncessing systems, pages 5998–6008.\nSemih Yagcioglu, Aykut Erdem, Erkut Erdem, and Na-\nzli Ikizler-Cinbis. 2018.\nRecipeqa: A challenge\ndataset for multimodal comprehension of cooking",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "dataset for multimodal comprehension of cooking\nrecipes. In Proceedings of the 2018 Conference on\nEmpirical Methods in Natural Language Processing,\npages 1358–1368.\nZhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio,\nWilliam Cohen, Ruslan Salakhutdinov, and Christo-\npher D Manning. 2018.\nHotpotqa: A dataset for\ndiverse, explainable multi-hop question answering.\nIn Proceedings of the 2018 Conference on Empiri-\ncal Methods in Natural Language Processing, pages\n2369–2380.",
+      "source": "layoutlmv2.pdf",
+      "page": 11,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "Richard Zanibbi, Dorothea Blostein, and James R\nCordy. 2004. A survey of table recognition. Doc-\nument Analysis and Recognition, 7(1):1–16.\nChangchang Zeng, Shaobo Li, Qin Li, Jie Hu, and Jian-\njun Hu. 2020. A survey on machine reading compre-\nhension—tasks, evaluation metrics and benchmark\ndatasets. Applied Sciences, 10(21):7640.\nXingyao Zhang, Linjun Shou, Jian Pei, Ming Gong, Li-\njie Wen, and Daxin Jiang. 2020. A graph representa-\ntion of semi-structured data for web question answer-",
+      "source": "layoutlmv2.pdf",
+      "page": 12,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "ing. In Proceedings of the 28th International Con-\nference on Computational Linguistics, pages 51–61,\nBarcelona, Spain (Online). International Committee\non Computational Linguistics.\nXu Zhong, Jianbin Tang, and Antonio Jimeno-Yepes.\n2019. Publaynet: Largest dataset ever for document\nlayout analysis. In 2019 International Conference\non Document Analysis and Recognition, ICDAR\n2019, Sydney, Australia, September 20-25, 2019,\npages 1015–1022. IEEE.\nJun Zhu, Zaiqing Nie, Ji-Rong Wen, Bo Zhang, and",
+      "source": "layoutlmv2.pdf",
+      "page": 12,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "Jun Zhu, Zaiqing Nie, Ji-Rong Wen, Bo Zhang, and\nWei-Ying Ma. 2005. 2d conditional random ﬁelds\nfor web information extraction. In Proceedings of\nthe 22nd international conference on Machine learn-\ning, pages 1044–1051.\nJun Zhu, Zaiqing Nie, Ji-Rong Wen, Bo Zhang, and\nWei-Ying Ma. 2006. Simultaneous record detection\nand attribute labeling in web data extraction. In Pro-\nceedings of the 12th ACM SIGKDD international\nconference on Knowledge discovery and data min-\ning, pages 494–503.",
+      "source": "layoutlmv2.pdf",
+      "page": 12,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "A\nAppendix\nA.1\nDataset distribution\nThe distribution of different website types in var-\nious domains is shown in Figure 6. As the ﬁgure\nillustrated, not all domains contain three website\ntypes while type KV almost exists in all domains.\nWebsites of type comparison are concentrated in\nthe domain of goods, i.e. auto, book, in the form\nof item comparison. Most web pages with type\ntable belong to the domain sports, which contain\nthe score data of players.\nFigure 6: Distribution of different type of websites in",
+      "source": "layoutlmv2.pdf",
+      "page": 13,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "different domains.\nFigure 7 shows the data distribution in differ-\nent domains. Domains auto, university and sports\naccount for more than half of the data, and hotel,\ncamera and restaurant are the domains that with\nleast data. This distribution can attribute to the\namount of information carried by websites and the\namount of information in different domains that are\ninterested by people.\nA.2\nHTML statistics\nWe explored the distribution of HTML tags in Web-\nSRC. Figure 8 shows the relative proportion of top",
+      "source": "layoutlmv2.pdf",
+      "page": 13,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "10 frequent HTML tags and top 10 frequent HTML\ntags containing an answer. Three most common\ntags are <div>, <td> and <span> on all pages,\nwhich are also most frequent tags containing an-\nswers. <div> and <span> are used for separating\nan area, while <td> represents a table cell. This\nobservation indicates that the type of tag may im-\nply the semantics of the content. Though <div> is\nthe most frequent tag, <td> is much more likely\nto contain an answer, for the reason that <div> is",
+      "source": "layoutlmv2.pdf",
+      "page": 13,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "often used in framing the web page while <td> is\ncommonly used for presenting a value. The aver-\nage number of HTML tags in web pages is 177.\nFigure 7: Data distribution in different domains.\nFigure 8: Distribution of HTML tags. The blue is the\ntop 10 HTML tags in all HTML code, and the red is the\ntop 10 HTML tags containing an answer.\nThe mean depth of HTML DOM trees is 9.8 and\nthe mean depth of tags containing answers is 7.1,\nwhich means the upper nodes in the DOM tree",
+      "source": "layoutlmv2.pdf",
+      "page": 13,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "which means the upper nodes in the DOM tree\nwould provide more structural information and the\nlower nodes would contain more speciﬁc informa-\ntion.",
+      "source": "layoutlmv2.pdf",
+      "page": 13,
+      "char_count": 147,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

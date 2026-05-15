@@ -1,0 +1,2548 @@
+{
+  "source": "chatgpt_survey.pdf",
+  "full_path": "data\\raw\\chatgpt_survey.pdf",
+  "total_pages": 53,
+  "text_chunks": 317,
+  "vision_chunks": 0,
+  "total_chunks": 317,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Large Language Models as Simulated Economic Agents:\nWhat Can We Learn from Homo Silicus?∗\nJohn J. Horton\nMIT & NBER\nApostolos Filippas\nFordham\nBenjamin S. Manning\nMIT\nFebruary 27, 2026\nAbstract\nWe argue that newly-developed large language models (LLMs), because of how they are trained and\ndesigned, are implicit computational models of humans—a Homo silicus.\nLLMs can be used like\neconomists use Homo economicus: they can be given endowments, information, preferences, and so on,",
+      "source": "chatgpt_survey.pdf",
+      "page": 1,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "and then their behavior can be explored in scenarios via simulation. Experiments using this approach,\nderived from Charness and Rabin (2002), Kahneman et al. (1986), Samuelson and Zeckhauser (1988),\nOprea (2024b), and Horton (2025), show qualitatively similar results to the original, and when they differ,\nit is often generative for future research. We discuss potential applications, conceptual issues, and why\nthis approach can inform the study of humans.",
+      "source": "chatgpt_survey.pdf",
+      "page": 1,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "this approach can inform the study of humans.\n∗Thanks to the MIT Center for Collective Intelligence, Tyler Cowen, and the Mercatus Center for their generous funding. Thanks\nto Daron Acemoglu, David Autor, Mohammed Alsobay, Jimbo Brand, Elliot Lipnowski, Shakked Noy, Paul R¨ottger, Daniel Rock,\nCharlotte Siegmann, and Hong-Yi TuYe for their helpful conversations and comments. Special thanks to Yo Shavit, who has been",
+      "source": "chatgpt_survey.pdf",
+      "page": 1,
+      "char_count": 419,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "extremely generous with his time and thinking. All authors contributed equally to this work. Author contact information, code,\nand data are currently or will be available at https://benjaminmanning.io. Horton is an economic advisor to Anthropic; all\nauthors have a financial interest in www.expectedparrot.com. In preparing this paper, the authors utilized generative AI models\nextensively as tools to assist with editing and evaluation. The authors retain full responsibility for all content and conclusions",
+      "source": "chatgpt_survey.pdf",
+      "page": 1,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "presented herein.\n1\narXiv:2301.07543v2  [econ.GN]  26 Feb 2026",
+      "source": "chatgpt_survey.pdf",
+      "page": 1,
+      "char_count": 62,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "1\nIntroduction\nMost economic research takes one of two forms: (a) “What would Homo economicus do?” and (b) “What did\nHomo sapiens actually do?” The (a)-type research takes a maintained model of humans, Homo economicus,\nendows it with different resources, preferences, information, and so on, subjects it to various economic\nscenarios, and then deduces its behavior. This behavior can then be compared to that of actual humans in\n(b)-type research.",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "(b)-type research.\nIn this paper, we argue that large language models (LLMs)—because of how they are trained and\ndesigned—can be thought of as implicit computational models of humans—a Homo silicus. These models\ncan be used the same way economists use Homo economicus: they can be given endowments, put in scenarios,\nand then their behavior can be explored—though in the case of Homo silicus, through computational",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "simulation, not a mathematical deduction.1 This is possible because LLMs can now respond realistically to\na wide range of textual inputs, giving responses similar to what we might expect from a human (Aher et al.,\n2022; Bowman, 2023).\nLike all models, any particular Homo silicus is wrong, but that judgment is separate from a decision\nabout usefulness. Of course, each Homo silicus is a flawed model and can often give responses far away from",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "what is rational or even sensical. Yet unlike mathematical economic models with fixed input parameters, AI\nagents can be flexibly applied to simulate any scenario expressed in natural language. Such flexibility means\nthat agent fidelity to human responses is not fixed: the underlying instructions or “prompts,” which control\ntheir behavior can always be adjusted—even in ways that incorporate conventional economic theory. Indeed,",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 431,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "recently developed methods can dramatically improve agent fidelity, and as we will show, the process of\nbetter matching human responses can itself be generative.\nWe consider the reasons why AI simulations might be helpful in understanding actual humans. The\ncore of the argument is that LLMs—by nature of their training and design—are (i) computational models\nof humans and (ii) possess a great deal of social information. For (i), the creators of LLMs have designed",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "them to respond in ways similar to how a human would react to prompts (Bai et al., 2022; Ouyang et al.,\n2022)—including prompts that are economic scenarios. For (ii), these models capture two rich sources of\nsocial information. The first is latent in the form of economic activities, decision-making heuristics, and\n1Lucas (1980) writes, “One of the functions of theoretical economics is to provide fully articulated, artificial economic systems",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "that can serve as laboratories in which policies that would be prohibitively expensive to experiment with in actual economies can be\ntested out at much lower cost.”\n2",
+      "source": "chatgpt_survey.pdf",
+      "page": 2,
+      "char_count": 166,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "common social preferences that the LLM implicitly learns from its training data. These massive corpora\ncontain a great deal of written text where people reason about and discuss economic matters: what to buy,\nhow to bargain, how to shop, how to negotiate a job offer, how many hours to work, what to do when prices\nincrease, and so on. Second, LLMs have also been trained on the majority, if not all, of published social",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "scientific research. This comprises the facts, theory, and empirical results codified by researchers; welfare\ntheorems, prospect theory’s account of loss aversion, the income returns to education, and so on.\nIt is essential to note that the sources of social information in the LLM’s training data are not perfect\ningredients for simulating human behavior. For instance, directly applying insights from published research",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 421,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "may enhance the realism of simulations. But it can also make brittle simulations appear robust because\nmodels may simply regurgitate problematic and memorized results (Sarkar and Vafa, 2024; Ludwig et al.,\n2025). We address such tensions along with other conceptual issues related to LLMs’ training corpora,\nopacity, and the generalizability of simulations.\nWhile conceptual issues are important, what ultimately matters is whether these AI simulations are",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "practically valuable for generating insights. As such, the majority of this paper is devoted to presenting and\ndiscussing five simulated experiments. We selected these experiments because they are simple to describe\nand implement. They also have clear qualitative results that can be compared to the AI outcomes.\nWe begin with experiments motivated by Kahneman et al. (1986), which reports survey responses to",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 409,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "economic scenarios. In the paper, there is an example where subjects imagine a hardware store raising the\nprice of snow shovels following a snowstorm, and are asked to state whether doing this was fair or unfair.\nIllustrating a benefit of AI agents, unlike Kahneman et al. (1986), we also vary the amount by which the store\nincreases the price, and the political leanings of the respondent. We show that large gouging is viewed more",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "negatively and that endowed political views matter, with predictable effects—right-leaning AI agents are\nmore sanguine about gouging. The effects are robust to dozens of permutations of the original experiment.\nNext, we simulate the simple unilateral dictator games from Charness and Rabin (2002). We show that\nendowing AI agents with various social preferences affects play. Instructing the AI agent that it only cares",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 419,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "about equity causes it to choose the equitable outcomes; telling the agent it cares about efficiency causes\nthe selection of the payoff maximizing outcomes; telling the agent it is self-interested causes it to select\nallocations that maximize narrow self-interest. Interestingly, without any endowment, some models choose\nefficiently while others tend to be selfish. We use these results to generate new samples of agents that respond\nincreasingly like human subjects in more complicated two-stage games.\n3",
+      "source": "chatgpt_survey.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "In a study of framing, we next present the AI agents with a decision-making scenario introduced by\nSamuelson and Zeckhauser (1988). In the paper, the respondent has to allocate a federal budget between\nhighway safety and car safety. The original results show that humans are subject to a status quo bias,\npreferring budget options that are presented as the status quo. We recapitulate this result by endowing AI",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 411,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "agents with baseline views about the relative importance of car or highway safety. We then put those agents\nthrough various scenarios, with each possible allocation taking a turn as the status quo. Some LLMs exhibit\na strong bias towards any option presented as the status quo, while others barely do.\nIn the fourth set of simulations, we explore the experiments in Oprea (2024b), where participants were\nasked to supply certainty equivalents for a series of binary choice lottery-type questions. This research",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "challenges conventional interpretations of prospect theory by showing that the classic “fourfold pattern” of\nrisk attitudes emerges even when participants face no risk. Rather, the paper posits that the pattern emerges\nbecause cognitively constrained participants are heuristically responding to complexity. We simulate the\nexperiment across an expanded set of questions with five different models serving as the AI agents. Even",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "though the paper is recent and contrasts decades of research, our simulated results provide suggestive evidence\nin support of Oprea’s complexity-driven interpretation.\nFinally, we explore a hiring scenario motivated by Horton (2025), which shows in a field experiment that\nemployers facing a minimum wage substitute towards higher-wage workers. We create a scenario where an\nemployer is trying to hire a worker as a dishwasher and faces a collection of applicants that differ in their",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "experience and wage asks, which are chosen randomly. The AI agent makes an experience-wage tradeoff.\nWe then impose a minimum wage that forces applicants bidding below that minimum to bid up. We run\nthese scenarios across LLMs with varying capabilities. On average, the results are directionally consistent\nwith Horton: the minimum wage increase causes a shift in the AI’s hiring of more experienced applicants\nand higher hourly wages.",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "and higher hourly wages.\nThe first draft of this paper featured versions of the now-deprecated Gpt-3 as the underlying models\nin our experiments. Results from these now woefully out-of-date models appear in Appendix A. We now\nemploy dozens of contemporary LLMs—both open-source and proprietary—and introduce methodological\nimprovements that can increase realism and test robustness of the simulations. However, as newer models",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "are inevitably released, even our updated experiments will become dated. Because this pattern will continue\nto repeat, and access to proprietary systems is uncertain, we emphasize the importance of simulations that\nare easy to design, replicate, and scale.\n4",
+      "source": "chatgpt_survey.pdf",
+      "page": 4,
+      "char_count": 258,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "This paper is now accompanied by an open-source Python package that enables researchers to replicate\nour experiments on new models or explore their own ideas with minimal technical overhead, often using only\na fraction of the code required for the simulations in the initial draft.2 Using this package, all experiments in\nthis paper are now button-push reproducible with almost any LLM, and the software is actively maintained as",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "methods, models, and prompts improve. We include links to code, prompts, and tutorials for all simulations\nthroughout the manuscript. Whether or not researchers choose to employ this software, or something else, it\nis essential—and now feasible—for AI simulations to have the features we have highlighted in the package:\nto be nearly costless to replicate, share, and update. These are precisely the features social scientists should\ndesire from any experimental method.",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "desire from any experimental method.\nUltimately, we care about the behavior of actual humans, and so results from AI experiments will still\nrequire empirical confirmation (Ludwig et al., 2025).3 As such, what is the value of these experiments? The\nmost obvious use is to pilot experiments in silico first to gain insights. They could cheaply and easily explore\na parameter space, test whether behaviors seem sensitive to the precise wording of various questions, generate",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "data that will “look like” the actual data, and inform power calculations.4 The advantages in terms of speed\nand cost are enormous—the experiments in this paper were run in minutes for a trivial amount of money. As\nrelationships are identified, they could guide actual empirical work—or interesting effects could be captured\nin more traditional theory models. Indeed, by endowing AI agents with prompts grounded in social science",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "theory, their predictive capabilities can improve dramatically (Manning and Horton, 2025)—precisely what\nresearchers seek from a good theory. This use of simulation as an engine of discovery is similar to what\nmany economists do when building a “toy model”—a tool not meant to be reality but rather a tool to help us\nthink and identify promising patterns.\nSince the first draft of this paper in 2023, an extensive and rapidly growing literature testing AI agents has",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "emerged. This work, including thousands of experiments, now spans every social scientific discipline (Brand\net al., 2023; Chang et al., 2024; Shah et al., 2025; Wang et al., 2025; Fish et al., 2025; Qian et al., 2025),\nwith some studies building on these simulations to study humans in ways previously infeasible (Manning et\nal., 2024; Xie et al., 2025; Bybee, 2025). In a growing number of cases, AI agents put in simulations of the",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "relevant settings can even predict human behavior in never-before-seen surveys and experiments (Li et al.,\n2See https://pypi.org/project/edsl/ to download and https://docs.expectedparrot.com/ for documentation.\n3Our focus is not on using LLMs as experimental subjects or studying their behavior directly, though both are valuable research\ndirections (Alberti et al., 2019; Westby and Riedl, 2022; Binz and Schulz, 2023), but on using them as tools to understand humans.",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "4There is an analogy to protein-folding, where simulations identify proteins later found in the real world (Kuhlman et al., 2003).\n5",
+      "source": "chatgpt_survey.pdf",
+      "page": 5,
+      "char_count": 132,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "2024; Hewitt et al., 2024; Tranchero et al., 2024; Park et al., 2024; Binz et al., 2025; Suh et al., 2025).\nGiven this rapid expansion, the contributions of this paper are now twofold. First, we aim to help\neconomists effectively incorporate AI simulations into their methodological toolkit, utilizing the most up-to-\ndate practices, and ensuring these tools remain useful as models and methods continue to evolve. Second,",
+      "source": "chatgpt_survey.pdf",
+      "page": 6,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "the relative—and original—contribution of this paper is drawing the connection to the common research\nparadigm of economics and the role a foundational assumption (or model) like rationality plays in research.\nLLM experimentation is more akin to the practice of economic theory, despite superficially looking like\nempirical research.\nThe remainder of this paper is structured as follows. In Section 2, we describe and analyze five simulated",
+      "source": "chatgpt_survey.pdf",
+      "page": 6,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "experiments. Section 3 discusses why LLMs can often predict human behavior and when they are likely to\nbe useful. In Section 4, we address conceptual critiques related to the use of LLMs for social science. The\npaper concludes in Section 5.\n2\nExperiments\nWe conduct five experiments with LLMs. We recapitulate and extend four laboratory experiments and then\none field experiment from the economics literature. Our use of the term “recapitulate” in lieu of “replicate”",
+      "source": "chatgpt_survey.pdf",
+      "page": 6,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "is intentional: we do not view LLM experiments as direct copies of the originals. The goal is not to just\nreproduce results. Rather, we aim to see how simulations behave in empirical scenarios where we already\nunderstand the analogous human behavior. Then, by contrasting with the originals, we demonstrate key\nfeatures of simulations that researchers can manipulate to better explore new ideas.\nThe first experiment demonstrates how we can use LLMs to easily extend experiments and search for new",
+      "source": "chatgpt_survey.pdf",
+      "page": 6,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "insights. In the second, we show that LLMs respond reasonably to prompts and follow instructions effectively.\nWe also show how to leverage these responses and conventional economic theory to construct samples of\nAI agents that respond increasingly like human subjects. The third experiment shows that LLMs exhibit\nwell-established human decision-making biases. The fourth shows that LLMs can be used to study subtle",
+      "source": "chatgpt_survey.pdf",
+      "page": 6,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "elements of human decision-making and induce experimental variation in new ways. The fifth experiment\ndemonstrates that researchers can use AI agents to study realistic field-like decision-making scenarios.\nFor readers unfamiliar with LLMs, we provide a brief primer in Appendix B. Other introductory resources\ninclude Bowman (2023) and Ouyang et al. (2022), while Zhao et al. (2025) provide a comprehensive and\n6",
+      "source": "chatgpt_survey.pdf",
+      "page": 6,
+      "char_count": 413,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "technical survey of the field. In addition, Korinek (2023) and Charness et al. (2025) examine how LLMs can\nbe used across the full spectrum of experimental economics research.\n2.1\nFairness as a constraint on profit-seeking (Kahneman et al., 1986)\nKahneman et al. (1986) conducted experiments designed to study people’s fairness perceptions in market\ntransactions. In their price gouging scenario, they asked subjects to respond to the following vignette:",
+      "source": "chatgpt_survey.pdf",
+      "page": 7,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "A hardware store has been selling snow shovels for $15. The morning after a large snowstorm,\nthe store raises the price to $20. Rate this action as: (1) Very Unfair, (2) Unfair, (3) Acceptable,\n(4) Completely Fair.\nAbout 82% of subjects responded either “Unfair” or “Very Unfair.”\nWe use AI agents to explore two natural follow-up questions: (i) whether the subjects’ political preferences\nand associated attitudes toward markets affect their views, and (ii) whether there exists a dose-response",
+      "source": "chatgpt_survey.pdf",
+      "page": 7,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "relationship, with more aggressive price hikes seen as more egregious. To do so, we create AI agents\nendowed with “personas” or “types,” by prepending a description of the persona in the prompt. We endow\nAI agents with political views ranging from “You are a socialist” to “You are a libertarian,” and ask each\nto independently assess the fairness of price increases to $16, $20, $40, and $100. We use Gpt-4 with the",
+      "source": "chatgpt_survey.pdf",
+      "page": 7,
+      "char_count": 416,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "model temperature at 1, and collect 100 responses to each combination of price hikes and political views,\nwhich generates 2,400 observations.\nFigure 1 reports the results of our experiment and details on how we constructed the prompts can be\nfound in the notes via the linked Jupyter notebook. To get a sense of the structure and content of the code,\nsee Figure A4, which provides a screenshot of the notebook in the appendix. We provide such notebooks,",
+      "source": "chatgpt_survey.pdf",
+      "page": 7,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "which are accompanied by extensive documentation and instructions, for all experiments throughout this\npaper in their respective figure or table notes. Columns of this figure correspond to different price increase\nscenarios and rows to different political bents of the AI agents. The x-axis shows the possible responses, and\nthe y-axis shows the proportion of agents who choose each option.\nThe AI agents’ political beliefs affect their views about the price hikes: Socialist and Leftist agents judge",
+      "source": "chatgpt_survey.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "the hikes to be “Unfair” or “Very unfair,” and subjects with more Conservative or Libertarian views find\nprice hikes more morally permissible. There is also a clear dose-response relationship, with larger price\nhikes generally viewed as less fair than smaller ones—even a few of the Conservative AI agents judge the\n7",
+      "source": "chatgpt_survey.pdf",
+      "page": 7,
+      "char_count": 317,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "Figure 1: Recapitulation and extension of Kahneman et al. (1986)’s price gouging experiment.\nPrice from\n$15 to $16\nPrice from\n$15 to $20\nPrice from\n$15 to $40\nPrice from\n$15 to $100\nSocialist\nLeftist\nLiberal\nModerate\nConservative\nLibertarian\nCompletely\nFair\nAcceptable\nUnfair\nVery Unfair\nCompletely\nFair\nAcceptable\nUnfair\nVery Unfair\nCompletely\nFair\nAcceptable\nUnfair\nVery Unfair\nCompletely\nFair\nAcceptable\nUnfair\nVery Unfair\n0%\n50%\n100%\n0%\n50%\n100%\n0%\n50%\n100%\n0%\n50%\n100%\n0%\n50%\n100%\n0%\n50%\n100%",
+      "source": "chatgpt_survey.pdf",
+      "page": 8,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "0%\n50%\n100%\n0%\n50%\n100%\n0%\n50%\n100%\n0%\n50%\n100%\nNotes: This figure reports the results of our experiment recapitulating and extending the price gouging experiment from Kahneman\net al. (1986). Each column corresponds to a different price hike scenario, and each row to the AI agents’ political leanings. The\nx-axis shows the possible responses, and the y-axis shows the proportion of AI agents choosing each option. Error bars represent",
+      "source": "chatgpt_survey.pdf",
+      "page": 8,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "95% multinomial Wilson confidence intervals. AI agents use Gpt-4 with the temperature set to 1. We collect 100 responses\nfor each AI agent persona and scenario combination. See www.expectedparrot.com/content/0e39f555-fe34-4911-b516-\n46638d1640ca for more details on prompt construction.\n$100 price hike as “Unfair” or “Very Unfair”. The answers of the AI agents are also fairly consistent within\npolitical view-price gouge combinations: in about half of the panels, we get the same response in all 100",
+      "source": "chatgpt_survey.pdf",
+      "page": 8,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "observations.\nKahneman et al. report little about the composition of their original study, making it difficult to know\nwhich combination of political views is representative. They do note that the sample consisted of Canadians\nfrom Toronto and Vancouver, with an approximately even split between males and females. While we have\nno way to know the political leanings of the participants, it is plausible that the original sample was skewed",
+      "source": "chatgpt_survey.pdf",
+      "page": 8,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "left-leaning, given their urban origins. Directionally consistent with this speculative view and the results\nin Kahneman et al., AI agents endowed with left-leaning views always judge the original price hike to be\n“Unfair” or “Very Unfair.”\n8",
+      "source": "chatgpt_survey.pdf",
+      "page": 8,
+      "char_count": 242,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "2.1.1\nTesting generalizability and possible memorization\nOne concern with our fairness simulations is that the AI agents may have memorized both the original study\nand other texts describing the relationships between political labels and fiscal views. If true, our results might\nbe brittle—an artifact unique to the snow shovel example that does not generalize to other related scenarios.\nWe next show how to better evaluate the robustness of AI simulations.",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "We conduct three follow-up sets of simulations of the price-gouging study.\nFirst, we translate the\noriginal prompt into 10 different languages and run the experiment in each language.5 Second, we ask Gpt-4\nto generate ten alternative versions of the original phrasing, varying the item being sold, the location, the\nevent, or a combination of all three. For the full list of alternatives, see the accompanying Jupyter notebook\nin the Figure 2 notes. One example is:",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "in the Figure 2 notes. One example is:\nA bakery has been selling artisan bread loaves for $15. The morning before a major holiday, the\nbakery raises the price to $20. Rate this action as: (1) Very Unfair, (2) Unfair, (3) Acceptable,\nor (4) Completely Fair.\nOthers include a bookstore selling novels after an author announces a signing event, a convenience store\nselling sunscreen right before a heatwave, etc. Third, we ask GPT-4 to generate ten “adversarial” versions of",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "the original phrasing, that is, to generate a vignette which would result in AI agents responding differently\nthan in our original experiment. Specifically, we prompted the LLM to make the 10 adversarial versions\n“as diverse as possible such that the same combination of variables will get people to answer differently.”\nThe adversarial examples are the same format as the alternative examples and are also provided in the same",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "notebook. We conduct all three of these additional experiments 10 times for each of the 10 prompt variations\nwithin every political view-price gouge combination, with the temperature parameter set to 1. With four\nprice gouges, six political leanings, and 10 variations for each permutation, we collect 2,400 observations\nfor each of the additional experiments.\nTo measure responsiveness to price gouging, we regress the AI agents’ choices, measured as a continuous",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "variable ranging from 1 (“Very Unfair”) to 4 (“Completely Fair”), on the price change and the AI agents’\npolitical endowments. Figure 2 reports dummy regression coefficients for different political endowments\nacross the four experimental permutations, using “Moderate” as the excluded reference category. Each row\nrepresents a different political belief, with the x-axis showing estimated differences from the reference class.",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "5These are French, German, Spanish, Italian, Portuguese, Greek, Japanese, Mandarin, Korean, and Arabic.\n9",
+      "source": "chatgpt_survey.pdf",
+      "page": 9,
+      "char_count": 105,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "Values for the reference OLS constant are shown in red in the top panel for each experimental permutation.\nFor interpretation, the translated permutation’s Moderate intercept of 2.35 indicates that, on average, AI\nagents endowed with moderate political views in this permutation rate price increases as roughly one third\nof the way from “Unfair” to “Acceptable.” The Socialist coefficient of -0.60 for the translated permutation",
+      "source": "chatgpt_survey.pdf",
+      "page": 10,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "in the top panel means Socialist AI agents, on average, rate price increases as one quarter of the way from\n“Unfair” to “Very Unfair” (2.35 + (-0.60) = 1.75).\nFigure 2: Coefficients of the effects of political beliefs on AI agents’ fairness assessments in four permutations\nof the Kahneman et al. (1986) experiment.\nRef: 2.86\nRef: 2.35\nRef: 2.73\nRef: 2.58\nModerate\nSocialist\nLeftist\nLiberal\nConservative\nLibertarian\n−1.5\n−1.0\n−0.5\n0.0\n0.5\n1.0\nAdversarial\nAlternative\nTranslated\nOriginal\nAdversarial\nAlternative",
+      "source": "chatgpt_survey.pdf",
+      "page": 10,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "Translated\nOriginal\nAdversarial\nAlternative\nTranslated\nOriginal\nAdversarial\nAlternative\nTranslated\nOriginal\nAdversarial\nAlternative\nTranslated\nOriginal\nAdversarial\nAlternative\nTranslated\nOriginal\nEstimated Difference from Moderate Reference Class (Values Shown in Top Row)\nNotes:\nThis figure reports regression coefficients for political belief indicators, with Moderate as the omitted reference group,\ncontrolling for price gouging.",
+      "source": "chatgpt_survey.pdf",
+      "page": 10,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "controlling for price gouging.\nThe dependent variable is the fairness rating (1 = Very Unfair, 4 = Completely Fair).\nFull\nspecifications appear in Table A2. The x-axis shows estimated differences from the Moderates; the y-axis shows the experimental\npermutation. Each row corresponds to a different political belief. The center of the top panel reports the reference intercepts\nfor each permutation—the mean fairness rating for Moderates. All other estimates are the difference from these values. See",
+      "source": "chatgpt_survey.pdf",
+      "page": 10,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "www.expectedparrot.com/content/6b9ca070-bf21-4887-b68d-060c9177650f for simulation code and all experimental\nvariations.\nAs in the original simulations, agents with more right-leaning political orientations generally rate price\ngouging as increasingly fair across all permutations.\nThis pattern is evident in the diagonal trend of\ncoefficients from the upper left to the lower right.\nNotably, the adversarial and alternative examples",
+      "source": "chatgpt_survey.pdf",
+      "page": 10,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "Notably, the adversarial and alternative examples\nyield strikingly similar results. We were unable to invert the relationship—agents with more left-leaning\norientations never rated price gouging as fairer than those on the right. At a high level, the original pattern\nappears quite robust.\nThe translated permutation, however, exhibits a few small differences. Liberal AI agents show positive\n10",
+      "source": "chatgpt_survey.pdf",
+      "page": 10,
+      "char_count": 395,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "coefficients, suggesting they are more right-leaning than the Moderate reference group. Conversely, the\nConservative agents in this permutation appear nearly indistinguishable from the Moderates. This variation\nmay reflect different definitions of “Conservative” and “Liberal” political views outside English-speaking\ncontexts.6\nAlthough not visualized here, higher price increases are viewed as increasingly unfair, consistent with",
+      "source": "chatgpt_survey.pdf",
+      "page": 11,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "results in Figure 1. Table A2 in the appendix reports the full specifications with these values. Across the\nfour permutations, including the original, a $1 price hike causes between a 0.004 and 0.009 point decrease\nin the Likert fairness assessment.\n2.2\nA social preferences experiment (Charness and Rabin, 2002)\nCharness and Rabin (2002) ask experimental subjects to choose between allocations that involve trade-offs",
+      "source": "chatgpt_survey.pdf",
+      "page": 11,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "between efficiency and equity. We focus on their unilateral dictator games, where the dictator (Person B)\nchooses between two allocations of money between herself and the other player (Person A). For example, in\nthe following game:\n“Left”:\nPerson A gets 400 and Person B gets 600\n“Right”:\nPerson A gets 700 and Person B gets 300,\nthe dictator chooses between the “Left” and “Right” allocations. We can write this game as:\nPerson B Chooses: ( 400\n|{z}\nto A\n, 600\n|{z}\nto B\n)\n|             {z             }\n“Left”",
+      "source": "chatgpt_survey.pdf",
+      "page": 11,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "|{z}\nto B\n)\n|             {z             }\n“Left”\nvs.\n( 700\n|{z}\nto A\n, 300\n|{z}\nto B\n)\n|             {z             }\n“Right”\n.\nWe recapitulate this experiment using AI agents. First, we prompt LLMs with descriptions for each\ngame, and ask them to respond with their preferred allocation without any additional information. Second,\nwe construct three AI agents with the following personas: (i) inequity-averse (“You only care about fairness",
+      "source": "chatgpt_survey.pdf",
+      "page": 11,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "between players”), (ii) efficient (“You only care about the total payoff of both players”), and (iii) self-\ninterested (“You only care about your own payoff”). We have each AI agent play each game 100 times\nwith the temperature set to one. We use Gpt-4o, Claude-Sonnet-3.5, Llama-3-70B, and Deepseek as the\nunderlying models.\nFigure 3 plots the results of our experiment with the notebook to run the simulations linked in the notes.",
+      "source": "chatgpt_survey.pdf",
+      "page": 11,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "Each column corresponds to a different persona, and each row to a different game. The x-axis shows the\n6For example, in China: en.wikipedia.org/wiki/Conservatism_in_China.\n11",
+      "source": "chatgpt_survey.pdf",
+      "page": 11,
+      "char_count": 174,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "fraction of agents choosing the “Left” option. The white bars show the AI agents’ choices, and the gold bars\nshow either the choice of the human subjects in Charness and Rabin (leftmost column) or the choice that\na perfectly adherent AI agent would make with the given persona (all other columns). For example, in the\nBarc2 game, 52% of the human subjects chose “Left” (400,400), and the efficient choice, with the maximum\ntotal payout, would be to always select “Right.”",
+      "source": "chatgpt_survey.pdf",
+      "page": 12,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "total payout, would be to always select “Right.”\nFigure 3: Recapitulation of single-stage dictator games from Charness and Rabin (2002).\n 52%\n 67%\n 27%\n   100%\n 78%\n 31%\n 0%\n 0%\n 0%\n   100%\n    Ambiguous\n 0%\n   100%\n 0%\n 0%\n 0%\n 0%\n   100%\n   100%\n   100%\n   100%\n   100%\n   100%\n    Ambiguous\nNo Persona\nEfficient:\n\"You only care about the\ntotal payoff of both players\"\nInequity−averse:\n\"You only care about\nfairness between players\"\nSelf−interested\n\"You only care about\nyour own payoff\"\nBarc2",
+      "source": "chatgpt_survey.pdf",
+      "page": 12,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "\"You only care about\nyour own payoff\"\nBarc2\n(400, 400), (750, 375)\nBarc8\n(300, 600), (700, 500)\nBerk15\n(200, 700), (600, 600)\nBerk23\n(800, 200), (0, 0)\nBerk26\n(0, 800), (400, 400)\nBerk29\n(400, 400), (750, 400)\n0%\n50%\n100%0%\n50%\n100%0%\n50%\n100%0%\n50%\n100%\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek\nExpected\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek\nExpected\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek\nExpected\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek\nExpected\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek\nExpected\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek",
+      "source": "chatgpt_survey.pdf",
+      "page": 12,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "Expected\nLlama−3\nClaude−3.5\nGPT−4o\nDeepseek\nExpected\nPercentage of subjects choosing allocation \"Left\"\nExpected \nLLM\nNotes: This figure reports the recapitulation of unilateral dictator games from Charness and Rabin (2002) with AI agents. The\ncolumns correspond to personas with which we endow AI agents, and the rows to different games. Each AI agent plays each game\n100 times. The x-axis shows the percentage of agents choosing “Left.” The y-axis shows both the AI agents’ responses and the",
+      "source": "chatgpt_survey.pdf",
+      "page": 12,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "“Expected” proportion for each column’s given persona. White bars depict the AI agents’ choices, and gold bars depict either the\nchoice of the human subjects in Charness and Rabin (leftmost column) or the choice that a perfectly aligned AI agent would make\nwith the given persona (all other columns). Error bars report 95% Wilson confidence intervals. See www.expectedparrot.com/\ncontent/6bc88957-c346-46a3-910a-e63ec2d77035 for simulation walkthroughs.",
+      "source": "chatgpt_survey.pdf",
+      "page": 12,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "The choices of the persona-less AI agents are quite different from those of the human participants in\n12",
+      "source": "chatgpt_survey.pdf",
+      "page": 12,
+      "char_count": 104,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "the original experiment, despite the fact that the original experiment is almost certainly included in the\ntraining data for all models (as is true for most well-known economics papers). These responses are also\ndifferent across models, although consistent within: Llama-3-70B is seemingly more selfish, and Gpt-4o,\nClaude-Sonnet-3.5, and Deepseek are more efficiency-minded. Despite this baseline heterogeneity, AI",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "agents endowed with personas respond consistently in line with those personas. Except for a few cases—\nsuch as Deepseek and Llama-3-70B failing to choose the inequity-averse option in the spiteful Berk23\nscenario—efficiency-endowed agents generally chose the option with the highest combined payoff, inequity-\naverse agents selected the option with the smallest difference between payoffs, and self-interested agents\nmaximized their own payoff.\n2.2.1\nConstructing a calibrated sample of AI agents",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "Constructing a calibrated sample of AI agents\nIf we wanted to use these off-the-shelf LLMs without personas to predict behavior in new allocation\ngames, the evidence above suggests their accuracy would be poor. Such agents might suffice for low-stakes\napplications—like stress-testing experimental designs or checking data pipelines—where fidelity to human\ndistributions is not the primary concern. But if the goal is to employ AI agents as credible guides for",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "empirical work—a far more valuable use case and promising application of AI simulations—then this lack\nof predictive reliability becomes a serious limitation.\nBy contrast, the AI agents endowed with personas exhibited high fidelity: they followed the instructions\ntied to their assigned type almost perfectly. This disciplined behavior provides a foundation for building\ncalibrated samples of agents that can better predict human responses. We adopt the approach from Manning",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "and Horton (2025), who show that by optimizing mixtures of theory-grounded agents to match human\nresponses in one setting, one can improve their predictive power in other related settings. Here, “theory-\ngrounded” means the personas are motivated by some theory that we generally understand, can clearly\nevaluate, and reasonably expect to predict the relevant human behavior—like how fairness, self-interest, and\nefficiency agents reflect the original economic model laid out in Charness and Rabin.",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "We implement the approach and construct an optimized mixture of AI agents as follows. Intuitively,\nwe choose the “recipe” of agent types—self-interested, inequity-averse, and efficient—whose combined\nchoices best reproduce the aggregate choices of human subjects. Each persona is represented by a vector\n𝑣= (𝑝𝐵𝑎𝑟𝑐2, . . . , 𝑝𝐵𝑒𝑟𝑘29), where 𝑝𝑔is the proportion of AI agents with this persona that chose “Left” in",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 411,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "game 𝑔from Figure 3. For example, the “efficient” Gpt-4o AI agents only chose “Left” in the Berk23 scenario,\n13",
+      "source": "chatgpt_survey.pdf",
+      "page": 13,
+      "char_count": 111,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "so they are represented by 𝑣E = (0, 0, 0, 1, 0, 0); the population of Charness and Rabin is represented by 𝑣𝐶𝑅=\n(.52, .67, .27, 1, .78, .68). For each LLM, we then compute the weights 𝑤= (𝑤𝐸, 𝑤𝐼, 𝑤𝑆) that minimize the\nmean-squared error (MSE) ||𝑤𝐸𝑣𝐸+𝑤𝐼𝑣𝐼+𝑤𝑆𝑣𝑆−𝑣𝐶𝑅||2, subject to 𝑤𝐸+𝑤𝐼+𝑤𝑆= 1 and 𝑤𝐸, 𝑤𝐼, 𝑤𝑆≥0.7\nThe optimal weights for each LLM are (0.49, 0.00, 0.51) for Llama-3-70B, (0.44, 0.00, 0.56) for Claude-",
+      "source": "chatgpt_survey.pdf",
+      "page": 14,
+      "char_count": 413,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Sonnet-3.5, (0.37, 0.10, 0.53) for Gpt-4o, and (0.44, 0.00, 0.56) for Deepseek. We use these weights to\nrandomly sample personas for each LLM.\nHaving calibrated these mixture weights on the unilateral games, we now evaluate whether they generalize\nto new settings. We use the two-stage games from Charness and Rabin for this out-of-sample evaluation.\nThese games have a different structure, but are theoretically similar to the unilateral dictator games in the",
+      "source": "chatgpt_survey.pdf",
+      "page": 14,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "sense that we might reasonably expect some combination of efficiency, fairness, and self-interest to influence\nhuman responses in both. If our calibrated agents can better predict responses in these new games than the\npersona-less LLMs, this provides evidence that they can generalize across structurally distinct data-generating\nprocesses.\nIn the sequential games, monetary allocations depend on both players’ decisions. In the first stage, Person",
+      "source": "chatgpt_survey.pdf",
+      "page": 14,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "A chooses either a given allocation or to let Person B choose one of two other known allocations. Person B\nis asked to choose an allocation but is not informed of Person A’s choice—until the payoffs are realized. For\nexample,\nStage 1 (Person A chooses): ( 500\n|{z}\nTo A\n, 500\n|{z}\nTo B\n)\n|             {z             }\n“Left”\nvs.\n(400 , 600) vs. (700 , 300)\n|                                {z                                }\nLet Person B choose",
+      "source": "chatgpt_survey.pdf",
+      "page": 14,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "Let Person B choose\n|                                {z                                }\n“Right”\n.\nStage 2 (Person B chooses): ( 400\n|{z}\nTo A\n, 600\n|{z}\nTo B\n)\n|             {z             }\n“Left”\nvs.\n( 700\n|{z}\nTo A\n, 300\n|{z}\nTo B\n)\n|             {z             }\n“Right”\n.\nWe write this game as:\n(500, 500)\n(400, 600), (700, 300)\nWe conduct our experiment as follows. For each LLM, we sample randomly 100 AI agents according to",
+      "source": "chatgpt_survey.pdf",
+      "page": 14,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "the computed weights 𝑤. Each AI agent plays each game scenario 5 times, both as Person A and Person B.\nWe also have “control” persona-less AI agents play each game and role 100 times.\n7Others have explored this mixture method (Leng et al., 2024; Xie et al., 2025; Bui et al., 2025).\n14",
+      "source": "chatgpt_survey.pdf",
+      "page": 14,
+      "char_count": 285,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "Figure 4 plots the results of the experiment, and its notes contain a linked notebook with the code for the\nsimulations. The y-axis is the absolute difference between the fraction of AI agents and humans choosing\n“Left.” For each model, the white bar shows the responses of the persona-less AI agents, and the grey\nbar shows the responses of the calibrated sample. The differences are substantial: across all models, the",
+      "source": "chatgpt_survey.pdf",
+      "page": 15,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "responses of the weighted AI agent samples are much closer to those of the human subjects. The MSE of the\ncalibrated samples (0.094) is about half of the persona-less control MSE (0.182). This improvement suggests\nthat theory-grounded persona mixtures can indeed capture meaningful patterns in human decision-making\nthat transfer across game formats.\nFigure 4: Out-of-sample evaluations of calibrated samples of AI agents.\n−38pp\n+14pp\n−43pp\n−15pp\n−54pp\n+20pp\n−51pp\n−35pp\n+0pp\n+0pp\n+0pp\n+18pp\n−38pp\n+0pp\n−43pp",
+      "source": "chatgpt_survey.pdf",
+      "page": 15,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "−51pp\n−35pp\n+0pp\n+0pp\n+0pp\n+18pp\n−38pp\n+0pp\n−43pp\n−37pp\n−56pp\n−6pp\n−15.4pp\n−27pp\n−26.8pp\n+42pp\n+25pp\n+0pp\n−68pp\n+5pp\n−5.6pp\n−89pp\n−15pp\n−34pp\n−39pp\n−45pp\n+2pp\n−32pp\n−37pp\n−43pp\n−33.6pp\n+42pp\n+32.6pp\n+11pp\n+0pp\n−7.8pp\n−1.6pp\n+0pp\n−14pp\n+2pp\n+0pp\n+2pp\nAs Person A\nAs Person B\nBarc7\n(750, 0)\n(400, 400), (750, 400)\nBerk14\n(800, 0)\n(0, 800), (400, 400)\nBerk18\n(0, 800)\n(0, 800), (400, 400)\nBerk21\n(750, 0)\n(400, 400), (750, 375)\nBerk27\n(500, 500)\n(800, 200), (0, 0)\nBerk32\n(450, 900)\n(200, 400), (400, 400)",
+      "source": "chatgpt_survey.pdf",
+      "page": 15,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "Berk32\n(450, 900)\n(200, 400), (400, 400)\nGPT−4o Claude−3.5\nLlama−3\nDeepseek\nGPT−4o Claude−3.5\nLlama−3\nDeepseek\n0%\n40%\n80%\n0%\n40%\n80%\n0%\n40%\n80%\n0%\n40%\n80%\n0%\n40%\n80%\n0%\n40%\n80%\nAbsolute difference in fraction choosing \"Left\"\ncompared to human subjects\nNo Persona\nWeighted\nCalibration helps\nCalibration hurts\nNo Difference\nNotes: This figure compares the performance of persona-less and calibrated samples of AI agents using sequential games from",
+      "source": "chatgpt_survey.pdf",
+      "page": 15,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Charness and Rabin. Rows correspond to different game scenarios, and columns to different roles (Person A or Person B). The\nx-axis shows different LLMs, and the y-axis shows the absolute difference between the fraction of AI agents and the fraction of\nhuman subjects choosing “Left” in the original experiment. White bars correspond to the persona-less AI agents, and the grey bars\ncorrespond to the calibrated AI agents. Error bars show 95% Wilson confidence intervals for the AI proportion, symmetrically",
+      "source": "chatgpt_survey.pdf",
+      "page": 15,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "shifted to the absolute difference from the human proportion. See www.expectedparrot.com/content/9ff43614-2726-440b-\na745-f325555eab4b for simulation code.\nThese results show that we are not limited to whether off-the-shelf AI agents respond like humans.\nInstead, we can construct AI agents that respond more like humans in particular settings using personas\n15",
+      "source": "chatgpt_survey.pdf",
+      "page": 15,
+      "char_count": 361,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "based on some relevant theory. We can then use these calibrated agents to explore new scenarios plausibly\ngoverned by the same theory with more confidence that their responses will predict the relevant human\nresponses. Indeed, Manning and Horton show that by constructing and then validating agents in this way (on\nsome of these very games), we can substantially improve their ability to predict human responses in novel\nsettings where no prior human data exists.\n2.3",
+      "source": "chatgpt_survey.pdf",
+      "page": 16,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "settings where no prior human data exists.\n2.3\nStatus quo bias in decision-making (Samuelson and Zeckhauser, 1988)\nSamuelson and Zeckhauser (1988) demonstrated in several decision-making scenarios that people are more\nlikely to select an option if it is presented as the status quo. In one scenario, they asked subjects to allocate\na safety budget between automobiles and highways. The instructions were:\n“The National Highway Safety Commission is deciding how to allocate its budget between two",
+      "source": "chatgpt_survey.pdf",
+      "page": 16,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "safety research programs: (i) improving automobile safety (bumpers, body, gas tank config-\nurations, seatbelts), and (ii) improving the safety of interstate highways (guard rails, grading,\nhighway interchanges, and implementing selectively reduced speed limits).”\nSubjects were then asked to choose betweenfourfundingallocations: (70%auto, 30%highways), (60%, 40%),\n(50%, 50%), or (30%, 70%). The main experimental manipulation was to present the options relative to dif-\nferent status quo allocations.8",
+      "source": "chatgpt_survey.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "ferent status quo allocations.8\nWe recapitulate Samuelson and Zeckhauser’s experiment. First, we endow each AI agent with one of\ntwelve beliefs about the importance of car and highway safety. For each belief, we create a “car owner” and a\n“non-car owner” AI agent. We then have each of the 24 agents choose one of four funding allocations in four\nscenarios: each one phrased to indicate a different option as the status quo. We run this experiment across all",
+      "source": "chatgpt_survey.pdf",
+      "page": 16,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "five LLMs with temperature set to 1, generating multiple choice occasions per agent-scenario combination.\nWe use Gpt-4, Gpt-4o, Claude-Sonnet-3.5, Claude-Sonnet-3.7, and Deepseek. Using this combination\nof models allows us to compare the AI agents’ responses as the capabilities of LLMs progress, as well as\nbetween different LLM providers. We provide further simulation details inside the notebook linked in the\nTable 1 notes.",
+      "source": "chatgpt_survey.pdf",
+      "page": 16,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "Table 1 notes.\nIt is worth noting that this within-subject experimental design is possible because AI agents have no\nmemory unless we explicitly provide them with information about their previous decisions. This would be\n8In the (60, 40) status quo framing, the options were: “Decrease the highway program by 10% of budget and raise the auto\nprogram by a like amount (70, 30), maintain present budget amounts for the programs (60, 40)...”\n16",
+      "source": "chatgpt_survey.pdf",
+      "page": 16,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "impossible with human subjects. They would likely become aware of the experimental manipulation after\nexposure to each status quo framing.\nWe model the AI agents’ responses as discrete choices over the four allocations using a conditional logit\nspecification and report the results in Table 1. We pool data across all five LLMs but allow coefficients\nto vary by model using model-specific interactions. Each observation is one choice occasion (an agent",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "choosing among four alternatives in a given scenario), and the model estimates the probability of choosing\neach alternative conditional on the choice set.\nTable 1: Recapitulation of Samuelson and Zeckhauser (1988) with AI agents\nDependent variable:\nChoice of Allocation\n(1)\n(2)\n(3)\nClaude-3.5: AutoShare\n−0.010∗(0.002)\n−0.011∗(0.002)\n−0.015∗(0.002)\nClaude-3.7: AutoShare\n−0.004∗(0.002)\n−0.005∗(0.002)\n−0.007∗(0.002)\nDeepseek: AutoShare\n0.017∗(0.002)\n0.018∗(0.002)\n0.017∗(0.002)\nGPT-4: AutoShare\n−0.008∗(0.002)",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "0.017∗(0.002)\nGPT-4: AutoShare\n−0.008∗(0.002)\n−0.009∗(0.002)\n−0.014∗(0.002)\nGPT-4o: AutoShare\n−0.004∗(0.002)\n−0.004∗(0.002)\n−0.008∗(0.002)\nClaude-3.5: I(StatusQuo)\n0.911∗(0.054)\nClaude-3.7: I(StatusQuo)\n0.703∗(0.055)\nDeepseek: I(StatusQuo)\n0.762∗(0.055)\nGPT-4: I(StatusQuo)\n0.931∗(0.054)\nGPT-4o: I(StatusQuo)\n0.316∗(0.058)\nClaude-3.5: |DistStatusQuo|\n−0.032∗(0.002)\nClaude-3.7: |DistStatusQuo|\n−0.020∗(0.002)\nDeepseek: |DistStatusQuo|\n−0.029∗(0.002)\nGPT-4: |DistStatusQuo|\n−0.040∗(0.002)\nGPT-4o: |DistStatusQuo|",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "−0.040∗(0.002)\nGPT-4o: |DistStatusQuo|\n−0.023∗(0.002)\nObservations\n6,999\n6,999\n6,999\nLog Likelihood\n-9,630.112\n-9,173.293\n-9,188.728\nNotes: This table reports the results from our replication of Samuelson and Zeckhauser (1988) with Gpt-4, Gpt-4o, Claude-\nSonnet-3.5, Claude-Sonnet-3.7, and Deepseek.\nColumns show logit discrete choice models estimating the probability of\nchoosing each of the four allocations. Observations represent one funding allocation choice—excluding one observation with",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "missing data. Each choice occasion is expanded to four rows (one per alternative), with the dependent variable indicating the\nselected option.\nWe pool data across all five LLMs but estimate model-specific coefficients through interactions with model\nindicators.\nIndependent variables are the proportion of funds allocated to automobile safety for each option, an indicator of\nwhether or not the option was framed as the status quo, and the absolute distance between each option and the status quo.",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "See www.expectedparrot.com/content/0bacba4d-91fa-4005-8f7d-abd34a4a1f52 for prompts and code. Significance\nIndicator: ∗p<0.05.\nIn Column (1), we see that AI agents, with the exception of Deepseek, are less likely to choose an\nalternative as more funds are allocated to highway safety (AutoShare). In Column (2), we add a variable\nindicating whether an allocation was framed as the status quo. All AI agents exhibit considerable status quo",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "bias, although Gpt-4o does so to a lesser extent. In Column (3), we replace the indicator variable with a\n17",
+      "source": "chatgpt_survey.pdf",
+      "page": 17,
+      "char_count": 108,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "variable measuring the absolute distance between each allocation’s auto share and the status quo allocation’s\nauto share. We see that allocations “farther” from the status quo are, on average, less likely to be chosen for\nall models. Both specifications (Columns 2 and 3) show strong evidence of status quo bias, with Column (2)\nfitting the data slightly better. Overall, our results suggest that AI agents shift their preferences toward the",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "status quo allocation—similar to human subjects. Even with substantial post-training fine-tuning, possibly\nsuboptimal heuristic features of human choice remain relevant to LLM behavior.\n2.4\nA complexity view of prospect theory (Oprea, 2024b)\nProspect theory predicts that when making risky choices, people overweight small probabilities, under-\nweight large probabilities, are risk-averse over gains, and risk-seeking over losses (Kahneman and Tversky,",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "1979). This gives rise to the classic “fourfold pattern” of risk attitudes. Oprea (2024b) examined if this\nfourfold pattern can emerge in the absence of uncertainty. In a novel design, participants were given en-\ndowments and faced sets of 100 closed boxes, each containing either a gain or a loss with probability\n𝑝∈{0.1, 0.25, 0.75, 0.9}. In the “gain” framing, some boxes contained $25 and the rest $0; in the “loss”\nframing, some contained −$25 and the rest $0.",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "framing, some contained −$25 and the rest $0.\nIn the “lottery” condition, for each probability 𝑝and each framing (gain or loss), certainty equivalents\nwere elicited by asking participants to choose between a sure amount and the outcome from one randomly se-\nlected box. This lottery condition is equivalent to a standard binary-choice lottery. As expected, participants’\ncertainty equivalents collectively displayed the fourfold pattern.",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "A second, “mirror” condition used the same box setup, probabilities, framings, and dollar amounts,\nbut altered the payoff rule. Instead of randomly choosing one box, all boxes were opened and participants\nreceived the average payoff across them. Unlike the lottery condition, this decision involves no risk: the\npayoff is deterministic and always equals the expected value (±25 × 𝑝). The rational certainty equivalent",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "is therefore the expected value. The subjects’ responses to risk should not matter, and the fourfold pattern\nshould not appear.\nOprea finds that participant responses in the mirror condition still displayed the pattern in the aggregate.\nThis suggests the pattern does not arise solely from probability weighting or reference dependence, and that\nprospect theory is not just a theory of uncertainty. Instead, Oprea argues it reflects systematic responses",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "to complexity under cognitive constraints. These findings have sparked some debate. Banki et al. (2025)\ncontend that the fourfold pattern appears in the mirror condition because subjects are confused about the\n18",
+      "source": "chatgpt_survey.pdf",
+      "page": 18,
+      "char_count": 212,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "instructions, and interpret the condition as a risky lottery—likely because of prior exposure to conventional\ncertainty equivalent tasks.\nAI agents may offer a unique perspective to help us understand features of this debate. In simulations,\nwe can systematically vary features of their personas that might indicate which perspective is correct. This\nwould otherwise be difficult, if not impossible, to do with human subjects.",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "We extend Oprea’s central experiment using AI agents. We endow each agent with $50, and then ask\nit to provide certainty equivalents for 100 box sets with probabilities 𝑝∈{0.05, 0.10, . . . , 0.95}, adding 14\nprobability conditions beyond those in the original experiment for each condition-framing combination. We\nconstruct three personas with the goal of manipulating the LLMs as if they had varying levels of available",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 421,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "cognitive resources—a well-established method for identifying complexity effects (Oprea, 2024a). The\npersonas are: (i) “you are very bad at math,” (ii) “you are average at math,” and (iii) “you are a mathematical\ngenius.” If the fourfold pattern reflects behavior under complexity rather than under risk, not only should\nthe lottery and mirror conditions be similar, but we should also expect larger deviations from expected",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "utility—toward prospect-theoretic predictions—among the lower-math ability personas. We run simulations\nfor each agent, including a baseline agent without any persona, 10 times on five LLMs (Gpt-3.5-Turbo,\nGpt-4o, Claude-Haiku-3, Claude-Sonnet-3.5, and Deepseek), all at temperature 1. This generates 15,200\nobservations.9\nFigure 5 displays the simulation results. The x-axis shows the probability of winning (or losing) $50, and",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "the y-axis shows the deviation of each agent’s certainty equivalent from the lottery’s (or mirror’s) expected\nvalue. Columns correspond to different models, and rows indicate the AI agent’s assigned mathematical\nability. Colors represent condition-framing combinations. Each point is the mean certainty equivalent across\n10 runs of a persona at a given probability, with 95% confidence intervals. Lines show OLS fits regressing",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "deviation from expected value on probability for each condition independently for losses and gains.\nAcross models, the lottery and mirror conditions generally move in lockstep: either both show the\ncharacteristic X-shape or both are flat at the expected value.\nThere are no instances where the lottery\ndisplays the fourfold pattern but the mirror does not. Notably, there are also no panels where the slopes",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 407,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "are reversed: under gains, all regression lines are weakly decreasing in 𝑝, and under losses, all regression\nlines are weakly increasing in 𝑝. Less advanced models—Gpt-3.5-Turbo and Claude-Haiku-3—show\npronounced deviations between small and large probabilities. By contrast, more capable models—Gpt-4o,\n94 agents × 2 conditions × 2 framings × 19 probabilities × 5 models × 10 repetitions = 15,200.\n19",
+      "source": "chatgpt_survey.pdf",
+      "page": 19,
+      "char_count": 401,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "Claude-Sonnet-3.5, and Deepseek—more often select expected values as a baseline, particularly when\nendowed with stronger mathematical abilities, but most clearly exhibit the fourfold pattern when prompted\nas “very bad at math.”\nFigure 5: Recapitulation and extension of Oprea (2024b)\nClaude−Haiku−3\nClaude−Sonnet−3.5\nDeepSeek\nGPT−3.5−Turbo\nGPT−4o\nMath\nGenius\nNo Math\nAbility\nSpecified\nAverage at\nMath\nVery Bad\n at Math\n.25\n.5\n.75\n.25\n.5\n.75\n.25\n.5\n.75\n.25\n.5\n.75\n.25\n.5\n.75\n−20\n−10\n0\n10\n20\n−20\n−10\n0\n10\n20\n−20",
+      "source": "chatgpt_survey.pdf",
+      "page": 20,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": ".25\n.5\n.75\n−20\n−10\n0\n10\n20\n−20\n−10\n0\n10\n20\n−20\n−10\n0\n10\n20\n−20\n−10\n0\n10\n20\nProbability\nDeviation From Expected Value\nLottery to Gain $50\nLottery to Lose $50\nMirror to Gain $50\nMirror to Lose $50\nNotes: This figure shows the results of our recapitulation and extension of Oprea (2024b) with AI agents. The x-axis is the probability\nof winning or losing $50, and the y-axis is the deviation from the lottery’s (or mirror’s) expected value. Columns correspond to",
+      "source": "chatgpt_survey.pdf",
+      "page": 20,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "different LLMs, and rows to whether different agents were endowed with different mathematical abilities. Each dot is the mean\ncertainty equivalent across AI agents (with 95% confidence intervals), and the solid lines are OLS fits within each framing-condition\ncombination. Colors represent condition-framing combinations. See www.expectedparrot.com/content/05009e7a-84e8-\n4c14-bc5d-de0408df89a2 for simulation code.",
+      "source": "chatgpt_survey.pdf",
+      "page": 20,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "4c14-bc5d-de0408df89a2 for simulation code.\nOn its face, our recapitulation supports Oprea’s claim that the fourfold pattern is not a special phenomenon\nof risk. However, it is worth considering systematically the plausible explanations for these AI responses—\nboth for exposition of Homo silicus and as commentary on the results.\nCould our findings reflect mere noise or rote memorization by the LLMs? Pure noise seems implausible,",
+      "source": "chatgpt_survey.pdf",
+      "page": 20,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "given the consistency of the fourfold pattern across five separate models and thousands of simulations. We\nwould expect to see at least one regression line with an inverted slope relative to the prospect-theoretic\npredictions if this were the case. Memorization of Oprea is also unlikely. Early drafts may be in training\n20",
+      "source": "chatgpt_survey.pdf",
+      "page": 20,
+      "char_count": 323,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "data, but the paper only gained broad visibility in 2024, and its deterministic mirror condition is novel. We\nalso vary probabilities and payoffs beyond the original, so a narrow script tailored to those exact experiments\nwould not suffice. It would represent a remarkable degree of transfer learning.\nAnother possible explanation is that LLMs may have ingested decades of lottery literature, so they\ndefault to a standard prospect-theoretic response. This is similar to Banki et al.’s argument that Oprea’s",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "subjects may have reverted to familiar responses because they misunderstood the payoff structure. The\nvariation in responses across personas suggests that the “confusion with lotteries” perspective is unlikely.\nThe more capable models largely select the expected value in all conditions when assigned a high, medium,\nor unspecified mathematical ability, but generate responses corresponding to an increasingly pronounced",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "fourfold pattern when they are “very bad at math.” All three of the more capable LLMs—each independently\ndeveloped with its own training data and fine-tuning processes—appear to have learned some relationship\nbetween stated mathematical ability and deviation away from expected utility theory in a way that aligns\nprecisely with prospect theory. After an extensive search of the literature, we found no such robustly reported\nrelationship for an LLM to have learned to apply by default.10",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "The most plausible explanation in our view is that LLMs, having ingested innumerable examples of\nhumans solving problems and demonstrating their preferences over possible states of the world—one of\nthe implicit sources of latent social information that we discussed in the introduction—learned systematic\nrelationships about how humans trade off features of decision-making problems under complexity. This view",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 410,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "is consistent with both the similarity between lottery and mirror conditions, and the increasingly prospect-\ntheoretic responses as the agents get worse at math. Of course, this does not provide definitive evidence on\nwhether Oprea or Banki et al. are correct. For now, real human data are necessary to shed light on such a\nquestion. But these findings highlight the power of using LLMs to study subtle behavioral patterns likely\npresent in their training corpora.\n2.5",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "present in their training corpora.\n2.5\nLabor-labor substitution under a minimum wage (Horton, 2025)\nHorton (2025) reports the results of an experiment where employers were randomly assigned minimum\nwages in an online labor market: when applying for a job, applicants had to bid up to meet the employer’s\nrandomly assigned minimum wage. A key finding of this experiment was that there was little reduction",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 404,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "10While there is some evidence of a weak negative correlation between cognitive ability and risk aversion in gains, it is not large,\nand we did not find published evidence for a general relationship relating to relative losses (Lilleholt, 2019; Dohmen et al., 2010).\n21",
+      "source": "chatgpt_survey.pdf",
+      "page": 21,
+      "char_count": 269,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "in hiring but a substantial shift towards more productive workers, as proxied by past worker earnings and\nexperience. The possibility of this labor-labor substitution margin had been noted in the literature, but had\nbeen difficult to pin down empirically in less controlled settings.\nWe explore the labor-labor substitution margin with AI agents. We create scenarios where we ask agents\n(employers) to select from pairs of applicants that vary in their work experience and requested wages. In our",
+      "source": "chatgpt_survey.pdf",
+      "page": 22,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "scenario, employers are hiring for the role of dishwasher, and we inform them of the typical wage for this\nrole. The scenario in the prompt is:\nYou are hiring for the role of “Dishwasher.” You have 2 candidates.\nPerson 1: Has 1 year(s) of experience in this role. Requests $[wage ask 1]/hour.\nPerson 2: Has 0 year(s) of experience in this role. Requests $[wage ask 2]/hour.\nWho are you hiring? You must fill this role.",
+      "source": "chatgpt_survey.pdf",
+      "page": 22,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "Who are you hiring? You must fill this role.\nIn our setup, Person 1 is the “experienced” worker and Person 2 is the “inexperienced” worker.\nThe\ninexperienced worker always asks for $13/hour, and the experienced worker asks for a wage between $12 and\n$17/hour. The employer is unknowingly and randomly assigned to either no minimum wage or a minimum\nwage of $15/hour. With a minimum wage, wage asks below the minimum wage threshold are forced up to\n$15/hour for both workers.",
+      "source": "chatgpt_survey.pdf",
+      "page": 22,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "$15/hour for both workers.\nWe repeat our experiment twice: once when we tell the employer that the typical wage ask for the position\nis $12/hour, and once when we provide no information about the typical wage. We elicit the AI agents’\nhiring decisions in 24 scenarios with 43 different models five times each at a temperature of 0.5.11 We ask\nthe employer to always hire a candidate. Our empirical approach is to regress the hired worker’s wage and",
+      "source": "chatgpt_survey.pdf",
+      "page": 22,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "experience on an indicator for the minimum wage treatment status. Table 2 reports the regression estimates;\nthe notes include a linked notebook with the list of models and all simulation details. All specifications\ninclude model fixed effects, and standard errors are clustered at the model level. Column (1) shows that\nwithout a reference wage, the minimum wage caused an increase of about $1.3/hour in the wage of the hired",
+      "source": "chatgpt_survey.pdf",
+      "page": 22,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "worker. Column (2) shows that when a reference wage is provided, this effect grows by nearly 50%. Positive\ncoefficients are expected because hiring was mandatory for the AI employer.\nWhen we regress the hired worker’s experience on the presence of a minimum wage, we see similarly\nsubstantial effects. Column (3) shows that without a reference wage, the minimum wage increased the hired\n11There are 6 possible wage asks, 2 minimum wage conditions, and 2 reference wage conditions. 6 × 2 × 2 = 24.\n22",
+      "source": "chatgpt_survey.pdf",
+      "page": 22,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "Table 2: Effects of minimum wage on observed wage and hired worker attributes\nDependent variable:\nHire wage\nHire experience\n(1)\n(2)\n(3)\n(4)\nI(Minimum Wage)\n1.314∗\n1.984∗\n0.081∗\n0.265∗\n(0.067)\n(0.053)\n(0.018)\n(0.023)\nReference Wage\nNo\nYes\nNo\nYes\nModel FE\nYes\nYes\nYes\nYes\nObservations\n2,580\n2,579\n2,580\n2,579\nR2\n0.273\n0.628\n0.226\n0.179\nNotes: This table shows regressions where the independent variable indicates whether a minimum wage was imposed on the AI",
+      "source": "chatgpt_survey.pdf",
+      "page": 23,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "employer. Dependent variables are (1) and (2) the hired worker’s hourly wage and (3) and (4) their years of experience. Columns\n(1) and (3) show results without a reference wage, and Columns (2) and (4) with a reference wage. Employer-level observations are\nsampled from 43 different models. See www.expectedparrot.com/content/15eb59ad-f7c8-4c9b-87d1-a58cfecc13ec\nfor prompt details and the list of models. Significance Indicator: ∗p<0.05.",
+      "source": "chatgpt_survey.pdf",
+      "page": 23,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "worker’s years of experience by about a month. With a reference wage, Column (4) shows that the introduction\nof the minimum wage caused the employer to hire workers with roughly three more months of experience\non average. We return to why the reference wage matters in Section 4, but even across simulations of dozens\nof independently developed models, these increases in wage and experience are directionally consistent with\nHorton’s findings.\n3\nWhy and when we can learn from Homo silicus",
+      "source": "chatgpt_survey.pdf",
+      "page": 23,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "3\nWhy and when we can learn from Homo silicus\nIn the previous section, we demonstrated that AI agents can simulate features of human behavior in exper-\niments along with various methods to facilitate such simulations. Next, we examine why LLMs possess\nthese capabilities in the first place, which can inform when the approach is most likely to be useful. We\nbegin by describing the data that enables highly general AI simulations, and then discuss how economists",
+      "source": "chatgpt_survey.pdf",
+      "page": 23,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "can conceptualize them in their methodological toolkit.\n3.1\nWhy LLMs can simulate human behavior\nGood predictions start with good training data. LLMs can flexibly predict human responses because their\ntraining data contain rich information about the social world, and their architectures and post-training\nprocesses allow them to learn and apply generalizable human behavioral patterns from that data.\n23",
+      "source": "chatgpt_survey.pdf",
+      "page": 23,
+      "char_count": 404,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "Figure 6 depicts the data pipeline from the social world to LLM predictions about the social world. LLMs\ngather informative signals about the social world through two distinct paths: (i) explicitly, by memorizing\nfindings and theories from the social science literature and (ii) implicitly, by ingesting text that captures\naspects of the social world, such as news articles, social media content, books, and so on.\nFigure 6: Why LLMs are good predictive models of the social world\nSocial world",
+      "source": "chatgpt_survey.pdf",
+      "page": 24,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "Social world\nNon-scholarly human\ntexts about social world\nSocial science\nliterature\nTraining data\nFitted model\n(LLM)\nPredictions about\nthe social world\n(ii) Everything written/recorded\n(i) Everything that\ngets researched\nand published\nSome unclear\nselection process\nSome unclear selection process\nNeural network\narchitecture\nand post-training\nPrompting\nNotes: This figure is a simplified depiction of the data pipeline from the social world to the LLM’s training data, and then to the",
+      "source": "chatgpt_survey.pdf",
+      "page": 24,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "LLM’s predictions about the social world. It highlights that LLM simulations can match human behavior in the real world through\ntwo distinct paths: (i) by acting in accordance with explicit theories and findings in the social science literature, or (ii) implicitly by\ningesting elements of human behavior “in action” captured in non-scholarly human-generated text.\nThe social science literature path contains records of generalizable patterns, processes, relationships,",
+      "source": "chatgpt_survey.pdf",
+      "page": 24,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "and theories about human behavior—precisely the kinds of insights we would like LLMs to internalize and\napply more broadly. Consider that at the core of economic analysis is the idea that humans are goal-oriented\nagents maximizing some objective under constraints (von Neumann and Morgenstern, 1944), or the empirical\nevidence that humans often derive utility with diminishing marginal returns to consumption (Samuelson,",
+      "source": "chatgpt_survey.pdf",
+      "page": 24,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "1937) and exhibit strong social preferences by valuing fairness, reciprocity, and others’ welfare alongside\ntheir own (Fehr and Schmidt, 1999). These concepts do not just magically exist in the ether. They have\nbeen codified through decades of research, dramatically improving economists’ understanding of human\nbehavior. These are the essential ideas that any “general” human model should take into account. And while",
+      "source": "chatgpt_survey.pdf",
+      "page": 24,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "learning from the social science literature comes with distinct challenges, which we discuss in more detail\nin Section 4, it is a necessary ingredient for LLMs to effectively simulate human responses in many settings.\nIn contrast to the social science literature path, the non-scholarly, human-generated text path provides\nLLMs with true aspects of the social world “in action:” how people communicate, make decisions, interact\n24",
+      "source": "chatgpt_survey.pdf",
+      "page": 24,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "with each other, and perceive the world. We might be skeptical that a language model could, say, represent\nphysics we have yet to theorize, but it surely has internalized relevant knowledge about the social world that\nhas never been written down in academic work. This is not to say that the data are the social world or a\nperfect representation of it. Rather, it contains countless examples that reiterate basic economic relationships\nacross a wide range of contexts.",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "across a wide range of contexts.\nConsider the observation that people prefer lower prices and greater quantities, all else equal. Any\neconomic textbook would contain this observation either in some written form or with the condition\n𝜕\n𝜕𝑝\n\u0000𝑢(𝑥∗) −𝑝𝑥∗\u0001 < 0. But the same observation also appears in widely-read, pre-social science sources. In\nthe Book of Amos, the prophet denounces unfair traders: “And the Sabbath, that we may offer wheat for sale,",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "that we may make the ephah small [a weight to put on a balance] and the shekel great and deal deceitfully\nwith false balances.”\nWhat about more subtle knowledge, such as the literature on cheap talk in bargaining games? There, we\nwould not expect the LLM to learn every detail and figure out all implications of Crawford and Sobel (1982),\nbut its data contain sources that capture some of the basic ideas and tensions. For example, “‘It’s no good,",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "it’s no good!’ says the buyer—then goes off and boasts about the purchase” (Proverbs 20:14) captures the\nidea that in bargaining, the buyer and seller are not always forthright.\nModern non-scholarly sources echo these dynamics as well. Over the past three decades, an increasing\nshare of economic activity has occurred online, creating an extensive record of transactions, reviews,\nnegotiations, and market interactions. These digital traces provide ample raw material from which LLMs",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "learn realistic representations of human decision-making in many settings.\nImportantly, both the implicit and explicit paths are shaped by distinct and often opaque selection mech-\nanisms. Peer review determines which studies enter the formal literature, and individual self-presentation—\nwhat people choose to write, post, or record—filters the broader corpus of human text. Model developers\nthen apply a further layer of curation when assembling the final training data, excluding or weighting sources",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "according to proprietary criteria.\nNeither stream of information is complete or representative, which is why AI simulations should not\nbe treated as unequivocal evidence about human behavior. Over time, however, we expect that the models\nmost frequently used for simulation will converge toward greater transparency and openness, with clear data\ninclusion standards, explanations of post-training processes, and documentation. While open models are not",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "yet as advanced as the most capable models and not viable for many AI experiments, they are improving\n25",
+      "source": "chatgpt_survey.pdf",
+      "page": 25,
+      "char_count": 104,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 158,
+      "text": "rapidly. When possible, we fully endorse the use of open models. For now, there remain trade-offs between\nmodel capability and openness, though these have narrowed considerably even since the first release of\nChatGPT.\nWhile training data are key to the ability of LLMs to simulate human behavior, these information sources\nalone do not create a coherent model. LLMs’ architectures and post-training processes translate rich training",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 159,
+      "text": "data into useful predictions about human behavior. Modern transformer LLMs are flexible sequence-to-\nsequence estimators: they can approximate complex mappings from contextual variables such as prices,\npayoffs, and information sets to a distribution of actions in their textual responses (Yun et al., 2019). Their\ntraining objective rewards outputting empirically truthful conditional probabilities over their data (Gneiting\nand Raftery, 2007)—minimizing log loss is a strictly proper scoring rule.",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 160,
+      "text": "Post-training methods (like instruction tuning or reinforcement learning with human feedback) steer\nmodels away from brittle responses driven by spurious patterns in their training data and toward cooperative,\ninstruction-following behavior—we exploit this property when we endow agents with roles and preferences.\nThe most advanced frontier models even have specific reasoning capabilities which allow them to better “think",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 161,
+      "text": "through” how a human would respond based on a given set of characteristics. Together, massive training\ncorpora combined with these architectural and training innovations enable LLMs to capture generalizable\npatterns of human behavior that can be used to generate predictions in a wide range of settings.\n3.2\nHomo silicus as theory\nIn Section 2, we used elements of the research processes traditionally associated with empirical work to",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 162,
+      "text": "construct and analyze our AI simulations. We designed experiments, collected data, and used statistical\nanalyses to summarize the results. Despite these ostensible similarities to applied work, many of the most\nvaluable use cases and insights gained are more akin to the practice of economic theory.\nTo see why, consider an economist who is trying to understand the following puzzle: why do large firms\npay higher wages than observationally equivalent small firms? The researcher begins by trying to create",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 163,
+      "text": "a model where such a gap exists in equilibrium. If she assumes perfectly competitive labor markets and\ncostless mobility, her model would likely predict no firm-size wage differences—workers are simply paid\ntheir marginal product. Of course, this disappointing first step does not prove that theorizing is worthless.\nInstead, it highlights that the baseline model omits important features of real labor markets.",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 411,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 164,
+      "text": "The next step in the researcher’s journey is to create richer models. With each new theory direction, she\n26",
+      "source": "chatgpt_survey.pdf",
+      "page": 26,
+      "char_count": 108,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 165,
+      "text": "would attempt to formalize a different real-world mechanism. At each step, the researcher must draw on\ndomain knowledge and the literature to specify a new model, work out the equilibrium (often painfully), and\nderive useful, testable predictions.\nWith Homo silicus, we can easily construct a large number of AI simulations—based on a world model\ninformed by empirical data—that might bear on the firm-size premium. For example, suppose we simulate",
+      "source": "chatgpt_survey.pdf",
+      "page": 27,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 166,
+      "text": "a job seeker weighing offers from a small startup and a large incumbent. If an AI agent spontaneously\nemphasizes differences in layoff risk and promotion timelines—and accepts a lower starting wage at the\nlarger firm because it anticipates faster wage growth and insurance value—this suggests a mechanism and\nmaybe even an empirical design: measure expected wage paths and mobility frictions by firm size.\nSimilar to modeling, simulations can lead us in the wrong direction. But they likely make expensive",
+      "source": "chatgpt_survey.pdf",
+      "page": 27,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 167,
+      "text": "data collection more useful by helping us target efforts where the marginal value of information is highest.\nEconomists have long been aware of how seemingly simple micro-decision making can lead to surprising\nand subtle equilibrium implications (Akerlof and Yellen, 1985). It is not hard to imagine how the ability to\neasily conduct rich, complex simulations might lead to surprising and generative insights. Indeed, this is",
+      "source": "chatgpt_survey.pdf",
+      "page": 27,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 168,
+      "text": "one of the major differences between the physical and social sciences: the ability to iterate and run follow-up\nexperiments. Given the differences in predictive power between physical and social scientific theories, there\nis reason to believe a low-cost and high-speed approach to “learning by doing” (Arrow, 1962) at speeds\ncloser to the lab bench could be a powerful tool for progress.\nWhile the many parallels with economic theory are clear, a key difference—and an advantage—of Homo",
+      "source": "chatgpt_survey.pdf",
+      "page": 27,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 169,
+      "text": "silicus is its flexibility. We can use AI simulations to generate predictions in virtually any setting described in\nnatural language. This is often not possible with conventional economic theory because it generally requires\nfixed input parameters and structural assumptions.\nTo make concrete what we mean by flexibility, and why economic models are relatively inflexible,\nconsider the model in Charness and Rabin used to estimate the impact of social preferences on participant",
+      "source": "chatgpt_survey.pdf",
+      "page": 27,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 170,
+      "text": "allocation decisions. For the unilateral dictator games we studied in Section 2, they model the utility player\nB derives from a given allocation 𝝅= (𝜋𝐴, 𝜋𝐵) as:\n𝑈𝐵(𝜋𝐴, 𝜋𝐵) = (𝜌· 𝑟+ 𝜎· 𝑠) · 𝜋𝐴+ (1 −𝜌· 𝑟−𝜎· 𝑠) · 𝜋𝐵,\n(1)\nwhere 𝑟= 1 if 𝜋𝐵≥𝜋𝐴and 𝑟= 0 otherwise; 𝑠= 1 if 𝜋𝐵≤𝜋𝐴and 𝑠= 0 otherwise. Here 𝜋𝐴and 𝜋𝐵\n27",
+      "source": "chatgpt_survey.pdf",
+      "page": 27,
+      "char_count": 306,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 171,
+      "text": "are the payouts for players A and B in allocation 𝝅, respectively. 𝜌and 𝜎are free parameters representing\ndistributional preferences which Charness and Rabin estimate from their human data.\nWith values for the free parameters, Equation 1 could be used to predict dictator preferences over a\nrange of two-player allocations. However, this model is fundamentally limited in two ways. First, it cannot\nincorporate any additional information from a given setting that may be relevant to the dictator’s decision.",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 172,
+      "text": "Suppose that after running their experiment, Charness and Rabin learn that about half of the participants\nare friends and believe this might strongly interact with baseline social preferences. To use this information\nto improve the model’s predictions, say, as an extra variable, one must make additional assumptions and\nre-estimate all parameter values. Second, this model cannot make predictions in structurally distinct games—",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 173,
+      "text": "even if these games share similar underlying motivations. Equation 1 is useless for predicting the dictator’s\nchoice over allocations for any number of players greater than two.\nTraditional machine learning models, which have become increasingly relevant in predicting human\nbehavior in economics (Fudenberg and Liang, 2019; Peterson et al., 2021; Hirasawa et al., 2022; Zhu et al.,\n2025b; Andrews et al., 2025), have similar limitations. It is not possible to simply add new features to these",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 174,
+      "text": "models to make predictions in structurally distinct settings. For example, if a regression model is trained\nto predict earnings linearly from education and age, but a new observation comes along that also includes\ncognitive ability, the linear model’s estimated coefficients offer no information about the relationship between\ncognitive ability and earnings. This extra column of data must either be ignored by the model or the model",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 175,
+      "text": "must be retrained from scratch using data from all three covariates. In short, most economic and machine\nlearning models cannot function outside the domain for which they were built.\nAI simulations, however, are not subject to the same structural limitations. In the parlance of the machine\nlearning literature, we may think of LLMs as those models with a strong “inductive bias” for social science\nprediction problems. We can simply adjust the setting provided in a prompt (literally rewriting the natural",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 176,
+      "text": "language description of the setting), and the LLM will predict a response based on the relationships it has\nlearned from its training data. While we cannot directly apply Equation 1 to three-player dictator games,\nwe could supply the model with the parameters estimated in two-player games to an LLM and prompt it to\nextend the mapping in a reasonable, explicitly described way to games with any number of players.",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 177,
+      "text": "This is possible, in part, because LLMs can reasonably impute missing information necessary to make a\ncoherent prediction. Since they are next-token predictors, they can accommodate the functional form of any\nmodel written in a prompt. Such flexibility is well-embodied in the “P” in ChatGPT (Generative Pre-trained\n28",
+      "source": "chatgpt_survey.pdf",
+      "page": 28,
+      "char_count": 318,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 178,
+      "text": "Transformer)—the idea that by pretraining on a massive corpus of text, the model can generalize well.12\nFlexibility is not without its drawbacks. LLMs are black boxes that can fail to generalize in unexpected\nways (Vafa et al., 2024a). But viewing AI agents as vessels to apply interpretable economic theory to new\nsettings is a powerful way to mitigate this risk. Because instruction following is the central post-training",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 423,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 179,
+      "text": "objective of modern LLMs (Ouyang et al., 2022; Bai et al., 2022), a more reliable way to steer them is to\nexpress our assumptions as explicit instructions. Economic theory maps naturally into such instructions: it\ndeclares state variables and constraints, specifies an objective, and implies decision rules. When we write\nthose elements clearly in the prompt (e.g., “You only care about efficiency”), the model can apply the rule",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 180,
+      "text": "across new settings without retraining—and we can audit whether it did so. As we discuss in Section 4,\nexplicit, unambiguous instructions are valuable because they require far less from the LLM’s underlying\nworld model. They also make behavior checkable in simple test cases and reveal where extrapolation fails\nbefore scaling simulations up in complexity. Put differently, economic theory supplies the instructions;\nLLMs supply the capacity to execute them flexibly.",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 181,
+      "text": "We applied a version of this theory-as-flexible-instruction approach when calibrating our sample for the\ntwo-stage allocation games in Section 2. For the unilateral dictator games, we endowed “efficient” agents to\nmaximize total payoff, “inequity-averse” agents to minimize payoff differences, and “self-interested” agents\nto maximize their own payoff. In each of the six allocation decisions, there is a clear mathematical mapping",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 431,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 182,
+      "text": "from the instruction to the preferred allocation; only Berk26 is equivocal for the efficiency persona because\nboth allocations are equally efficient. After calibrating on the unilateral tasks, we applied the same agents\nto the two-stage games, where “efficient,” “inequity-averse,” and “self-interested” become more ambiguous.\nFor example, in Berk27, should the self-interested Player A choose “Left” (certain 500) or “Right” (either",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 183,
+      "text": "800 or 0 depending on B’s move)? Although 800 seems more likely than the spiteful 0, there is no guarantee\nB cooperates. Still, the calibrated agents predicted human responses far better than persona-less LLMs,\nsuggesting that even this imperfect theoretical mapping was relevant.\nA natural question raised by these results is what they teach us about humans rather than models. Are we\nactually learning that human dictators behave like mixtures of efficient, inequity-averse, and self-interested",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 184,
+      "text": "types? More broadly, whenever an interpretable prompt improves a simulation’s fit to human data, should we\ntake that as evidence that the theoretical idea associated with that prompt is literally true of people and should\n12To be sure, there are settings where parametric models are better—e.g., response data from 10,000 binary-choice lotteries\n(Peterson et al., 2021) when we are specifically studying interpolation in risky choice (Enke and Shubatt, 2023; Zhu et al., 2025a).\n29",
+      "source": "chatgpt_survey.pdf",
+      "page": 29,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 185,
+      "text": "anchor our economic models? This echoes the broader idea of reverse-engineering predictive power from\nmachine learning models as a tool for hypothesis generation (Ludwig and Mullainathan, 2024). For now,\nthat inference is too strong. LLMs remain black boxes: we do not yet know why a given prompt improves\nperformance or how the internal representations that drive these gains relate to human behavior. The nascent",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 186,
+      "text": "field of mechanistic interpretability is beginning to shed light on these questions (Olah et al., 2020; Elhage\net al., 2021), but it does not yet let us map prompts cleanly onto interpretable features that explain human\nresponses.\nEven so, these patterns of improved predictiveaccuracyprovidecompelling—andincreasinglyabundant—\nevidence that LLMs have internalized meaningful relationships between interpretable theory and human",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 187,
+      "text": "behavior (Zhu et al., 2025a).13 That conclusion is reinforced by the opposite pattern: prompts that endow\nAI agents with atheoretical or scientifically meaningless traits generally do not improve predictive accuracy.\nManning and Horton (2025), for example, show that giving agents hobbies or favorite TV shows does little\nto improve fit on Charness and Rabin’s games, either in-sample or in new settings, while theory-based",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 423,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 188,
+      "text": "social-preference personas do. Of course, there are surely settings where the correct theory does not improve\nfidelity, or meaningless prompts do. But the fact that we cannot yet make precise inferences about human\nbehavior from which prompts improve predictive fidelity does not mean these patterns lack value. They may\nstill provide structured signals about which theoretical ideas are promising for modeling and exploration,\neven if the mechanisms underlying those gains are not yet fully understood.\n3.3",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 189,
+      "text": "3.3\nUsing Homo silicus to navigate uncharted territory\nFigure 7 shows how we can think about the relationship between the social world, the social science literature,\nand AI simulations. The green oval (upper left) depicts the set of true propositions about the social world.\nThe black oval (upper right) depicts the set of propositions that have been studied and recorded in the social\nscience literature—regardless of the findings. These may or may not have been labeled true, which is why",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 190,
+      "text": "the oval is dashed, but they have been evaluated by researchers. The blue oval (bottom center) depicts the\npropositions that simulations of a given set of AI agents powered by a particular LLM would predict to be\ntrue. The blue “feet” protruding from the black oval represent how new AI results from the given agent set\nwould expand on the existing social science literature.\n13Xie et al. (2025) offer a complementary illustration: when they optimize prompts to match human behavior across seven",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 191,
+      "text": "classic economic games, the high-fidelity prompts that emerge invoke precisely the constructs economists would anticipate—risk\npreferences in investment games, cooperation in public-goods games, fairness in allocation games, and so on.\n30",
+      "source": "chatgpt_survey.pdf",
+      "page": 30,
+      "char_count": 238,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 192,
+      "text": "Figure 7: How AI simulations may help or hurt social science research on new propositions\nNotes: This figure displays the predictions made by simulations of AI agents (bottom center blue oval) relative to the true social\nworld (upper left green oval). The black dashed oval in the upper right offers the propositions that have been evaluated by social\nscientists—it is agnostic as to whether such propositions are recorded as true or false. The blue “feet” show how AI results could",
+      "source": "chatgpt_survey.pdf",
+      "page": 31,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 193,
+      "text": "expand the existing literature. The Venn diagram implicitly offers a confusion matrix for where AI simulations can either help or\nhinder researchers as they explore novel ideas.\nAlong with Figure 6, this diagram shows how AI simulations show a selective and noisy slice of the social\nworld. They are not yet an adjudication of truth but a navigation aid: a disciplined way to mark the types\nof propositions that appear promising. Read as a confusion matrix, Figure 7 implies four possible cases: (i)",
+      "source": "chatgpt_survey.pdf",
+      "page": 31,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 194,
+      "text": "AI True Positives: true propositions supported by AI simulations, (ii) AI True Negatives: false propositions\nrejected by AI simulations, (iii) AI False Positives: false propositions supported by AI simulations, and\n(iv) AI False Negatives: true propositions rejected by AI simulations. Researchers stand to gain when AI\nsimulations fall in the true positive and true negative regions. On the other hand, AI simulations may",
+      "source": "chatgpt_survey.pdf",
+      "page": 31,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 195,
+      "text": "amplify errors when they generate false positives or neglect well-established results. This underscores that\nsimulations can be either helpful when they corroborate good social science or refuse to imitate bad social\nscience, or harmful when they introduce spurious results or fail to predict legitimate findings.\nNotably, humans are not necessarily strong benchmarks for predicting the results of social science",
+      "source": "chatgpt_survey.pdf",
+      "page": 31,
+      "char_count": 412,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 196,
+      "text": "research. A growing literature shows that even trained social scientists are surprisingly poor at forecasting\nthe outcomes of interventions and experiments (DellaVigna et al., 2019; Milkman et al., 2021; Gandhi et al.,\n31",
+      "source": "chatgpt_survey.pdf",
+      "page": 31,
+      "char_count": 221,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 197,
+      "text": "2025, 2024; Duckworth et al., 2025). This implies that the “bar” for a useful predictive tool may be lower\nthan we often assume. AI simulations need not be perfect to be informative—they may only need to improve\non human judgment.\nStill, how would we know in which of the four regions we are likely to find ourselves when using AI\nsimulations? Without a correct causal model, no statistical procedure can, ex ante, guarantee performance",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 198,
+      "text": "in novel settings (Pearl, 2009). To get unbiased estimates of economic parameters or to make predictions\nwith guaranteed statistical bounds, one needs at least some representative data or sufficient statistics. Only\nthen, with the appropriate statistical frameworks, can researchers use AI agents’ responses as data to draw\nunequivocal inferences about human behavior (Ludwig et al., 2025). In other words, researchers generally",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 199,
+      "text": "need some sort of ground truth or gold standard dataset to compare against. In general, ground truth is the\nanalogous human subjects’ data for a given set of simulations.\nOne such case where ground truth is available is when researchers have already committed to collecting\na human sample and want to stretch it further. For these settings, prediction-powered inference is especially\nuseful. The method starts with a ground truth sample, trains a model to predict the outcome from observed",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 200,
+      "text": "covariates, and then combines those predictions with inputs lacking outcome labels to form estimators that\nremain unbiased for the target parameter (Angelopoulos et al., 2023; Egami et al., 2023). The more accurate\nthe predictive model, the more precise the resulting estimates and the lower the cost of achieving a desired\nlevel of precision. Intuitively, the machine learning model’s predictions act like additional observations that",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 201,
+      "text": "are corrected using the ground truth sample. AI simulations can be particularly effective in this role (Broska\net al., 2025; Ludwig et al., 2025), in no small part because of their flexibility.\nGround truth, however, is often unavailable for another one of the most useful applications of AI\nsimulations: exploring new settings where no prior data, and therefore no guarantees, exist. In such cases,\nwe are not generally interested in unbiased inference, but instead in exploration and hypothesis generation—",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 202,
+      "text": "hence our continued emphasis on theory comparison. The evidentiary burden for such research tasks is far\nlower than for unbiased inference. Still, researchers should not want to explore blindly.\nThe key is to construct a set of AI agents that are more likely to perform well in a given setting, even\nif perfect fidelity cannot be guaranteed. One way to do so, as we have shown, is to design theory-grounded",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 406,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 203,
+      "text": "agents and test them in settings where human ground truth is available and theoretically related to the target\ndomain of interest. If these agents can accurately predict human responses in such benchmark settings, we\ngain confidence that they will generalize effectively to nearby, unlabeled settings. Conceptually, there are\n32",
+      "source": "chatgpt_survey.pdf",
+      "page": 32,
+      "char_count": 328,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 204,
+      "text": "many distinct blue ovals in Figure 7, each representing predictions of simulations from a different set of AI\nagents. These could be different models, prompts, or a combination of both. The goal is to identify those\nthat can be shifted closest to the green oval—the set of true propositions—especially for those propositions\nwhere the black oval provides reliable labels. When the new settings lie close to these correctly labeled",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 205,
+      "text": "regions, we might expect similar predictive success—illustrated by the green “AI helpful” feet in the figure.\nOur experiments with Charness and Rabin’s unilateral and two-stage allocation games provide an example\nof this approach. We used agents grounded in social preferences to match human responses in the unilateral\ndictator games, then applied them to the related two-stage games where we presumed the same underlying",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 206,
+      "text": "theory (various social preferences) drove behavior. Manning and Horton (2025) provide a full elucidation\nof this approach and demonstrate that the method can substantially improve the predictive power of AI\nsimulations in entirely novel settings where no prior human data exists.14\nDesigning theory-grounded agents helps us improve fidelity, but their effectiveness ultimately depends\non what the underlying LLM already knows about the world. In practice, this means that some domains will",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 207,
+      "text": "be more conducive to reliable simulation than others. Certain types of settings may therefore inspire greater\nconfidence that AI simulations will be effective—specifically, those we would expect to be well-represented\nin the LLM’s training data. This follows a simple machine learning principle: models are most accurate in\ndomains richly represented in their training data. Indeed, evidence shows that LLMs perform far better on\nproblems and questions drawn from well-covered settings (McCoy et al., 2024).",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 208,
+      "text": "Perhaps unsurprisingly, two of the largest experimental papers in terms of participant sample size and\nnumber of distinct experiments demonstrating that LLMs have broadly applicable predictive power in novel\nsettings focus on domains that are likely to be richly represented in digital text: laboratory experiments in\npsychology (Binz et al., 2025) and digital marketing experiments (Hewitt et al., 2024). Although we cannot",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 209,
+      "text": "know the boundaries of what is in the training corpus without open models—and even then, the sheer volume\nof data may obscure clear boundaries—trusting results from simulations of settings well-captured by text on\nthe internet is likely a sound heuristic.\n14An alternative to effective prompting for improving the fidelity of simulations is to fine-tune the model on a particular dataset",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 387,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 210,
+      "text": "related to the target setting (Suh et al., 2025; Binz et al., 2025). However, if the goal is ideation, such fine-tuning sacrifices many of\nthe lessons learned from identifying the appropriate theory-grounded agents in the first place. For now, it is also far more unwieldy\nand can lead to a phenomenon known as catastrophic forgetting—where the model “forgets” much of the original information from\nits original training data (Luo et al., 2023).\n33",
+      "source": "chatgpt_survey.pdf",
+      "page": 33,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 211,
+      "text": "4\nConceptual issues\nCritiques of Homo silicus question the suitability of using LLMs for social science. One potential response\nmirrors the argument of Friedman (1953) that the realism of Homo economicus and our assumptions more\ngenerally do not matter, and instead we should evaluate an approach on whether it can generate useful results.\nThe proof of the pudding is in the eating, and “eating” for our purposes is whether AI simulations can help",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 212,
+      "text": "us to expand the frontiers of human knowledge more quickly. For example, suppose that the primary use of\nHomo silicus is to simulate experiments before we try them in the real world, and this method is adopted. In\nthat case, these debates are somewhat moot. Nevertheless, it is helpful to consider non-Friedman responses\nto common critiques of AI simulations.\n4.1\nThe “garbage in, garbage out” critique",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 402,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 213,
+      "text": "4.1\nThe “garbage in, garbage out” critique\nOne critique of using LLMs for social science is that their training data is too large to be carefully curated, and\nthis may create a “garbage in, garbage out” problem. This critique rests partly on the incorrect notion that the\nresponses of LLMs are a sort of weighted average. However, LLMs are more like random number generators\nthan estimators. If an LLM is trained on millions of people reporting random draws from 𝑈[0, 1], it would",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 214,
+      "text": "not always respond with approximately 0.5, but rather it would be more or less equally likely to return any\nnumber in [0, 1]. LLM developers also have strong incentives to curate the training data carefully (Brown et\nal., 2020; MetaAI, 2024), and post-training methods act as an additional layer of filtering.\nEven great data may disproportionately represent the highly selected pool of “humans creating public",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 410,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 215,
+      "text": "writing.” One advantage economists have in using LLMs is that they tend to pose questions that place few\ndemands on the sample. We do not think of demand curves sloping downward as a “Western, Educated,\nIndustrialized, Rich, and Democratic” phenomenon but rather as a result of rational goal-seeking that all\nhumans engage in.15 The willingness of economists to use undergraduates at elite four-year universities for",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 416,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 216,
+      "text": "laboratory experiments is partially a convenience—but also consistent with a disciplinary point of view we\nshare with psychologists that it is not likely to matter much.\nA more subtle problem is that LLMs are trained on what humans choose to say—not on what they choose\nto do. Economists have historically taken a dim view of the economic content of mere statements rather than\nbehaviors. This would seem to be a damning critique of a model literally trained on statements. However,",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 217,
+      "text": "15Although preliminary work shows how LLMs may effectively model non-WEIRD populations (Capra et al., 2024).\n34",
+      "source": "chatgpt_survey.pdf",
+      "page": 34,
+      "char_count": 111,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 218,
+      "text": "this “stated versus revealed preference” critique is only superficially persuasive. As we have discussed and\nillustrated in Figure 6, the internet contains both implicit and explicit sources of social information. The\ntraining data is not millions of lines of people lying about their reservation values in bargaining scenarios.\nInstead, much of it is text about people reasoning how to approach various economic questions, including",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 219,
+      "text": "“stage whispers” about their true intentions, explaining how they would deal with a situation, or recording\neconomic decisions such as purchases and ratings.16\n4.2\n“Memorization” and “performativity” problems\nWith billions of parameters and a massive training corpus, one worry is that LLMs are parroting back to\nus what they have “read” somewhere in their training data. This view is not entirely correct. First, it is",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 419,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 220,
+      "text": "inconsistent with the fact that LLMs can “hallucinate” and make up new facts. Second, our findings in\nSection 2 contradict this view: the AI and human subjects’ responses differ in scenarios that are in the\ntraining data. Moreover, memorization is not intrinsically bad.\nMemorization would be problematic if the LLM’s predictions were so “shallow” as to be brittle. To make\nan analogy, consider an economics student studying for a game theory exam. A bad student has memorized",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 221,
+      "text": "that {Defect, Defect} is the unique pure strategy Nash equilibrium for the prisoner’s dilemma game, and then\nselects that prediction when it appears on the midterm. This shallow memorization is problematic because it\ndoes not generalize to games with different payoffs or action spaces. A better student would memorize that\na Nash equilibrium is a strategy profile where every player best-responds to every other player, and would",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 222,
+      "text": "be able to apply this concept to identify equilibria in novel settings. The usefulness and flexibility of LLMs\nsuggests that their predictions are often more like the good student’s.\nAnother related concern is a potential “performativity” problem, in the sense that AI agents may behave\nfollowing the theories and empirical results in their training data (MacKenzie, 2007). However, as with the\n“good” game theory student, performativity may be a desirable feature of AI simulations—assuming the",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 223,
+      "text": "underlying theory is correct. More generally, a critical view of memorization and performativity overshadows\ntheir important benefits. If our goal is to have a “realistic enough” model of human behavior, rather than to\nmake unequivocal inference about human behavior, and we believe that the cumulative body of social science\n16The parent of one of the authors runs a construction company and has to negotiate constantly. He claims that one of his useful",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 224,
+      "text": "negotiating skills is the ability to read upside down because many people will write their reservation value on a piece of paper they\nhave in front of them (often underlined). By putting this text in a paper on the public internet, this tiny piece of human reasoning\nabout economic life is now available for LLMs to learn.\n35",
+      "source": "chatgpt_survey.pdf",
+      "page": 35,
+      "char_count": 325,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 225,
+      "text": "is useful in predicting actual human behavior, then internalizing and applying these facts is beneficial.\n4.3\nBlack boxes with incoherent world models\nWe do not fully “understand” the behavior of LLMs today, including how training data, model architectures,\nand prompts affect model outputs. A deeper understanding would certainly be useful, but it is not necessary\nto use LLMs for social science. To do economics, we do not have to study neurons and parts of the brain.",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 226,
+      "text": "Instead, we advance our body of knowledge by studying how humans respond in different scenarios and\nby developing theories, one study at a time. Similarly, what matters is not that we fully understand how\nLLMs work, but rather that they are systems created for some understandable purpose with an explicit goal\nof optimization. As Simon (1996) notes, “sciences of the artificial” can usefully abstract away from the",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 227,
+      "text": "micro-details of construction so long as the created object is viewed as trying to maximize something subject\nto the constraints of the environment.\nA related concern is that LLMs may have incoherent world models, which can undermine their credibility.\nAn interesting case in point is Vafa et al. (2024b). They train a language model to predict paths between\npoints in New York City based on rides from taxi drivers. To do this, they label every single intersection in",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 228,
+      "text": "the city with a unique identifier. Each ride is then tokenized as an initial intersection, an ending intersection,\nand a series of actions—“left,” “right,” “straight,” etc.—between them. When trained on thousands of these\nrides, the model can predict the correct sequence of actions to get between hold-out sets of starting and\nending intersections with high accuracy. Yet, the authors show that the inferred map of New York City omits",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 229,
+      "text": "streets, invents others, and the predictions are far less accurate when street detours are introduced. The\nlanguage model’s world model is brittle. It is not explicitly designed to be a map of the city.17\nWhile a perfectly coherent world model would be a boon to AI simulations, it is not strictly necessary to\nhave credible predictions in many contexts. Effective simulations can rely on what the LLM was designed",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 230,
+      "text": "to do—follow instructions. Consider an LLM being used to predict how humans might navigate some city.\nGiven a perfect GPS, this would be trivial. However, the LLM might still navigate well if given a broadly\napplicable set of instructions and updated information about the immediate environment. If it were endowed\nwith “Stop at stop signs. Stay on the right side of the road. Follow the speed limit.” and intermittent updates\n17Vafa et al. (2025) offer another related context focusing on Newtonian mechanics.",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 231,
+      "text": "Some points largely ignored by both\npapers are the now-well-established scaling-and-breadth effects: LLMs trained on broad, heterogeneous tasks tend to have the best\nperformance across the board (Kaplan et al., 2020; Brown et al., 2020; et al., 2022; OpenAI, 2024). It is unclear how the most\ncapable LLMs suffer from the incoherencies in Vafa et al. (2024b).\n36",
+      "source": "chatgpt_survey.pdf",
+      "page": 36,
+      "char_count": 362,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 232,
+      "text": "about the immediate environment, it could move around reasonably. Navigating with those instructions is\na far simpler task—and requires a far simpler world model—than reconstructing the entire street grid from\nscratch, and it is robust to many small perturbations.18\n4.4\nAre these “just simulations?”\nAn objection to AI-based experiments is that they are just simulations or agent-based models. Economists\ngenerally take a dim view of simulation-based approaches because the researcher is both judge and jury:",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 233,
+      "text": "you program the agents and then see what they do. Rather than “What would Homo economicus do?”\nsimulation-based approaches often ask “What would this model [that does what I tell it to do] do?”—a far\nless scientifically interesting question. This is arguably why Schelling (1971) is the exception that proves\nthe rule. His model was so simple and obvious that readers knew there was no card up his sleeve, no trick to\nensure the surprising emergent phenomenon.",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 234,
+      "text": "ensure the surprising emergent phenomenon.\nIn contrast to conventional agent-based models, Homo silicus is not under direct researcher control.\nWe can influence Homo silicus with endowments of beliefs, experiences, and so on (see Section 2). But\nwe remain constrained by the fact that what determines behavior is the underlying model, not our direct\nprogramming.\nHomo silicus also gives researchers a much greater degree of flexibility than agent-based models in the",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 235,
+      "text": "past. With LLMs, we can map preferences, beliefs, and so on, to purposeful actions in the simulated social\nworld; we can “program” complex simulations only using natural language; and we can often parse the\nLLMs’ responses to study the reasoning behind their choices. These factors expand greatly the scope of AI\nsimulations.\nThe flexibility of Homo silicus makes it less susceptible to one of the core criticisms of both conventional",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 236,
+      "text": "agent-based models and economic theory itself: the Lucas critique (Lucas, 1976).19\nAt its core, the\nLucas critique emphasizes that behavioral rules guiding agents cannot be treated as fixed parameters but\nas endogenous responses shaped by the prevailing policy environment. LLM-based agents mitigate this\nconcern because they can engage in flexible reasoning about environmental changes rather than following",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 408,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 237,
+      "text": "18This perspective may also shed light on why many AI simulations in the literature have such poor fidelity. Much of this research\nfocuses on the prompts as simple social and demographic traits (Park et al., 2024; Santurkar et al., 2023; Atari et al., 2023; R¨ottger\net al., 2024). Such “instructions” like “respond as a 30-year-old male” or “respond like a professor from MIT” assume the LLM",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 392,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 238,
+      "text": "can coherently represent how those traits interact with the strategic setting. When its world model is shaky, as may often be the case\nfor complex constructs like the interactions of human identities, the simulation may deteriorate or default to caricatures of the target\npersona (Cheng et al., 2023).\n19This may help explain why agent-based models have had relatively little uptake in mainstream economics.\n37",
+      "source": "chatgpt_survey.pdf",
+      "page": 37,
+      "char_count": 410,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 239,
+      "text": "hard-coded behavioral rules.\n4.5\nIt is easy to “prompt hack” AI experiments\nThe technical requirements of AI simulations are minimal. This low barrier to entry, however, comes with\nthe risk of researchers iterating through many prompts until they get a desired response and report only\nfavorable results. This is conceptually similar to the problem of p-hacking in traditional experimental work.\nThere are two easily implementable solutions to this problem. First is to require researchers to present",
+      "source": "chatgpt_survey.pdf",
+      "page": 38,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 240,
+      "text": "their results under many different partially controlled permutations of the prompt as a robustness check. For\nexample, in the Kahneman et al. (1986) experiment, we repeated the experiment with different temperatures,\ntranslated the prompt into other languages and then back to English, and varied the context of the experiment.\nThese manipulations varied the data-generating process in a way that is partially but not entirely within our",
+      "source": "chatgpt_survey.pdf",
+      "page": 38,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 241,
+      "text": "control. The second solution, which we have implemented in all experiments throughout this paper, is to\nmake all simulation code public. Then anyone can inspect the exact data-generation process underlying any\nanalysis. Indeed, this transparency and portability are major advantages of AI relative to human subjects.\nReplicating experiments often only requires a few dollars and the click of a button.\nBoth solutions require little of the researcher beyond a willingness to share their work—a willingness",
+      "source": "chatgpt_survey.pdf",
+      "page": 38,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 242,
+      "text": "they should have anyway. Coding up alternative simulations is straightforward. It requires a few minutes of\nadditional prompting and some minor code changes. Sharing results is also easy. Frontier LLMs can clean\nup code syntax and provide comprehensive documentation for an entire codebase with a single prompt.\n4.6\nCausal inference with AI simulations is challenging\nTwo features of LLM experiments ostensibly make causal analysis difficult. First, an LLM is a single model,",
+      "source": "chatgpt_survey.pdf",
+      "page": 38,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 243,
+      "text": "and so it would seem that we can only get one “observation.” Unlike the one Homo economicus that is\nrational, there are many Homo silici. We demonstrated in Section 2 that we can induce LLMs to play different\nagents via prompts, leading to varying responses.20 This agent “programming” is not unlike the experimental\neconomics practice of giving a subject a card that says their marginal cost of producing a widget is 15 tokens.",
+      "source": "chatgpt_survey.pdf",
+      "page": 38,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 244,
+      "text": "Additional sources of variation may come from setting the temperature parameter and from using different\nLLMs.\n20Argyle et al. (2023) make this point in their perfectly titled “Out of one, many” paper—there is not a single LLM but rather a\nmodel capable of being conditioned to take on different personas that respond realistically.\n38",
+      "source": "chatgpt_survey.pdf",
+      "page": 38,
+      "char_count": 335,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 245,
+      "text": "Which set of Homo silici to use depends on the researcher’s question of interest. Researchers should\nnot just use off-the-shelf LLMs to conduct simulations, but rather construct a set of agents relevant to their\ndomain of study. This may require matching simulations to existing data or grounding the agents on existing\ntheories.\nA second challenge concerns identification. Even with perfect randomization, all else may not be equal",
+      "source": "chatgpt_survey.pdf",
+      "page": 39,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 246,
+      "text": "when comparing treatment groups in AI experiments (Gui and Toubia, 2023). The core challenge is that\nediting a prompt to change one factor may inadvertently cause other factors to change; the experiment may\nthen not manage to isolate a single cause. However, such a problem is a question of external validity—\nwhether a given randomized manipulation generalizes to environments with other downstream variables,\nvariables that may influence outcomes in ways the original controlled experiment did not capture.",
+      "source": "chatgpt_survey.pdf",
+      "page": 39,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 247,
+      "text": "External validity is a problem for experiments both with human and AI agents. Consider the prompt\nparameterized by the wage asks of the two applicants in our dishwashing experiment. The experimental\ndesign iterated over combinations of the two wage asks, with an externally imposed minimum wage forcing\nup the wage asks when they were below $15/hour. We first ran the experiment without a reference wage.\nWhen we repeated the experiment with a reference wage of $12, the effect of the minimum wage on both the",
+      "source": "chatgpt_survey.pdf",
+      "page": 39,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 248,
+      "text": "wage and experience of the hired worker increased.\nThe critique is an explanation for this difference. Without a reference wage, the LLM may impute\nvalues for the reference wage as a function of the wage asks learned during training. And if the LLM’s\nresponse distribution changes with the reference wage, then treatment assignment could influence the potential\noutcomes of the hired worker’s wage and experience. Instead of the experiment generating the LLM’s",
+      "source": "chatgpt_survey.pdf",
+      "page": 39,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 249,
+      "text": "response based on the hiring prompt with no reference wage, the experiment is actually based on the hiring\nprompt with an imputed reference wage that depends on the wage asks. Conversely, when the reference wage\nis $12, the reference wage is specified, so there is no value to impute.\nNow, suppose we repeated the Horton (2025) experiment with people—with and without a reference\nwage. It seems plausible, even likely, that if unspecified, the hiring manager would presume some sort of",
+      "source": "chatgpt_survey.pdf",
+      "page": 39,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 250,
+      "text": "reference wage for applicants based on their wage asks. As with the LLM experiment, human subjects may\nimpute values for unspecified information that depend on the treatment and their past experiences. This\nimputation may affect the potential outcomes.\nStepping back, both the AI and the hypothetical human subjects’ experiments are perfectly randomized.\nWe can always estimate the downstream causal effects of such exogenous manipulations. But if we hope to\n39",
+      "source": "chatgpt_survey.pdf",
+      "page": 39,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 251,
+      "text": "generalize these results to other settings, to claim that the results are externally valid, we must be careful;\nunspecified information may be relevant to the causal relationships under investigation.\nIn human-subjects experiments, we deal with questions of external validity in a few ways.\nIf the\nexperiment is executed in the field (e.g., in a labor market with real employers), it operates in the exact",
+      "source": "chatgpt_survey.pdf",
+      "page": 40,
+      "char_count": 405,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 252,
+      "text": "environment of interest, and all possible information is, by definition, specified. This is not the norm. Many\nexperiments are much less naturalistic—they are conducted in a lab or a lab-in-the-field and surely only\nspecify some of the information that might be relevant to the outcome of interest (Levitt and List, 2007).\nIn these cases, it is incumbent upon the researcher to justify the generalizability of the results (Camerer,",
+      "source": "chatgpt_survey.pdf",
+      "page": 40,
+      "char_count": 431,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 253,
+      "text": "2015). They can do this through theory, robustness checks, additional experiments, etc. We can use AI\nsimulations to help here, to think deeply about the potential sparsity in our experiments and how it might\naffect the results—just as we do with human-subjects experiments. We can run robustness checks and, most\nimportantly, run additional simulations quickly at negligible marginal cost (Shahidi et al., 2025). Homo",
+      "source": "chatgpt_survey.pdf",
+      "page": 40,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 254,
+      "text": "silicus can provide a powerful check on the assumptions researchers may often take for granted and help us\nidentify possible threats to generalizability.\n5\nConclusion\nThis paper reports the results of several experiments using dozens of LLMs as simulated experimental\nsubjects. We recover core qualitative patterns observed in the analogous human-subjects experiments and\nsurface deviations that are themselves likely informative for future research. These demonstrations highlight",
+      "source": "chatgpt_survey.pdf",
+      "page": 40,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 255,
+      "text": "our essential conceptual contribution: Homo silicus is best understood as theory in flexibly executable form.\nAI simulations can also be a fast, low-cost way to explore ideas, stress-test experimental designs, and calibrate\npower calculations before committing to costly human data collection.\nWe make a practical contribution by releasing open-source software that standardizes the design and\nimplementation of AI experiments. It allows researchers to switch in any model to run an experiment,",
+      "source": "chatgpt_survey.pdf",
+      "page": 40,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 256,
+      "text": "making it easy to update results even as models evolve. All experiments in this paper are now button-push\nreproducible, with extensive documentation. Our view is that open, reproducible research can be facilitated\nby pushing the costs of replication, transparency, and distribution toward zero.\nIn terms of future work, the most pressing task is to better understand when AI simulations are high-\nfidelity: to sketch the families of settings and assumptions where they track Homo sapiens, and to be candid\n40",
+      "source": "chatgpt_survey.pdf",
+      "page": 40,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 257,
+      "text": "about where they do not. This missing map is the key limitation today. However, there is already progress on\nthis front. For now, we can say that AI simulations are most informative when mechanisms can be written as\nclear instructions, the domain is well represented in digital text, and researchers can benchmark on related\ntasks with human data when possible. As we improve our mapping, future opportunities will emerge. One",
+      "source": "chatgpt_survey.pdf",
+      "page": 41,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 258,
+      "text": "particularly promising direction is automated scientific loops: systems that propose hypotheses, instantiate\nagents, run and score simulations, and iterate (Manning et al., 2024). Such systems could dramatically\naccelerate research productivity.\nReferences\nAher, Gati, Rosa I Arriaga, and Adam Tauman Kalai, “Using Large Language Models to Simulate\nMultiple Humans,” arXiv preprint arXiv:2208.10264, 2022.\nAkerlof, George A. and Janet L. Yellen, “Can Small Deviations from Rationality Make Significant",
+      "source": "chatgpt_survey.pdf",
+      "page": 41,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 259,
+      "text": "Differences to Economic Equilibria?,” The American Economic Review, 1985, 75 (4), 708–720.\nAlberti, Chris, Kenton Lee, and Michael Collins, “A bert baseline for the natural questions,” arXiv preprint\narXiv:1901.08634, 2019.\nAndrews, Isaiah, Drew Fudenberg, Lihua Lei, Annie Liang, and Chaofeng Wu, “The Transfer Perfor-\nmance of Economic Models,” 2025.\nAngelopoulos, Anastasios N., Stephen Bates, Clara Fannjiang, Michael I. Jordan, and Tijana Zrnic,",
+      "source": "chatgpt_survey.pdf",
+      "page": 41,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 260,
+      "text": "“Prediction-powered inference,” Science, 2023, 382 (6671), 669–674.\nArgyle, Lisa P., Ethan C. Busby, Nancy Fulda, Joshua R. Gubler, Christopher Rytting, and David\nWingate, “Out of One, Many: Using Language Models to Simulate Human Samples,” Political Analysis,\n2023, 31 (3), 337–351.\nArrow, Kenneth J., “The Economic Implications of Learning by Doing,” The Review of Economic Studies,\n1962, 29 (3), 155–173.\nAtari, M., M. J. Xue, P. S. Park, D. E. Blasi, and J. Henrich, “Which Humans?,” Technical Report, Arxiv",
+      "source": "chatgpt_survey.pdf",
+      "page": 41,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 261,
+      "text": "09 2023. https://doi.org/10.31234/osf.io/5b26t.\nBai, Yuntao, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain,\nStanislav Fort, Deep Ganguli, Tom Henighan, Nicholas Joseph, Saurav Kadavath, Jackson Kernion,\nTom Conerly, Sheer El-Showk, Nelson Elhage, Zac Hatfield-Dodds, Danny Hernandez, Tristan\nHume, Scott Johnston, Shauna Kravec, Liane Lovitt, Neel Nanda, Catherine Olsson, Dario Amodei,\nTom Brown, Jack Clark, Sam McCandlish, Chris Olah, Ben Mann, and Jared Kaplan, “Training a",
+      "source": "chatgpt_survey.pdf",
+      "page": 41,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 262,
+      "text": "Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback,” 2022.\nBanki, Daniel, Uri Simonsohn, Robert Walatka, and George Wu, “Decisions under Risk Are Decisions\nunder Complexity: Comment,” SSRN Electronic Journal, 02 2025.\nBinz, Marcel and Eric Schulz, “Turning large language models into cognitive models,” 2023.\n41",
+      "source": "chatgpt_survey.pdf",
+      "page": 41,
+      "char_count": 339,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 263,
+      "text": ", Elif Akata, Matthias Bethge, Franziska Br¨andle, Fred Callaway, Julian Coda-Forno, Peter Dayan,\nCan Demircan, Maria K. Eckstein, No´emi ´Eltet˝o, Thomas L. Griffiths, Susanne Haridi, Akshay K.\nJagadish, Li Ji-An, Alexander Kipnis, Sreejan Kumar, Tobias Ludwig, Marvin Mathony, Marcelo\nMattar, Alireza Modirshanechi, Surabhi S. Nath, Joshua C. Peterson, Milena Rmus, Evan M.\nRussek, Tankred Saanum, Natalia Scharfenberg, Johannes A. Schubert, Luca M. Schulze Buschoff,",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 264,
+      "text": "Nishad Singhi, Xin Sui, Mirko Thalmann, Fabian J. Theis, Vuong Truong, Vishaal Udandarao,\nKonstantinos Voudouris, Robert Wilson, Kristin Witte, Shuchen Wu, Dirk U. Wulff, Huadong\nXiong, and Eric Schulz, “A foundation model to predict and capture human cognition,” Nature, 2025,\n644 (8078), 1002–1009.\nBowman, Samuel R., “Eight Things to Know about Large Language Models,” 2023.\nBrand, James, Ayelet Israeli, and Donald Ngwe, “Using GPT for Market Research,” Harvard Business",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 265,
+      "text": "School Marketing Unit Working Paper, March 2023, 23-062.\nBroska, David, Michael Howes, and Austin van Loon, “The Mixed Subjects Design: Treating Large\nLanguage Models as Potentially Informative Observations,” MIT Sloan Research Paper No. 7154-24, MIT\nSloan School of Management January 31 2025. Available at SSRN: https://ssrn.com/abstract=\n5133034 or http://dx.doi.org/10.2139/ssrn.5133034.\nBrown, Tom, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal,",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 266,
+      "text": "Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel\nHerbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel Ziegler,\nJeffrey Wu, Clemens Winter, Chris Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray,\nBenjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever,\nand Dario Amodei, “Language Models are Few-Shot Learners,” in “Advances in Neural Information\nProcessing Systems,” Vol. 33 2020.",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 267,
+      "text": "Processing Systems,” Vol. 33 2020.\nBui, Ngoc, Hieu Trung Nguyen, Shantanu Kumar, Julian Theodore, Weikang Qiu, Viet Anh Nguyen,\nand Rex Ying, “Mixture-of-Personas Language Models for Population Simulation,” 2025.\nBybee, J. Leland, “The Ghost in the Machine: Generating Beliefs with Large Language Models,” Working\nPaper, University of Chicago Booth School of Business February 2025.\nCamerer, Colin F., “The Promise and Success of Lab-Field Generalizability in Experimental Economics:",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 268,
+      "text": "A Critical Reply to Levitt and List,” in “Handbook of Experimental Economic Methodology,” Oxford\nUniversity Press, 02 2015.\nCapra, C. Monica, Augusto Gonzalez-Bonorino, and Emilio Pantoja, “LLMs Model Non-WEIRD\nPopulations: Experiments with Synthetic Cultural Agents,” SSRN Electronic Journal December 2024.\nChang, Serina, Alicja Chaszczewicz, Emma Wang, Maya Josifovska, Emma Pierson, and Jure\nLeskovec, “LLMs generate structurally realistic social networks but overestimate political homophily,”\n2024.",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 269,
+      "text": "2024.\nCharness, Gary and Matthew Rabin, “Understanding social preferences with simple tests,” The quarterly\njournal of economics, 2002, 117 (3), 817–869.\n, B. Jabarian, and John A. List, “The next generation of experimental research with LLMs,” Nature\nHuman Behaviour, 2025, 9, 833–835.\nCheng, Myra, Tiziano Piccardi, and Diyi Yang, “CoMPosT: Characterizing and Evaluating Caricature in\nLLM Simulations,” ArXiv, 2023, abs/2310.11501.\n42",
+      "source": "chatgpt_survey.pdf",
+      "page": 42,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 270,
+      "text": "Crawford, Vincent P. and Joel Sobel, “Strategic Information Transmission,” Econometrica, 1982, 50 (6),\n1431–1451.\nDellaVigna, Stefano, Devin Pope, and Eva Vivalt, “Predict science to improve science,” Science, 2019,\n366 (6464), 428–429.\nDohmen, Thomas, Armin Falk, David Huffman, and Uwe Sunde, “Are Risk Aversion and Impatience\nRelated to Cognitive Ability?,” American Economic Review, June 2010, 100 (3), 123–60.\nDuckworth, Angela L., Ahra Ko, Katherine L. Milkman, Joseph S. Kay, Eugen Dimant, Dena M.",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 271,
+      "text": "Gromet, Aden Halpern, Youngwoo Jung, Madeline K. Paxson, Ramon A. Silvera Zumaran, Ron\nBerman, Ilana Brody, Colin F. Camerer, Elizabeth A. Canning, Hengchen Dai, Marcos Gallo, Hal E.\nHershfield, Matthew D. Hilchey, Ariel Kalil, Kathryn M. Kroeper, Amy Lyon, Benjamin S. Manning,\nNina Mazar, Michelle Michelini, Susan E. Mayer, Mary C. Murphy, Philip Oreopoulos, Sharon E.\nParker, Renante Rondina, Dilip Soman, and Christophe Van den Bulte, “A national megastudy",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 272,
+      "text": "shows that email nudges to elementary school teachers boost student math achievement, particularly when\npersonalized,” Proceedings of the National Academy of Sciences, 2025, 122 (13), e2418616122.\nEgami, Naoki, Musashi Hinck, Brandon Stewart, and Hanying Wei, “Using Imperfect Surrogates for\nDownstream Inference: Design-based Supervised Learning for Social Science Applications of Large\nLanguage Models,” in A. Oh, T. Naumann, A. Globerson, K. Saenko, M. Hardt, and S. Levine, eds.,",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 273,
+      "text": "Advances in Neural Information Processing Systems, Vol. 36 Curran Associates, Inc. 2023, pp. 68589–\n68601.\nElhage, Nelson, Neel Nanda, Catherine Olsson, Tom Henighan, Nicholas Joseph, Ben Mann, Amanda\nAskell, Yuntao Bai, Anna Chen, Tom Conerly, Nova DasSarma, Dawn Drain, Deep Ganguli, Zac\nHatfield-Dodds, Danny Hernandez, Andy Jones, Jackson Kernion, Liane Lovitt, Kamal Ndousse,\nDario Amodei, Tom Brown, Jack Clark, Jared Kaplan, Sam McCandlish, and Chris Olah, “A",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 274,
+      "text": "Mathematical Framework for Transformer Circuits,” Transformer Circuits Thread, 2021.\nEnke, Benjamin and Cassidy Shubatt, “Quantifying Lottery Choice Complexity,” Working Paper 31677,\nNational Bureau of Economic Research September 2023.\net al., Victor Sanh, “Multitask Prompted Training Enables Zero-Shot Task Generalization,” in “International\nConference on Learning Representations” 2022.\nFehr, Ernst and Klaus M. Schmidt, “A Theory of Fairness, Competition, and Cooperation,” Quarterly",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 275,
+      "text": "Journal of Economics, 1999, 114 (3), 817–868.\nFish, Sara, Yannai A. Gonczarowski, and Ran I. Shorrer, “Algorithmic Collusion by Large Language\nModels,” 2025.\nFriedman, Milton, The Methodology of Positive Economics, Chicago: University of Chicago Press, 1953.\nFudenberg, Drew and Annie Liang, “Predicting and Understanding Initial Play,” American Economic\nReview, December 2019, 109 (12), 4112–41.\nGandhi, Linnea, Angela L. Duckworth, and Benjamin S. Manning, “Effect Size Magnification: No",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 276,
+      "text": "Variable is as Important as the One You’re Thinking About—While You’re Thinking About It,” Current\nDirections in Psychological Science, 2024.\n, Anoushka Kiyawat, Colin Camerer, and Duncan J. Watts, “Hypothetical nudges provide directional\nbut noisy estimates of real behavior change,” Communications Psychology, 2025, 3, 158.\n43",
+      "source": "chatgpt_survey.pdf",
+      "page": 43,
+      "char_count": 328,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 277,
+      "text": "Gneiting, Tilmann and Adrian E Raftery, “Strictly proper scoring rules, prediction, and estimation,”\nJournal of the American statistical Association, 2007, 102 (477), 359–378.\nGui, George and Olivier Toubia, “The Challenge of Using LLMs to Simulate Human Behavior: A Causal\nInference Perspective,” SSRN Electronic Journal, 2023.\nHewitt, Luke, Ashwini Ashokkumar, Isaias Ghezae, and Robb Willer, “Predicting Results of Social",
+      "source": "chatgpt_survey.pdf",
+      "page": 44,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 278,
+      "text": "Science Experiments Using Large Language Models,” Preprint, August 2024. *Equal contribution, order\nrandomized.\nHirasawa, Toshihiko, Michihiro Kandori, and Akira Matsushita, “Using Big Data and Machine Learning\nto Uncover How Players Choose Mixed Strategies,” June 2022. Preliminary.\nHorton, John J., “Price Floors and Employer Preferences: Evidence from a Minimum Wage Experiment,”\nAmerican Economic Review, January 2025, 115 (1), 117–46.",
+      "source": "chatgpt_survey.pdf",
+      "page": 44,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 279,
+      "text": "Kahneman, Daniel and Amos Tversky, “Prospect theory: An analysis of decision under risk,” Economet-\nrica, 1979, 47 (2), 263–291. Accessed: 18 Oct. 2024.\n, Jack L Knetsch, and Richard Thaler, “Fairness as a constraint on profit seeking: Entitlements in the\nmarket,” The American economic review, 1986, pp. 728–741.\nKaplan, Jared, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott\nGray, Alec Radford, Jeffrey Wu, and Dario Amodei, “Scaling Laws for Neural Language Models,”\n2020.",
+      "source": "chatgpt_survey.pdf",
+      "page": 44,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 280,
+      "text": "2020.\nKorinek, Anton, “Generative AI for Economic Research: Use Cases and Implications for Economists,”\nJournal of Economic Literature, January 2023, 61 (4), 1281–1317.\nKuhlman, Brian, Gautam Dantas, Gregory C Ireton, Gabriele Varani, Barry L Stoddard, and David\nBaker, “Design of a novel globular protein fold with atomic-level accuracy,” science, 2003, 302 (5649),\n1364–1368.\nLeng, Yan, Yunxin Sang, and Ashish Agarwal, “Reduce Disparity Between LLMs and Humans: Optimal",
+      "source": "chatgpt_survey.pdf",
+      "page": 44,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 281,
+      "text": "LLM Sample Calibration,” April 20 2024. Available at SSRN: https://ssrn.com/abstract=4802019\nor http://dx.doi.org/10.2139/ssrn.4802019.\nLevitt, Steven D and John A List, “What Do Laboratory Experiments Measuring Social Preferences Reveal\nAbout the Real World?,” Journal of Economic Perspectives, April 2007, 21 (2), 153–174.\nLi, Peiyao, Noah Castelo, Zsolt Katona, and Miklos Sarvary, “Frontiers: Determining the Validity of",
+      "source": "chatgpt_survey.pdf",
+      "page": 44,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 282,
+      "text": "Large Language Models for Automated Perceptual Analysis,” Marketing Science, 2024, 0 (0), null.\nLilleholt, Lau, “Cognitive ability and risk aversion: A systematic review and meta analysis,” Judgment and\nDecision Making, 2019, 14 (3), 234–279.\nLucas, Robert E., “Econometric policy evaluation: A critique,” Carnegie-Rochester Conference Series on\nPublic Policy, January 1976, 1 (1), 19–46.\n, “Methods and Problems in Business Cycle Theory,” Journal of Money, Credit and Banking, 1980, 12\n(4), 696–715.\n44",
+      "source": "chatgpt_survey.pdf",
+      "page": 44,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 283,
+      "text": "Ludwig,\nJens\nand\nSendhil\nMullainathan,\n“Machine\nLearning\nas\na\nTool\nfor\nHypothesis\nGeneration,”\nThe\nQuarterly\nJournal\nof\nEconomics,\nJanuary\n2024,\np.\nqjad055.\neprint:\nhttps://academic.oup.com/qje/advance-article-pdf/doi/10.1093/qje/qjad055/56324173/qjad055.pdf.\n,\n, and Ashesh Rambachan, “Large Language Models: An Applied Econometric Framework,” Working\nPaper 33344, National Bureau of Economic Research January 2025.\nLuo, Yun, Zhen Yang, Fandong Meng, Yafu Li, Jie Zhou, and Yue Zhang, “An Empirical Study of",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 284,
+      "text": "Catastrophic Forgetting in Large Language Models During Continual Fine-Tuning,” IEEE Transactions\non Audio, Speech and Language Processing, 2023, 33, 3776–3786.\nMacKenzie, Donald, Do Economists Make Markets?: On the Performativity of Economics, Princeton\nUniversity Press, 2007.\nManning, Benjamin S. and John J. Horton, “General Social Agents,” 2025.\n, Kehang Zhu, and John J. Horton, “Automated Social Science: Language Models as Scientist and",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 285,
+      "text": "Subjects,” NBER Working Paper 32381, National Bureau of Economic Research 2024.\nMcCoy, R. Thomas, Shunyu Yao, Dan Friedman, Mathew D. Hardy, and Thomas L. Griffiths, “Embers\nof autoregression show how large language models are shaped by the problem they are trained to solve,”\nProceedings of the National Academy of Sciences, 2024, 121 (41), e2322420121.\nMetaAI, “Introducing LLaMA 3,” 2024. Accessed: 2024-08-29.\nMilkman, Katherine L., Dena Gromet, Hung Ho, Joseph S. Kay, Timothy W. Lee, Pepi Pandiloski, Yeji",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 286,
+      "text": "Park, Aneesh Rai, Max Bazerman, John Beshears, Lauri Bonacorsi, Colin Camerer, Edward Chang,\nGretchen Chapman, Robert Cialdini, Hengchen Dai, Lauren Eskreis-Winkler, Ayelet Fishbach,\nJames J. Gross, Samantha Horn, Alexa Hubbard, Steven J. Jones, Dean Karlan, Tim Kautz, Erika\nKirgios, Joowon Klusowski, Ariella Kristal, Rahul Ladhania, George Loewenstein, Jens Ludwig,\nBarbara Mellers, Sendhil Mullainathan, Silvia Saccardo, Jann Spiess, Gaurav Suri, Joachim H.",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 287,
+      "text": "Talloen, Jamie Taxer, Yaacov Trope, Lyle Ungar, Kevin G. Volpp, Ashley Whillans, Jonathan\nZinman, and Angela L. Duckworth, “Megastudies improve the impact of applied behavioural science,”\nNature, December 2021, 600 (7889), 478–483.\nOlah, Chris, Nick Cammarata, Ludwig Schubert, Gabriel Goh, Shan Carter, and Michael Petrov,\n“Zoom In: An Introduction to Circuits,” Distill, 2020.\nOpenAI, “GPT-4 Technical Report,” 2024.",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 288,
+      "text": "OpenAI, “GPT-4 Technical Report,” 2024.\nOprea, Ryan, “Complexity and Its Measurement,” 2024. Prepared for the Handbook of Experimental\nMethods in the Social Sciences.\n, “Decisions under Risk Are Decisions under Complexity,” American Economic Review, 2024. Available\nonline at https://www.aeaweb.org/journals/aer/forthcoming.\nOuyang, Long, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 289,
+      "text": "Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton,\nLuke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan\nLowe, “Training Language Models to Follow Instructions with Human Feedback,” in “Advances in Neural\nInformation Processing Systems” 2022.\n45",
+      "source": "chatgpt_survey.pdf",
+      "page": 45,
+      "char_count": 331,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 290,
+      "text": "Park, Joon Sung, Carolyn Q. Zou, Aaron Shaw, Benjamin Mako Hill, Carrie Cai, Meredith Ringel\nMorris, Robb Willer, Percy Liang, and Michael S. Bernstein, “Generative Agent Simulations of 1,000\nPeople,” 2024.\nPearl, Judea, Causality: Models, Reasoning and Inference, 2nd ed., USA: Cambridge University Press,\n2009.\nPeterson, Joshua C., David D. Bourgin, Mayank Agrawal, Daniel Reichman, and Thomas L. Griffiths,\n“Using large-scale experiments and machine learning to discover theories of human decision-making,”",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 291,
+      "text": "Science, 2021, 372 (6547), 1209–1214.\nQian, Crystal, Kehang Zhu, John J. Horton, Benjamin S. Manning, Vivian Tsai, James Wexler, and\nNithum Thain, “Strategic Tradeoffs Between Humans and AI in Multi-Agent Bargaining,” 2025.\nR¨ottger, Paul, Valentin Hofmann, Valentina Pyatkin, Musashi Hinck, Hannah Kirk, Hinrich Schuetze,\nand Dirk Hovy, “Political Compass or Spinning Arrow? Towards More Meaningful Evaluations for Values",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 292,
+      "text": "and Opinions in Large Language Models,” in Lun-Wei Ku, Andre Martins, and Vivek Srikumar, eds.,\nProceedings of the Association for Computational Linguistics, Association for Computational Linguistics\nAugust 2024.\nSamuelson, Paul A., “A Note on Measurement of Utility,” The Review of Economic Studies, 1937, 4 (2),\n155–161.\nSamuelson, William and Richard Zeckhauser, “Status quo bias in decision making,” Journal of risk and\nuncertainty, 1988, 1 (1), 7–59.",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 293,
+      "text": "uncertainty, 1988, 1 (1), 7–59.\nSanturkar, Shibani, Esin Durmus, Faisal Ladhak, Cinoo Lee, Percy Liang, and Tatsunori Hashimoto,\n“Whose opinions do language models reflect?,” in “Proceedings of the 40th International Conference on\nMachine Learning” ICML’23 JMLR.org 2023.\nSarkar, Suproteem and Keyon Vafa, “Lookahead Bias in Pretrained Language Models,” SSRN Electronic\nJournal, 06 2024.\nSchelling, Thomas C, “Dynamic models of segregation,” Journal of mathematical sociology, 1971, 1 (2),\n143–186.",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 294,
+      "text": "143–186.\nShah, Anand, Kehang Zhu, Yanchen Jiang, Jeffrey G. Wang, Arif K. Dayi, John J. Horton, and\nDavid C. Parkes, “Learning from Synthetic Labs: Language Models as Auction Participants,” 2025.\nShahidi, Peyman, Gili Rusak, Benjamin S. Manning, Andrey Fradkin, and John J. Horton, “The\nCoasean Singularity: Demand, Supply, and Market Design with AI Agents,” 2025.\nSimon, Herbert A., The Sciences of the Artificial, 3rd Edition number 0262691914. In ‘MIT Press Books.’,\nThe MIT Press, September 1996.",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 295,
+      "text": "The MIT Press, September 1996.\nSuh, Joseph, Erfan Jahanparast, Suhong Moon, Minwoo Kang, and Serina Chang, “Language Model\nFine-Tuning on Scaled Survey Data for Predicting Distributions of Public Opinions,” 2025.\nTranchero, Matteo, Cecil-Francis Brenninkmeijer, Arul Murugan, and Abhishek Nagaraj, “Theorizing\nwith Large Language Models,” Working Paper 33033, National Bureau of Economic Research October\n2024.\nVafa, Keyon, Ashesh Rambachan, and Sendhil Mullainathan, “Do Large Language Models Perform the",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 296,
+      "text": "Way People Expect? Measuring the Human Generalization Function,” 2024.\n46",
+      "source": "chatgpt_survey.pdf",
+      "page": 46,
+      "char_count": 73,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 297,
+      "text": ", Justin Y. Chen, Jon Kleinberg, Sendhil Mullainathan, and Ashesh Rambachan, “Evaluating the\nWorld Model Implicit in a Generative Model,” 2024.\n, Peter G. Chang, Ashesh Rambachan, and Sendhil Mullainathan, “What Has a Foundation Model\nFound? Using Inductive Bias to Probe for World Models,” 2025.\nvon Neumann, John and Oskar Morgenstern, Theory of Games and Economic Behavior, Princeton, NJ:\nPrinceton University Press, 1944.",
+      "source": "chatgpt_survey.pdf",
+      "page": 47,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 298,
+      "text": "Princeton University Press, 1944.\nWang, Mengxin, Dennis J. Zhang, and Heng Zhang, “Large Language Models for Market Research: A\nData-augmentation Approach,” 2025.\nWestby, Samuel and Christoph Riedl, “Collective Intelligence in Human-AI Teams: A Bayesian Theory\nof Mind Approach,” 2022.\nXie, Yutong, Qiaozhu Mei, Walter Yuan, and Matthew O. Jackson, “Using Language Models to Decipher\nthe Motivation Behind Human Behaviors,” 2025.",
+      "source": "chatgpt_survey.pdf",
+      "page": 47,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 299,
+      "text": "the Motivation Behind Human Behaviors,” 2025.\nYun, Chulhee, Srinadh Bhojanapalli, Ankit Singh Rawat, Sashank J Reddi, and Sanjiv Ku-\nmar, “Are transformers universal approximators of sequence-to-sequence functions?,” arXiv preprint\narXiv:1912.10077, 2019.\nZhao, Wayne Xin, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min,\nBeichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen,",
+      "source": "chatgpt_survey.pdf",
+      "page": 47,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 300,
+      "text": "Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong\nWen, “A Survey of Large Language Models,” 2025.\nZhu, Jian-Qiao, Hanbo Xie, Dilip Arumugam, Robert C. Wilson, and Thomas L. Griffiths, “Using\nReinforcement Learning to Train Large Language Models to Explain Human Decisions,” 2025.\n, Joshua C. Peterson, Benjamin Enke, and Thomas L. Griffiths, “Capturing the complexity of human\nstrategic decision-making with machine learning,” Nature Human Behaviour, 2025.\n47",
+      "source": "chatgpt_survey.pdf",
+      "page": 47,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 301,
+      "text": "A\nFigures from the original draft\nFigure A1: Charness and Rabin (2002) Simple Tests choices by model type and endowed “personality”\nNotes: This shows the fraction of AI agents choosing each option, by framing.\n48",
+      "source": "chatgpt_survey.pdf",
+      "page": 48,
+      "char_count": 212,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 302,
+      "text": "Figure A2: Kahneman et al. (1986) price gouging snow shovel question, with endowed political views\nNotes: This shows the fraction of AI agents choosing each opinion, by scenario.\nFigure A3: Distribution of preferred car safety budgets, by status quo framing\nNotes: This shows the fraction of AI agents choosing each option by framing.\n49",
+      "source": "chatgpt_survey.pdf",
+      "page": 49,
+      "char_count": 337,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 303,
+      "text": "Table A1: Effects of minimum wage on observed wage and hired worker attributes\nNotes: This reports the results of imposing a minimum wage on the (1) hired worker wage and (2) hired worker experience.\n50",
+      "source": "chatgpt_survey.pdf",
+      "page": 50,
+      "char_count": 202,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 304,
+      "text": "B\nA brief primer on large language models\nLLMs are neural networks with complex architectures and large numbers of parameters, estimated (trained)\nusing massive amounts of text. Broadly speaking, they function as follows. Given an input prompt, an LLM\ngenerates a response by first predicting the most likely next word, and then using the prompt and the words\npredicted so far to predict subsequent words.21\nTraining an LLM consists of a “pre-training” phase and a “reinforcement learning with human feedback”",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 305,
+      "text": "(RLHF) phase. In the pre-training phase, the LLM learns to predict the next word in sequences of text in its\ntraining data. A pre-trained LLM estimates a conditional probability distribution over its training data; the\nexact estimated distribution depends on design choices such as the architecture and hyperparameters of the\nLLM.\nAfter pre-training, the model may undergo one or more post-training stages. The most common post-",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 306,
+      "text": "training step is reinforcement learning with human feedback (RLHF), in which human evaluators rate model\noutputs, their judgments are used to train a reward model, and the LLM’s parameters are adjusted so that\nits responses receive higher predicted rewards. Other post-training steps include supervised fine-tuning\n(or instruction-tuning), where human-written examples “teach” the model to follow prompts or exhibit a",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 307,
+      "text": "desired style. In the RLHF phase, the pre-trained LLM is trained further using human feedback. First,\nhuman evaluators prompt the LLM and evaluate its responses.22 The human evaluation data is then used to\nestimate a separate “reward model,” which predicts human feedback given a prompt and an LLM response.\nThe LLM’s parameters are updated through a form of reinforcement learning so that its responses receive",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 411,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 308,
+      "text": "favorable feedback from the reward model. The fully trained LLM’s responses are hence optimized toward\nboth accurately predicting the likely next words in sequences of text and receiving high feedback scores from\nthe reward model. An LLM can always undergo further fine-tuning to make its responses more consistent\nwith a particular persona or writing style.\nUsers can adjust how the LLM responds to input prompts by changing its “temperature” parameter. The",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 309,
+      "text": "temperature parameter controls how the LLM samples from its response distribution. At temperature zero,\nthe LLM is deterministic: it always outputs the highest-probability response. Increasing the temperature\nmakes the output stochastic and the response distribution more uniform.\n21Technically, LLMs use “tokens,” which can be sentences, words, parts of words, or characters.\n22For example, the human evaluators may rate the responses on a scale of 1 to 10, depending on how well a response answers a",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 310,
+      "text": "question or matches a particular style of writing.\n51",
+      "source": "chatgpt_survey.pdf",
+      "page": 51,
+      "char_count": 53,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 311,
+      "text": "C\nAdditional Figures and Tables\nFigure A4: Example screenshot of linked Jupyter notebooks for running AI simulations\nNotes: This figure shows a screenshot of the Jupyter notebook for the Kahneman et al. (1986) experiment. All notebooks in this\npaper share a similar structure, with instructions and comments throughout the code. Each also includes links to share or download\nthe notebooks so others can easily replicate the experiments or explore their own ideas.\n52",
+      "source": "chatgpt_survey.pdf",
+      "page": 52,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 312,
+      "text": "Table A2: Estimates of the effects of political beliefs and price hike levels on AI agents’ fairness assessments\nin four permutations of the Kahneman et al. (1986) experiment.\nDependent variable:\nChoice as Numeric from 1 (Very Unfair) to 4 (Completely Fair))\n(1)\n(2)\n(3)\n(4)\n(5)\n(6)\nΔ Price\n−0.006∗\n−0.006∗\n−0.004∗\n−0.009∗\n−0.007∗\n(0.001)\n(0.0002)\n(0.0003)\n(0.0002)\n(0.0003)\nSocialist\n−1.438∗\n−1.437∗\n−0.598∗\n−1.005∗\n−1.172∗\n(0.030)\n(0.027)\n(0.038)\n(0.027)\n(0.030)\nLeftist\n−1.383∗\n−1.383∗\n−0.536∗\n−1.065∗\n−1.113∗",
+      "source": "chatgpt_survey.pdf",
+      "page": 53,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 313,
+      "text": "Leftist\n−1.383∗\n−1.383∗\n−0.536∗\n−1.065∗\n−1.113∗\n(0.030)\n(0.027)\n(0.038)\n(0.027)\n(0.030)\nLiberal\n−0.733∗\n−0.733∗\n0.115∗\n−0.453∗\n−0.653∗\n(0.030)\n(0.027)\n(0.038)\n(0.027)\n(0.030)\nConservative\n0.307∗\n0.307∗\n0.008\n0.422∗\n0.522∗\n(0.030)\n(0.027)\n(0.038)\n(0.027)\n(0.030)\nLibertarian\n0.860∗\n0.860∗\n0.847∗\n1.223∗\n1.205∗\n(0.030)\n(0.027)\n(0.038)\n(0.027)\n(0.030)\nConstant\n2.462∗\n2.687∗\n2.860∗\n2.352∗\n2.734∗\n2.576∗\n(0.025)\n(0.021)\n(0.020)\n(0.029)\n(0.020)\n(0.022)\nExperiment\nBaseline\nBaseline\nBaseline\nTranslated\nVariations",
+      "source": "chatgpt_survey.pdf",
+      "page": 53,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 314,
+      "text": "Baseline\nBaseline\nBaseline\nTranslated\nVariations\nAdversarial\nObservations\n2,400\n2,400\n2,400\n2,397\n2,400\n2,400\nR2\n0.043\n0.802\n0.846\n0.460\n0.834\n0.823\nNotes: This table reports regressions where the independent variables are the snow shovel dollar price change relative to its original\n$15 price, and the AI agents’ political beliefs. We use “Moderate” as the reference class. The dependent variable is the fairness",
+      "source": "chatgpt_survey.pdf",
+      "page": 53,
+      "char_count": 413,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 315,
+      "text": "assessment of the subjects, which we measure as a continuous variable ranging from 1 (“Very Unfair”) to 4 (“Completely Fair”). The\nΔ Price coefficient represents the change in fairness rating (on the 1–4 scale) for each $1 increase in price above the $15 baseline.\nColumns (1-3) show the results for the baseline experiment; Column (4) for the translated prompts experiment; Column (5) for the\nprompt variations experiment; and Column (6) for the adversarial prompt experiment. Significance Indicator: ∗p<0.05.",
+      "source": "chatgpt_survey.pdf",
+      "page": 53,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 316,
+      "text": "53",
+      "source": "chatgpt_survey.pdf",
+      "page": 53,
+      "char_count": 2,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

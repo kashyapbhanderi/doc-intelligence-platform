@@ -1,0 +1,20 @@
+{
+  "source": "sample3.pdf",
+  "full_path": "data\\raw\\sample3.pdf",
+  "total_pages": 1,
+  "text_chunks": 1,
+  "vision_chunks": 0,
+  "total_chunks": 1,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "PDF Test File \n \nCongratulations, your computer is equipped with a PDF (Portable Document Format) \nreader!  You should be able to view any of the PDF documents and forms available on \nour site.  PDF forms are indicated by these icons: \n  or  \n.   \n \nYukon Department of Education \nBox 2703 \nWhitehorse,Yukon \nCanada \nY1A 2C6 \n \nPlease visit our website at:  http://www.education.gov.yk.ca/",
+      "source": "sample3.pdf",
+      "page": 1,
+      "char_count": 389,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

@@ -1,0 +1,323 @@
+{
+  "summary": {
+    "total_files": 52,
+    "successful": 52,
+    "errors": 0,
+    "total_chunks": 11089,
+    "time_seconds": 5.8
+  },
+  "results": [
+    {
+      "file": "ann_benchmarks.pdf",
+      "status": "success",
+      "pages": 34,
+      "chunks": 158
+    },
+    {
+      "file": "attention.pdf",
+      "status": "success",
+      "pages": 15,
+      "chunks": 92
+    },
+    {
+      "file": "autogen.pdf",
+      "status": "success",
+      "pages": 42,
+      "chunks": 338
+    },
+    {
+      "file": "beir.pdf",
+      "status": "success",
+      "pages": 12,
+      "chunks": 103
+    },
+    {
+      "file": "bert.pdf",
+      "status": "success",
+      "pages": 16,
+      "chunks": 148
+    },
+    {
+      "file": "chain_of_thought.pdf",
+      "status": "success",
+      "pages": 68,
+      "chunks": 413
+    },
+    {
+      "file": "chatgpt_survey.pdf",
+      "status": "success",
+      "pages": 53,
+      "chunks": 317
+    },
+    {
+      "file": "clip.pdf",
+      "status": "success",
+      "pages": 48,
+      "chunks": 493
+    },
+    {
+      "file": "corrective_rag.pdf",
+      "status": "success",
+      "pages": 16,
+      "chunks": 141
+    },
+    {
+      "file": "cpt_text.pdf",
+      "status": "success",
+      "pages": 21,
+      "chunks": 174
+    },
+    {
+      "file": "dense_retrieval.pdf",
+      "status": "success",
+      "pages": 9,
+      "chunks": 105
+    },
+    {
+      "file": "dit.pdf",
+      "status": "success",
+      "pages": 26,
+      "chunks": 215
+    },
+    {
+      "file": "donut.pdf",
+      "status": "success",
+      "pages": 29,
+      "chunks": 179
+    },
+    {
+      "file": "dpr.pdf",
+      "status": "success",
+      "pages": 16,
+      "chunks": 129
+    },
+    {
+      "file": "faiss.pdf",
+      "status": "success",
+      "pages": 13,
+      "chunks": 154
+    },
+    {
+      "file": "finetuned_lm.pdf",
+      "status": "success",
+      "pages": 8,
+      "chunks": 70
+    },
+    {
+      "file": "flan.pdf",
+      "status": "success",
+      "pages": 46,
+      "chunks": 333
+    },
+    {
+      "file": "flava.pdf",
+      "status": "success",
+      "pages": 49,
+      "chunks": 502
+    },
+    {
+      "file": "generative_agents.pdf",
+      "status": "success",
+      "pages": 22,
+      "chunks": 283
+    },
+    {
+      "file": "gpt3.pdf",
+      "status": "success",
+      "pages": 75,
+      "chunks": 548
+    },
+    {
+      "file": "g_eval.pdf",
+      "status": "success",
+      "pages": 14,
+      "chunks": 96
+    },
+    {
+      "file": "improved_llava.pdf",
+      "status": "success",
+      "pages": 15,
+      "chunks": 156
+    },
+    {
+      "file": "instructblip.pdf",
+      "status": "success",
+      "pages": 22,
+      "chunks": 178
+    },
+    {
+      "file": "instructor.pdf",
+      "status": "success",
+      "pages": 18,
+      "chunks": 164
+    },
+    {
+      "file": "large_dual_encoder.pdf",
+      "status": "success",
+      "pages": 13,
+      "chunks": 121
+    },
+    {
+      "file": "layoutlmv2.pdf",
+      "status": "success",
+      "pages": 13,
+      "chunks": 108
+    },
+    {
+      "file": "layoutlmv3.pdf",
+      "status": "success",
+      "pages": 10,
+      "chunks": 123
+    },
+    {
+      "file": "llama.pdf",
+      "status": "success",
+      "pages": 27,
+      "chunks": 202
+    },
+    {
+      "file": "llama2.pdf",
+      "status": "success",
+      "pages": 77,
+      "chunks": 611
+    },
+    {
+      "file": "llm_eval.pdf",
+      "status": "success",
+      "pages": 23,
+      "chunks": 196
+    },
+    {
+      "file": "lora.pdf",
+      "status": "success",
+      "pages": 26,
+      "chunks": 189
+    },
+    {
+      "file": "minigpt4.pdf",
+      "status": "success",
+      "pages": 25,
+      "chunks": 200
+    },
+    {
+      "file": "mistral.pdf",
+      "status": "success",
+      "pages": 9,
+      "chunks": 57
+    },
+    {
+      "file": "mteb.pdf",
+      "status": "success",
+      "pages": 24,
+      "chunks": 146
+    },
+    {
+      "file": "nougat.pdf",
+      "status": "success",
+      "pages": 28,
+      "chunks": 200
+    },
+    {
+      "file": "prefix_tuning.pdf",
+      "status": "success",
+      "pages": 15,
+      "chunks": 144
+    },
+    {
+      "file": "prometheus.pdf",
+      "status": "success",
+      "pages": 17,
+      "chunks": 115
+    },
+    {
+      "file": "qlora.pdf",
+      "status": "success",
+      "pages": 93,
+      "chunks": 590
+    },
+    {
+      "file": "ragas.pdf",
+      "status": "success",
+      "pages": 29,
+      "chunks": 202
+    },
+    {
+      "file": "rag_advanced.pdf",
+      "status": "success",
+      "pages": 21,
+      "chunks": 240
+    },
+    {
+      "file": "rag_original.pdf",
+      "status": "success",
+      "pages": 19,
+      "chunks": 155
+    },
+    {
+      "file": "rag_survey.pdf",
+      "status": "success",
+      "pages": 9,
+      "chunks": 102
+    },
+    {
+      "file": "react.pdf",
+      "status": "success",
+      "pages": 33,
+      "chunks": 245
+    },
+    {
+      "file": "reflexion.pdf",
+      "status": "success",
+      "pages": 19,
+      "chunks": 134
+    },
+    {
+      "file": "sample.pdf",
+      "status": "success",
+      "pages": 1,
+      "chunks": 1
+    },
+    {
+      "file": "sample3.pdf",
+      "status": "success",
+      "pages": 1,
+      "chunks": 1
+    },
+    {
+      "file": "scaling_rlhf.pdf",
+      "status": "success",
+      "pages": 19,
+      "chunks": 146
+    },
+    {
+      "file": "selfrag.pdf",
+      "status": "success",
+      "pages": 30,
+      "chunks": 240
+    },
+    {
+      "file": "sentence_bert.pdf",
+      "status": "success",
+      "pages": 11,
+      "chunks": 101
+    },
+    {
+      "file": "shepherd.pdf",
+      "status": "success",
+      "pages": 45,
+      "chunks": 435
+    },
+    {
+      "file": "t5.pdf",
+      "status": "success",
+      "pages": 67,
+      "chunks": 472
+    },
+    {
+      "file": "tree_of_thought.pdf",
+      "status": "success",
+      "pages": 14,
+      "chunks": 124
+    }
+  ]
+}

@@ -1,0 +1,852 @@
+{
+  "source": "dense_retrieval.pdf",
+  "full_path": "data\\raw\\dense_retrieval.pdf",
+  "total_pages": 9,
+  "text_chunks": 105,
+  "vision_chunks": 0,
+  "total_chunks": 105,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Towards empirical force ﬁelds that match experimental observables\nThorben Fröhlking,1 Mattia Bernetti,1 Nicola Calonaci,1 and Giovanni Bussi1, a)\nScuola Internazionale Superiore di Studi Avanzati, via Bonomea 265, 34136 Italy\n(Dated: 1 June 2020)\nBiomolecular force ﬁelds have been traditionally derived based on a mixture of reference quantum chemistry data and\nexperimental information obtained on small fragments. However, the possibility to run extensive molecular dynamics",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "simulations on larger systems achieving ergodic sampling is paving the way to directly using such simulations along\nwith solution experiments obtained on macromolecular systems. Recently, a number of methods have been introduced\nto automatize this approach. Here we review these methods, highlight their relationship with machine learning methods,\nand discuss the open challenges in the ﬁeld.\nI.\nINTRODUCTION\nClassical molecular dynamics (MD) simulations at the",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "atomistic scale offer a unique opportunity to model the con-\nformational dynamics of biomolecular systems. Being able to\nreveal mechanisms at spatial and temporal scales that are difﬁ-\ncult to observe experimentally, MD simulations are often seen\nas a computational microscope.1 In the past years, they have\nbeen applied to study problems ranging from protein folding2\nand aggregation3 to RNA-protein interactions,4,5 transmem-\nbrane proteins dynamics,6 and full viruses,7 bacteria,8 or",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "organelles.9 The capability of MD simulations to reproduce\nand predict experimental results is limited by the statistical\nerrors arising from the ﬁnite length of simulations and by the\nsystematic errors resulting from the inaccuracies of the un-\nderlying models. Interactions are often modeled using empir-\nically parametrized force ﬁelds that allow timescales of the\norder of the microsecond to be routinely simulated. Impor-\ntantly, the two sources of error mentioned above are deeply",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "intertwined, because only systematic errors that are larger than\nstatistical errors can be detected by comparison with reference\nexperimental results. Indeed, in the past 20 years, the use of\nspecial purpose hardware,10 optimized software,11,12 and en-\nhanced sampling methods,13,14 has signiﬁcantly reduced the\nstatistical errors, thereby allowing force ﬁelds inaccuracies to\nbe detected and largely alleviated. In spite of this, empirical\nforce ﬁelds are still far from perfect and in some cases are",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "poorly predictive. For instance, it is not trivial to have force\nﬁelds capable of simultaneously describing correctly folded,\ndisordered, single-chain proteins or protein complexes,15,16 to\ncorrectly predict RNA structure from sequence-only informa-\ntion across a wide range of structural motifs,17 or to reproduce\nexperimental kinetics in ligand-receptor systems.18\nSolution experiments are optimally suited for validation of\nforce ﬁelds, since they provide information about transiently",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "populated structures as well, and they have traditionally been\nused in this sense. Nevertheless, several approaches have en-\nabled solution experiments to be used directly during force-\nﬁeld ﬁtting, together with available quantum chemistry data.\nThe aim of this perspective is to review these approaches,\nhighlight their relationship with machine learning methods,\nand discuss the open challenges in the ﬁeld.\na)Electronic mail: bussi@sissa.it\nII.\nEMPIRICAL FORCE FIELDS: BOTTOM UP OR TOP\nDOWN?",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "EMPIRICAL FORCE FIELDS: BOTTOM UP OR TOP\nDOWN?\nWe will use here as paradigmatic examples some of the\nforce ﬁelds that are most used for simulating biomolecu-\nlar systems, namely AMBER,19 CHARMM,20 OPLS,21 and\nGROMOS.22 All the mentioned force ﬁelds share a common\nfunctional form, including bond stretching, angle potentials,\ntorsional potentials, Lennard-Jones, and electrostatic interac-\ntions:\nE = ∑\nbonds\n1\n2kb(r −r0)2 + ∑\nangles\n1\n2ka(a−a0)2+\n∑\ntorsions∑\nn\nVn\n2 (1+cos(nφ −δ))+\n∑\nLJ\n4εij\n \u0012σij\nrij\n\u001312\n−",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "n\nVn\n2 (1+cos(nφ −δ))+\n∑\nLJ\n4εij\n \u0012σij\nrij\n\u001312\n−\n\u0012σij\nrij\n\u00136!\n+\n∑\nelectrostatics\nqiqj\nrij\n(1)\nThe parameters (kb;r0;ka;a0;Vn;δ;σ;ε;q) are derived from\nsmall fragments in advance and depend on the atom type and\nits chemical environment. Polarizable force ﬁelds (such as\nAMOEBA23 and a variant of CHARMM24), reactive force\nﬁelds (such as ReaxFF25), and semi-empirical methods (such\nas DFTB26) have different functional forms but similar con-\nsiderations can be applied. The parameters in Eq. 1 are de-",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "rived with a variety of different procedures that depend on the\nspeciﬁc force ﬁeld and are summarized in Table I. In partic-\nular, some of the parameters are typically derived from quan-\ntum chemistry calculations performed at a varying level of ac-\ncuracy, in a bottom-up spirit. Other parameters are instead\nderived from experimental data, either using spectroscopy ex-\nperiments, databases of crystallographic structures, or other\ngas-phase or solution-phase experiments, in a top-down spirit.",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "One of the factors impacting the reliability of a force ﬁeld\nis the accuracy of the employed reference data. For instance, a\nforce ﬁeld ﬁtted purely on quantum chemistry data cannot pro-\nvide results that are more accurate than the reference method.\nHowever, this limit can be surpassed if multiple sources of\ndata are combined. As an additional and perhaps even more\nimportant source of error, one should take into account that\nreference data used in force-ﬁeld ﬁtting, either computational",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "or experimental ones, are obtained studying systems that are\nnecessarily not identical to those that one wants to simulate\nlater (see Fig. 1). For instance, torsional parameters and par-\narXiv:2004.01630v4  [physics.comp-ph]  29 May 2020",
+      "source": "dense_retrieval.pdf",
+      "page": 1,
+      "char_count": 237,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "2\nTABLE I. Collection of commonly used force ﬁelds and method used in their original version for obtaining the respective parameter sets\n(reference to the original paper is reported for each force ﬁeld family). A more detailed table is reported in Supplementary Material.\nAMBER19\nCHARMM20\nOPLS21\nGROMOS22\nBond\nExperiments\nExperiments + Ab initio\nAMBER parameters\nExperiments\nBend\nExperiments\nExperiments + Ab initio\nAMBER parameters\nExperiments\nTorsion\nExperiments + Ab initio\nExperiments + Ab initio",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "Experiments + Ab initio\nExperiments + Ab initio\nAMBER parameters\nAb initio\nLJ\nMonte Carlo liquid simulations\n+ OPLS parameters\nExperiments + Ab initio\nExperiments + Ab initio +\nMonte Carlo liquid simulations\nExperiments\nCharges\nAb initio\nExperiments + Ab initio\nExperiments + Ab initio +\nMonte Carlo liquid simulations\nExperiments\nParameters\nMD simulations\nValidation \nagainst solution \nexperiments\nextrapolation\nFIG. 1.\nTraditional procedure used for force-ﬁeld parametriza-",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "tion. Parameters are obtained from calculations or experiments on\nsmall molecules or fragments. Simulations are then validated for\ntheir capability to maintain the native structure of a macromolecule\nor against solution experiments. Since ﬁtting and validation are done\non different types of systems, there is a large risk associated to ex-\ntrapolation.\ntial charges in the AMBER force ﬁeld are traditionally ob-\ntained using quantum chemistry calculations in small frag-",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "ments of up to a few dozen atoms, typically including a cou-\nple of aminoacids, but are later used to simulate oligopeptides\nor full protein domains. Similarly, Lennard-Jones parame-\nters in the OPLS force ﬁeld are obtained from vaporization\ncalorimetry of pure organic liquids such as tetrahydrofuran,\npyridine or benzene, but then applied to cases where the an-\nalyzed compounds are only portions of a sugar, nucleobase,\nor aminoacid respectively. These parameters have not been",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "changed in more recent OPLS versions. The reliability of a\nforce ﬁeld when used in a context different from the one in\nwhich it was parametrized depends on the transferability of\nthe functional form in Eq. 1 (see Fig. 2). Given the very large\ngap between the size and complexity of the systems used for\nparameter ﬁtting and the systems to which force ﬁelds are ap-\nplied, it appears almost a miracle that current force ﬁelds are,\nnarrow \ndata range\nwide data range\nCoordinates\nCoordinates\nEnergy\nreference\ndata",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "Coordinates\nCoordinates\nEnergy\nreference\ndata\norder 1\norder 2 \norder 6 \nextrapolation\nFIG. 2. Typical errors observed when ﬁtting a function and extrapo-\nlating. The horizontal axis represents a conﬁgurational coordinate\n(e.g., a dihedral angle) and the vertical axis an observable that is\nused for ﬁtting (e.g., the energy of the system). The true function\nis shown as a solid line, and the available reference data are shown\nas grey points. Lines ﬁtted on the reference data using polynomials",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "of increasing order (order 1, 2, and 6) are shown in colors. Data are\ncollected on a narrow (left panel) or wide (right panel) range of con-\nﬁgurations. The simple model (order 1) represents a force ﬁeld with\ntoo few parameters or with an incorrect functional form. When ﬁtted\non a narrow range of conﬁgurations (left panel) it reproduces well\nthe true function. However, it fails the extrapolation to the right part\nof the graph. When ﬁtted on a wide range of conﬁgurations (right",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "panel) the intrinsic limited transferability of the model emerges from\nthe error observed on the ﬁtted points. The complex model (order\n2) represents a force ﬁeld with more parameters and a more physical\nfunctional form, since also the reference curve is an order 2 polyno-\nmial. When ﬁtted on a narrow range of conﬁgurations (left panel) it\ncan lead to signiﬁcant overﬁtting. Conversely, when ﬁtted on a wide\nrange of conﬁgurations (right panel), it reproduces well the true func-",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "tion on the entire range of conﬁgurations. The highest order polyno-\nmial (order 6) overﬁts the reference data in both cases.\nfor instance, capable of correctly identifying the folded state\nof a protein.2\nIt is interesting to look at a few anecdotal examples to bet-\nter understand how this is possible. The traditional AMBER\nforce ﬁeld for nucleic acids has been used for several years\nbefore it was realized that sufﬁciently long simulations could\nlead to a transition to experimentally unobserved rotamers in",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "the α and γ torsions of DNA backbone.27,28 Following this\nempirical observation, a joint effort of several groups lead to\nthe parmbsc0 reparameterization of DNA backbone,28 where\nthe parameters corresponding to these two torsional angles\nwere ﬁtted against quantum chemistry calculations. A similar\nepisode occurred later with the χOL3 corrections, derived to",
+      "source": "dense_retrieval.pdf",
+      "page": 2,
+      "char_count": 359,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "3\ncounteract the occurrence of ladder-like structures in RNA.29\nIn the CHARMM force ﬁeld for proteins, one of the most im-\nportant additions after its initial development has been the in-\ntroduction of empirical corrections maps (CMAP)30, that de-\nviate from the functional form of Eq. 1 by the presence of cou-\npling terms between consecutive torsional angles. These cor-\nrections were ﬁtted on quantum chemistry data, but required\nalso a heuristic adjustment to ﬁx the typical values of torsional",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "angles in α-helical and β-sheet regions. As a further example,\nempirical adjustments of the AMBER and CHARMM force\nﬁelds were performed respectively in Ref. 31 and in Refs. 32\nand 33, where solution data on short oligopeptides were used\nto optimize backbone dihedrals so as to reproduce helix-coil\ntransitions.\nA general trend that can be seen is that experimental data on\nmacromolecular systems (e.g., nucleic acids duplexes or pro-\ntein domains) are typically used for validation, whereas the",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "parameters are ﬁtted on either theoretical or experimental in-\nformation available for much smaller systems. Nonetheless,\nthe observation of failures in macromolecular systems is the\nonly way to detect which precise parameters should be cor-\nrected. The last three mentioned works,31–33 instead, report\ndirect ﬁtting of parameters on simulations of short oligomers.\nIII.\nRECENT APPROACHES FOR FITTING FORCE FIELD\nPARAMETERS ON EXPERIMENTAL DATA\nA number of approaches have been introduced to allow ﬁt-",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "ting force ﬁelds directly on experimental data taken on macro-\nmolecular systems rather than on small fragments, all of them\nfollowing a ﬂowchart similar to the one illustrated in Fig. 3.\nSince solution experiments often report results that are aver-\naged over an ensemble of copies of the same molecule, these\nmethods are typically designed to enforce ensemble averages\nrather than instantaneous values. Norgaard et al.34 introduced\nan approach where a force ﬁeld is iteratively reﬁned until",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "agreement with experiment is obtained.\nAt each iteration,\na simulation is performed and the force ﬁeld parameters are\noptimized by assigning new weights to the visited conforma-\ntions. Thus, through such reweighting procedure, one can pre-\ndict what result would be obtained using these slightly mod-\niﬁed parameters. At some point, when the reﬁned force ﬁeld\nand the initial one become too different, it is necessary to iter-\nate the procedure performing a new simulation. The method",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "was applied to the reﬁnement of a coarse-grained model of\na protein and ﬁtted against paramagnetic relaxation enhance-\nment experiments. The same method was later used to choose\nthe parameters of an implicit-solvent model against reference\nall-atom simulations.35 Li et al.36 showed how to reﬁne an all-\natom protein force ﬁeld using chemical shifts and full-length\nprotein simulations. A common trait of all these methods is\nthat even small changes in force ﬁeld parameters can make the",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "resulting ensemble very different from the original one mak-\ning the reweighting procedure less accurate. In Ref. 36, a local\nreweighting procedure was introduced to alleviate this issue.\nThis procedure is based on the heuristic observation that the\nensemble of conformations accessible to a residue is maxi-\nInitial parameters\nMD simulations\nUpdate force-ﬁeld \nparameters using \nreweighting\nMD simulations with \nnew parameters\nFinal parameters\nFIG. 3.\nSchematic representation of a force-ﬁeld ﬁtting procedure",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "using experimental data on macromolecular systems. Initial parame-\nters are tuned based on both quantum chemistry data and experimen-\ntal data on small systems (e.g., individual residues). Molecular dy-\nnamics simulations are then performed on macromolecular systems.\nReweighting is used to optimize force ﬁeld parameters in order to\nmaximize the agreement with a set of available data including exper-\niments on macromolecular systems. In principle, this second stage",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "might include also quantum chemistry data and experimental data on\nsmall systems. Even when not explicitly used at this stage, the ini-\ntial set of quantum chemistry and experimental data is still playing\na role for all the parameters that are not further adjusted. Even on\nthe adjusted parameters, the information about the initial force ﬁeld\nremains present if regularization terms are included.\nmally affected by the parameters used for that residue and, to",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "a lesser extent, by the parameters used for the other (possibly\nidentical) residues. Since this is an approximation, a subse-\nquent simulation performed with the corrected force ﬁeld was\nnecessary to validate the modiﬁcation. Refs. 37 and 38 used\na similar automatic procedure to optimize water models. In-\nterestingly, they realized that a straightforward ﬁtting proce-\ndure might lead to overﬁtting and showed how a regularization\nterm can be included in order to alleviate this issue. Finally,",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "Cesari et al.39 introduced a procedure to reﬁne atomistic force\nﬁelds where heterogenous systems and types of experimen-\ntal data are used to reﬁne the AMBER RNA force ﬁeld. En-\nhanced sampling techniques are employed by the authors to\nergodically sample the conformational space for a number of\nRNA tetramers and hairpin loops, and a regularization term is\nused in the ﬁtting scheme to maintain the reﬁned force ﬁeld\nclose to the initial one. The weight of the regularization term",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "is chosen with a cross-validation procedure aimed at maximiz-\ning the transferability of the parameters.\nIt is important to recognize the difference between the men-\ntioned approaches, which are meant to generate transferable",
+      "source": "dense_retrieval.pdf",
+      "page": 3,
+      "char_count": 225,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "4\nMaxEnt\nFF ﬁtting\nFitting \nexperimental \ndata\nGeneralizing \nto diﬀerent \nsystems\nIndependent \ncorrections for \neach monomer\nSame corrections \nfor each monomer\nFIG. 4. Difference between maximum entropy and force-ﬁeld ﬁtting\nprocedures. When using the maximum entropy principle to enforce\nagreement between simulation and experiment, one free parameter\nis used for each data point. As a consequence, different chemically\nequivalent units might be treated differently. This does not allow",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "the corrections to be transferred to other molecules, for which new\nexperimental data would be required. When using force-ﬁeld ﬁtting\nprocedures, instead, all chemically equivalent units are treated in the\nsame manner. This allows the derived parameters to be generalized\nto other molecules where the same units are used as building blocks.\nforce-ﬁeld parameters, and methods meant to improve the\nagreement with experiment for a speciﬁc system for which",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "data are available.40 This second class includes a variety of\napproaches such as Bayesian schemes41,42 and methods based\non the maximum entropy principle.43,44 In the maximum en-\ntropy formalism the number of free parameters is equal to the\nnumber of experimental datapoints. For instance, in a ho-\nmogenous polymer, each of the monomers will feel a dif-\nferent correction that makes its structure as compatible as\npossible with experiments. Since the number of parameters",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "is very high, regularization methods can be used and tuned\nwith a cross-validation procedure (see, e.g., Ref. 45). In ad-\ndition, if a polymer of a different length needs to be simu-\nlated, new experimental data should be obtained. In force-\nﬁeld ﬁtting procedures, the chemical structure of the investi-\ngated molecule is a priori used to reduce the number of pa-\nrameters. For instance, in a homogenous polymer, each of\nthe monomers will feel the same correction (although perhaps",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "terminal monomers might be treated differently46). On the\none hand, this allows to encode a large amount of informa-\ntion in the speciﬁc choice of the functional form employed.\nThis type of information is similar to the one that is included\nwhen atoms are classiﬁed in types in order to obtain their\nparameters.47 On the other hand, it signiﬁcantly reduces the\nnumber of parameters potentially making the resulting force\nﬁeld transferable. Ref. 48 used a hybrid approach were max-",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "imum entropy restraints were used but kept by construction\nconstant across chemically equivalent parts of the system. For\na recent comparison of approaches taken from both classes,\nsee Ref. 49.\nBesides the discussed systematic approaches, that report\nmethodological improvements aimed at optimizing parame-\nters based on experimental data, a number of recently devel-\noped force ﬁelds include terms that were manually adjusted\nbased on the result of MD simulations on systems of differ-",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "ent complexity and their capability to reproduce experimental\ndata. For instance, Refs. 15, 31–33 reported optimizations of\nparameters based on the solution properties of oligopeptides.\nThe atomic radii of the AMBER ff15ipq force ﬁeld were cho-\nsen so as to provide correct salt-brigde interactions.50 Finally,\ntwo recent variants of the AMBER RNA force ﬁeld contain\ncorrections on hydrogen bonds obtained scanning a series of\nparameters and minimizing the discrepancy with solution ex-",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "periment for RNA oligomers.46,51\nIV.\nTHE MACHINE LEARNING LESSON: HOW TO\nAVOID OVERFITTING\nOverﬁtting is a ubiquitous problem when ﬁtting procedures\nare done in a blind manner. The prototypical cases are ma-\nchine learning and related algorithms where functions of ar-\nbitrary complexity, supported by no or little physical under-\nstanding, are used to ﬁt empirical data. The machine learning\ncommunity has thus developed a number of tools that can be\nused to avoid or at least alleviate this issue.",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "used to avoid or at least alleviate this issue.\nMany different machine learning techniques exist and are\ntypically based on a common framework.52 The basic ingre-\ndient is a dataset made up of a set of independent variables (X,\nsamples) and a set of dependent variables (Y, labels). Next,\na set of models is proposed to map X into Y with best ac-\ncuracy.\nA model is deﬁned by a set of parameters plus a\nset of hyperparameters. This splitting is guided by compu-",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "tational convenience such that inference can be approached in\na multi-level fashion: typically, model parameters are found\nby solving an optimization problem at ﬁxed hyperparameters,\nthat on the other hand are preferably scanned over a discrete\nscale. This double approach is more easily understood when\nanother basic ingredient of machine learning is introduced,\nthat is the cost function. The cost function is used to esti-\nmate the performance of a model, and while it is usually a",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "continuous function of the model parameters, it can have a\nnon-trivial dependence on the hyperparameters. For exam-\nple, the set of hyperparameters can include the architecture of\nthe model, the optimization algorithm used to ﬁnd the optimal\nmodel parameters, the functional form of the cost function it-\nself, etc. Similar choices also need to be taken in force ﬁeld\nﬁtting, as discussed in detail in the next Section.\nSince the sets of parameters and hyperparameters deﬁning",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "models are ﬁtted against a ﬁnite set of examples {X,Y}, over-\nﬁtting can easily occur. In the limit of ﬁtting on an inﬁnite\namount of data, the only limitation of a model would be de-\ntermined by its complexity. In this limit, a too simple model\nwould underﬁt the data, leading to a bias in the result. This\nbias can be decreased by increasing the model complexity.\nBut since in general we deal with datasets of ﬁnite size, in-",
+      "source": "dense_retrieval.pdf",
+      "page": 4,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "5\n...\nλ\n(1)\nλ\n(2)\nλ\n(n)\nECV\n(1)\nECV\n(2)\nECV\n(n)\nValidation\n    data\nTraining\n  data\n...\n...\n...\n...\n...\na)\nb)\nEff\noptimal value\nFIG. 5. Cross-validation can be used to decrease overﬁtting and al-\nlow more generalizable force-ﬁeld improvements. a) In n-fold cross\nvalidation, the data set is randomly split into n blocks of equal size.\nA single block of data is left out and the parameters are trained on the\nremaining n−1 blocks. This is repeated once for each block, yield-",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "ing multiple sets of trained parameters λ (1),...,λ (n). The error E(k)\nCV\nobtained with parameters λ (k) in reproducing the k-th block is then\ncomputed, and the average over the n results is the cross-validation\nerror (ECV ). Leave-one-out cross validation is a special case where\neach block contains a single data point, whereas in leave-p-out cross\nvalidation all possible subsets of p data are left out. b) Hyperpa-\nrameters controlling model complexity (such as regularization coef-",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "ﬁcients) are then chosen so as to minimize the cross-validation error.\ncreasing the complexity of the model would result in a large\ncontribution to the error (variance) due to the sampling. A too\ncomplex model would overﬁt the data, thus having a seriously\nlow performance on new independent data.\nThe search for the model with the optimal tradeoff between\nbias and variance (i.e. between under- and over-ﬁtting) fol-\nlows two directions. One is to split the dataset into a training",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "and a cross-validation set, prior to analysis. Model parameters\nare ﬁtted against data in the training set, and afterwards the op-\ntimized model is validated against the validation set data not\nincluded in the training procedure. This procedure is usually\nreferred to as cross-validation (Fig. 5), and depending on how\nthe cross-validation set is built can be referred to as leave-one-\nout, leave-p-out, or n-fold cross validation. The other is to\nreduce the risk of overﬁtting by means of regularization tech-",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "niques, the most common consisting in adding terms to the\ncost function that prevent the model parameters from reach-\ning values extremely adapted to the dataset. This comes at the\ncost of increasing the number of hyperparameters (e.g., the\nrelative size of training and cross-validation sets, their compo-\nsition, coefﬁcients of regularization terms, etc.) that continue\nto be affected by risk of overﬁtting. Even if a close solution\nto this problem is not established yet, overﬁtting should be",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "taken into account for each level of inference (for both param-\neters and hyperparameters). The most straightforward way\nto deal with this multi-level risk of overﬁtting is to a priori\nsplit the dataset into three subsets: in addition to the standard\ntraining and cross-validation subsets, an independent test set\nis introduced. The training set is used to ﬁt the optimal val-\nues of parameters at ﬁxed hyperparameters; optimal hyperpa-\nrameters are then ﬁtted against the cross-validation set. Even-",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "tually, the performance of the model deﬁned by the optimal\nparameters and hyperparameters is evaluated on the test set.\nA more robust approach consists in nested cross-validation53,\nin which parameters and hyperparameters are optimized on a\nsingle dataset, but the criterion used to optimize model pa-\nrameters (training) is different from the optimization criterion\nused for hyperparameters (model selection). Validation of the\nselected optimized model against new data that, importantly,",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "has not been used to adjust neither parameters nor hyperpa-\nrameters, is best practice in this case as well.\nV.\nOVERFITTING IN FORCE FIELD DEVELOPMENT\nForce-ﬁeld ﬁtting procedures can be interpreted as machine\nlearning methods where the parameters are the optimized co-\nefﬁcients and data and labels are a mixture of information ob-\ntained from both quantum chemistry calculations and various\nexperimental techniques. One should thus pay attention to",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "overﬁtting. Whenever overﬁtting occurs, transferability of the\nforce ﬁeld to a different case might be compromised. As al-\nready discussed, if parameters are only ﬁtted on small sys-\ntems, their transferability to larger systems might be limited.\nThe other phenomenon that can be observed in reweighting\nmethods is the subtle overﬁtting on the analyzed trajectory.\nIn particular, if parameters are derived to match experimental\ndata by reweighting a trajectory that is not sufﬁciently long,",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "they might not work correctly on another trajectory obtained\nusing the same force ﬁeld but with different initial conditions.\nIn addition, since reweighting schemes can only modulate the\nweight of states that have been explored but cannot predict\nthe population of states that have not been observed (see, e.g.,\nRef. 54 for a comparison of restraining and reweighting when\nused to implement the maximum entropy principle), the only\nway to detect these problems is to keep the target force ﬁeld",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "as close as possible to the original one with some form of\nregularization and to then perform a new simulation once pa-\nrameters have been optimized (see Fig. 6).\nEvery other decision taken in the path should be included in\nthe list of hyperparameters. Coefﬁcients controlling regular-\nization terms used in the optimization, that control the relative\nweight of initial force ﬁeld and of experimental data, are natu-\nrally considered hyperparameters. The functional form of the",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "force ﬁeld itself is a hyperparameter. The analogous of these\nhyperparameters in the training of neural network are regu-\nlarization terms or early stopping criteria and network archi-",
+      "source": "dense_retrieval.pdf",
+      "page": 5,
+      "char_count": 184,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "6\nFIG. 6.\nFree-energy landscapes when using reweighting and it-\nerative simulations. The native state, compatible with experimental\ninformation, is in the middle (N). Two metastable non-native states\nthat, based on experimental information, are supposed to have a low\npopulation, are also shown (U1 and U2). In the original force ﬁeld\n(panel a), the N state is sampled, but the most stable state is U1.\nDuring the reweighting procedure, the force ﬁeld learns how to im-",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "prove the agreement with experiments by disfavoring U1. However,\nsince U2 was never observed in this simulation, there is nothing that\nprevents it to be stable when using the reﬁned force ﬁeld. Once a\nsimulation is performed with the reﬁned force ﬁeld (panel b), the\nstate U2 appears with large population leading to disagreement with\nexperiment. In principle, if a reweighting is performed using only\nthe second simulation, state U1 might appear again with an incorrect",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "population. Only a reweighting where both simulations are com-\nbined, and thus all the possible states can be observed, is capable of\ngenerating a force ﬁeld that correctly sets N as the global free-energy\nminimum and U1 and U2 as metastable states with low population\n(panel c).\ntecture, respectively.55 In force-ﬁeld ﬁtting, a number of ad-\nditional hyperparameters might be used whose control might\nbe more or less explicit. For instance, the so-called forward",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "models used to calculate experimental observables from MD\ntrajectories contain a number of parameters. If the training is\ndone to reproduce the energetics of quantum chemistry calcu-\nlations, the set of structures used for ﬁtting and their relative\nweights are to be considered as hyperparameters. Even the\nprecise quantum methods used to compute the total energy\nmight contain a number of hidden parameters (e.g., the possi-\nbility to use either implicit or explicit solvent or the speciﬁc\nFit parameters",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "Fit parameters\nChoose \nhyperparameters\nFinal validation\nExperiments or \ncalculations left out \nfor ﬁnal validation\nIterate using \ncross validation\nFIG. 7. Schematic representation of a training/ﬁnal-validation pro-\ncedure. Force-ﬁeld ﬁtting can be based on a combination of quantum\nchemistry data, experimental data on small systems and experimen-\ntal data on macromolecular systems. All data can be used in param-\neter ﬁtting, and cross-validation (see Fig. 5) can be used to help the",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "choice of hyperparameters. To this end, it is necessary that a sep-\narate set of data, either theoretical or experimental, is left out until\nthe very end of the procedure to validate the transferability of the\nmodel. This separate data should not be used to take any decision\nduring the ﬁtting procedure, or the information leak might make the\nﬁnal validation not truly independent.\nmethod used to solve the many-body Schrödinger equation).\nIf hyperparameters are chosen a priori based on some in-",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "dependent intuition or information, for instance the fact that\na given quantum chemistry method is more accurate than an-\nother one, then this extra information will be encoded in the ﬁ-\nnal result, improving the quality of the resulting model. How-\never, if hyperparameters are optimized by monitoring the per-\nformance of the force ﬁeld on a speciﬁc system, then this sys-\ntem will implicitly become part of the training set. Thus, the\nresulting model should be validated against a separate system",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "(Fig. 7). A practical example would be if different variants of\na force ﬁeld are derived using three different quantum chem-\nistry methods, then the best method is chosen checking the\nstability of the native structure of a speciﬁc system using all\nthe derived variants. Unless there are other independent evi-\ndences that the selected quantum chemistry method is better\nthan the other ones, this choice should be considered as ﬁt-\nted on the speciﬁc system and should be then validated on an",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "independent one. Therefore, as a ﬁnal remark, all the deci-\nsions taken in the process should be critically evaluated in this\nrespect.\nVI.\nCRITICAL ISSUES AND OPEN CHALLENGES\nThe recent works done in adjusting force ﬁeld parameters\nincluding experimental data suggests that this is a promising",
+      "source": "dense_retrieval.pdf",
+      "page": 6,
+      "char_count": 293,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "7\nﬁeld that will lead to important improvements in the future.\nThere are however a number of critical issues that one should\ncarefully consider.\nFirst, we suggest that all input data should be considered\nat the same time, irrespectively of being obtained from ex-\nperiment or from quantum chemistry calculations. Both ex-\nperimental and quantum chemistry data can indeed be equiv-\nalently used for training or for validation. Importantly, one\nshould consider that different data have different relative er-",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "rors and different information content. Data that provide lim-\nited information during ﬁtting will also provide less stringent\nvalidations. Particularly valuable are data obtained on sys-\ntems as close as possible to those that one is interested in sim-\nulating. Less weight instead should be given to data obtained\nin very different conditions (e.g., without solvent) or on sys-\ntems that are too simple to be considered as representative\n(e.g., individual aminoacids or nucleotides). As an exception",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "to this general rule, one should consider that different types\nof data typically give access to the energetics in different por-\ntions of the conformational space. For instance, solution ex-\nperiments on macromolecular systems are valuable in provid-\ning the relative stability of structures that can be distinguished\nusing some probe. Quantum chemistry calculations are in-\nstead valuable when states are difﬁcult to be distinguished in\nthe experiment, or when probing rarely visited states (such as",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "transition states).\nReference data should be obtained in conditions as realis-\ntic as possible. One should carefully consider the conditions\nin which experiments are carried out, and prefer experiments\nperformed in conditions that can be reproduced in MD simu-\nlations. Ideally, speciﬁc experiments might be designed and\nperformed in order to facilitate force ﬁeld development, such\nas solution experiments on systems small enough to allow er-\ngodic sampling but large enough to provide transferable infor-",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "mation. When instead basing the ﬁts on quantum chemistry\ncalculations, one should consider the importance of the sol-\nvent. Additionally, errors in the experimental data should be\ntaken into account. Very important are also errors in the for-\nward models used to connect structures obtained in MD sim-\nulations with experiments, since these errors are often larger\nthan the those of the raw data. Errors in the quantum chem-\nistry calculations should be quantiﬁed as well.",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "istry calculations should be quantiﬁed as well.\nTaking inspiration from the machine learning community,\nit is fundamental to understand how to avoid overﬁtting. In\nparticular, overﬁtting on speciﬁc systems should be avoided,\nand this can be achieved by including as heterogenous as pos-\nsible systems in the dataset. Similarly, overﬁtting should be\navoided on speciﬁc trajectories. To this end, separate valida-\ntion simulations can be run or robust estimates of the statisti-",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "cal errors can be pursued. Regularization terms can be used\nto tune model complexity thus reducing the impact of overﬁt-\nting. Validation should be made on data that are obtained in\nan as independent as possible manner.\nFinally, the current functional form (Eq. 1) might be too\nlimited to be usable on a wide range of cases. Increasing the\ncomplexity of the model might help in this respect. Com-\nplexity can be introduced by physical insight (e.g., explic-",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "itly polarizable force ﬁelds23,24 or modiﬁed Lennard-Jones\npotentials56) or by blind learning of non-linear models (e.g.,\nneural network potentials57,58). Nonetheless, one should keep\nin mind that, whenever complexity is increased, overﬁtting\nhas more chance to appear. In this respect, for a ﬁxed num-\nber of parameters, the more physical the functional form is,\nthe less it will tend to overﬁt. Interestingly, neural networks\nare now routinely used to ﬁt bottom up potentials where the",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "training data can be generated by computational methods and\ncan then be easily made very abundant.57–60 These approaches\nare however typically designed to be trained on very small\nsystems or chemical groups, and their applicability to macro-\nmolecular systems has not been shown yet. It is thus still to be\nseen if neural network potentials can be used fruitfully when\nforce ﬁelds are directly ﬁtted on experimental data.\nSUPPLEMENTARY MATERIAL\nA table reporting more details about the methods used to",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "obtain parameters in the most common biomolecular force\nﬁeld.\nACKNOWLEDGMENTS\nSandro Bottaro, Lillian Chong and Andreas Larsen are ac-\nknowledged for carefully reading the manuscript and provid-\ning useful suggestions. Max Bonomi is greatly acknowledged\nfor carefully reading the manuscript and reporting enlighten-\ning feedbacks.\nDATA AVAILABILITY\nData sharing not applicable — no new data generated.\n1R. O. Dror, R. M. Dirks, J. Grossman, H. Xu, and D. E. Shaw, “Biomolec-",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "ular simulation: a computational microscope for molecular biology,” Annu.\nRev. Biophys. 41, 429–452 (2012).\n2K. Lindorff-Larsen, S. Piana, R. O. Dror,\nand D. E. Shaw, “How fast-\nfolding proteins fold,” Science 334, 517–520 (2011).\n3F. Baftizadeh, X. Biarnes, F. Pietrucci, F. Afﬁnito, and A. Laio, “Multi-\ndimensional view of amyloid ﬁbril nucleation in atomistic detail,” J. Am.\nChem. Soc. 134, 3886–3894 (2012).\n4A. Pérez-Villa, M. Darvas, and G. Bussi, “ATP dependent NS3 helicase",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "interaction with RNA: insights from molecular simulations,” Nucleic Acids\nRes. 43, 8725–8734 (2015).\n5M. Krepl, M. Havrila, P. Stadlbauer, P. Banáš, M. Otyepka, J. Pasulka,\nR. Steﬂ, and J. Šponer, “Can we execute stable microsecond-scale atomistic\nsimulations of protein–RNA complexes?” J. Chem. Theory Comput. 11,\n1220–1243 (2015).\n6A. Arkhipov, Y. Shan, R. Das, N. F. Endres, M. P. Eastwood, D. E. Wemmer,\nJ. Kuriyan, and D. E. Shaw, “Architecture and membrane interactions of",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "the EGF receptor,” Cell 152, 557–569 (2013).\n7P. L. Freddolino, A. S. Arkhipov, S. B. Larson, A. McPherson,\nand\nK. Schulten, “Molecular dynamics simulations of the complete satellite to-\nbacco mosaic virus,” Structure 14, 437–449 (2006).\n8I. Yu, T. Mori, T. Ando, R. Harada, J. Jung, Y. Sugita,\nand M. Feig,\n“Biomolecular interactions modulate macromolecular structure and dynam-\nics in atomistic model of a bacterial cytoplasm,” Elife 5, e19274 (2016).",
+      "source": "dense_retrieval.pdf",
+      "page": 7,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "8\n9A. Singharoy, C. Maffeo, K. H. Delgado-Magnero, D. J. Swainsbury,\nM. Sener, U. Kleinekathöfer, J. W. Vant, J. Nguyen, A. Hitchcock, B. Israle-\nwitz, et al., “Atoms to phenotypes: Molecular design principles of cellular\nenergy metabolism,” Cell 179, 1098–1111 (2019).\n10D. E. Shaw, J. Grossman, J. A. Bank, B. Batson, J. A. Butts, J. C. Chao,\nM. M. Deneroff, R. O. Dror, A. Even, C. H. Fenton, et al., “Anton 2: raising\nthe bar for performance and programmability in a special-purpose molec-",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "ular dynamics supercomputer,” in SC’14: Proceedings of the International\nConference for High Performance Computing, Networking, Storage and\nAnalysis (IEEE, 2014) pp. 41–53.\n11D. A. Case, T. E. Cheatham III, T. Darden, H. Gohlke, R. Luo, K. M.\nMerz Jr, A. Onufriev, C. Simmerling, B. Wang, and R. J. Woods, “The\nAmber biomolecular simulation programs,” J. Comput. Chem. 26, 1668–\n1688 (2005).\n12M. J. Abraham, T. Murtola, R. Schulz, S. Páll, J. C. Smith, B. Hess, and",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "E. Lindahl, “GROMACS: High performance molecular simulations through\nmulti-level parallelism from laptops to supercomputers,” SoftwareX 1, 19–\n25 (2015).\n13O. Valsson, P. Tiwary, and M. Parrinello, “Enhancing important ﬂuctua-\ntions: Rare events and metadynamics from a conceptual viewpoint,” Annu.\nRev. Phys. Chem. 67, 159–184 (2016).\n14C. Camilloni and F. Pietrucci, “Advanced simulation techniques for the\nthermodynamic and kinetic characterization of biological systems,” Adv.\nPhys. X 3, 1477531 (2018).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "Phys. X 3, 1477531 (2018).\n15P. Robustelli, S. Piana, and D. E. Shaw, “Developing a molecular dynamics\nforce ﬁeld for both folded and disordered protein states,” Proc. Natl. Acad.\nSci. U.S.A. 115, E4758–E4766 (2018).\n16S. Piana, P. Robustelli, D. Tan, S. Chen, and D. E. Shaw, “Development of\na force ﬁeld for the simulation of single-chain proteins and protein-protein\ncomplexes,” J. Chem. Theory Comput. 16, 2494–2507 (2020).\n17J. Šponer, G. Bussi, M. Krepl, P. Banáš, S. Bottaro, R. A. Cunha, A. Gil-",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Ley, G. Pinamonti, S. Poblete, P. Jureˇcka, N. G. Walter, and M. Otyepka,\n“RNA structural dynamics as captured by molecular simulations: a com-\nprehensive overview,” Chem. Rev. 118, 4177–4338 (2018).\n18R. Capelli, W. Lyu, V. Bolnykh, S. Meloni, J. M. H. Olsen, U. Rothlisberger,\nM. Parrinello, and P. Carloni, “On the accuracy of molecular simulation-\nbased predictions of koff values: a metadynamics study,” bioRxiv preprint,\ndoi:10.1101/2020.03.30.015396 (2020).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "doi:10.1101/2020.03.30.015396 (2020).\n19W. D. Cornell, P. Cieplak, C. I. Bayly, I. R. Gould, K. M. Merz, D. M.\nFerguson, D. C. Spellmeyer, T. Fox, J. W. Caldwell, and P. A. Kollman, “A\nsecond generation force ﬁeld for the simulation of proteins, nucleic acids,\nand organic molecules,” J. Am. Chem. Soc. 117, 5179–5197 (1995).\n20A. D. MacKerell, J. Wiorkiewicz-Kuczera, and M. Karplus, “An all-atom\nempirical energy function for the simulation of nucleic acids,” J. Am.\nChem. Soc. 117, 11946–11975 (1995).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "Chem. Soc. 117, 11946–11975 (1995).\n21W. L. Jorgensen and J. Tirado-Rives, “The OPLS [optimized potentials for\nliquid simulations] potential functions for proteins, energy minimizations\nfor crystals of cyclic peptides and crambin,” J. Am. Chem. Soc. 110, 1657–\n1666 (1988).\n22C. Oostenbrink, A. Villa, A. E. Mark,\nand W. F. Van Gunsteren, “A\nbiomolecular force ﬁeld based on the free enthalpy of hydration and solva-\ntion: The GROMOS force-ﬁeld parameter sets 53A5 and 53A6,” J. Comput.",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "Chem. 25, 1656–1676 (2004).\n23Y. Shi, Z. Xia, J. Zhang, R. Best, C. Wu, J. W. Ponder, and P. Ren, “Polar-\nizable atomic multipole-based AMOEBA force ﬁeld for proteins,” J. Chem.\nTheory Comput. 9, 4046–4063 (2013).\n24S. Patel, A. D. Mackerell Jr, and C. L. Brooks III, “CHARMM ﬂuctuating\ncharge force ﬁeld for proteins: II protein/solvent properties from molecular\ndynamics simulations using a nonadditive electrostatic model,” J. Comput.\nChem. 25, 1504–1514 (2004).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "Chem. 25, 1504–1514 (2004).\n25T. P. Senftle, S. Hong, M. M. Islam, S. B. Kylasa, Y. Zheng, Y. K. Shin,\nC. Junkermeier, R. Engel-Herbert, M. J. Janik, H. M. Aktulga, et al., “The\nReaxFF reactive force-ﬁeld: development, applications and future direc-\ntions,” NPJ Comput. Mater. 2, 1–14 (2016).\n26G. Seifert and J.-O. Joswig, “Density-functional tight binding – an approx-\nimate density-functional theory method,” Wiley Interdiscip. Rev. Comput.\nMol. Sci. 2, 456–465 (2012).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "Mol. Sci. 2, 456–465 (2012).\n27P. Várnai and K. Zakrzewska, “DNA and its counterions: a molecular dy-\nnamics study,” Nucleic Acids Res. 32, 4269–4280 (2004).\n28A. Pérez, I. Marchán, D. Svozil, J. Šponer, T. E. Cheatham III, C. A.\nLaughton,\nand M. Orozco, “Reﬁnement of the AMBER force ﬁeld for\nnucleic acids: improving the description of α/γ conformers,” Biophys. J.\n92, 3817–3829 (2007).\n29M. Zgarbová, M. Otyepka, J. Šponer, A. Mládek, P. Banáš, T. E. Cheatham,",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "and P. Jureˇcka, “Reﬁnement of the Cornell et al. nucleic acids force ﬁeld\nbased on reference quantum chemical calculations of glycosidic torsion\nproﬁles,” J. Chem. Theory Comput. 7, 2886–2902 (2011).\n30A. D. Mackerell Jr, M. Feig, and C. L. Brooks III, “Extending the treat-\nment of backbone energetics in protein force ﬁelds: limitations of gas-\nphase quantum mechanics in reproducing protein conformational distri-\nbutions in molecular dynamics simulations,” J. Comput. Chem. 25, 1400–\n1415 (2004).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "1415 (2004).\n31R. B. Best and G. Hummer, “Optimized molecular dynamics force ﬁelds\napplied to the helix-coil transition of polypeptides,” J. Phys. Chem. B 113,\n9004–9015 (2009).\n32S. Piana, K. Lindorff-Larsen, and D. E. Shaw, “How robust are protein\nfolding simulations with respect to force ﬁeld parameterization?” Biophys.\nJ. 100, L47–L49 (2011).\n33R. B. Best, X. Zhu, J. Shim, P. E. Lopes, J. Mittal, M. Feig, and A. D.\nMacKerell Jr, “Optimization of the additive CHARMM all-atom protein",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "force ﬁeld targeting improved sampling of the backbone φ, ψ and side-\nchain χ1 and χ2 dihedral angles,” J. Chem Theory Comput. 8, 3257–3273\n(2012).\n34A. B. Norgaard, J. Ferkinghoff-Borg, and K. Lindorff-Larsen, “Experimen-\ntal parameterization of an energy function for the simulation of unfolded\nproteins,” Biophys. J. 94, 182–192 (2008).\n35S. Bottaro, K. Lindorff-Larsen, and R. B. Best, “Variational optimization of\nan all-atom implicit solvent force ﬁeld to match explicit solvent simulation",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "data,” J. Chem Theory Comput. 9, 5641–5652 (2013).\n36D.-W. Li and R. Brüschweiler, “Iterative optimization of molecular me-\nchanics force ﬁelds from NMR data of full-length proteins,” J. Chem. The-\nory Comput. 7, 1773–1782 (2011).\n37L.-P. Wang, J. Chen, and T. Van Voorhis, “Systematic parametrization of\npolarizable force ﬁelds from quantum chemistry data,” J. Chem. Theory\nComput. 9, 452–460 (2012).\n38L.-P. Wang, T. J. Martinez, and V. S. Pande, “Building force ﬁelds: an",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "automatic, systematic, and reproducible approach,” J. Phys. Chem. Lett. 5,\n1885–1891 (2014).\n39A. Cesari, S. Bottaro, K. Lindorff-Larsen, P. Banáš, J. Šponer,\nand\nG. Bussi, “Fitting corrections to an RNA force ﬁeld using experimental\ndata,” J. Chem. Theory Comput. 15, 3425–3431 (2019).\n40M. Bonomi, G. T. Heller, C. Camilloni, and M. Vendruscolo, “Principles\nof protein structural ensemble determination,” Curr. Opin. Struct. Biol. 42,\n106–116 (2017).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "106–116 (2017).\n41G. Hummer and J. Köﬁnger, “Bayesian ensemble reﬁnement by replica\nsimulations and reweighting,” J. Chem. Phys. 143, 12B634_1 (2015).\n42M. Bonomi, C. Camilloni, A. Cavalli, and M. Vendruscolo, “Metainfer-\nence: A Bayesian inference method for heterogeneous systems,” Sci. Adv.\n2, e1501177 (2016).\n43J. W. Pitera and J. D. Chodera, “On the use of experimental observations to\nbias simulated ensembles,” J. Chem. Theory Comput. 8, 3445–3451 (2012).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "44A. Cesari, S. Reißer, and G. Bussi, “Using the maximum entropy princi-\nple to combine simulations and solution experiments,” Computation 6, 15\n(2018).\n45S. Bottaro, G. Bussi, S. D. Kennedy, D. H. Turner,\nand K. Lindorff-\nLarsen, “Conformational ensembles of RNA oligonucleotides from inte-\ngrating NMR and molecular simulations,” Science Adv. 4, eaar8521 (2018).\n46V. Ml`ynsk`y, P. Kührová, T. Kühr, M. Otyepka, G. Bussi, P. Banáš, and\nJ. Šponer, “Fine-tuning of the AMBER RNA force ﬁeld with a new term",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "adjusting interactions of terminal nucleotides,” J. Chem. Theory Comput.,\ndoi:10.1021/acs.jctc.0c00228 (2020).\n47D. L. Mobley, C. C. Bannan, A. Rizzi, C. I. Bayly, J. D. Chodera, V. T.\nLim, N. M. Lim, K. A. Beauchamp, D. R. Slochower, M. R. Shirts, et al.,\n“Escaping atom types in force ﬁelds using direct chemical perception,” J.\nChem. Theory Comput. 14, 6076–6092 (2018).\n48A. Cesari, A. Gil-Ley, and G. Bussi, “Combining simulations and solu-",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "tion experiments as a paradigm for RNA force ﬁeld reﬁnement,” J. Chem.\nTheory Comput. 12, 6192–6200 (2016).",
+      "source": "dense_retrieval.pdf",
+      "page": 8,
+      "char_count": 107,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "9\n49S. Orioli, A. H. Larsen, S. Bottaro, and K. Lindorff-Larsen, “How to learn\nfrom inconsistencies: Integrating molecular simulations with experimental\ndata,” Prog. Mol. Biol. Transl. 170, 123–176 (2020).\n50K. T. Debiec, D. S. Cerutti, L. R. Baker, A. M. Gronenborn, D. A. Case,\nand L. T. Chong, “Further along the road less traveled: AMBER ff15ipq,\nan original protein force ﬁeld built on a self-consistent physical model,” J.\nChem. Theory Comput. 12, 3926–3947 (2016).",
+      "source": "dense_retrieval.pdf",
+      "page": 9,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "Chem. Theory Comput. 12, 3926–3947 (2016).\n51P. Kührová, V. Ml`ynsk`y, M. Zgarbová, M. Krepl, G. Bussi, R. B. Best,\nM. Otyepka, J. Šponer, and P. Banáš, “Improving the performance of the\nAMBER RNA force ﬁeld by tuning the hydrogen-bonding interactions,” J.\nChem. Theory Comput. 15, 3288–3305 (2019).\n52P. Mehta, M. Bukov, C.-H. Wang, A. G. Day, C. Richardson, C. K. Fisher,\nand D. J. Schwab, “A high-bias, low-variance introduction to machine\nlearning for physicists,” Phys. Rep. 810, 1–124 (2019).",
+      "source": "dense_retrieval.pdf",
+      "page": 9,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "53G. C. Cawley and N. L. Talbot, “On over-ﬁtting in model selection and\nsubsequent selection bias in performance evaluation,” J. Mach. Learn. Res.\n11, 2079–2107 (2010).\n54R. Rangan, M. Bonomi, G. T. Heller, A. Cesari, G. Bussi, and M. Vendr-\nuscolo, “Determination of structural ensembles of proteins: restraining vs\nreweighting,” J. Chem. Theory Comput. 14, 6632–6641 (2018).\n55I. Goodfellow, Y. Bengio, and A. Courville, Deep learning (MIT press,\n2016).",
+      "source": "dense_retrieval.pdf",
+      "page": 9,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "2016).\n56P. Li and K. M. Merz Jr, “Taking into account the ion-induced dipole in-\nteraction in the nonbonded model of ions,” J. Chem Theory Comput. 10,\n289–297 (2014).\n57J. Behler and M. Parrinello, “Generalized neural-network representation of\nhigh-dimensional potential-energy surfaces,” Phys. Rev. Lett. 98, 146401\n(2007).\n58J. S. Smith, O. Isayev, and A. E. Roitberg, “ANI-1: an extensible neural\nnetwork potential with DFT accuracy at force ﬁeld computational cost,”\nChem. Sci. 8, 3192–3203 (2017).",
+      "source": "dense_retrieval.pdf",
+      "page": 9,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "Chem. Sci. 8, 3192–3203 (2017).\n59F. Noé, A. Tkatchenko, K.-R. Müller,\nand C. Clementi, “Machine\nlearning for molecular simulation,” Annu. Rev. Phys. Chem. 71, doi:\n10.1146/annurev–physchem–042018–052331 (2020).\n60P. Gkeka, G. Stoltz, A. B. Farimani, Z. Belkacemi, M. Ceriotti, J. Chodera,\nA. R. Dinner, A. Ferguson, J.-B. Maillet, H. Minoux, et al., “Ma-\nchine learning force ﬁelds and coarse-grained variables in molecular dy-\nnamics: application to materials and biological systems,” arXiv preprint",
+      "source": "dense_retrieval.pdf",
+      "page": 9,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "arXiv:2004.06950 (2020).",
+      "source": "dense_retrieval.pdf",
+      "page": 9,
+      "char_count": 24,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

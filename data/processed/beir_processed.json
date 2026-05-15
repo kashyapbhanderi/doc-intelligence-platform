@@ -1,0 +1,836 @@
+{
+  "source": "beir.pdf",
+  "full_path": "data\\raw\\beir.pdf",
+  "total_pages": 12,
+  "text_chunks": 103,
+  "vision_chunks": 0,
+  "total_chunks": 103,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Large Dual Encoders Are Generalizable Retrievers\nJianmo Ni, Chen Qu, Jing Lu, Zhuyun Dai,\nGustavo Hernández Ábrego, Ji Ma, Vincent Y. Zhao, Yi Luan,\nKeith B. Hall, Ming-Wei Chang, Yinfei Yang\nGoogle Research\nMountain View, CA\nAbstract\nIt has been shown that dual encoders trained\non one domain often fail to generalize to other\ndomains for retrieval tasks. One widespread\nbelief is that the bottleneck layer of a dual en-\ncoder, where the ﬁnal score is simply a dot-\nproduct between a query vector and a pas-",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "product between a query vector and a pas-\nsage vector, is too limited to make dual en-\ncoders an effective retrieval model for out-of-\ndomain generalization. In this paper, we chal-\nlenge this belief by scaling up the size of the\ndual encoder model while keeping the bottle-\nneck embedding size ﬁxed. With multi-stage\ntraining, surprisingly, scaling up the model\nsize brings signiﬁcant improvement on a va-\nriety of retrieval tasks, especially for out-of-\ndomain generalization. Experimental results",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "domain generalization. Experimental results\nshow that our dual encoders, Generalizable\nT5-based dense Retrievers (GTR), outperform\nexisting sparse and dense retrievers on the\nBEIR dataset (Thakur et al., 2021) signiﬁ-\ncantly. Most surprisingly, our ablation study\nﬁnds that GTR is very data efﬁcient, as it only\nneeds 10% of MS Marco supervised data to\nachieve the best out-of-domain performance.1\n1\nIntroduction\nTypical neural retrieval models follow a dual en-",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "Typical neural retrieval models follow a dual en-\ncoder paradigm (Gillick et al., 2018; Yang et al.,\n2020; Karpukhin et al., 2020). In this setup, queries\nand documents are encoded separately into a shared\nﬁxed-dimensional embedding space where relevant\nqueries and documents are represented in each\nother’s proximity.\nThen, approximated nearest\nneighbor search (Vanderkam et al., 2013; John-\nson et al., 2021) is applied to efﬁciently retrieve\nrelevant documents given an encoded input query.",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "relevant documents given an encoded input query.\nWhile dual encoders are popular neural retriev-\ners, the expressiveness of the model is limited by\na bottleneck layer consisting of only a simple dot-\nproduct between query embeddings and passage\n1All the GTR models are released at https://tfhub.\ndev/google/collections/gtr/1.\nFigure 1: The average Recall@100 and NDCG@100\non all BEIR tasks excluding MS Marco. Scaling up\nconsistently improves dual encoders’ out-of-domain\nperformance.",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "performance.\nembeddings. Several papers (Lu et al., 2021; Khat-\ntab and Zaharia, 2020) have discussed that the sim-\nple dot-product (or cosine similarity) between the\nembeddings might not be powerful enough to cap-\nture semantic relevance. Thakur et al. (2021) stud-\nied whether the retriever models can generalize to\nother domains and conclude that dual encoder mod-\nels have “issues for out-of-distribution data”, and\nshowed that models with more interactions between",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "showed that models with more interactions between\nqueries and documents have better generalization\nability.\nIn this paper, we challenge this belief by scaling\nup the dual encoder model size while keeping the\nbottleneck embedding size ﬁxed. Note that scal-\ning up a dual encoder is different from scaling up\npretrained language models such as BERT (Devlin\net al., 2019) and T5 (Raffel et al., 2020) because\nof the presence of the bottleneck layer. While in-\ncreasing the model size can greatly increase the",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "creasing the model size can greatly increase the\ncapacity of the model, for dual encoders, where the\nembedding size is ﬁxed, the interactions between\nqueries and documents are still limited by a simple\ndot-product.\nIn order to test this hypothesis, we take advan-\ntage of the existing T5 model architecture and\ncheckpoints, which allows us to build encoders\narXiv:2112.07899v1  [cs.IR]  15 Dec 2021",
+      "source": "beir.pdf",
+      "page": 1,
+      "char_count": 398,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "Passage\nQuestion\nPassage\nQ_Emb (D=768)\nT5-base\nD_Emb (D=768)\nT5-base\nQuestion\nQ_Emb (D=768)\nT5-large\nD_Emb (D=768)\nPassage\nQuestion\nPassage\nQ_Emb (D=768)\nT5-3B\nD_Emb (D=768)\nQuestion\nQ_Emb (D=768)\nT5-11B\nD_Emb (D=768)\nT5-3B\nT5-11B\nT5-large\nFigure 2: Architecture of Generalizable T5-based dense Retrievers. The research question we ask is: can scaling\nup dual encoder model size improve the retrieval performance while keeping the bottleneck layers ﬁxed? Only the",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "encoder is taken from the pre-train T5 models, and the question tower and document tower of the dual encoder\nshare parameters.\nof up to 5 billion parameters while keeping the\nbottleneck embedding dimension of 768 in all con-\nﬁgurations, as illustrated in Figure 2. Following Ni\net al. (2021), we build dual encoders by taking\nthe encoder part of T5. For effectively using the\npower of large models, we collect roughly two bil-\nlion community question-answer pairs as generic",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "lion community question-answer pairs as generic\npre-training data. By combining pre-training us-\ning generic training data and ﬁne-tuning using MS\nMarco (Nguyen et al., 2016), we are able to train\nlarge-scale dual encoder retrieval models. We call\nthe resulting models Generalizable T5-based dense\nRetrievers (GTR).\nWe evaluate the zero-shot performance of GTR\non the BEIR benchmark (Thakur et al., 2021),\nwhich consists of 18 selected information retrieval\ntasks across 9 domains.2 Our results show that,",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "tasks across 9 domains.2 Our results show that,\nsurprisingly, scaling up of dual encoders leads to\nbetter generalizability despite the ﬁxed bottleneck\nembedding dimension. Second, pre-training on\ncommunity question-answer pairs and ﬁne-tuning\non human curated data are both important to fully\nutilize the power of the scaled up model. In addi-\ntion, with scaling and pre-training, we found GTR\nto be highly data efﬁcient in terms of human anno-\ntated queries, as it only needs to use 10% of MS",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "tated queries, as it only needs to use 10% of MS\nMarco to match the overall out-of-domain perfor-\nmance.\n2We focus on evaluating the performance on the 18\nBEIR (Thakur et al., 2021) tasks other than MS Marco and we\ndid not use in-domain training data or question generation (Ma\net al., 2021).\n2\nBackground\n2.1\nDual Encoder and dense retrieval\nClassic retrieval models such as BM25 (Robertson\nand Zaragoza, 2009) relies on lexical overlap, term\nfrequency heuristics, inverse document frequency",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "frequency heuristics, inverse document frequency\nand document length. This type of retrieval models\ndoes not require any training and can generalize rea-\nsonably well due to its emphasis on lexical match.\nHowever, these retrieval models fall short of ﬁnd-\ning documents that are only semantically related to\nthe query and have low lexical overlap.\nThis is where the dense retrieval models come\ninto play. The retrieval process is dense because\nboth queries and documents are embedded into low-",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "both queries and documents are embedded into low-\ndimensional dense representations, in contrast to\nthe high-dimensional sparse representations used in\nlexical based retrieval functions. Such an encoding\nprocess is often accomplished by a dual encoder ar-\nchitecture, with one of the encoders tailored to the\nqueries and the other to the documents. Matching\nusing dense representations enables dense retrieval\nmodels to go beyond lexical overlap to retrieve\nsemantically similar documents. This powerful",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "semantically similar documents. This powerful\ncapability of semantic matching, however, often\nrequires relatively large amounts of training data.\nAnother critical challenge for dual encoder mod-\nels is that the performance is possibly bounded\nby the dot-product similarity function. As such,\nthere is growing interest in applying lightweight\ninteraction layers to replace the single dot-product\nfunction. On the one hand, Luan et al. (2020) pro-",
+      "source": "beir.pdf",
+      "page": 2,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "poses a multi-vector encoding model, which repre-\nsents each document as a ﬁxed-size set of multiple\nvectors, and calculate the relevance scores as the\nmaximum inner product over this set. This model\ncombines the efﬁciency of dual encoders with some\nof the expressiveness of attention based architec-\ntures. On the other hand, ColBERT (Khattab and\nZaharia, 2020) proposes to learn embeddings for\neach token and then use a “MaxSim” operation to\nselect the best candidate. These models achieve",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "select the best candidate. These models achieve\nsigniﬁcant improvement but also introduce a large\nlatency overhead. In this paper, we take a step\nback and aim to empirically study how to improve\nthe performance of single dot-product based meth-\nods. Speciﬁcally, we study whether simply scal-\ning up the model capacity can lead to better ﬁxed\nembeddings to improve the performance of single\ndot-product retrievers.\n2.2\nBEIR generalization task\nFor evaluation in this paper we use BEIR, a het-",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "For evaluation in this paper we use BEIR, a het-\nerogenous benchmark for zero-shot evaluation of\ninformation retrieval models. The BEIR zero-short\nevaluation suit contains 18 information retrieval\ndatasets3 across 9 domains, including Bio-Medical,\nFinance, News, Twitter, Wikipedia, StackExchange,\nQuora, Scientiﬁc, and Misc. The majority of the\ndatasets have binary relevancy labels indicating\nwhether a document is relevant to a given query or\nnot. A small part of the datasets have 3-level or",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "not. A small part of the datasets have 3-level or\n5-level relevancy judgements. We refer readers to\nthe original BEIR paper (Thakur et al., 2021) for\nmore details.\n3\nGeneralizable T5 Retriever\n3.1\nT5 dual encoder\nWe use the dual encoder framework to train dense\nretrieval models. We follow prior work (Xiong\net al., 2020; Hofstätter et al., 2021) to initialize\ndual encoders from pre-trained language models.\nIn this work, we found convenient to use the pre-\ntrained T5 model family as our backbone encoder",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "trained T5 model family as our backbone encoder\nbecause the T5 model family provides off-the-shelf\npre-trained models (e.g. T5, mT5, byT5) with a\nwide range of model capacity from millions to bil-\nlions of parameters (Raffel et al., 2020; Xue et al.,\n2020, 2021). The architectures of our models are\nillustrated in ﬁg. 2.\n3MS Marco is excluded from the zero-shot comparison as\nmany baseline model used it as training data.\nT5\nShared\n Pre-training\nFine-tuning\nWeb dataset\n(Mined from web)\nSearch dataset",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "Web dataset\n(Mined from web)\nSearch dataset\n(Human annotated) \nT5\nQuestion\nPassage\nFigure 3: Multi-stage training for generalizable T5 dual\nencoder.\nLet paired examples D = {(qi, p+\ni )} be the train-\ning set, where qi is an input question and p+\ni is a\nrelated passage (e.g., a semantically relevant pas-\nsage to the question). Following Ni et al. (2021),\nwe encode the question qi and passage p+\ni into em-\nbeddings by feeding them to the T5 encoder and\ntaking the mean pooling of the encoder as output.",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "taking the mean pooling of the encoder as output.\nIn all outr experiments, we ﬁx the output embed-\ndings to be of size 768.\nWe train the model using an in-batch sampled\nsoftmax loss (Henderson et al., 2017):\nL =\nesim(qi,p+\ni )/τ\nP\nj∈B esim(qi,p+\nj )/τ ,\n(1)\nwhere the similarity scoring function sim is the\ncosine similarity between the embeddings of qi and\np+\ni . B is a mini-batch of examples and τ is the\nsoftmax temperature.\nAdditional negatives p−\nj can be given for input",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "Additional negatives p−\nj can be given for input\nquestion q. The loss is computed by including them\nin the denominator:\nL =\nesim(qi,p+\ni )/τ\nP\nj∈B esim(qi,p+\nj )/τ + esim(qi,p−\nj )/τ .\n(2)\nWe also apply a bi-directional in-batch sampled\nsoftmax loss, where we compute losses for both\nquestion to document matching and document to\nquestion matching.\n3.2\nMulti-stage training\nAs shown in ﬁg. 3, we use a multi-stage dual en-\ncoder training approach to achieve generalizable\nretrieval models.",
+      "source": "beir.pdf",
+      "page": 3,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "The training process includes a pre-training stage\non a web-mined corpus and a ﬁne-tuning stage on\nsearch datasets. The web-mined corpus provides a\nlarge amount of semi-structured data pairs (such as\nquestion-answer pairs and conversations), which\ncan provide rich semantic relevance information. It\nis easy to collect but it is often not well annotated,\nif at all. The search datasets are often annotated by\nhumans, and the queries and documents are also\nauthored by humans. These datasets are of high",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "authored by humans. These datasets are of high\nquality but costly to collect.\nIn this work, for dual encoder pre-training, we\ninitialize the dual encoders from the T5 models\nand train on question-answer pairs collected from\nthe Web. Recently, Sentence-T5 (Ni et al., 2021)\nexplored different ways to extract strong text em-\nbeddings and achieved remarkable performance\non SentEval and Sentence Textual Similarity tasks.\nWe follow that setting to encode queries and pas-",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "We follow that setting to encode queries and pas-\nsages via mean pooling from the T5 encoders and\nfocus on the dense retrieval tasks.\nFor ﬁne-tuning, our aim is to adapt the model to\nretrieval using a high quality search corpus so the\nmodel can learn to better match generic queries to\ndocuments. In this paper, we consider two datasets\nfor ﬁne-tuning: MS Marco (Nguyen et al., 2016)\nand Natural Questions (Kwiatkowski et al., 2019).\n4\nExperimental setup\n4.1\nTraining Data\nCommunity QA.",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "4.1\nTraining Data\nCommunity QA.\nIn order to leverage most of\nthe power from the large scale models, we col-\nlect input-response pairs and question-answer pairs\nfrom online forums and QA websites including\nReddit, Stack-Overﬂow, etc. This results in 2 bil-\nlion question-answer pairs that we use to pre-train\nthe dual encoder.\nMS\nMarco.\nWe\nconsider\nthe\nMS\nMarco\ndataset (Nguyen et al., 2016), which includes 532K\nquery and document pairs, as search data for ﬁne-\ntuning. The dataset is sampled from Bing search",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "tuning. The dataset is sampled from Bing search\nlogs, which covers a broad range of domains\nand concepts. Most of the neural models com-\npared in (Thakur et al., 2021) are trained on MS\nMarco, including DeepCT (Dai and Callan, 2020),\nDocT5Query (Nogueira, 2019), ANCE (Xiong\net al., 2020) and ColBERT (Khattab and Zaharia,\n2020). Some of these models have shown great\ngeneralization with comparable or even better per-\nformance relative to BM25.\nGTR Models\nBase\nLarge\nXL\nXXL\n# of params\n110M\n335M\n1.24B\n4.8B",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "Large\nXL\nXXL\n# of params\n110M\n335M\n1.24B\n4.8B\nTable 1: Number of parameters in the GTR models.\nModels\nDim. size\nColBERT\n128\nDPR, ANCE, TAS-B, GenQ, GTR\n768\nBM25, DocT5Query\n-\nTable 2: Dimension size of different models. Most dual\nencoder models set the embedding dimension size to\n768.\nNatural Questions.\nIn the ﬁne-tuning stage,\nwe also consider the Natural Questions dataset\n(Kwiatkowski et al., 2019) , which has been widely\nused in the dense retrieval literature (Karpukhin",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "used in the dense retrieval literature (Karpukhin\net al., 2020; Xiong et al., 2020). It consists of 130k\nquery and passage pairs which are also human-\nannotated.\n4.2\nConﬁgurations\nWe implement GTR models in JAX4 and train them\non Cloud TPU-V8. We consider different sizes of\nthe T5 transformer (Vaswani et al., 2017) architec-\nture including Base, Large, XL and XXL. Their\nnumber of parameters are listed in table 1.\nNote that we only use the encoder portion of the",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "Note that we only use the encoder portion of the\nT5 models and thus the number of parameters are\nless than half of the full model size. We use the off-\nthe-shelf checkpoints as the initial parameters and\nuse the same sentencepiece vocabulary model.5\nDuring pre-training and ﬁne-tuning, we set the\nbatch size to 2048 and use a softmax temperature\nτ of 0.01. We use Adafactor optimizer (Shazeer\nand Stern, 2018) and set the initial learning rate to\n1e-3 with a linear decay. We train the model for",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "1e-3 with a linear decay. We train the model for\n800K steps and 20K steps for the pre-training and\nﬁne-tuning stages, respectively.\nFor ﬁne-tuning, we use the hard negatives re-\nleased by RocketQA (Qu et al., 2021) when ﬁne-\ntuning with MS Marco data and the hard negatives\nrelease by (Lu et al., 2021) for Natural Questions,\nwhich were proven to lead to better retriever perfor-\nmance. By default, we use the complete MS Marco\ndataset and the NQ dataset for ﬁne-tuning.",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "dataset and the NQ dataset for ﬁne-tuning.\nWhen evaluating on the BEIR benchmark, we\nuse sequences of 64 tokens for the questions and\n512 for the documents in all datasets except Trec-\n4https://github.com/google/jax\n5https://github.com/google-research/\ntext-to-text-transfer-transformer",
+      "source": "beir.pdf",
+      "page": 4,
+      "char_count": 286,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "NDCG@10 / Model\nLexical / Sparse\nDense\nOurs\nBM25\ndocT5query\nDPR\nANCE\nTAS-B\nGenQ\nColBERT\nGTR-Base\nGTR-Large\nGTR-XL\nGTR-XXL\nMS Marco\n0.228\n0.338\n0.177\n0.388\n0.408\n0.408\n0.401\n0.420\n0.430\n0.439\n0.442\nTrec-Covid\n0.656\n0.713\n0.332\n0.654\n0.481\n0.619\n0.677\n0.539\n0.557\n0.584\n0.501\nBioASQ\n0.465\n0.431\n0.127\n0.306\n0.383\n0.398\n0.474\n0.271\n0.320\n0.317\n0.324\nNFCorpus\n0.325\n0.328\n0.189\n0.237\n0.319\n0.319\n0.305\n0.308\n0.329\n0.343\n0.342\nNQ\n0.329\n0.399\n0.474\n0.446\n0.463\n0.358\n0.524\n0.495\n0.547\n0.559\n0.568\nHotpotQA\n0.603\n0.58",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "0.524\n0.495\n0.547\n0.559\n0.568\nHotpotQA\n0.603\n0.58\n0.391\n0.456\n0.584\n0.534\n0.593\n0.535\n0.579\n0.591\n0.599\nFiQA-2018\n0.236\n0.291\n0.112\n0.295\n0.300\n0.308\n0.317\n0.349\n0.424\n0.444\n0.467\nSignal-1M\n0.330\n0.307\n0.155\n0.249\n0.289\n0.281\n0.274\n0.261\n0.265\n0.268\n0.273\nTrec-News\n0.398\n0.42\n0.161\n0.382\n0.377\n0.396\n0.393\n0.337\n0.343\n0.350\n0.346\nRobust04\n0.408\n0.437\n0.252\n0.392\n0.427\n0.362\n0.391\n0.437\n0.470\n0.479\n0.506\nArguAna\n0.315\n0.349\n0.175\n0.415\n0.429\n0.493\n0.233\n0.511\n0.525\n0.531\n0.540\nTouché-2020\n0.367\n0.347\n0.131",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "0.525\n0.531\n0.540\nTouché-2020\n0.367\n0.347\n0.131\n0.240\n0.162\n0.182\n0.202\n0.205\n0.219\n0.230\n0.256\nQuora\n0.789\n0.802\n0.248\n0.852\n0.835\n0.830\n0.854\n0.881\n0.890\n0.890\n0.892\nDBPedia-entity\n0.313\n0.331\n0.263\n0.281\n0.384\n0.328\n0.392\n0.347\n0.391\n0.396\n0.408\nSCIDOCS\n0.158\n0.162\n0.077\n0.122\n0.149\n0.143\n0.145\n0.149\n0.158\n0.159\n0.161\nFever\n0.753\n0.714\n0.562\n0.669\n0.700\n0.669\n0.771\n0.660\n0.712\n0.717\n0.740\nClimate-Fever\n0.213\n0.201\n0.148\n0.198\n0.228\n0.175\n0.184\n0.241\n0.262\n0.270\n0.267\nSciFact\n0.665\n0.675\n0.318\n0.507",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "0.262\n0.270\n0.267\nSciFact\n0.665\n0.675\n0.318\n0.507\n0.643\n0.644\n0.671\n0.600\n0.639\n0.635\n0.662\nCQADupStack\n0.299\n0.325\n0.153\n0.296\n0.314\n0.347\n0.350\n0.357\n0.384\n0.388\n0.399\nAvg\n0.413\n0.429\n0.234\n0.389\n0.414\n0.410\n0.429\n0.416\n0.444\n0.452\n0.457\nAvg w/o MS Marco\n0.423\n0.434\n0.237\n0.389\n0.415\n0.410\n0.431\n0.416\n0.445\n0.453\n0.458\nTable 3: NDCG@10 on the BEIR benchmark. The best result on a given dataset is marked in bold. GTR models",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "are pre-trained on CommunityQA dataset and the complete MS Marco dataset. GTR models achieve better NDCG\nwhen increasing size from Base to XXL, outperforming the previous best sparse model DocT5Query and dense\nretrieval model TAS-B.\nNews, Robust-04 and ArguAna. In particular, we\nset the document length to 768 for Trec-News and\nRobust-04 while setting the question length to 512\nfor ArguAna, in accordance to the average query\nand document lengths in these datasets.\n4.3\nModels for comparison",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "4.3\nModels for comparison\nWe consider various baselines, including sparse\nretrieval models: BM25, DocT5Query, and dense\nretrieval models: DPR, ANCE, TAS-B, and GenQ\n(Thakur et al., 2021).\nWe conduct experiments on four different sizes\nof our GTR models (GTR-Base, GTR-Large, GTR-\nXL, and GTR-XXL). We consider three different\nsettings for GTR to investigate the scaling up effect\nfor different training stages:\n• GTR. This is the full GTR model that con-\nducts both pre-training and ﬁne-tuning.",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "ducts both pre-training and ﬁne-tuning.\n• GTR-FT. This is a ﬁne-tune only version of\nGTR where the T5 dual encoders on the MS\nMarco dataset.\n• GTR-PT. This is a pre-training only version\nof GTR where the T5 dual encoders is only\npre-trained on the CommunityQA dataset.\nWe evaluate baseline and our models on the\nBEIR generalization task (Thakur et al., 2021) as\ndiscussed in section 2.2,. We consider two main\nretrieval metrics: NDCG@10 and Recall@100 fol-\nlowing BEIR (Thakur et al., 2021). Due to space",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "lowing BEIR (Thakur et al., 2021). Due to space\nlimitations, we report NDCG@10 in the main sec-\ntion of the paper and include Recall@100 results\nin appendix A.\n5\nEvaluation Results\nWe present three groups of experiments to study the\na) in-domain performance of the GTR models on\nMS Marco, b) their out-of-domain generalization\nperformance on BEIR, and c) their data efﬁciency.\n5.1\nResults on MS Marco\nWe ﬁrst analyze in-domain performance based on\nthe evaluation results on MS Marco. As show in",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "the evaluation results on MS Marco. As show in\ntable 3, with scaling up, the models achieve consis-\ntent improvement on NDCG@10. We observe sim-\nilar improvements on other evaluation metrics in-\ncluding MRR@10 and Recall@1000 and reported\nthe numbers in table 7 of appendix A. This shows\nthat increasing model capacity leads to better in-\ndomain performance.\n5.2\nResults on BEIR generalization tasks\nThe next set of experiments investigates the ef-\nfect of increasing model capacity on out-of-domain",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "(OOD) performance.\nAs shown in table 3, we observe a clear gain on\nout-of-domain performance in terms of NDCG@10\nwhen the model size increases. The GTR-Large",
+      "source": "beir.pdf",
+      "page": 5,
+      "char_count": 157,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "0.420.430.440.44\n0.23\nMS MARCO\n0.540.56\n0.58\n0.5\n0.66\nTrec-Covid\n0.27\n0.320.320.32\n0.46\nBioASQ\n0.31\n0.33\n0.340.34\n0.32\nNFCorpus\n0.5\n0.550.560.57\n0.33\nNQ\n0.54\n0.580.590.6 0.6\nHotpotQA\n0.35\n0.420.44\n0.47\n0.24\nFiQA-2018\n0.260.260.270.27\n0.33\nSignal-1M\n0.340.340.350.35\n0.4\nTrec-News\n0.44\n0.470.48\n0.51\n0.41\nRobust04\n0.510.520.530.54\n0.32\nArguAna\n0.2 0.220.23\n0.26\n0.37\nTouché-2020\n0.880.890.890.89\n0.79\nQuora\n0.35\n0.390.4 0.41\n0.31\nDBPedia-entity\n0.15\n0.160.160.160.16\nSCIDOCS\nBase\nLarge\nXL\nXXL\nBM25\n0.66\n0.710.72",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "SCIDOCS\nBase\nLarge\nXL\nXXL\nBM25\n0.66\n0.710.72\n0.740.75\nFever\nBase\nLarge\nXL\nXXL\nBM25\n0.24\n0.260.270.27\n0.21\nClimate-Fever\nBase\nLarge\nXL\nXXL\nBM25\n0.6\n0.640.64\n0.660.66\nSciFact\nBase\nLarge\nXL\nXXL\nBM25\n0.36\n0.380.390.4\n0.3\nCQADupStack\nBase\nLarge\nXL\nXXL\nBM25\n0.42\n0.440.450.46\n0.41\nAvg\nFigure 4: Comparison with BM25 on NDCG@10. The\nGTR-Base model outperforms BM25 on 9 datasets and\nthe larger GTR models continue to improve on these 9\ntasks. The GTR-XXL model catches up or surpasses",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "tasks. The GTR-XXL model catches up or surpasses\nBM25 on the other 5 datasets and only under-performs\non 5 of the remaining tasks.\nmodel already outperforms the previous best dense\nretrieval model TAS-B as well as the best sparse\nmodel DocT5Query.\nScaling up to GTR-XXL\nleads to another jump in retrieval performance.\nSimilar improvements are found on Recall@100\nas shown in the Appendix’s table 8. On average,\nthe scaling up process demonstrates an encourag-\ning ascending trend that eventually outperforms all",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "baseline methods on all evaluation metrics. This\nconﬁrms that scaling up is a valid path towards\ngeneralizability.\nPreviously, dual encoders failed to match the\nperformance of BM25 for tasks that require better\nlexical matching capabilities. Thus, we wanted to\ninvestigate what kind of tasks can get improved\nby scaling up the model size. Figure 4 presents a\ndetailed comparison of all sizes of GTR models\nagainst the BM25 baseline.\nFor tasks like NQ where dual encoders have been",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "For tasks like NQ where dual encoders have been\npreviously shown to be more effective than BM25,\nincreasing the model size continues to advance the\nperformance of dual encoders. This suggests scal-\ning up can further boost the head start of dense\nmodels over sparse models on these datasets.\nFor tasks like BioASQ and NFCorpus, where\ndual encoders previously struggled to match the\nperformance of BM25 for inherent reasons, we dis-\ncovered that scaling up consistently improves the",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "covered that scaling up consistently improves the\nretrieval performance. In particular, for NFCor-\npus, our Base model under-performs BM25 but the\nGTR-FT\nGTR\nRatio of data\nLarge\nXL\nLarge\nXL\nXXL\nNDCG@10 on MS Marco\n10%\n0.402\n0.397\n0.428\n0.426\n-\n100%\n0.415\n0.418\n0.430\n0.439\n0.430\nZero-shot average NDCG@10 w/o MS Marco\n10%\n0.413\n0.418\n0.452\n0.462\n0.465\n100%\n0.412\n0.433\n0.445\n0.453\n0.458\nTable 4: Comparisons of NDCG@10 for GTR models\ntrained with different amount of ﬁne-tuning data. With",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "only 10% of the MS Marco data, both GTR-FT and\nGTR large and XL models achieve slightly worse in-\ndomain performance; meanwhile they obtain compara-\nble or even superior out-of-domain performance than\nusing the complete MS Marco data.\nXL model outperforms BM25 by 5.5% (0.343 vs.\n0.325). This exciting ﬁnding veriﬁes our assump-\ntion that scaling up can further exploit the powerful\nsemantic matching capabilities of the dual encoder\nmodels and enable them to ultimately outperform\nBM25.\n5.3",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "BM25.\n5.3\nData efﬁciency for large retrievers\nTo better understand the data efﬁciency for large\ndual encoders, we trained models using different\nportions of the MS Marco dataset during ﬁne-\ntuning. In particular, we sampled a subset of the\ntraining data by keeping only 10% of the training\nqueries as well as their relevant (positive) passages\nand irrelevant (hard negative) passages.\nAs shown in table 4, using 10% of training data\nreduces the in-domain performance of the GTR\nmodels on MS Marco.",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "models on MS Marco.\nFor the GTR-FT (ﬁne-\ntuning only) models, using 10% of the data leads\nto a mixed result of out-of-domain performance.\nOn the other hand, for full GTR models, using\n10% of the MS Marco dataset is sufﬁcient for ﬁne-\ntuning. In particular, the GTR-Large, XL and XXL\nmodels achieve comparable or even better OOD\nperformance than ﬁne-tuning on the complete MS\nMarco dataset. This might suggest that GTR mod-\nels have the beneﬁt of data efﬁciency and could use",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "less training data for domain adaptation.\n6\nAblation Study and Analysis\nIn this section we present ablations and analysis to\nfurther understand the effects of scaling up, the im-\npact of ﬁne-tuning and pre-training, and the trends\nof the GTR model on different experimental condi-\ntions.",
+      "source": "beir.pdf",
+      "page": 6,
+      "char_count": 287,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "GTR-FT\nGTR-PT\nGTR\nFine-tuning\n\u0013\n\u0017\n\u0013\nNDCG@10 on MS Marco\nBase\n0.400\n0.258\n0.420\nLarge\n0.415\n0.262\n0.430\nXL\n0.418\n0.259\n0.439\nXXL\n0.422\n0.252\n0.442\nZero-shot average NDCG@10 w/o MS Marco\nBase\n0.387\n0.295\n0.416\nLarge\n0.412\n0.315\n0.445\nXL\n0.433\n0.315\n0.453\nXXL\n0.430\n0.332\n0.458\nTable 5:\nComparisons (NDCG@10) of the models\ntrained with and without pre-training and ﬁne-tuning.\nNotably, the GTR-FT XL model already achieves an\naverage zero-shot NDCG@10 of 0.433, which outper-",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "average zero-shot NDCG@10 of 0.433, which outper-\nforms the previous best dual encoder model TAS-B\n(NDCG@10=0.415).\n6.1\nEffect of scaling up for different training\nstages\nThe ﬁrst ablation study aims to investigate how\nscaling up effects dual encoder pre-training and\nﬁne-tuning. Results are listed in table 5.\nFor ﬁne-tuning only models, scaling up beneﬁts\nboth in-domain and out-of-domain performance.\nFor pre-training only models, the improvement on\nin-domain performance is not obvious; meanwhile",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "in-domain performance is not obvious; meanwhile\nfor out-of-domain tasks, scaling up also improves\nthe generalization. Finally with both pre-training\nand ﬁne-tuning, GTR models consistently improve\nover GTR-FT models of all sizes. This shows the\npower of combining scaling up and a generic pre-\ntraining stage.\n6.2\nImportance of the ﬁne-tuning dataset\nIn table 5, we compare GTR and GTR-PT on the\nBEIR benchmark to understand the importance of\nﬁne-tuning on MS Marco. The table shows that",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "ﬁne-tuning on MS Marco. The table shows that\nthere is a clear gap between GTR models before\nand after ﬁne-tuning. The result shows the neces-\nsity of leveraging a high quality dataset (e.g. search\ndata) to ﬁne-tune the dual encoders.\nIn table 6, we compare ﬁne-tuning GTR on NQ\ninstead of MS Marco. Compared to MS Marco,\nNQ only covers Wikipedia documents and is much\nsmaller in size, which allows us to investigate the\nperformance of GTR when ﬁne-tuned on a less",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "performance of GTR when ﬁne-tuned on a less\ngeneralizable dataset. In addition, ﬁne-tuning on\nNQ can give us a fair comparison with DPR.\nAs shown in table 6, the GTR-base model ﬁne-\nModel\nFine-tuning dataset\nZero-shot\naver-\nage NDCG@10\nDPR\nNQ\n0.237\nGTR-Base\nNQ\n0.360\nGTR-Large\nNQ\n0.379\nGTR-XL\nNQ\n0.407\nGTR-Large\nMS Marco\n0.445\nGTR-XL\nMS Marco\n0.453\nTable 6: Comparisons of GTR models ﬁne-tuned on\nMS Marco and NQ. We report the zero-shot average\nNDCG@10. Scaling up improves model performance",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "NDCG@10. Scaling up improves model performance\nboth on NQ and MS Marco.\ntuned on NQ outperforms the original DPR model,\nwhich uses a BERT-Base model as the encoder\nbackbone. This demonstrates the effectiveness of\nour pre-training on the Web dataset as well as the\nhard negatives introduced from Lu et al. (2021)\nfor NQ. Fine-tuning on NQ leads to inferior per-\nformance compared to ﬁne-tuning on MS Marco,\nwhich is consistent with prior work (Thakur et al.,\n2021). However, importantly, scaling up GTR size",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "2021). However, importantly, scaling up GTR size\nimproves zero-shot performance on BEIR when\nﬁne-tuning on NQ. This shows that the beneﬁt of\nscaling up holds for different ﬁne-tuning datasets.\nFurthermore, when scaling from Large to XL, we\nobserve a larger gain when ﬁne-tuning with NQ\nthan with MS Marco, indicating that scaling up\nhelps more when using weaker ﬁne-tuning data.\n6.3\nDocument length vs model capacity\nPreviously, BEIR has shown that models trained",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "Previously, BEIR has shown that models trained\nwith cosine similarity prefer short documents while\nthose trained with dot-product prefer long docu-\nments (Thakur et al., 2021). We investigate whether\nscaling up affect this observation. Speciﬁcally, we\ncompute the median lengths (in words) of the top-\n10 retrieved documents for all queries. Results are\nshown in ﬁg. 5.\nThough all GTR models are trained using co-\nsine similarity, we found that scaling up the model",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "size has inﬂuence over the lengths of retrieved\ndocuments. We observe an increasing trend of\ndocument length for DB-Pedia, Fever, HotpotQA,\nSignal-1M, Trec-News, and Web-Touche2020 with\nscaling up. In particular, for Web-Touche2020, the\nlengths of the retrieved documents grow drastically\nas the models scale up: The largest GTR-XXL\nretrieves documents that are on average twice as\nlong compared with the smallest GTR-Base. This\nplays in our favor since Thakur et al. (2021) show",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "that the majority of relevant documents in Web-",
+      "source": "beir.pdf",
+      "page": 7,
+      "char_count": 47,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "173 176 173 172\nArguAna\n176 179\n173\n182\nBioASQ\n206\n228\n244\n234\nClimate-Fever\n57\n60\n62\n62\nDBPedia-entity\n88\n97\n104 105\nFever\n136\n156\n151 154\nFiQA-2018\n53\n56\n61\n63\nHotpotQA\n49\n50\n50\n50\nMS Marco\n236\n243 245 243\nNFCorpus\n75\n78\n80\n81\nNQ\n8\n9\n9\n9\nQuora\n410\n453\n525\n490\nRobust04\n166\n170 169 168\nSCIDOCS\n211\n216\n221 219\nSciFact\n10\n10\n10\n10\nSignal-1M\nBase\nLarge\nXL\nXXL\n15\n10\n12\n9\nTrec-Covid\nBase\nLarge\nXL\nXXL\n678\n707 700 708\nTrec-News\nBase\nLarge\nXL\nXXL\n32\n32\n41\n62\nTouché-2020\nBase\nLarge\nXL\nXXL\n111\n116 117 116\nCQADupStack",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "Base\nLarge\nXL\nXXL\n111\n116 117 116\nCQADupStack\nFigure 5: Median lengths (in words) of top-10 retrieved\ndocuments for all queries.\nTouche2020 are longer.\nOn the other hand, the only exception we ob-\nserve is the Trec-Covid dataset, where GTR-XXL\nmodel retrieves much shorter documents than those\nretrieved by the smaller size counterparts. This may\nexplain the inferior performance of GTR-XXL on\nTrec-Covid shown in table 3 and table 8. We leave\nit as future work to explore the effects of using the",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "dot-product as similarity function for large dual\nencoders.\n7\nRelated Work\nNeural information retrieval.\nDocument re-\ntrieval is an important task in the NLP and informa-\ntion retrieval (IR) communities. The goal is to ﬁnd\nthe relevant document from a large corpus given a\nquery. Traditionally, lexical based approaches try-\ning to match the query and document based on term\noverlap, such as TF-IDF and BM25 (Robertson\nand Zaragoza, 2009), have achieved great success",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "and Zaragoza, 2009), have achieved great success\nin this task. Recently, neural based approaches,\nwhich go beyond the simple term matching, are be-\ning quickly adopted by the community and achieve\nstate-of-the-art performance on multiple retrieval\ntasks, such as passage retrieval (Karpukhin et al.,\n2020), question answering (Ahmad et al., 2019),\nconversational question answering (Qu et al., 2020)\nand bitext retrieval (Feng et al., 2020).\nDual encoders for neural retrieval.\nDual en-",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "Dual encoders for neural retrieval.\nDual en-\ncoders have demonstrated to be one type of neural\nretrievers that can achieve great performance com-\npared to traditional sparse models such as BM25\nfor a wide range of retrieval tasks (Karpukhin et al.,\n2020; Gillick et al., 2018). One key aspect to their\nsuccess is the adoption of pre-trained language\nmodels, which enables the dual encoders to have\nbackbone contextual embeddings to initialize from.\nOther techniques such as negative mining (Xiong",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "Other techniques such as negative mining (Xiong\net al., 2020; Lu et al., 2021; Sachan et al., 2021)\nand large training batch sizes (Qu et al., 2021) have\nalso shown great effectiveness. However, few of\nthe previous works have discussed the effect of the\nbackbone model’s capacity.\nZero-shot neural retrieval.\nRecent works have\nshown great improvement under the zero-shot set-\nting for dual encoders by leveraging distillation\nand synthetic data generation (Thakur et al., 2021;",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "Hofstätter et al., 2021; Ma et al., 2020). Both of\nthese techniques, and scaling up backbone mod-\nels, are effective ways to close the gap between\ndual encoders and the upper bound of the single-\nproduct approaches with ﬁxed-dimension embed-\ndings. On the other hand, multi-vector approaches\nintroduce more interactions between dense embed-\ndings, which could also beneﬁt from scaling up the\nbackbone multi-vector encoders. We hope that our\nobservation about scaling up model sizes for single",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "dot-product based methods can be combined with\nthese techniques and further push the frontier of\nneural retrieval models.\n8\nInference latency\nOne caveat for scaling up model size is the incre-\nment in the latency overhead. We investigate the\ninference speed in terms of microseconds (ms) for\nall GTR models with batch size 1 and input length\n128. We found the latency increases from 17 ms,\n34 ms, 96 ms to 349 ms. The GTR-Base model\nhas close latency compared to TAS-B while the",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "has close latency compared to TAS-B while the\nlargest GTR-XXL model has a similar latency to\nthe re-ranking models (Thakur et al., 2021). With\nthe recent work towards making large models efﬁ-\ncient from angles such as sparsity, distillation and\nprompt-tuning, we hope the inference time for large\ndual encoders can be signiﬁcantly reduced in the\nfuture.\n9\nConclusion\nThis paper presents the Generalizable T5 Retriever\n(GTR), a scaled-up dual encoder model with a\nﬁxed-size bottleneck layer. We show that scal-",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "ﬁxed-size bottleneck layer. We show that scal-\ning up the model size brings signiﬁcant improve-\nment on retrieval performance across the board on\nthe BEIR zero-shot retrieval benchmark, especially",
+      "source": "beir.pdf",
+      "page": 8,
+      "char_count": 196,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "for out-of-domain generalization. The GTR-XXL\nmodel achieves state-of-the-art performance on the\nBEIR benchmark, outperforming many models that\nuse earlier interactions between queries and docu-\nments. This sheds light on the research direction\nto keep improving the single vector representation\nmodel through better backbone encoders. The ﬁnd-\nings here are also complementary with other recent\nworks that improve the dual encoder training, in-\ncluding distilling from a ranker / scorer model, us-",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "ing a better contrasting pre-training objective and\nscaling up the encoders for multi-vector retrieval\nmodels.\nAcknowledgments\nWe thank Chris Tar and Don Metzler for feedback\nand suggestions.\nReferences\nAmin Ahmad, Noah Constant, Yinfei Yang, and Daniel\nCer. 2019.\nReQA: An evaluation for end-to-end\nanswer retrieval models. In Workshop on Machine\nReading for Question Answering.\nAnonymous. 2022. Contrastive pre-training for zero-\nshot information retrieval. In Submitted to The Tenth",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "International Conference on Learning Representa-\ntions. Under review.\nZhuyun Dai and Jamie Callan. 2020. Context-aware\nterm weighting for ﬁrst stage passage retrieval. In\nProceedings of the 43rd International ACM SIGIR\nConference on Research and Development in Infor-\nmation Retrieval, SIGIR ’20, page 1533–1536, New\nYork, NY, USA. Association for Computing Machin-\nery.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2019. Bert: Pre-training of deep",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "bidirectional transformers for language understand-\ning. In NAACL.\nFangxiaoyu Feng, Yinfei Yang, Daniel Cer, Naveen\nArivazhagan, and Wei Wang. 2020.\nLanguage-\nagnostic bert sentence embedding.\nD. Gillick, A. Presta, and Gaurav Singh Tomar. 2018.\nEnd-to-end retrieval in continuous space.\nArXiv,\nabs/1811.08008.\nMatthew Henderson, Rami Al-Rfou, B. Strope, Yun-\nHsuan Sung, László Lukács, Ruiqi Guo, Sanjiv Ku-\nmar, Balint Miklos, and R. Kurzweil. 2017.\nEfﬁ-\ncient natural language response suggestion for smart",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "reply. ArXiv, abs/1705.00652.\nSebastian Hofstätter, Sheng-Chieh Lin, Jheng-Hong\nYang, Jimmy Lin, and Allan Hanbury. 2021.\nEf-\nﬁciently teaching an effective dense retriever with\nbalanced topic aware sampling.\narXiv preprint\narXiv:2104.06967.\nJeff Johnson, Matthijs Douze, and Hervé Jégou. 2021.\nBillion-scale similarity search with gpus.\nIEEE\nTransactions on Big Data, 7(3):535–547.\nVladimir Karpukhin, Barlas Oguz, Sewon Min, Patrick\nLewis, Ledell Wu, Sergey Edunov, Danqi Chen, and\nWen-tau Yih. 2020.",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "Wen-tau Yih. 2020.\nDense passage retrieval for\nopen-domain question answering. In Proceedings of\nthe 2020 Conference on Empirical Methods in Nat-\nural Language Processing (EMNLP), pages 6769–\n6781, Online. Association for Computational Lin-\nguistics.\nOmar Khattab and Matei Zaharia. 2020. Colbert: Ef-\nﬁcient and effective passage search via contextual-\nized late interaction over bert.\nIn Proceedings of\nthe 43rd International ACM SIGIR conference on\nresearch and development in Information Retrieval,",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "pages 39–48.\nTom Kwiatkowski, Jennimaria Palomaki, Olivia Red-\nﬁeld, Michael Collins, Ankur Parikh, Chris Alberti,\nDanielle Epstein, Illia Polosukhin, Jacob Devlin,\nKenton Lee, et al. 2019. Natural questions: a bench-\nmark for question answering research. Transactions\nof the Association for Computational Linguistics,\n7:453–466.\nJing Lu, Gustavo Hernández Ábrego, Ji Ma, Jianmo Ni,\nand Yinfei Yang. 2021. Multi-stage training with im-\nproved negative contrast for neural passage retrieval.",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "In Proceedings of the 2021 Conference on Empiri-\ncal Methods in Natural Language Processing, pages\n6091–6103.\nYi Luan, Jacob Eisenstein, Kristina Toutanova, and\nMichael Collins. 2020.\nSparse, dense, and at-\ntentional representations for text retrieval.\narXiv\npreprint arXiv:2005.00181.\nJi Ma, Ivan Korotkov, Yinfei Yang, Keith Hall,\nand Ryan McDonald. 2020.\nZero-shot neural re-\ntrieval via domain-targeted synthetic query genera-\ntion. arXiv e-prints, pages arXiv–2004.",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "tion. arXiv e-prints, pages arXiv–2004.\nJi Ma, Ivan Korotkov, Yinfei Yang, Keith Hall, and\nRyan McDonald. 2021. Zero-shot neural passage re-\ntrieval via domain-targeted synthetic question gener-\nation. In Proceedings of the 16th Conference of the\nEuropean Chapter of the Association for Computa-\ntional Linguistics: Main Volume, pages 1075–1088,\nOnline. Association for Computational Linguistics.\nTri Nguyen, Mir Rosenberg, Xia Song, Jianfeng Gao,\nSaurabh Tiwary, Rangan Majumder, and Li Deng.",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "Saurabh Tiwary, Rangan Majumder, and Li Deng.\n2016. Ms marco: A human generated machine read-\ning comprehension dataset.\nJianmo Ni, Gustavo Hernández Ábrego, Noah Con-\nstant, Ji Ma, Keith B Hall, Daniel Cer, and Yin-\nfei Yang. 2021. Sentence-t5: Scalable sentence en-\ncoders from pre-trained text-to-text models. arXiv\npreprint arXiv:2108.08877.",
+      "source": "beir.pdf",
+      "page": 9,
+      "char_count": 345,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Rodrigo Nogueira. 2019. From doc2query to docttttt-\nquery.\nChen Qu, Liu Yang, Cen Chen, Minghui Qiu, W. Bruce\nCroft, and Mohit Iyyer. 2020. Open-retrieval conver-\nsational question answering. In Proceedings of the\n43rd International ACM SIGIR Conference on Re-\nsearch and Development in Information Retrieval.\nYingqi Qu, Yuchen Ding, Jing Liu, Kai Liu, Ruiyang\nRen, Wayne Xin Zhao, Daxiang Dong, Hua Wu, and\nHaifeng Wang. 2021. Rocketqa: An optimized train-\ning approach to dense passage retrieval for open-",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "ing approach to dense passage retrieval for open-\ndomain question answering. In Proceedings of the\n2021 Conference of the North American Chapter of\nthe Association for Computational Linguistics: Hu-\nman Language Technologies, pages 5835–5847.\nColin Raffel, Noam M. Shazeer, Adam Roberts,\nKatherine Lee, Sharan Narang, Michael Matena,\nYanqi Zhou, W. Li, and Peter J. Liu. 2020. Explor-\ning the limits of transfer learning with a uniﬁed text-\nto-text transformer. JMLR, 21/140.",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "to-text transformer. JMLR, 21/140.\nStephen Robertson and Hugo Zaragoza. 2009.\nThe\nprobabilistic relevance framework: Bm25 and be-\nyond. Found. Trends Inf. Retr., 3(4):333–389.\nDevendra Sachan,\nMostofa Patwary,\nMohammad\nShoeybi, Neel Kant, Wei Ping, William L. Hamil-\nton, and Bryan Catanzaro. 2021. End-to-end train-\ning of neural retrievers for open-domain question\nanswering. In Proceedings of the 59th Annual Meet-\ning of the Association for Computational Linguistics",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "and the 11th International Joint Conference on Nat-\nural Language Processing (Volume 1: Long Papers),\npages 6648–6662, Online. Association for Computa-\ntional Linguistics.\nNoam Shazeer and Mitchell Stern. 2018. Adafactor:\nAdaptive learning rates with sublinear memory cost.\nIn International Conference on Machine Learning,\npages 4596–4604. PMLR.\nNandan Thakur, Nils Reimers, Andreas Rücklé, Ab-\nhishek Srivastava, and Iryna Gurevych. 2021. BEIR:\nA heterogeneous benchmark for zero-shot evalua-",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "A heterogeneous benchmark for zero-shot evalua-\ntion of information retrieval models. In Thirty-ﬁfth\nConference on Neural Information Processing Sys-\ntems Datasets and Benchmarks Track (Round 2).\nDan Vanderkam, Rob Schonberger, Henry Rowley, and\nSanjiv Kumar. 2013.\nNearest neighbor search in\ngoogle correlate. Technical report, Google.\nAshish Vaswani, Noam Shazeer, Niki Parmar, Jakob\nUszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz\nKaiser, and Illia Polosukhin. 2017. Attention is all",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "you need. In Advances in Neural Information Pro-\ncessing Systems, volume 30. Curran Associates, Inc.\nLee Xiong, Chenyan Xiong, Ye Li, Kwok-Fung Tang,\nJialin Liu, Paul Bennett, Junaid Ahmed, and Arnold\nOverwijk. 2020. Approximate nearest neighbor neg-\native contrastive learning for dense text retrieval.\narXiv preprint arXiv:2007.00808.\nLinting Xue, Aditya Barua, Noah Constant, Rami Al-\nRfou, Sharan Narang, Mihir Kale, Adam Roberts,\nand Colin Raffel. 2021. Byt5: Towards a token-free",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "future with pre-trained byte-to-byte models. arXiv\npreprint arXiv:2105.13626.\nLinting Xue, Noah Constant, Adam Roberts, Mi-\nhir Kale, Rami Al-Rfou, Aditya Siddhant, Aditya\nBarua, and Colin Raffel. 2020.\nmt5:\nA mas-\nsively multilingual pre-trained text-to-text trans-\nformer. arXiv preprint arXiv:2010.11934.\nYinfei Yang, Daniel Matthew Cer, Amin Ahmad,\nMandy Guo, Jax Law, Noah Constant, G. Ábrego,\nSteve Yuan, C. Tar, Yun-Hsuan Sung, B. Strope, and\nR. Kurzweil. 2020. Multilingual universal sentence",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "encoder for semantic retrieval. In ACL.",
+      "source": "beir.pdf",
+      "page": 10,
+      "char_count": 39,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "Model\nNDCG@10\nMRR@10\nRecall@1000\nANCE\n0.388\n0.330\n0.959\nTAS-Balanced\n0.408\n0.340\n0.975\nColBERT\n0.401\n0.360\n0.968\nRocketQA\n/\n0.370\n0.979\nGTR-Base\n0.420\n0.366\n0.983\nGTR-Large\n0.430\n0.379\n0.991\nGTR-XL\n0.439\n0.385\n0.989\nGTR-XXL\n0.442\n0.388\n0.990\nTable 7:\nComparisons of different models on MS\nMarco.\nScaling up can improve GTR models’ in-\ndomain performance.\nA\nMore results\nA.1\nComparisons on MS Marco\nTable 7 shows the comparisons of GTR models and\nthe baselines. Note that the best RocketQA model",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "the baselines. Note that the best RocketQA model\nused additional augmented data other than MS\nMarco to improve the model performance while\nall others do not. Our best GTR-XXL models out-\nperforms RocketQA on both MRR and recall.\nA.2\nComparison of different dual encoder\npre-training strategies\nIn a concurrent work (Anonymous, 2022), re-\nsearchers proposed to conduct contrastive learning\n(CL) pre-training for improving the generalizability\nof neural retrievers. The paired data for contrastive",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "training is constructed from C4 and Wiki dataset\nin an unsupervised way. In particular, they con-\nstruct pairs by randomly choosing two spans from\na single document and conduct word deletion or\nreplacement to each span. We compare the perfor-\nmance of our GTR models to their models to gain\ninsights into different pretraining strategies for dual\nencoders.\nAs shown in Figure 6, on over half of the\ndatasets, models with our pre-training approach\nunder-perform CL-Pretrain with the base size;",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "under-perform CL-Pretrain with the base size;\nwhile as the model size increases, GTR-Large\nand -XXL models show signiﬁcant gains over CL-\nPretrain.\nThe best GTR-XXL model achieves\n0.49 for NDCG@10 on average while CL-Pretrain\nachieves 0.46. This demonstrates that scaling up\ncan mitigate the disadvantage of the potentially\ninferior pre-training approach. Note that our pre-\ntraining is additive to CL-Pretrain and we can lever-\nage the pre-training on C4 and Wiki to further im-",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "prove the results. We leave this exploration as\nfuture work.\n0.66\n0.54\n0.56\n0.58\n0.5\nTrec-Covid\n0.32\n0.31\n0.33\n0.340.34\nNFCorpus\n0.33\n0.5\n0.550.560.57\nNQ\n0.6\n0.54\n0.58\n0.590.6\nHotpotQA\n0.24\n0.35\n0.420.44\n0.47\nFiQA-2018\n0.32\n0.510.520.530.54\nArguAna\n0.37\n0.2 0.220.23\n0.26\nTouché-2020\n0.79\n0.880.890.890.89\nQuora\n0.31\n0.35\n0.390.4\n0.41\nDBPedia-entity\n0.16\n0.15\n0.160.160.16\nSCIDOCS\nCL\nBase\nLarge\nXL\nXXL\n0.75\n0.66\n0.710.72\n0.74\nFever\nCL\nBase\nLarge\nXL\nXXL\n0.21\n0.24\n0.26\n0.270.27\nClimate-Fever\nCL\nBase\nLarge\nXL\nXXL",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "0.26\n0.270.27\nClimate-Fever\nCL\nBase\nLarge\nXL\nXXL\n0.66\n0.6\n0.640.64\n0.66\nSciFact\nCL\nBase\nLarge\nXL\nXXL\n0.3\n0.36\n0.380.390.4\nCQADupStack\nCL\nBase\nLarge\nXL\nXXL\n0.410.42\n0.440.450.46\nAvg\nFigure 6:\nComparison with Anonymous (2022) on\nNDCG@10.\n“CL” denotes Anonymous (2022) with\ncontrastive learning on C4 and Wiki while others de-\nnote our GTR models with different sizes. Note that\nthey only report results on 15 datasets of the BEIR\nbenchmark.\nA.3\nRecall on BEIR\nTable 8 presents the Recall@100 of GTR mod-",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "Table 8 presents the Recall@100 of GTR mod-\nels and the baselines. Similar to NDCG@10, we\nobserve that scaling up dual encoders lead to sig-\nniﬁcant gains on the BEIR benchmark in terms of\nrecall.",
+      "source": "beir.pdf",
+      "page": 11,
+      "char_count": 196,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "Recall@10 / Model\nLexical / Sparse\nDense\nOurs\nBM25\ndocT5query\nDPR\nANCE\nTAS-B\nGenQ\nColBERT\nGTR-Base\nGTR-Large\nGTR-XL\nGTR-XXL\nMS Marco\n0.658\n0.819\n0.552\n0.852\n0.884\n0.884\n0.865\n0.898\n0.908\n0.911\n0.916\nTrec-Covid\n0.498\n0.541\n0.212\n0.457\n0.387\n0.456\n0.464\n0.411\n0.434\n0.457\n0.407\nBioASQ\n0.714\n0.646\n0.256\n0.463\n0.579\n0.627\n0.645\n0.441\n0.490\n0.483\n0.483\nNFCorpus\n0.250\n0.253\n0.208\n0.232\n0.280\n0.280\n0.254\n0.275\n0.298\n0.318\n0.300\nNQ\n0.760\n0.832\n0.880\n0.836\n0.903\n0.862\n0.912\n0.893\n0.930\n0.936\n0.946\nHotpotQA\n0.740",
+      "source": "beir.pdf",
+      "page": 12,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "0.912\n0.893\n0.930\n0.936\n0.946\nHotpotQA\n0.740\n0.709\n0.591\n0.578\n0.728\n0.673\n0.748\n0.676\n0.725\n0.739\n0.752\nFiQA-2018\n0.539\n0.598\n0.342\n0.581\n0.593\n0.618\n0.603\n0.670\n0.742\n0.755\n0.780\nSignal-1M\n0.370\n0.351\n0.162\n0.239\n0.304\n0.281\n0.283\n0.263\n0.261\n0.268\n0.268\nTrec-News\n0.422\n0.439\n0.215\n0.398\n0.418\n0.412\n0.367\n0.475\n0.525\n0.512\n0.544\nRobust04\n0.375\n0.357\n0.211\n0.274\n0.331\n0.298\n0.31\n0.324\n0.365\n0.364\n0.372\nArguAna\n0.942\n0.972\n0.751\n0.937\n0.942\n0.978\n0.914\n0.974\n0.978\n0.980\n0.983\nTouché-2020\n0.538\n0.557\n0.301",
+      "source": "beir.pdf",
+      "page": 12,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "0.978\n0.980\n0.983\nTouché-2020\n0.538\n0.557\n0.301\n0.458\n0.431\n0.451\n0.439\n0.281\n0.282\n0.297\n0.301\nQuora\n0.973\n0.982\n0.470\n0.987\n0.986\n0.988\n0.989\n0.996\n0.996\n0.997\n0.997\nDBPedia-entity\n0.398\n0.365\n0.349\n0.319\n0.499\n0.431\n0.461\n0.418\n0.480\n0.480\n0.494\nSCIDOCS\n0.356\n0.360\n0.219\n0.269\n0.335\n0.332\n0.344\n0.340\n0.358\n0.358\n0.366\nFever\n0.931\n0.916\n0.840\n0.900\n0.937\n0.928\n0.934\n0.923\n0.941\n0.944\n0.947\nClimate-Fever\n0.436\n0.427\n0.390\n0.445\n0.534\n0.450\n0.444\n0.522\n0.552\n0.569\n0.556\nSciFact\n0.908\n0.914\n0.727\n0.816",
+      "source": "beir.pdf",
+      "page": 12,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "0.552\n0.569\n0.556\nSciFact\n0.908\n0.914\n0.727\n0.816\n0.891\n0.893\n0.878\n0.872\n0.899\n0.911\n0.900\nCQADupStack\n0.606\n0.638\n0.403\n0.579\n0.622\n0.654\n0.624\n0.681\n0.714\n0.729\n0.740\nAvg\n0.601\n0.615\n0.425\n0.559\n0.610\n0.605\n0.604\n0.596\n0.625\n0.632\n0.634\nAvg w/o MS Marco\n0.598\n0.603\n0.418\n0.543\n0.594\n0.590\n0.590\n0.580\n0.609\n0.616\n0.619\nTable 8: Recall@100 on the BEIR benchmark. The best result on a given dataset is marked in bold.",
+      "source": "beir.pdf",
+      "page": 12,
+      "char_count": 419,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

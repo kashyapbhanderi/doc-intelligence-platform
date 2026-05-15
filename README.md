@@ -31,8 +31,8 @@ An end-to-end AI system that:
 
 | Week | Topic | Status |
 |------|-------|--------|
-| Week 1 | Data Pipeline + OCR | ✅ Complete |
-| Week 2 | Embeddings + Vector DB | ⬜ In Progress |
+| Week 1 | Data Pipeline + OCR + Vision | ✅ Complete |
+| Week 2 | Embeddings + Vector DB | ⬜ Starting Monday |
 | Week 3 | Fine-tuning | ⬜ Upcoming |
 | Week 4 | Multi-Agent System | ⬜ Upcoming |
 | Week 5 | Document Editor Agent | ⬜ Upcoming |
@@ -63,3 +63,25 @@ pytest tests/ -v
 | Tests passing | 11/11 |
 | PDFs supported | Text + Scanned |
 | Chunk size | 512 tokens |
+
+## Results So Far
+
+### Week 1 Complete ✅
+
+| Metric | Value |
+|--------|-------|
+| PDFs downloaded | 52 |
+| PDFs processed | YOUR_NUMBER |
+| Total chunks created | YOUR_NUMBER |
+| Avg chunks per doc | YOUR_NUMBER |
+| Tests passing | 17/17 |
+| CI pipeline | ✅ Green |
+| OCR fallback | ✅ Working |
+| Vision LLM | ✅ GPT-4o |
+
+### Pipeline Flow
+```
+PDF → Smart Extractor → Chunker → Vision → Merger → JSON
+         ↓                                    ↓
+    (PyMuPDF or OCR)              (text + visual chunks)
+```

@@ -1,0 +1,1732 @@
+{
+  "source": "dit.pdf",
+  "full_path": "data\\raw\\dit.pdf",
+  "total_pages": 26,
+  "text_chunks": 215,
+  "vision_chunks": 0,
+  "total_chunks": 215,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Large Language Models are Better Reasoners with Self-Verification\nYixuan Weng1∗, Minjun Zhu1,2∗, Fei Xia1,2, Bin Li3,\nShizhu He1,2†, Shengping Liu4, Bin Sun3, Kang Liu1,2,5, Jun Zhao1,2\n1 The Laboratory of Cognition and Decision Intelligence for Complex Systems, IA, CAS\n2 School of Artificial Intelligence, University of Chinese Academy of Sciences\n3 College of Electrical and Information Engineering, Hunan University\n4Unisound, Beijing, China\n5Shanghai Artificial Intelligence Laboratory",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "5Shanghai Artificial Intelligence Laboratory\nwengsyx@gmail.com, {shizhu.he, kliu, jzhao}@nlpr.ia.ac.cn\nAbstract\nRecently, with the chain of thought (CoT)\nprompting, large language models (LLMs),\ne.g., GPT-3, have shown strong reasoning abil-\nity in several natural language processing tasks\nsuch as arithmetic, commonsense, and logical\nreasoning. However, LLMs with CoT require\nmulti-step prompting and multi-token predic-\ntion, which is highly sensitive to individual",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "tion, which is highly sensitive to individual\nmistakes and vulnerable to error accumulation.\nThe above issues make the LLMs need the abil-\nity to verify the answers. In fact, after inferring\nconclusions in some thinking decision tasks,\npeople often check them by re-verifying steps\nto avoid some mistakes. In this paper, we pro-\npose and prove that LLMs also have similar\nself-verification abilities. We take the conclu-\nsion obtained by CoT as one of the conditions",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "sion obtained by CoT as one of the conditions\nfor solving the original problem. By perform-\ning a backward verification of the answers that\nLLM deduced for itself, we can obtain inter-\npretable answer validation scores to select the\ncandidate answer with the highest score. Exper-\nimental results demonstrate that the proposed\nmethod can improve the reasoning performance\non various arithmetic, commonsense, and log-\nical reasoning datasets. Our code is publicly\navailable at: https://github.com/WENGSYX/",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "available at: https://github.com/WENGSYX/\nSelf-Verification.\n1\nIntroduction\nThe ability of reasoning in the process of thinking\nand decision-making is an essential aspect of hu-\nman intelligence. Recently, chain of thought (CoT)\nprompting (Wei et al., 2022) has been a good way to\nsolve the arithmetic, commonsense, and logical rea-\nsoning tasks with large language models (LLMs),\nwhich help the LLMs simulating the human think-\ning process when solving complex natural language",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "ing process when solving complex natural language\nprocessing (NLP) tasks. CoT guides LLMs to gen-\nerate a series of intermediate reasoning steps to\naddress complex problems rather than just predict\n∗: These authors contribute this work equally;\n†\n:\nCorresponding author.\na final answer. This approach has been shown the\nadvance performances on several challenging NLP\ntasks, even when using only a few or no training\nsamples (Madaan et al., 2022; Saparov and He,\n2022; Fu et al., 2022; Gu et al., 2023).",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "2022; Fu et al., 2022; Gu et al., 2023).\nAlthough CoT can enable LLMs to solve com-\nplex reasoning tasks, it is highly sensitive to indi-\nvidual mistakes and vulnerable to error accumula-\ntion (Shen et al., 2021). If a tiny mistake occurs,\nit can change the meaning deviations of the whole\nstatement (Xiao et al., 2022), leading to incorrect\nanswers (Cobbe et al., 2021). That is especially\nproblematic in using CoT for addressing multi-step\nprecise reasoning (such as mathematical calcula-",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "precise reasoning (such as mathematical calcula-\ntion). Due to the lack of the error correction mech-\nanism, it is difficult for the LLMs to obtain correct\nresults from the possible errors in multiple steps\nreasoning. Detecting and mitigating errors is essen-\ntial to improve reasoning capabilities.\nPrevious methods resolve the above issue by\ntraining another verifier to evaluate the correctness\nof the model’s output (Shen et al., 2021; Li et al.,\n2022). However, there are some drawbacks in these",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "2022). However, there are some drawbacks in these\nwork. On the one hand, training a verifier requires a\nlot of human annotations and additional fine-tuned\nmodels, which limits its widespread use in other\ntasks and domains. On the other hand, the verifier\nfine-tuned by a language model is not easily ex-\nplainable, making it difficult to assess the model’s\nreliability based on its output scores. Therefore, the\nchallenge of obtaining a better reasoner based\non the LLMs is to get a verifier that can avoid",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "on the LLMs is to get a verifier that can avoid\nmanual annotation and additional training, so\nthat it can be better extended and migrated to other\nfields and tasks.\nTo address this challenge and overcome the lim-\nitations of training verifiers, we propose utiliz-\ning LLMs as reasoners with self-verification for\nselecting better prediction results. In numerous\ndecision-making tasks, humans often perform self-\nverification of inferred conclusions to mitigate mis-\narXiv:2212.09561v5  [cs.AI]  19 Oct 2023",
+      "source": "dit.pdf",
+      "page": 1,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "Q:  Jackie has 10 apples. Adam has 8 apples. How many more apples does Jackie have than Adam?      A: 2\n����������:\n��������\n�1\n�2\n��\nJackie have 2 apples than Adam.\n(�1 ∧�2) ⊢ ��\n(�1 ∧��) ⊢ �2\n(�2 ∧��) ⊢ �1\n[Adam has 8 apples. Jackie have 2 apples than Adam.]    → [Jackie has 10 apples]\n[Jackie has 10 apples. Jackie have 2 apples than Adam.]  → [Adam has 8 apples.]\n������\nFigure 1: The answer of a question can be verified by masking and predicting the conditions of the original contexts.",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "To mimic the self-verification ability of human, we predict the accuracy of fC by predicting the original conditions\nf1 or f2 is right or not based on this conclusion.\ntakes (Poole and Mackworth, 2010). In this paper,\nwe propose and demonstrate that LLMs possess a\nsimilar self-verification ability, the better reasoning\nwith CoT is carried out in the following two steps,\nForward Reasoning and Backward Verification.\nSpecifically, in Forward Reasoning, LLM reason-",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "Specifically, in Forward Reasoning, LLM reason-\ners generate candidate answers using CoT, and the\nquestion and candidate answers form different con-\nclusions to be verified. And in Backward Verifica-\ntion, We mask the original condition and predict\nits result using another CoT. We rank candidate\nconclusions based on a verification score, which\nis calculated by assessing the consistency between\nthe predicted and original condition values. For\nexample, as shown in Figure 1, by taking f2 and",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "example, as shown in Figure 1, by taking f2 and\nfC as conditions to predict the value of condition\nattribute in ˆf1, the correctness of fC can be evalu-\nated by comparing the consistency of values of the\npredicted ˆf1 and the original f1 in verification.\nOur method employs LLMs for self-verification\nwith only a few prompts, eliminating the need for\nfine-tuning or gradient updating. This approach en-\nables automatic verification of multiple candidate\nanswers and corresponding conclusions, mitigat-",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "answers and corresponding conclusions, mitigat-\ning deviations from the correct thought chain in\nthe original CoT. Our verification score arises from\nevaluating each step during the backward verifica-\ntion phase, rather than from the direct output of a\nneural network model (Cobbe et al., 2021; Li et al.,\n2022), enhancing the explainability of prediction\noutcomes and solution processes (Li et al., 2021;\nYu et al., 2023; Zhu et al., 2023). We conducted ex-\nperiments on various open-source datasets for math-",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "ematical reasoning, common sense, and logical rea-\nsoning tasks, achieving results beyond the baseline\n(e.g., 60.8 →65.1 on GSM8K, 91.01 →93.40 on\nSingleEq). In addition, we also attempt to combine\nour method with some approaches to improving\nforward reasoning, such as self-consistency (Wang\net al., 2023b) and Least-to-Most (Zhou et al., 2023).\nThe experimental results show that our method\nalso improves upon these forward reasoning ap-\nproaches.\nOur contributions are summarized as follows:",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "Our contributions are summarized as follows:\n1. We propose and prove that large language\nmodels (LLMs) can self-verify their predic-\ntion results. The proposed method can pro-\nvide interpretable verification scores without\nthe need for train additional verifiers.\n2. We have conducted extensive of experiments\nwith multiple LLMs, and the experimental\nresults on multiple mathematical, common-\nsense, and logical reasoning datasets achieve\na significant improvement compared to the\nbaseline.",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "baseline.\n3. We introduced True-False Item Verification\nfor General Tasks in the backward verification\nstage and proposed Condition Mask Verifica-\ntion based on the characteristics of Arithmetic\nTasks. Our method can be applied to a wide\nrange of reasoning datasets, potentially paving\nthe way for self-validation to become a new\nparadigm following pre-training and prompt\nlearning, thus motivating further exploration\nof the capabilities of LLMs.\n2\nRelated Work\nLanguage Model Reasoning. It has been exten-",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "Language Model Reasoning. It has been exten-\nsively studied in order to evaluate the various rea-\nsoning abilities of language models (Arora et al.,\n2022; Madaan et al., 2022; Sun et al., 2022), in-\ncluding arithmetic reasoning (Koncel-Kedziorski\net al., 2015; Roy and Roth, 2016; Patel et al., 2021;\nCobbe et al., 2021), commonsense reasoning (Tal-\nmor et al., 2018; Bhagavatula et al., 2019; Geva",
+      "source": "dit.pdf",
+      "page": 2,
+      "char_count": 398,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "et al., 2021; Zhu et al., 2022b), and logical rea-\nsoning (Liu et al., 2020; Yu et al., 2020).\nTo\nsolve these reasoning tasks, researchers have uti-\nlized pre-trained language reasoning models (Asai\nand Hajishirzi, 2020; Deng et al., 2021; Xia et al.,\n2022) or fine-tuned general LLMs (Cobbe et al.,\n2021). Early work attempted to solve complex rea-\nsoning tasks using Seq2Seq models (Wang et al.,\n2018; Li et al., 2019). Later, specialized encoder-\ndecoder architectures were designed to improve",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "decoder architectures were designed to improve\nreasoning performance (Shen and Jin, 2020; Zhu\net al., 2022a). More recent work has suggested\nto adopt pre-training tasks to improve arithmetic\nreasoning ability (Yoran et al., 2021; Wang et al.,\n2022b). However, these methods require a signif-\nicant amount of human annotation. In this paper,\nwe proposed to obtain answers automatically and\nverify them in multiple reasoning tasks.\nIn-context Learning. Large language models",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "In-context Learning. Large language models\nsuch as GPT-3 exhibit impressive few-shot learn-\ning ability (Lu et al., 2022; Qiao et al., 2022), and\nclosely approximate the predictors computed by\ngradient descent (Akyürek et al., 2022).\nIt re-\nquires only filling a few exemplars into context\nas prompts and without the need for finetuning\non a dataset of training examples (Wang et al.,\n2022a; Weng et al., 2023a). However, this approach\nstruggles with tasks requiring complex reasoning",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "struggles with tasks requiring complex reasoning\n(Rae et al., 2021), which drives researchers to ex-\nplore other prompting strategies. CoT (Wei et al.,\n2022) is a chained reasoning approach that inserts\na multi-step reasoning path before generating the\nfinal answer. Wang et al. (2023c) proposed a self-\nconsistency decoding strategy to vote on the rea-\nsoning path, and Kojima et al. (2022) demonstrated\nthat LLMs could as zero-shot reasoners through\nthe prompt “Let’s think step-by-step”. These meth-",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "ods focus on constructing the CoT but ignore the\nhigh sensitivity of LLMs to individual mistakes in\ngenerating these chains, so some of these conclu-\nsions by CoT may be unreliable (Dhuliawala et al.,\n2023; Chu et al., 2023; Weng et al., 2023b). In this\npaper, we proved that LLMs can self-verify their\nconclusions.\nAnswer Verification. It is a common method for\nevaluating and reordering candidate answers with\na trained language understanding model. Kush-",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "a trained language understanding model. Kush-\nman et al. (2014) train a classifier to select the best\nanswer from candidate answers, while Roy and\nRoth (2016) train a global scoring model to guide\nthe search process for better answers. Shen et al.\n(2021) proposed the joint training of answer gener-\nation and rank with language model. Cobbe et al.\n(2021) and Lightman et al. (2023) fine-tunes lan-\nguage model as a verifier, which calculates token-\nlevel and solution-level verification scores for a",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "predicate result. However, the above method all\nneed additional annotations. In our work, we do\nnot require training examples and can provide an\nexplainable verification score.\n3\nThe Proposed Method\nThe proposed method can be used to verify pre-\ndiction results. As shown in Figure 2, the process\nmainly consists of two steps. The first step, forward\nreasoning, is similar to the normal CoT, except that\nmultiple candidate answers are generated through\nsampling decoding. In the second step, we cal-",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "sampling decoding. In the second step, we cal-\nculate the verification scores for each candidate’s\nanswer by the self-verification method, and the an-\nswer with the highest score is selected as the final\nanswer.\n3.1\nForward Reasoning\nIn forward reasoning, the LLM reasoners gener-\nate candidate answers with the chain of thought\nprompting. We augment the input with several CoT\nprompts similar to the original query and then send\nit to the LLM. The LLM then performs sampling",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "it to the LLM. The LLM then performs sampling\ndecoding to generate multiple candidates for verifi-\ncation.\nAs shown in Figure 2, for a reasoning task, the\nlarge language model LLM is given a question\nX which is accompanied by a chain of thought\nset C. In few-shot setting, the whole prompt also\ncontains other question-CoT prompt-answer tu-\nples. The input X can be further subdivided into\nX = {f1, f2, . . . , fR, q}, where each fi is a condi-\ntion (fact), and q is a question, both represented as",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "natural language clause or sub-sentences.\nSpecifically, in order to generate step-by-step\nsolutions with CoT, we followed Wei et al. (2022)\nand designed CoT prompt set C for the reasoning\ndataset (e.g., the GSM8K dataset), which contains\nn samples, each sample has the question ˙X, chain\nof thout ˙t, and the answer ˙y. These samples are\nused as the input of test-time. Each example in C\nis concatenated as a prompt:\nC = ( ˙X0, ˙t0, ˙y0); ( ˙X1, ˙t1, ˙y1); . . . ; ( ˙Xn, ˙tn, ˙yn)",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "Therefore, LLM is required to follow the\nprompt of C to generate the chain of thought tCoT\nbefore generating the final answer y:",
+      "source": "dit.pdf",
+      "page": 3,
+      "char_count": 128,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "...\nQ1: “Jackie has ‘X’ apples. Adam has 8 \napples. Jackie has 18 apples more than \nAdam“ What is the answer of ‘X’.\n        Jackie has 10 apples.\nStep1: Forward Reasoning\nQ: There are 15 trees in the grove. Grove workers \nwill plant trees in the grove today. After they are \ndone, there will be 21 trees. How many trees did \nthe grove workers plant today?\nA: There are 15 trees originally. Then there were \n21 trees after some more were planted. So there \nmust have been 21 - 15 = 6. The answer is 6.",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "must have been 21 - 15 = 6. The answer is 6.\n...... (CoT Prompt)\nQ: Jackie has 10 apples. Adam has 8 apples. \nHow many more apples does Jackie have than \nAdam?\nA1: Since Jackie has 10 apples \nand Adam has 8 apples, in total, \nJackie has 10+8=18 more apples \nthan Adam, so the answer is 18.\nA2: Jackie has 10 apples, so Jackie \nhas 10-8=2 more apples than \nAdam, and the answer is 2.\nAk\nStep2: Backward Verification\nArithmetic Tasks: Condition Mask Verification\n1) Rewritten Candidate Conclusion",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "1) Rewritten Candidate Conclusion\nPlease change the questions and answers into\ncomplete declarative sentences [Q] The answer is [A]\nQ\nA\n(LLM)\n��\n��\n1\n��\n2\n��\n�\n......\n2) Rewritten Condition\n�1\n  “Jackie has ‘X’ apples.”        What is the answer of ‘X’\nRegular(      ,-?\\d+\\.?\\d*)\n�1\n�1\n        Jackie has 10 apples.\nGeneral Tasks: True-False Item Verification\n�1\n   “Jackie has 10 apples.“    Do it is correct (True or False)?\n�1\n3) Verification\n10",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "�1\n3) Verification\n10\nWe take Condition Mask Verification as an example. For True-False Item Verification, we only need to count the number of True's to calculate the scores.\n...\nQ2: “Jackie has ‘X’ apples. Adam has 8 \napples. Jackie has 2 apples more than \nAdam“ What is the answer of ‘X’.\n(LLM)\nSorted by scores\nAnswer:\n2\n√\n√√√√\nJackie has 18 apples more than Adam\nJackie has 2 apples more than Adam\nSampling Decoding\nA2: Jackie has X apples, which is 2 \nmore than Adam's 8 apples, so",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "more than Adam's 8 apples, so \n8+2=10, the answer is 10.\nA1: Jackie has X apples, and Jackie's \napples are 18 more than Adam's, so \nJackie's apples should be 8+18=26, \nthe answer is 26.\nSampling \nDecoding\nSampling \nDecoding\nA1 Scores: 1\nA2 Scores: 4\nFigure 2: Example of self-verification. In the step one, LLM generates candidate answers and forms different\nconclusions. Then, in the step two, LLM verifies these conclusions in turn and computes the verification score.",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "P(y|C, X) = P(tCoT|C, X) × P)(y|C, X, tCoT)\nTo ensure the diversity of different answers, we\nadapt sampling decoding (Radford et al., 2019)\nto generate multiple y for K times. Specifically,\nsampling decoding is a random decoding method,\nwhich can select the next word by sampling from\na probability distribution over the possible words\nat each step. Multiple candidate answers can be\nobtained when repeatedly using sampling decod-\ning. For example, we generate “18” and “2” as",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "ing. For example, we generate “18” and “2” as\ncandidate answers in the example of Figure 2.\n3.2\nBackward Verification\nStep 1 may generate multiple different answers,\nthis step is used to verify and select the best answer.\nBackward verification involves several sub-steps.\nFirst, the original question with each candidate’s\nanswer is rewritten as a conclusion and then sup-\nplemented as a new condition (incarnadine color\nin Figure 2). Then, we considered two methods to",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "in Figure 2). Then, we considered two methods to\nconstruct new questions. In the general QA task,\nthe True-False Item Verification is given based on\nall the conditions, asking the LLM whether these\nconditions are mutually satisfied, it has a broad\napplicability. In Arithmetic reasoning tasks, as\nthe definite condition masks can indicate the rea-\nsoning direction of the language model, we pro-\npose the Condition Mask Verification method to\ndesign questions for the verification stage. Finally,",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "we perform multiple experiments to compute the\nverification score by comparing the consistency be-\ntween the predicted condition value and the original\nmasked condition value, and select the candidate\nanswer with the highest score as the final answer.\n3.2.1\nRewritten Candidate Conclusion\nBesides, we rewrite the original question with the\ncandidate’s answer as a conclusion and then sup-\nplement it as a new condition in the backward ver-\nification step. Specifically, we use the instruction",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "prompt “Please change the questions and answers\ninto complete declarative sentences [q] The answer\nis [y]” to change q and y into new declarative sen-\ntence fY by LLM. As shown in Figure 2, we can\nrewrite the question and conclusion as “Jackie has\n18 apples more than Adam”.\n3.2.2\nCondition Masking\nFor question generation, the diversity of the prob-\nlems makes it difficult to balance the need for coher-\nence and fact consistency between questions and\nanswers in practical operation (Sun et al., 2018; Ji",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "et al., 2022). To tackle this issue, we included clear\nquestions asking the language model to accurately\npredict.\nTrue-False Item Verification (TFV). This ap-\nproach can be applied to a wide range of reasoning\nQA tasks. We directly add \"Do it is correct (True or\nFalse)?\" after all the conditions, requiring the LLM\nto self-evaluate the correctness of these conditions.\nCondition Mask Verification (CMV). Further,",
+      "source": "dit.pdf",
+      "page": 4,
+      "char_count": 413,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "we use regular expressions to filter out specific con-\nditions, such as numbers, and then mask them in\nturn. If we do not mask all conditions but randomly\nselect a condition, unnecessary conditions may be\nmasked, which will significantly impact the verifi-\ncation answer. For example, “Dana worked 9 hours\non Friday, 10 hours on Saturday, and 3 hours on\nSunday. She earns $13 per hour. How much money\ndid Dana earn in weekend?”, since condition 1 (9\nhours) does not affect the conclusion, it is difficult",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "to predict it correctly. We replace all occurrences\nof f in the original X with “X” in turn, and ask\nLLM to re-predict it. Then we rewrite the ques-\ntion. For example, we might find a value in f1 and\nreplace it with “X”. We can then add “What is the\nanswer of ‘X’?” to the end of the new question,\neffectively turning it into an equation. This tech-\nnique helps to guide the language model towards\nthe correct answer.\n3.2.3\nVerification Score Calculation\nThis backward verification chain of thought is sim-",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "ilar to solving an equation. We design a chain of\nthought prompt, like forward reasoning, to guide\nLLM in generating a solving process. We input the\nnewly constructed sentences into LLM. For TFV,\nwe can directly count the number of answers that\nare True as the score, and for CMV, we will match\nits final result with the masked condition.\nDue to the limited performance of LLM itself, if\nthe condition is verified only once in the backward\nverification step, it is easy to have the same score,",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "resulting in a lack of differentiation. To address\nthis, we repeat the sampling decoding process P\ntimes, so that the verification score can more ac-\ncurately reflect the model’s confidence for a given\nconclusion (Erd, 1970).\nThe verification score is calculated as follows:\nScorey =\n( PP\np=1(PR\nr=1 1(LLMp(X−fr+fY)=fr))\nTFV\nPP\np=1(1(LLMp(X+fY)))\nCMV\nWhere 1(•) is an indicator function.\nFinally, we select the one with the highest verifi-\ncation score from the K candidate answers gener-\nated as a result.",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "ated as a result.\nOutput = argmax\nk∈[0,K]\n(Scorek)\nFor example for CMV, in Figure 2.3)Verifica-\ntion, we match the results generated by the self-\nverification of LLM with the masked conditions.\nThere is one “10” in the conclusion of A1, so the\nverification score is 1. There are four correct results\nin A2, so the verification score is 4, and we finally\nchoose A2, which has the highest verification score,\nas the final conclusion.\n4\nExperiment Setting\n4.1\nTask and Dataset",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "4\nExperiment Setting\n4.1\nTask and Dataset\nWe evaluated eight datasets on three reasoning\ntasks: arithmetic reasoning, commonsense reason-\ning, and logical reasoning.\nThese datasets are\nhighly heterogeneous in terms of their input for-\nmats (see Appendix A.2 for the detailed description\nof each dataset. Examples of different datasets are\ngiven in Table 7 of Appendix A.4).\n• Arithmetic Reasoning. We performed exper-\niments on the following 6 arithmetic datasets:\nSingleEq (Koncel-Kedziorski et al., 2015),",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "SingleEq (Koncel-Kedziorski et al., 2015),\nAddSub (Hosseini et al., 2014), MultiArith\n(Roy and Roth, 2016), AQUA-RAT (Ling\net al., 2017), GSM8K (Cobbe et al., 2021),\nand SVAMP (Arkil et al., 2021).\n• Commonsense\nReasoning.\nCommon-\nsenseQA (CSQA) (Talmor et al., 2018) is\nthe most typical dataset of the task, which\nrequires commonsense knowledge about the\nworld to accurately answer questions with\ncomplex meanings.\n• Logical Reasoning.\nDate Understanding\n(DU) (Srivastava et al., 2022) involves infer-",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "(DU) (Srivastava et al., 2022) involves infer-\nring a date from a given context.\n4.2\nModel\nWe conducted experiments to evaluate the original\nGPT-3 (Chen et al., 2021) (code-davinci-001)\nmodel and the Instruct-GPT model (Ouyang et al.,\n2022) (code-davinci-002). Additionally, we con-\nducted analysis experiments with public GPT-3\n(Brown et al., 2020). All prediction results of dif-\nferent reasoning tasks and datasets are obtained by\nOpenAI’s API 1. Appendix A.3 shows the repro-\nducibility statement.\n4.3",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "ducibility statement.\n4.3\nPrompts\nWe conducted all experiments in the few-shot set-\nting without any fine-tuning of the original LLM\nTo ensure a fair comparison, we used the same\n1OpenAI’s API: https://openai.com/api/",
+      "source": "dit.pdf",
+      "page": 5,
+      "char_count": 217,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "Arithmetic Tasks\nGeneral Tasks\nMethod\nGSM8K\nSingleEq\nAddSub\nMultiArith\nAQUA-RAT\nSVAMP\nCSQA\nDU\nPrevious SOTA (Fine-tune)\n35a/57b\n32.5c\n94.9d\n60.5e\n37.9f\n57.4g\n91.2h\n-\n9–12 year olds\n60i\n-\n-\n-\n-\n-\n-\n-\nGPT-3 Standard\n19.7\n86.8\n90.9\n44.0\n29.5\n69.9\n82.3\n49.0\nGPT-3 (175B)\ncode-davinci-001\nCoT\n13.84\n60.20\n58.55\n45.85\n18.90\n38.42\n46.75\n38.72\nCoT+Self-Verification\n13.92(+0.08)\n60.61(+0.41)\n59.07(+0.52)\n46.19(+0.34)\n27.04(+8.14)\n38.96(+0.54)\n47.68(+0.93)\n39.03(+0.31)\nInstruct-GPT\n(175B)\ncode-davinci-002\nCoT\n60.81",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "Instruct-GPT\n(175B)\ncode-davinci-002\nCoT\n60.81\n91.01\n82.78\n96.13\n45.30\n75.87\n77.42\n65.43\nCoT+Self-Verification\n65.14(+4.33)\n93.40(+2.39)\n86.33(+3.55)\n99.15(+3.02)\n47.95(+2.65)\n76.99(+1.12)\n77.83(+0.41)\n66.57(+1.14)\nSelf-Consistency Decoding (Wang et al., 2023c) For Forward Reasoning\nGPT-3 (175B)\ncode-davinci-001\nSC\n23.40\n70.25\n68.65\n79.82\n25.60\n54.58\n54.92\n49.26\nSC+ Self-Verification\n23.59(+0.19)\n70.50(+0.25)\n68.71(+0.06)\n80.01(+0.19)\n28.98(+3.38)\n54.68(+0.1)\n55.09(+0.17)\n49.72(+0.46)\nInstruct-GPT\n(175B)",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "55.09(+0.17)\n49.72(+0.46)\nInstruct-GPT\n(175B)\ncode-davinci-002\nSC\n78.00\n96.78\n91.64\n100.0\n52.01\n86.77\n81.43\n71.58\nSC+Self-Verification\n78.32(+0.32)\n96.85(+0.07)\n92.03(+0.39)\n100.0(+0.0)\n52.25(+0.24)\n86.94(+0.17)\n81.53(+0.1)\n71.89(+0.31)\nPAL (Gao et al., 2023) For Forward Reasoning\nGPT-3 (175B)\ncode-davinci-001\nPAL\n31.82\n63.98\n63.15\n61.52\n30.56\n42.69\n-\n-\nPAL+Self-Verification\n32.87(+1.05)\n65.45(+1.47)\n64.15(+1.0)\n61.76(+0.24)\n30.90(+0.34)\n42.78(+0.09)\n-\n-\nInstruct-GPT\n(175B)\ncode-davinci-002\nPAL\n72.02\n96.08",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "(175B)\ncode-davinci-002\nPAL\n72.02\n96.08\n92.64\n99.15\n59.75\n79.45\n-\n-\nPAL+Self-Verification\n72.89(+0.87)\n96.52(+0.44)\n93.78(+1.14)\n99.87(+0.72)\n60.21(+0.46)\n80.24(+0.79)\n-\n-\nTable 1: Problem solve rate (%) on reasoning datasets. The previous SoTA results (baselines) are respectively\nobtained from: (a) GPT-3 175B finetuned (Cobbe et al., 2021); (b) GPT-3 175B finetuned plus an additional 175B\nverifier (Cobbe et al., 2021); (c) Hu et al. (2019); (d) Roy and Roth (2016); (e) Roy and Roth (2016); (f) Amini",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "et al. (2019); (g) Pi et al. (2022); (h) Xu et al. (2022); (i) (Cobbe et al., 2021). In addition, we also attempted to use\nself-consistency (SC) (Wang et al., 2023c) or PAL (Gao et al., 2023) (Since this method uses extra programs to\nreplace the results of numerical calculations, we mainly compare it in Arithmetic Tasks.) Decoding to generate\ncandidate answers during the Forward Reasoning stage and combine it with Self-Verification.\nprompts as in Wei et al. (2022) for forward rea-",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "prompts as in Wei et al. (2022) for forward rea-\nsoning. We made several changes of the prompts\nfor backward verification (the details are shown in\nAppendix A.5).\n4.4\nImplementation\nIn each experiment, we perform CoT prompting on\nthe LLMs, then LLMs generate conclusions (an-\nswers) by sampling decoding without top-k trun-\ncation. When forward reasoning, we generated\nK = 5 candidate answers (conclusions). In back-\nward verification, each candidate conclusion gener-",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "ated P = 10 times, and the maximum token length\nof each decoding was 168. After LLM generates\nthe output, we only select the part of the text that\nconforms to the conclusion format. Appendix A.1\nshows the specific strategy for different tasks. In\naddition, to ensure a fair comparison, we ran each\nexperiment three times and calculated the average\nresult.\n5\nResult and Analysis\nThe main experimental results are shown in Table 1.\nThe table shows that the proposed self-verification",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "method (SV) can improve previous methods in\nall datasets. Our method achieved a new state-\nof-the-art (SOTA) performance in six of these eight\ndatasets. Appendix A.4 shows specific examples of\nlanguage model self-verification for each dataset.\nAdditionally, we observed that self-verification\nled to an average increase of 2.33% in the high-\nperforming Instruct-GPT model, which indicates\nthat the model with strong forward reasoning ca-\npabilities also benefits from the self-verification",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "mechanism. The detailed experimental conclusions\nand analysis are described as follows:\nThe current self-verification method is more\nsuitable for arithmetic reasoning tasks than\nother reasoning tasks. We find that the average\nperformance improvement of arithmetic reasoning\ntasks (1.67%/2.84% ↑) is higher than that of other\nreasoning tasks (0.62%/0.78% ↑) in Table 1. We\nbelieve the reason is that it is easier to find the re-\nquired mask conditions for arithmetic reasoning",
+      "source": "dit.pdf",
+      "page": 6,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "0.4B\n7B\n175B\n(A) GSM8K\n0\n20\n40\n60\n80\n100\n0.4B\n7B\n175B\n(B) Multiarith\n0\n20\n40\n60\n80\n100\n0.4B\n7B\n175B\n(C) SVAMP\n0\n20\n40\n60\n80\n100\nSelf-Verification\nCoT\n(a) Problem solve rate (%) in difference size models.\nThe text-ada-001 (0.4B), text-babbage-001 (1.3B),\ntext-curie-001 (7B) and text-davinci-002 (175B) mod-\nels are used respectively.\n0.4B\n1.3B\n7B\n175B\n-1.0\n-0.5\n0.0\n0.5\n1.0\n1.5\n2.0\n2.5\n3.0\nSelf-Verication Subtract CoT\nGSM8K\nMultiarith\nSVAMP\n(b) Subtract the problem solve rate (%) of CoT from the",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "problem solve rate (%) of self-verification in different size\nmodels. The pink area means that the use of self-verification\nhas a negative impact.\nFigure 3: The self-verification ability of models with different sizes.\n2-shot\n4-shot\n6-shot\n8-shot\n(A) GSM8K\n60\n61\n62\n63\n64\n65\n2-shot\n4-shot\n6-shot\n8-shot\n(B) Multiarith\n96.0\n96.5\n97.0\n97.5\n98.0\n98.5\n99.0\nCoT\nSelf-Verification\n2-shot\n4-shot\n6-shot\n8-shot\n(C) SVAMP\n72.5\n73.0\n73.5\n74.0\n74.5\n75.0\nFigure 4: Problem solve rate (%) comparison of 2-shot",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "to 8-shot prompts.\ntasks, but other reasoning tasks used TFV that can-\nnot determine the exact conditions. In the future,\nwe will consider the targeted condition selection\nand masking for other reasoning tasks.\nThe self-validation method can be combined\nwith improved methods for forward reason-\ning.\nWe report the results of combining self-\nconsistency or PoL at the bottom of Table 1 sepa-\nrately. Specifically, for combining self-consistency,\nwe use the Top-2 candidate results obtained from",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "we use the Top-2 candidate results obtained from\nself-consistency in the Forward Reasoning stage\nand then use self-validation to re-rank the can-\ndidate results; for combining PAL, we require\nthe generation of runnable programs in Forward\nReasoning to obtain candidate answers. We find\nthat this approach still can achieve better perfor-\nmance than self-consistency, demonstrating that\nself-verification can be combined with a series of\nexisting methods for improving forward calculation",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "to achieve further gains. We believe that the self-\nverification can re-rank candidate answers from the\nperspective of backward validation, providing more\nrobust results.\nLarger language models are better reasoners\nwith self-verification. Figure 3 shows the capabil-\nity of GPT-3 models with parameters ranging from\n0.4B to 175B. The experimental results suggest\nthat the self-verification ability tends to be more\nrobust as the number of parameters increases, align-",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "ing with the limited experimental results in Wei\net al. (2022). This indicates that self-verification is\nan emergent property that arises in larger models,\nwhere stronger reasoning capacities allow them to\nderive reliable and accurate conclusions during the\ncontext learning process (Ho et al., 2022; Wang\net al., 2023a). Consequently, their performance in\nthe backward verification phase is also enhanced.\nHowever, smaller models are prone to generate er-\nroneous text during the generation process, and aug-",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "ment them with self-verification abilities presents\na challenge.\nWith the different number of few-shots,\nthe reasoning ability of models using self-\nverification has significantly improved. Figure\n4 demonstrate the impact of different sample sizes\non three arithmetic reasoning datasets. We observe\nthat the self-verification method exhibits greater\nrobustness with smaller samples, even with only\n2-shots (At this time, it has 99.6% performance of\n8-shot, while CoT has only 98.7%). In addition, we",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "find that even with only four samples (2 CoT sam-\nples + 2 self-verification samples), self-verification\noutperforms the CoT with eight samples, which",
+      "source": "dit.pdf",
+      "page": 7,
+      "char_count": 150,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "CoT\nSingle\nMultiple\n(a) GSM8K\n0\n25\n50\n75\n100\n13.84\n12.57\n13.92\n60.81\n62.55\n65.14\nCoT\nSingle\nMultiple\n(b) SingleEq\n0\n25\n50\n75\n100\n60.2\n59.31\n60.61\n91.01\n91.52\n93.4\nCoT\nSingle\nMultiple\n(c) Addsub\n0\n25\n50\n75\n100\n58.55\n59.51\n59.07\n82.78\n85.57\n86.33\nGPT-3\nInstruct-GPT\nCoT\nSingle\nMultiple\n(d) MultiArith\n0\n25\n50\n75\n100\n45.85\n45.96\n46.19\n96.13\n97.5\n99.15\nCoT\nSingle\nMultiple\n(e) AQUA-RAT\n0\n25\n50\n75\n100\n18.9\n24.6\n27.04\n45.3\n44.84\n47.95\nCoT\nSingle\nMultiple\n(f) SVAMP\n0\n25\n50\n75\n100\n38.42\n38.86\n39.03\n75.87\n74.17\n76.99",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "25\n50\n75\n100\n38.42\n38.86\n39.03\n75.87\n74.17\n76.99\nFigure 5: Comparison of problem solve rate (%) between single-condition verification and multiple-condition\nverification.\nGSM8K\nSingleEq\nAddsub\nMultiArith\nAQUA-RAT\nSVAMP\n(a) Instruct-GPT\n0\n20\n40\n60\n80\n100\nProblem solve rate\n60.81\n91.01\n82.78\n96.13\n45.3\n75.87\n62.4\n92.8\n85.9\n97.86\n46.24\n75.38\n65.14\n93.4\n86.33\n99.15\n47.95\n76.99\nGSM8K\nSingleEq\nAddsub\nMultiArith\nAQUA-RAT\nSVAMP\n(b) GPT-3\n0\n20\n40\n60\n80\n100\nProblem solve rate\n13.84\n60.2\n58.55\n45.85\n18.9\n38.42\n12.31",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "13.84\n60.2\n58.55\n45.85\n18.9\n38.42\n12.31\n60.13\n55.46\n42.64\n26.87\n36.97\n13.92\n60.61\n59.07\n46.19\n27.04\n39.03\nCoT\nTrue-False Item Verification\nCondition Mask Verification\nFigure 6: Comparison of problem solve rate (%) for the “CMV” and the “TFV” in arithmetic tasks.\nhighlights the importance of answer verification in\nscenarios of limited data.\nThe more verification conditions are used, the\nbetter self-verification reasoning ability. We ob-\nserved the effect of using the single conditional",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "served the effect of using the single conditional\nmask on six different arithmetic datasets for Con-\ndition Mask Verificat in Figure 5. As each number\nin these datasets’ input can be thought of as a con-\ndition, we can study the impact of increasing the\nnumber of validation conditions. In most exper-\niments, we found that the multi-condition mask\nperformed better than the single-condition mask,\nand both performed better than the original CoT.\nThese results suggest that the accuracy of verifi-",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "cation scores improves as the number of available\nconditions increases.\nMasked conditions can guide the LLMs to\nreason more effectively. As shown in Figure 6, we\ncompared the results of using CMV (Conditional\nMasked Verification) and TFV (Token Form Ver-\nification) for self-verification. We found that the\nperformance of CMV is generally better than TFV.\nWe believe this is because the lack of explicit goals\ncan lead to a lack of use of existing conclusions,\nso CMV is more helpful in stimulating the self-\n1",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "so CMV is more helpful in stimulating the self-\n1\n5\n10\n20\n30\nThe number of P\n60\n61\n62\n63\n64\n65\n66\nProblem Solve Rate (%)\nProblem Solve Rate (%)\nCoT Baseline\nFigure 7: The computational resource of the proposed\nmethod on GSM8K.\nverification ability of the model. However, due to\nits simplicity, TFV can be applied to a variety of\ntasks (including common sense reasoning and logi-\ncal reasoning, both with improvements compared\nto the CoT baseline) for self-verification, making it",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "highly adaptable to different scenarios.\nFewer computational resources can also im-\nprove performance through self-verification. In\nFigure 7, we show the results of changing the num-\nber of P generated in Backward Verification. We\nfind that even when P = 2, only a small increase in\ncomputational overhead is needed, and there is still\nan improvement in CoT baseline. Considering that\nperformance starts to slowly increase when P is",
+      "source": "dit.pdf",
+      "page": 8,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "increased to 10, we recommend choosing an appro-\npriate value for P (e.g. P=10) to achieve a balance\nbetween performance and resource consumption.\nDataset\nNum.\nAvg. Ans.\nRan. Acc.\nCoT Acc.\nVeri. Acc.\nGSM8K\n601/1306\n2.80\n35.7%\n53.4%\n58.9%\nAddsub\n77/377\n2.13\n46.9%\n56.7%\n74.0%\nAQUA\n123/219\n2.71\n36.9%\n50.3%\n51.2%\nMultiarith\n73/593\n2.19\n45.6%\n71.2%\n89.0%\nSingleEq\n51/501\n2.31\n43.3%\n51.0%\n74.5%\nSVAMP\n274/954\n2.54\n39.4%\n51.5%\n58.4%\nTable 2: Further analysis of the experimental results in",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "Table 1. Where “Num.” represents the total number of\nsamples in this setting and the total number of original\ndataset samples, “Avg. Ans.” means the average number\nof candidate answers, “Ran. Acc.” = 1 / “Avg. Ans.”.\n“CoT Acc.” refers to the accuracy of the CoT method\nwhen temperature = 0. And “Veri. Acc.” refers to the\nprobability of picking out the correct answer from the\ncandidate answers in backward verification stage.\nAnalysis of the accuracy of the verification",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "Analysis of the accuracy of the verification\nresults. We conducted additional analysis of the\nInstructGPT results in Table 1 under a new set-\nting where we only considered cases in the forward\ninference phase that contained one correct answer\nand N incorrect answers (where N>=1 and N<=4).\nThe results in Table 2 provide further evidence\nthat the proposed self-verification technique can\neffectively improve the accuracy of commonsense\nreasoning models. Across all 6 datasets, the veri-",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "fication accuracy is consistently and considerably\nhigher than both the random guessing baseline and\nthe standalone CoT model accuracy. For example,\non the challenging GSM8K dataset, the verification\nstage obtains 58.9% accuracy, substantially outper-\nforming the 53.4% CoT accuracy and 35.7% ran-\ndom guess accuracy. The largest accuracy gains are\nwitnessed on the MultiArith and SingleEq datasets,\nwhere the verification stage lifts the accuracy by\n17.8% and 23.5% respectively over the CoT model.",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "17.8% and 23.5% respectively over the CoT model.\nThis indicates that the self-verification technique is\nparticularly adept at rectifying errors made by the\nCoT model on arithmetic and symbolic equation\nproblems. The consistent accuracy improvements\ndemonstrate that allowing the model to verify its\nown predictions provides a simple yet effective\nway to enhance commonsense reasoning. These\ncomprehensive results validate self-verification as\na promising approach to refine LLMs and reduce\nreasoning errors.\n6",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "reasoning errors.\n6\nConclusion\nIn this study, we show that large language models\nhave a strong ability to self-verification, allowing\nthem to assess the conclusions they generate ac-\ncurately. We propose a novel method that uses\nself-verification to generate interpretable scores for\nranking results in few-shot tasks. Our approach\ndemonstrates the potential of using self-verification\nto improve the accuracy and reliability of large lan-\nguage models in reasoning tasks. By relying on the",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "self-verification ability of large language models,\nwe significantly improved the accuracy of three\ntypes of reasoning tasks. All in all, we posit that\nthe self-verification capability of large language\nmodels will have an extensive positive impact, as it\nenables the enhancement of their reasoning abilities\nthrough a simple process of self-verification.\nLimitations\nOur self-verification method relies on large lan-\nguage models (LLMs).\nIt provides few-shot\nprompts to guide the model in verifying its own",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "prompts to guide the model in verifying its own\nresults, but it is worth noting that these prompts are\nartificially constructed and may introduce bias. The\neffectiveness of our method is limited by the pres-\nence of accurate answers within the candidate con-\nclusions generated by the LLM, our experiments\ndemonstrate that the capability of self-verification\ndepends on the model’s reasoning abilities, which\nmeans it is challenging to augment the reasoning\nperformance of smaller language models, while the",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "performance of smaller language models, while the\nbenefits are greater for high-performing models (in\nFigure 3). For the sake of usability, our method\nfocuses on the conclusions derived from the reason-\ning rather than the reasoning process itself, and is\nthus not suitable for evaluating the LLM’s inference\nprocedure. Additionally, the method necessitates\ngenerating multiple candidate inference chains and\nconclusions, leading to increased computational\ncosts; however, we demonstrate that only a mini-",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "costs; however, we demonstrate that only a mini-\nmal increase (merely 1x) in expenditure is required\nto substantially enhance the model’s inference ca-\npabilities (in Figure 7).\nAcknowledgements\nThis work was supported by the National Key\nR&D Program of China (No.2022ZD0118501) and\nthe National Natural Science Foundation of China\n(No.62376270,\nNo.U1936207,\nNo.61976211,\nNo.62171183). This work was supported by the\nStrategic Priority Research Program of Chinese\nAcademy of Sciences (No.XDA27020100), Youth",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Academy of Sciences (No.XDA27020100), Youth\nInnovation Promotion Association CAS, and OPPO\nResearch Fund.",
+      "source": "dit.pdf",
+      "page": 9,
+      "char_count": 105,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "References\nEkin Akyürek, Dale Schuurmans, Jacob Andreas,\nTengyu Ma, and Denny Zhou. 2022. What learning\nalgorithm is in-context learning? investigations with\nlinear models. arXiv preprint arXiv:2211.15661.\nAida Amini, Saadia Gabriel, Peter Lin, Rik Koncel-\nKedziorski, Yejin Choi, and Hannaneh Hajishirzi.\n2019. Mathqa: Towards interpretable math word\nproblem solving with operation-based formalisms.\nnorth american chapter of the association for com-\nputational linguistics.",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "putational linguistics.\nPatel Arkil, Bhattamishra Satwik, and Goyal Navin.\n2021. Are nlp models really able to solve simple\nmath word problems?\nSimran Arora, Avanika Narayan, Mayee F. Chen, Lau-\nrel J. Orr, Neel Guha, Kush Bhatia, Ines Chami,\nFrederic Sala, and Christopher Ré. 2022. Ask me\nanything: A simple strategy for prompting language\nmodels.\nAkari Asai and Hannaneh Hajishirzi. 2020.\nLogic-\nguided data augmentation and regularization for con-\nsistent question answering. meeting of the associa-",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "tion for computational linguistics.\nChandra Bhagavatula, Ronan Le Bras, Chaitanya\nMalaviya, Keisuke Sakaguchi, Ari Holtzman, Han-\nnah Rashkin, Doug Downey, Scott Wen tau Yih, and\nYejin Choi. 2019. Abductive commonsense reason-\ning. Learning.\nTom Brown, Benjamin Mann, Nick Ryder, Melanie\nSubbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind\nNeelakantan, Pranav Shyam, Girish Sastry, Amanda\nAskell, et al. 2020. Language models are few-shot\nlearners. Advances in neural information processing",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "systems, 33:1877–1901.\nMark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan,\nHenrique Ponde de Oliveira Pinto, Jared Kaplan,\nHarrison Edwards, Yuri Burda, Nicholas Joseph,\nGreg Brockman, Alex Ray, Raul Puri, Gretchen\nKrueger, Michael Petrov, Heidy Khlaaf, Girish Sas-\ntry, Pamela Mishkin, Brooke Chan, Scott Gray,\nNick Ryder, Mikhail Pavlov, Alethea Power, Lukasz\nKaiser, Mohammad Bavarian, Clemens Winter,\nPhilippe Tillet, Felipe Petroski Such, Dave Cum-\nmings, Matthias Plappert, Fotios Chantzis, Eliza-",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "mings, Matthias Plappert, Fotios Chantzis, Eliza-\nbeth Barnes, Ariel Herbert-Voss, William Hebgen\nGuss, Alex Nichol, Alex Paino, Nikolas Tezak, Jie\nTang, Igor Babuschkin, Suchir Balaji, Shantanu Jain,\nWilliam Saunders, Christopher Hesse, Andrew N.\nCarr, Jan Leike, Joshua Achiam, Vedant Misra, Evan\nMorikawa, Alec Radford, Matthew Knight, Miles\nBrundage, Mira Murati, Katie Mayer, Peter Welinder,\nBob McGrew, Dario Amodei, Sam McCandlish, Ilya\nSutskever, and Wojciech Zaremba. 2021. Evaluat-",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "Sutskever, and Wojciech Zaremba. 2021. Evaluat-\ning large language models trained on code. CoRR,\nabs/2107.03374.\nZheng Chu, Jingchang Chen, Qianglong Chen, Weijiang\nYu, Tao He, Haotian Wang, Weihua Peng, Ming Liu,\nBing Qin, and Ting Liu. 2023. A survey of chain of\nthought reasoning: Advances, frontiers and future.\nKarl Cobbe, Vineet Kosaraju, Mohammad Bavar-\nian, Jacob Hilton, Reiichiro Nakano, Christopher\nHesse, and John Schulman. 2021.\nTraining veri-\nfiers to solve math word problems. arXiv preprint",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "fiers to solve math word problems. arXiv preprint\narXiv:2110.14168.\nXiang Deng, Yu Su, Alyssa Lees, You Wu, Cong Yu,\nand Huan Sun. 2021. Reasonbert: Pre-trained to\nreason with distant supervision. empirical methods\nin natural language processing.\nShehzaad Dhuliawala, Mojtaba Komeili, Jing Xu,\nRoberta Raileanu, Xian Li, Asli Celikyilmaz, and\nJason Weston. 2023. Chain-of-verification reduces\nhallucination in large language models.\nArXiv,\nabs/2309.11495.\nPaul Erd. 1970. On a new law of large numbers. J. Anal.",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "Math, 23(103111):8.\nYao Fu, Hao Peng, Ashish Sabharwal, Peter Clark, and\nTushar Khot. 2022. Complexity-based prompting for\nmulti-step reasoning.\nLuyu Gao, Aman Madaan, Shuyan Zhou, Uri Alon,\nPengfei Liu, Yiming Yang, Jamie Callan, and Gra-\nham Neubig. 2023. Pal: Program-aided language\nmodels.\nMor Geva, Daniel Khashabi, Elad Segal, Tushar Khot,\nDan Roth, and Jonathan Berant. 2021. Did aristotle\nuse a laptop? a question answering benchmark with\nimplicit reasoning strategies. Transactions of the",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Association for Computational Linguistics.\nYuxian Gu, Jiaxin Wen, Hao Sun, Yi Song, Pei Ke,\nChujie Zheng, Zheng Zhang, Jianzhu Yao, Lei Liu,\nXiaoyan Zhu, and Minlie Huang. 2023. Eva2.0: In-\nvestigating open-domain chinese dialogue systems\nwith large-scale pre-training. Machine Intelligence\nResearch, 20(2):207–219.\nCharles R Harris, K Jarrod Millman, Stéfan J Van\nDer Walt, Ralf Gommers, Pauli Virtanen, David Cour-\nnapeau, Eric Wieser, Julian Taylor, Sebastian Berg,",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "Nathaniel J Smith, et al. 2020. Array programming\nwith numpy. Nature, 585(7825):357–362.\nNamgyu Ho, Laura Schmid, and Se-Young Yun. 2022.\nLarge language models are reasoning teachers.\nMohammad Javad Hosseini, Hannaneh Hajishirzi, Oren\nEtzioni, and Nate Kushman. 2014. Learning to solve\narithmetic word problems with verb categorization.\nempirical methods in natural language processing.\nMinghao Hu, Yuxing Peng, Zhen Huang, and Dong-\nsheng Li. 2019. A multi-type multi-span network for",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "reading comprehension that requires discrete reason-\ning. empirical methods in natural language process-\ning.",
+      "source": "dit.pdf",
+      "page": 10,
+      "char_count": 109,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Tianbo Ji, Chenyang Lyu, Gareth Jones, Liting Zhou,\nand Yvette Graham. 2022. Qascore – an unsuper-\nvised unreferenced metric for the question generation\nevaluation.\nTakeshi Kojima, Shixiang Shane Gu, Machel Reid, Yu-\ntaka Matsuo, and Yusuke Iwasawa. 2022. Large lan-\nguage models are zero-shot reasoners. In Advances\nin Neural Information Processing Systems.\nRik Koncel-Kedziorski, Hannaneh Hajishirzi, Ashish\nSabharwal, Oren Etzioni, and Siena Dumas Ang.\n2015. Parsing algebraic word problems into equa-",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "2015. Parsing algebraic word problems into equa-\ntions. Transactions of the Association for Computa-\ntional Linguistics.\nNate Kushman, Yoav Artzi, Luke Zettlemoyer, and\nRegina Barzilay. 2014. Learning to automatically\nsolve algebra word problems. In Proceedings of the\n52nd Annual Meeting of the Association for Compu-\ntational Linguistics (Volume 1: Long Papers), pages\n271–281, Baltimore, Maryland. Association for Com-\nputational Linguistics.\nBin Li, Encheng Chen, Hongru Liu, Yixuan Weng,",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "Bin Li, Encheng Chen, Hongru Liu, Yixuan Weng,\nBin Sun, Shutao Li, Yongping Bai, and Meiling\nHu. 2021. More but correct: Generating diversified\nand entity-revised medical response. arXiv preprint\narXiv:2108.01266.\nJierui Li, Lei Wang, Jipeng Zhang, Yan Wang, Bing Tian\nDai, and Dongxiang Zhang. 2019. Modeling intra-\nrelation in math word problems with different func-\ntional multi-head attentions. meeting of the associa-\ntion for computational linguistics.",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "tion for computational linguistics.\nYifei Li, Zeqi Lin, Shizhuo Zhang, Qiang Fu, Bei Chen,\nJian-Guang Lou, and Weizhu Chen. 2022. On the\nadvance of making language models better reasoners.\narXiv preprint arXiv:2206.02336.\nHunter Lightman, Vineet Kosaraju, Yura Burda, Har-\nrison Edwards, Bowen Baker, Teddy Lee, Jan\nLeike, John Schulman, Ilya Sutskever, and Karl\nCobbe. 2023.\nLet’s verify step by step.\nArXiv,\nabs/2305.20050.\nWang Ling, Dani Yogatama, Chris Dyer, and Phil Blun-",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "som. 2017. Program induction by rationale genera-\ntion : Learning to solve and explain algebraic word\nproblems. meeting of the association for computa-\ntional linguistics.\nJian Liu, Leyang Cui, Hanmeng Liu, Dandan Huang,\nYile Wang, and Yue Zhang. 2020. Logiqa: A chal-\nlenge dataset for machine reading comprehension\nwith logical reasoning. international joint confer-\nence on artificial intelligence.\nJinghui Lu, Rui Zhao, Brian Mac Namee, Dongsheng\nZhu, Weidong Han, and Fei Tan. 2022. What makes",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Zhu, Weidong Han, and Fei Tan. 2022. What makes\npre-trained language models better zero/few-shot\nlearners?\nAman Madaan, Shuyan Zhou, Uri Alon, Yiming Yang,\nand Graham Neubig. 2022. Language models of\ncode are few-shot commonsense learners.\nLong Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Car-\nroll Wainwright, Pamela Mishkin, Chong Zhang,\nSandhini Agarwal, Katarina Slama, Alex Ray, John\nSchulman, Jacob Hilton, Fraser Kelton, Luke Miller,\nMaddie Simens, Amanda Askell, Peter Welinder,",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "Maddie Simens, Amanda Askell, Peter Welinder,\nPaul Christiano, Jan Leike, and Ryan Lowe. 2022.\nTraining language models to follow instructions with\nhuman feedback.\nArkil Patel, Satwik Bhattamishra, and Navin Goyal.\n2021. Are nlp models really able to solve simple\nmath word problems. north american chapter of the\nassociation for computational linguistics.\nXinyu Pi, Qian Liu, Bei Chen, Morteza Ziyadi, Zeqi Lin,\nYan Gao, Qiang Fu, Jian-Guang Lou, and Weizhu\nChen. 2022. Reasoning like program executors.",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "Chen. 2022. Reasoning like program executors.\nDavid L Poole and Alan K Mackworth. 2010. Artificial\nIntelligence: foundations of computational agents.\nCambridge University Press.\nShuofei Qiao, Yixin Ou, Ningyu Zhang, Xiang Chen,\nYunzhi Yao, Shumin Deng, Chuanqi Tan, Fei Huang,\nand Huajun Chen. 2022. Reasoning with language\nmodel prompting: A survey.\nAlec Radford, Jeffrey Wu, Rewon Child, David Luan,\nDario Amodei, Ilya Sutskever, et al. 2019. Language\nmodels are unsupervised multitask learners. OpenAI",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "blog, 1(8):9.\nJack W. Rae, Sebastian Borgeaud, Trevor Cai, Katie\nMillican, Jordan Hoffmann, H. Francis Song, John\nAslanides, Sarah Henderson, Roman Ring, Susan-\nnah Young, Eliza Rutherford, Tom Hennigan, Ja-\ncob Menick, Albin Cassirer, Richard Powell, George\nvan den Driessche, Lisa Anne Hendricks, Mari-\nbeth Rauh, Po-Sen Huang, Amelia Glaese, Jo-\nhannes Welbl, Sumanth Dathathri, Saffron Huang,\nJonathan Uesato, John Mellor, Irina Higgins, Antonia\nCreswell, Nat McAleese, Amy Wu, Erich Elsen, Sid-",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "Creswell, Nat McAleese, Amy Wu, Erich Elsen, Sid-\ndhant M. Jayakumar, Elena Buchatskaya, David Bud-\nden, Esme Sutherland, Karen Simonyan, Michela Pa-\nganini, Laurent Sifre, Lena Martens, Xiang Lorraine\nLi, Adhiguna Kuncoro, Aida Nematzadeh, Elena\nGribovskaya, Domenic Donato, Angeliki Lazaridou,\nArthur Mensch, Jean-Baptiste Lespiau, Maria Tsim-\npoukelli, Nikolai Grigorev, Doug Fritz, Thibault Sot-\ntiaux, Mantas Pajarskas, Toby Pohlen, Zhitao Gong,\nDaniel Toyama, Cyprien de Masson d’Autume, Yujia",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "Daniel Toyama, Cyprien de Masson d’Autume, Yujia\nLi, Tayfun Terzi, Vladimir Mikulik, Igor Babuschkin,\nAidan Clark, Diego de Las Casas, Aurelia Guy,\nChris Jones, James Bradbury, Matthew Johnson,\nBlake A. Hechtman, Laura Weidinger, Iason Gabriel,\nWilliam S. Isaac, Edward Lockhart, Simon Osindero,\nLaura Rimell, Chris Dyer, Oriol Vinyals, Kareem\nAyoub, Jeff Stanway, Lorrayne Bennett, Demis Hass-\nabis, Koray Kavukcuoglu, and Geoffrey Irving. 2021.\nScaling language models: Methods, analysis & in-",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "Scaling language models: Methods, analysis & in-\nsights from training gopher. CoRR, abs/2112.11446.\nSubhro Roy and Dan Roth. 2016. Solving general arith-\nmetic word problems. arXiv: Computation and Lan-\nguage.",
+      "source": "dit.pdf",
+      "page": 11,
+      "char_count": 209,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "Abulhair Saparov and He He. 2022. Language models\nare greedy reasoners: A systematic formal analysis\nof chain-of-thought.\nJianhao Shen, Yichun Yin, Lin Li, Lifeng Shang, Xin\nJiang, Ming Zhang, and Qun Liu. 2021. Generate &\nrank: A multi-task framework for math word prob-\nlems. In Findings of the Association for Computa-\ntional Linguistics: EMNLP 2021, pages 2269–2279.\nYibin Shen and Cheqing Jin. 2020. Solving math word\nproblems with multi-encoders and multi-decoders.",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "problems with multi-encoders and multi-decoders.\ninternational conference on computational linguis-\ntics.\nAarohi Srivastava, Abhinav Rastogi, Abhishek Rao,\nAbu Awal Md Shoeb, Abubakar Abid, Adam\nFisch, Adam R. Brown, Adam Santoro, Aditya\nGupta, Adrià Garriga-Alonso, Agnieszka Kluska,\nAitor Lewkowycz, Akshat Agarwal, Alethea Power,\nAlex Ray, Alex Warstadt, Alexander W. Kocurek,\nAli Safaya, Ali Tazarv, Alice Xiang, Alicia Par-\nrish, Allen Nie, Aman Hussain, Amanda Askell,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "rish, Allen Nie, Aman Hussain, Amanda Askell,\nAmanda Dsouza, Ambrose Slone, Ameet Rahane,\nAnantharaman S. Iyer, Anders Andreassen, Andrea\nMadotto, Andrea Santilli, Andreas Stuhlmüller, An-\ndrew Dai, Andrew La, Andrew Lampinen, Andy\nZou, Angela Jiang, Angelica Chen, Anh Vuong, Ani-\nmesh Gupta, Anna Gottardi, Antonio Norelli, Anu\nVenkatesh, Arash Gholamidavoodi, Arfa Tabassum,\nArul Menezes, Arun Kirubarajan, Asher Mullokan-\ndov, Ashish Sabharwal, Austin Herrick, Avia Efrat,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "Aykut Erdem, Ayla Karaka{¸s}, B. Ryan Roberts,\nBao Sheng Loe, Barret Zoph, Bart{ł}omiej Bo-\njanowski, Batuhan Özyurt, Behnam Hedayatnia,\nBehnam Neyshabur, Benjamin Inden, Benno Stein,\nBerk Ekmekci, Bill Yuchen Lin, Blake Howald,\nCameron Diao, Cameron Dour, Catherine Stinson,\nCedrick Argueta, César Ferri Ramírez, Chandan\nSingh, Charles Rathkopf, Chenlin Meng, Chitta\nBaral, Chiyu Wu, Chris Callison-Burch, Chris\nWaites, Christian Voigt, Christopher D. Manning,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "Waites, Christian Voigt, Christopher D. Manning,\nChristopher Potts, Cindy Ramirez, Clara E. Rivera,\nClemencia Siro, Colin Raffel, Courtney Ashcraft,\nCristina Garbacea, Damien Sileo, Dan Garrette, Dan\nHendrycks, Dan Kilman, Dan Roth, Daniel Free-\nman, Daniel Khashabi, Daniel Levy, Daniel Moseguí\nGonzález, Danielle Perszyk, Danny Hernandez,\nDanqi Chen, Daphne Ippolito, Dar Gilboa, David\nDohan, David Drakard, David Jurgens, Debajyoti\nDatta, Deep Ganguli, Denis Emelin, Denis Kleyko,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "Datta, Deep Ganguli, Denis Emelin, Denis Kleyko,\nDeniz Yuret, Derek Chen, Derek Tam, Dieuwke Hup-\nkes, Diganta Misra, Dilyar Buzan, Dimitri Coelho\nMollo, Diyi Yang, Dong-Ho Lee, Ekaterina Shutova,\nEkin Dogus Cubuk, Elad Segal, Eleanor Hagerman,\nElizabeth Barnes, Elizabeth Donoway, Ellie Pavlick,\nEmanuele Rodola, Emma Lam, Eric Chu, Eric Tang,\nErkut Erdem, Ernie Chang, Ethan A. Chi, Ethan Dyer,\nEthan Jerzak, Ethan Kim, Eunice Engefu Manyasi,\nEvgenii Zheltonozhskii, Fanyue Xia, Fatemeh Siar,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "Evgenii Zheltonozhskii, Fanyue Xia, Fatemeh Siar,\nFernando Martínez-Plumed, Francesca Happé, Fran-\ncois Chollet, Frieda Rong, Gaurav Mishra, Genta In-\ndra Winata, Gerard de Melo, Germán Kruszewski,\nGiambattista Parascandolo, Giorgio Mariani, Gloria\nWang, Gonzalo Jaimovitch-López, Gregor Betz, Guy\nGur-Ari, Hana Galijasevic, Hannah Kim, Hannah\nRashkin, Hannaneh Hajishirzi, Harsh Mehta, Hay-\nden Bogar, Henry Shevlin, Hinrich Schütze, Hiromu\nYakura, Hongming Zhang, Hugh Mee Wong, Ian Ng,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "Yakura, Hongming Zhang, Hugh Mee Wong, Ian Ng,\nIsaac Noble, Jaap Jumelet, Jack Geissinger, Jack-\nson Kernion, Jacob Hilton, Jaehoon Lee, Jaime Fer-\nnández Fisac, James B. Simon, James Koppel,\nJames Zheng, James Zou, Jan Koco´n, Jana Thomp-\nson, Jared Kaplan, Jarema Radom, Jascha Sohl-\nDickstein, Jason Phang, Jason Wei, Jason Yosin-\nski, Jekaterina Novikova, Jelle Bosscher, Jennifer\nMarsh, Jeremy Kim, Jeroen Taal, Jesse Engel, Je-\nsujoba Alabi, Jiacheng Xu, Jiaming Song, Jillian",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "sujoba Alabi, Jiacheng Xu, Jiaming Song, Jillian\nTang, Joan Waweru, John Burden, John Miller,\nJohn U. Balis, Jonathan Berant, Jörg Frohberg, Jos\nRozen, Jose Hernandez-Orallo, Joseph Boudeman,\nJoseph Jones, Joshua B. Tenenbaum, Joshua S. Rule,\nJoyce Chua, Kamil Kanclerz, Karen Livescu, Karl\nKrauth, Karthik Gopalakrishnan, Katerina Ignatyeva,\nKatja Markert, Kaustubh D. Dhole, Kevin Gim-\npel, Kevin Omondi, Kory Mathewson, Kristen Chi-\nafullo, Ksenia Shkaruta, Kumar Shridhar, Kyle Mc-",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "afullo, Ksenia Shkaruta, Kumar Shridhar, Kyle Mc-\nDonell, Kyle Richardson, Laria Reynolds, Leo Gao,\nLi Zhang, Liam Dugan, Lianhui Qin, Lidia Contreras-\nOchando, Louis-Philippe Morency, Luca Moschella,\nLucas Lam, Lucy Noble, Ludwig Schmidt, Luheng\nHe, Luis Oliveros Colón, Luke Metz, Lütfi Kerem\n{¸S}enel, Maarten Bosma, Maarten Sap, Maartje ter\nHoeve, Maheen Farooqi, Manaal Faruqui, Mantas\nMazeika, Marco Baturan, Marco Marelli, Marco\nMaru, Maria Jose Ramírez Quintana, Marie Tolkiehn,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "Mario Giulianelli, Martha Lewis, Martin Potthast,\nMatthew L. Leavitt, Matthias Hagen, Mátyás Schu-\nbert, Medina Orduna Baitemirova, Melody Arnaud,\nMelvin McElrath, Michael A. Yee, Michael Cohen,\nMichael Gu, Michael Ivanitskiy, Michael Starritt,\nMichael Strube, Micha{ł} Sw{˛e}drowski, Michele\nBevilacqua, Michihiro Yasunaga, Mihir Kale, Mike\nCain, Mimee Xu, Mirac Suzgun, Mo Tiwari, Mo-\nhit Bansal, Moin Aminnaseri, Mor Geva, Mozhdeh\nGheini, Mukund Varma T, Nanyun Peng, Nathan",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "Gheini, Mukund Varma T, Nanyun Peng, Nathan\nChi, Nayeon Lee, Neta Gur-Ari Krakover, Nicholas\nCameron, Nicholas Roberts, Nick Doiron, Nikita\nNangia, Niklas Deckers, Niklas Muennighoff, Ni-\ntish Shirish Keskar, Niveditha S. Iyer, Noah Con-\nstant, Noah Fiedel, Nuan Wen, Oliver Zhang, Omar\nAgha, Omar Elbaghdadi, Omer Levy, Owain Evans,\nPablo Antonio Moreno Casares, Parth Doshi, Pascale\nFung, Paul Pu Liang, Paul Vicol, Pegah Alipoormo-\nlabashi, Peiyuan Liao, Percy Liang, Peter Chang,",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "labashi, Peiyuan Liao, Percy Liang, Peter Chang,\nPeter Eckersley, Phu Mon Htut, Pinyu Hwang, Piotr\nMi{ł}kowski, Piyush Patil, Pouya Pezeshkpour, Priti\nOli, Qiaozhu Mei, Qing Lyu, Qinlang Chen, Rabin\nBanjade, Rachel Etta Rudolph, Raefer Gabriel, Rahel\nHabacker, Ramón Risco Delgado, Raphaël Millière,\nRhythm Garg, Richard Barnes, Rif A. Saurous, Riku\nArakawa, Robbe Raymaekers, Robert Frank, Rohan\nSikand, Roman Novak, Roman Sitelew, Ronan Le-\nBras, Rosanne Liu, Rowan Jacobs, Rui Zhang, Rus-",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "Bras, Rosanne Liu, Rowan Jacobs, Rui Zhang, Rus-\nlan Salakhutdinov, Ryan Chi, Ryan Lee, Ryan Sto-\nvall, Ryan Teehan, Rylan Yang, Sahib Singh, Saif M.\nMohammad, Sajant Anand, Sam Dillavou, Sam",
+      "source": "dit.pdf",
+      "page": 12,
+      "char_count": 191,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "Shleifer, Sam Wiseman, Samuel Gruetter, Samuel R.\nBowman, Samuel S. Schoenholz, Sanghyun Han,\nSanjeev Kwatra, Sarah A. Rous, Sarik Ghazarian,\nSayan Ghosh, Sean Casey, Sebastian Bischoff, Sebas-\ntian Gehrmann, Sebastian Schuster, Sepideh Sadeghi,\nShadi Hamdan, Sharon Zhou, Shashank Srivastava,\nSherry Shi, Shikhar Singh, Shima Asaadi, Shixi-\nang Shane Gu, Shubh Pachchigar, Shubham Toshni-\nwal, Shyam Upadhyay, Shyamolima (Shammie) Deb-\nnath, Siamak Shakeri, Simon Thormeyer, Simone",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "nath, Siamak Shakeri, Simon Thormeyer, Simone\nMelzi, Siva Reddy, Sneha Priscilla Makini, Soo-\nHwan Lee, Spencer Torene, Sriharsha Hatwar, Stanis-\nlas Dehaene, Stefan Divic, Stefano Ermon, Stella Bi-\nderman, Stephanie Lin, Stephen Prasad, Steven T. Pi-\nantadosi, Stuart M. Shieber, Summer Misherghi, Svet-\nlana Kiritchenko, Swaroop Mishra, Tal Linzen, Tal\nSchuster, Tao Li, Tao Yu, Tariq Ali, Tatsu Hashimoto,\nTe-Lin Wu, Théo Desbordes, Theodore Rothschild,\nThomas Phan, Tianle Wang, Tiberius Nkinyili, Timo",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "Thomas Phan, Tianle Wang, Tiberius Nkinyili, Timo\nSchick, Timofei Kornev, Timothy Telleen-Lawton,\nTitus Tunduny, Tobias Gerstenberg, Trenton Chang,\nTrishala Neeraj, Tushar Khot, Tyler Shultz, Uri Sha-\nham, Vedant Misra, Vera Demberg, Victoria Nyamai,\nVikas Raunak, Vinay Ramasesh, Vinay Uday Prabhu,\nVishakh Padmakumar, Vivek Srikumar, William Fe-\ndus, William Saunders, William Zhang, Wout Vossen,\nXiang Ren, Xiaoyu Tong, Xinran Zhao, Xinyi Wu,\nXudong Shen, Yadollah Yaghoobzadeh, Yair Lakretz,",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "Xudong Shen, Yadollah Yaghoobzadeh, Yair Lakretz,\nYangqiu Song, Yasaman Bahri, Yejin Choi, Yichi\nYang, Yiding Hao, Yifu Chen, Yonatan Belinkov,\nYu Hou, Yufang Hou, Yuntao Bai, Zachary Seid,\nZhuoye Zhao, Zijian Wang, Zijie J. Wang, Zirui\nWang, and Ziyi Wu. 2022. Beyond the imitation\ngame: Quantifying and extrapolating the capabilities\nof language models.\nTian-Xiang Sun, Xiang-Yang Liu, Xi-Peng Qiu, and\nXuan-Jing Huang. 2022. Paradigm shift in natural\nlanguage processing. Machine Intelligence Research,",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "19(3):169–183.\nXingwu Sun, Jing Liu, Yajuan Lyu, Wei He, Yanjun Ma,\nand Shi Wang. 2018. Answer-focused and position-\naware neural question generation. In Proceedings of\nthe 2018 Conference on Empirical Methods in Nat-\nural Language Processing, pages 3930–3939, Brus-\nsels, Belgium. Association for Computational Lin-\nguistics.\nAlon Talmor, Jonathan Herzig, Nicholas Lourie, and\nJonathan Berant. 2018. Commonsenseqa: A question\nanswering challenge targeting commonsense knowl-",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "answering challenge targeting commonsense knowl-\nedge. north american chapter of the association for\ncomputational linguistics.\nBoshi Wang, Sewon Min, Xiang Deng, Jiaming Shen,\nYou Wu, Luke Zettlemoyer, and Huan Sun. 2022a.\nTowards understanding chain-of-thought prompting:\nAn empirical study of what matters. In Annual Meet-\ning of the Association for Computational Linguistics.\nLei Wang, Yan Wang, Deng Cai, Dongxiang Zhang,\nand Xiaojiang Liu. 2018. Translating a math word",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "and Xiaojiang Liu. 2018. Translating a math word\nproblem to a expression tree. empirical methods in\nnatural language processing.\nSiyuan Wang, Wanjun Zhong, Duyu Tang, Zhongyu\nWei, Zhihao Fan, Daxin Jiang, Ming Zhou, and Nan\nDuan. 2022b. Logic-driven context extension and\ndata augmentation for logical reasoning of text. In\nFindings of the Association for Computational Lin-\nguistics: ACL 2022, pages 1619–1629, Dublin, Ire-\nland. Association for Computational Linguistics.",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "land. Association for Computational Linguistics.\nXinyi Wang, Wanrong Zhu, Michael Saxon, Mark\nSteyvers, and William Yang Wang. 2023a. Large lan-\nguage models are implicitly topic models: Explain-\ning and finding good demonstrations for in-context\nlearning.\nXuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V Le,\nEd H. Chi, Sharan Narang, Aakanksha Chowdhery,\nand Denny Zhou. 2023b. Self-consistency improves\nchain of thought reasoning in language models. In\nThe Eleventh International Conference on Learning",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "The Eleventh International Conference on Learning\nRepresentations.\nXuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V Le,\nEd H. Chi, Sharan Narang, Aakanksha Chowdhery,\nand Denny Zhou. 2023c. Self-consistency improves\nchain of thought reasoning in language models. In\nThe Eleventh International Conference on Learning\nRepresentations.\nJason Wei, Xuezhi Wang, Dale Schuurmans, Maarten\nBosma, Ed Chi, Quoc Le, and Denny Zhou. 2022.\nChain of thought prompting elicits reasoning in large",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "language models. arXiv preprint arXiv:2201.11903.\nYixuan Weng, Bin Li, Fei Xia, Minjun Zhu, Bing Sun,\nShizhu He, Kang Liu, and Jun Zhao. 2023a. Large\nlanguage models need holistically thought in medical\nconversational qa. ArXiv, abs/2305.05410.\nYixuan Weng, Minjun Zhu, Fei Xia, Bin Li, Shizhu\nHe, Kang Liu, and Jun Zhao. 2023b.\nMastering\nsymbolic operations: Augmenting language models\nwith compiled neural networks.\nFei Xia, Bin Li, Yixuan Weng, Shizhu He, Kang Liu,",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "Bin Sun, Shutao Li, and Jun Zhao. 2022. Medconqa:\nMedical conversational question answering system\nbased on knowledge graphs. In Conference on Em-\npirical Methods in Natural Language Processing.\nYisheng Xiao, Lijun Wu, Junliang Guo, Juntao Li, Min\nZhang, Tao Qin, and Tie-yan Liu. 2022. A survey\non non-autoregressive generation for neural machine\ntranslation and beyond.\nYichong Xu, Chenguang Zhu, Shuohang Wang, Siqi\nSun, Hao Cheng, Xiaodong Liu, Jianfeng Gao,\nPengcheng He, Michael Zeng, and Xuedong Huang.",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "Pengcheng He, Michael Zeng, and Xuedong Huang.\n2022. Human parity on commonsenseqa: Augment-\ning self-attention with external attention.\nOri Yoran, Alon Talmor, and Jonathan Berant. 2021.\nTurning tables: Generating examples from semi-\nstructured tables for endowing language models with\nreasoning skills. arXiv: Computation and Language.",
+      "source": "dit.pdf",
+      "page": 13,
+      "char_count": 337,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "Weihao Yu, Zihang Jiang, Yanfei Dong, and Jiashi Feng.\n2020. Reclor: A reading comprehension dataset re-\nquiring logical reasoning. international conference\non learning representations.\nZihan Yu, Liang He, Zhen Wu, Xinyu Dai, and Jia-\njun Chen. 2023. Towards better chain-of-thought\nprompting strategies: A survey.\nZhuosheng Zhang, Aston Zhang, Mu Li, and Alex\nSmola. 2022. Automatic chain of thought prompting\nin large language models.\nDenny Zhou, Nathanael Schärli, Le Hou, Jason Wei,",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "Denny Zhou, Nathanael Schärli, Le Hou, Jason Wei,\nNathan Scales, Xuezhi Wang, Dale Schuurmans,\nClaire Cui, Olivier Bousquet, Quoc Le, and Ed Chi.\n2023. Least-to-most prompting enables complex rea-\nsoning in large language models.\nMinjun Zhu, Bin Li, Yixuan Weng, and F. Xia. 2022a.\nA knowledge storage and semantic space alignment\nmethod for multi-documents dialogue generation. In\nWorkshop on Document-grounded Dialogue and Con-\nversational Question Answering.\nMinjun Zhu, Yixuan Weng, Shizhu He, Kang Liu, and",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "Minjun Zhu, Yixuan Weng, Shizhu He, Kang Liu, and\nJun Zhao. 2022b. Reasonchainqa: Text-based com-\nplex question answering with explainable evidence\nchains. ArXiv, abs/2210.08763.\nMinjun Zhu, Yixuan Weng, Shizhu He, Cunguang\nWang, Kang Liu, Li Cai, and Jun Zhao. 2023. Learn-\ning to build reasoning chains by reliable path retrieval.\nIn ICASSP 2023-2023 IEEE International Confer-\nence on Acoustics, Speech and Signal Processing\n(ICASSP), pages 1–5. IEEE.\nA\nAppendix\nA.1\nAnswer Cleansing",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "A\nAppendix\nA.1\nAnswer Cleansing\nOur answer cleaning strategy is consistent with\nWang et al. (2023b) and Zhang et al. (2022). The\nfirst number after selecting “The answer is” is re-\ngarded as an output for arithmetic tasks, and we\nuse Numpy (Harris et al., 2020) to compare it with\nthe standard answer. For multiple choice tasks, we\nregard the first capital letter as output.\nFor the “True-False Item Verification”, we use\n“True or False” to select answer. Table 3 summa-",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "“True or False” to select answer. Table 3 summa-\nrizes a list of answer cleansing approaches used\nacross all the experiments.\nA.2\nDataset Details\nOur method is evaluated on eight benchmark\ndatasets that cover arithmetic reasoning, common-\nsense reasoning, and logical reasoning tasks. The\nstatistics of the datasets are shown in Table 6.\nWe list the details for all datasets used in this\npaper.\n• GSM8K:\nhttps://github.com/openai/\ngrade-school-math\n• SingleEq:\nhttps://gitlab.cs.\nwashington.edu/ALGES/TACL2015",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "https://gitlab.cs.\nwashington.edu/ALGES/TACL2015\n• AddSub:\nhttps://www.cs.washington.\nedu/nlp/arithmetic\n• MultiArith:\nhttp://cogcomp.cs.\nillinois.edu/page/resource_view/98\n• AQUA-RAT:\nhttps://github.com/\ndeepmind/AQuA\n• SVAMP:\nhttps://github.com/\narkilpatel/SVAMP\n• CSQA:\nhttps://www.tau-nlp.org/\ncommonsenseqa\n• Data Understanding:\nhttps://github.\ncom/google/BIG-bench\nA.3\nReproducibility Statement\nAll our experiments in the main text were run us-\ning the OpenAI API on November 20th to Decem-",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "ing the OpenAI API on November 20th to Decem-\nber 20th, 2022. The main experiment was run\non November 25th to December 10th, the single-\ncondition rxperiment was run on November 20th\nto 25th, the Few CoT prompts experiment was run\non December 12th, the True-False Item Verifica-\ntion experiment was run on December 12th to 15th,\nthe different sizes models experiment was run on\nDecember 16th, and the computational reasource\nexperiment was run on December 18th.\nA.4\nAdditional Experiment Results",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "A.4\nAdditional Experiment Results\nIn Table 5, we show whether to generate real exam-\nples of multiple condition masks. We found that if\nonly the first condition mask is used, the score is\nzero, and multiple evidence masks can obtain more\naccurate verification scores.\nThen, Table shows the difference between (A)\nConditional Masked Verification and (B) True-\nFalse Item Verification. The difference between\nthe two lies in whether the condition mask is cor-\nrect and the template for the question.\nFinally,\nwe",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "Finally,\nwe\ngenerated\nsome\nself-\nverification examples using the Instruct-GPT\n(code-davinci-002) model. As show in Table 7.",
+      "source": "dit.pdf",
+      "page": 14,
+      "char_count": 123,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "Answer\nFormat\nAnswer Cleansing\nApproach\nPseudo Code\n(Example in Pytorch 3.7)\nNumber\nPick up the first number\nencountered in the text.\npred = pred.replace(\",\", \"\")\npred = [s for s in re.findall(r’ -?\\d+\\.?\\d*\n’, pred)]\npred = pred [0]\nMultiple-\nChoice\nPick up the first large letter\nencountered in the text.\npred = re.findall(r’A|B|C|D|E’, pred)\npred = pred [0]\nTrue or False\nPick up the first \"True\" or\n\"False\" encountered in the\ntext after removing unnec-\nessary letters.\npred = pred.lower ()",
+      "source": "dit.pdf",
+      "page": 15,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "essary letters.\npred = pred.lower ()\npred = re.sub(\"\\\"|\\ ’|\\n|\\.|\\s|\\:|\\ ,\",\"␣\",\npred)\npred = pred.split(\"␣\")\npred = [i for i in pred if i in (\"True\", \"\nFalse\")]\npred = pred [0]\nYes or No\nPick up the first \"yes\" or\n\"no\" encountered in the\ntext after removing unnec-\nessary letters.\npred = pred.lower ()\npred = re.sub(\"\\\"|\\ ’|\\n|\\.|\\s|\\:|\\ ,\",\"␣\",\npred)\npred = pred.split(\"␣\")\npred = [i for i in pred if i in (\"yes\", \"no\n\")]\npred = pred [0]\nFree Format\nJust remove unnecessary\nletters, such as \".\".",
+      "source": "dit.pdf",
+      "page": 15,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "Just remove unnecessary\nletters, such as \".\".\npred = re.sub(\"\\\"|\\ ’|\\n|\\.|\\s\",\"\", pred)\nTable 3: Detail description of answer cleansing.\nQ:  'Shawn has five toys. For Christmas, he got two toys each from his mom and \ndad. He has 9 toys now.' Do it is correct (True or False)?\nA: If Shawn now has 9 toys and his parents gaven him two each, then he originally \nhad 9 - 2 - 2 = 5, which is consistent with the theme. The answer is True.",
+      "source": "dit.pdf",
+      "page": 15,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "Q:  \"Shawn has 'X' toys. For Christmas, he got two toys each from his mom and \ndad. He has 9 toys now.\" What is the answer of 'X'?\nA: Shawn started with X toys. If he got 2 toys each from his mom and dad, then \nthat is 4 more toys. X + 4 = 9, X = 9 - 4, X = 5. The answer is 5.\n(A) Conditional Masked Verification                               \n(B) True-False Item Verification\nFigure 8: Sample comparison of different verification\nmethods\nA.5\nForward reasoning prompt",
+      "source": "dit.pdf",
+      "page": 15,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "methods\nA.5\nForward reasoning prompt\nFor fairness, we used the same CoT prompts cue\nas Wei et al. (2022) in forward reasoning.\nAs show in Table 8, Table 9, Table 10, Table 11.\nA.6\nBackward Verification prompt\nWhen backward verification, we manually wrote\nsome examples referring to Wei et al. (2022).\nAs show in Table 12, Table 13, Table 14, Table\n15.\nA.7\nTrue-False Item Verification prompt\nIn order to test True-False Item Verification, we\ndesigned some prompts to guide the LLMs to con-",
+      "source": "dit.pdf",
+      "page": 15,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "designed some prompts to guide the LLMs to con-\nsider whether the conclusion is wrong.\nAs show in Table 16, Table 17.",
+      "source": "dit.pdf",
+      "page": 15,
+      "char_count": 117,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "EXAMPLE\nQ: Tim wanted to make lemonade for a pool party. For a gallon of lemonade, his recipe called for 1 cup of fresh lemon\njuice. He found that 6 lemons would yield 1 cup of juice. He figured he would need to make 4 gallons of lemonade for\nthe party. His best friend Allen asked if Tim could make an extra gallon for him that was twice as tart as the other gallons.\nHow many lemons will Tim need? A: The answer is 36. (That’s the right answer.)\nTrue-False\nItem\nVerification",
+      "source": "dit.pdf",
+      "page": 16,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "True-False\nItem\nVerification\nIf Tim will need 36 lemons, and he will need to make 4 gallons of lemonade for the party, so he will need\n4 * 6 = 24 lemons, he will need to make an extra gallonfor him that was twice as tart as the other gallons,\nso he will need 24 * 2 = 48 lemons,48 != 36, which is different from the theme. The answer is False. [✗]\nConditional\nMasked\nVerification\nTim wanted to make lemonade for a pool party. For a gallon of lemonade, his recipe called for X cup of",
+      "source": "dit.pdf",
+      "page": 16,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "fresh lemon juice. He found that 6 lemons would yield 1 cup of juice. He figured he would need to make\n4 gallons of lemonade for the party. His best friend Allen asked if Tim could make an extra gallon for\nhim that was twice as tart as the other gallons. Tim will need 36.0 lemons. X * 6 * 4 + X * 6 * 2 = 36,\n36 * X = 36, X = 1. The answer is 1. [✓]\nTable 4: We have selected an actual generated examples to further demonstrate the impact of different verification\nmethods.",
+      "source": "dit.pdf",
+      "page": 16,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "methods.\nEXAMPLE 2 (Condition is not required)\nQ: Dana worked 9 hours on Friday, 10 hours on Saturday, and 3 hours on Sunday.\nShe earns $13 per hour. How much money did Dana earn in weekend?\nA: Dana earns 13 dollars per hour. She worked 10 hours on Saturday, and 3 hours on Sunday.\nSo she earned 13 * (10 + 3) = 13 * 13 = 169 dollars. The answer is 169. [✓]\nCondition 1 mask\nCondition 2 mask\n...\nQ: Dana worked ’X’ hours on Friday, 10 hours\non Saturday, and 3 hours on Sunday. She earns",
+      "source": "dit.pdf",
+      "page": 16,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "on Saturday, and 3 hours on Sunday. She earns\n$13 per hour. Dana earn 169 money in weekend.\nQ: Dana worked 9 hours on Friday, ’X’ hours\non Saturday, and 3 hours on Sunday. She earns\n$13 per hour. Dana earn 169 money in weekend.\n...\nSeparate score: 0\nSeparate score: 8\n...\nTotal verification score: 19\nTable 5: This is an example of the need to use multiple Conditions.\nDataset\nNumber of samples\nAverage words\nAnswer Format\nLience\nGSM8K\n1319\n46.9\nNumber\nMIT License\nSingleEq\n508\n27.4\nNumber\nMIT License\nAddSub",
+      "source": "dit.pdf",
+      "page": 16,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "SingleEq\n508\n27.4\nNumber\nMIT License\nAddSub\n395\n31.5\nNumber\nUnspecified\nMultiArith\n600\n31.8\nNumber\nUnspecified\nAQUA-RAT\n254\n51.9\nMultiple Choice\nApache-2.0\nSVAMP\n1000\n31.8\nNumber\nMIT License\nCSQA\n1221\n27.8\nMultiple Choice\nUnspecified\nData Understanding\n369\n21.4\nDate\nUnspecified\nTable 6: Dataset Description.",
+      "source": "dit.pdf",
+      "page": 16,
+      "char_count": 308,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "Table 7: Example outputs by self-verification for each datasets.\nDataset\nQuestion\nSelf-Verification\nGSM8K\nQ: Matthew has a collection of 12\nunique toy soldiers. He wants to\nsell them for a fair price. He found\na buyer who is willing to pay for\nhalf his collection $5 per toy, and\nfor the other half ’X’ per toy. If\nMatthew would agree to that offer,\nHe would earn 72.0 dollars.\nA: Matthew has 12 unique toy soldiers. He wants\nto sell them for a fair price. He found a buyer",
+      "source": "dit.pdf",
+      "page": 17,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "to sell them for a fair price. He found a buyer\nwho is willing to pay for half his collection $5 per\ntoy. and for the other half $X per toy. If Matthew\nwould agree to that offer. He would earn 72.0\ndollars. 12 / 2 = 6 6 * 5 = 30 12 - 6 = 6 6 * X =\n42 X = 42 / 6 X = 7 The answer is 7. [✓]\nContinued on next page",
+      "source": "dit.pdf",
+      "page": 17,
+      "char_count": 311,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "Table 7 – Continued from previous page\nDataset\nQuestion\nSelf-Verification\nQ: Four students scored a total of\n251 points in a board game. Naomi\nscored 68 of the points. Yuri scored\n’X’ more than half as many points\nas Naomi and Brianna scored 17\npoints more than Naomi.\nJojo\nscored 54 points.\nFour students scored a total of 251 points. Naomi\nscored 68 points. Yuri scored X points. Brianna\nscored 17 points more than Naomi. Jojo scored\n54 points. So: 68 + X + 68 + 17 + 54 = 251, X =",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 158,
+      "text": "54 points. So: 68 + X + 68 + 17 + 54 = 251, X =\n251 - 68 - 68 - 17 - 54, X = 94. The answer is 94.\n[✗](GT : 10)\nSingleEq\nQ: Sam grew 4 watermelons, but\nthe rabbits ate ’X’ watermelons.\nSam have 1 watermelon left.\nA:Sam grew 4 watermelons. But the rabbits ate\nX watermelons. So, we can write the following\nequation: 4 - X = 1, X = 4 - 1, X = 3. The answer\nis 3. [✓]\nQ: Melanie, Benny, Sandy, and Jes-\nsica each have ’X’ dozen Pokemon\ncards. They have 432 pokemon\ncards in all.",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 159,
+      "text": "cards. They have 432 pokemon\ncards in all.\nA: Melanie has X dozen Pokemon cards. Benny\nhas X dozen Pokemon cards. Sandy has X dozen\nPokemon cards. Jessica has X dozen Pokemon\ncards. So, they have 4 X dozen Pokemon cards\nin total. X * 4 = 432, X = 432 / 4, X = 108. The\nanswer is 108. [✗](GT : 9)\nAddsub\nQ: Karin ’s science class weighed\nplastic rings for an experiment .\nThey found that the orange ring\nweighed ’X’ ounce , the purple ring\nweighed\n0.3333333333333333\nounce , and the white ring weighed",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 160,
+      "text": "ounce , and the white ring weighed\n0.4166666666666667 ounce . The\ntotal weight of the plastic rings is\n0.8333333333333334.\nA:\nThe\norange\nring\nweighed\n0.08333333333333333 ounce.\nthe purple\nring weighed 0.3333333333333333 ounce. and\nthe white ring weighed 0.4166666666666667\nounce. The total weight of the plastic rings is\n0.8333333333333334. 0.08333333333333333 +\n0.3333333333333333 + 0.4166666666666667\n= 0.8333333333333334 0.8333333333333334 -\n0.4166666666666667 = 0.4166666666666667",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 161,
+      "text": "0.4166666666666667 = 0.4166666666666667\n0.4166666666666667 - 0.3333333333333333\n=\n0.08333333333333334\nThe\nanswer\nis\n0.08333333333333334. [✓]\nQ: There were 6 roses in the vase\n. Mary cut some roses from her\nflower garden . There are now ’X’\nroses in the vase . She cut 10 roses.\nA: There were originally 6 roses in the vase. Mary\ncut 10 roses from her flower garden. So there are\nnow X roses in the vase. <code> 6 - 10 = X X =\n-4 </code> The answer is -4. [✗](GT : 16)\nMultiArith\nQ: Luke was organizing his base-",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 162,
+      "text": "MultiArith\nQ: Luke was organizing his base-\nball cards in a binder with 3 on\neach page. If he had 3 new cards\nand ’X’ old cards to put in the\nbinder, he use 4 pages.\nA: Luke had 3 new cards and X old cards. He\nwould use 4.0 pages. So, we can write the follow-\ning equation: 3 + X = 3 * 4.0, 3 + X = 12, X = 12\n- 3 X = 9. The answer is 9. [✓]\nQ: Will bought 7 boxes of choco-\nlate candy and gave 3 to his little\nbrother. If each box has ’X’ pieces\ninside it, Will still have 16 pieces.",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 163,
+      "text": "inside it, Will still have 16 pieces.\nA: Will bought 7 boxes of chocolate candy. Each\nbox has X pieces inside it. He gave 3 boxes to his\nlittle brother. So he has 4 boxes left. 7 * X = Y,\nY - 3 * X = 16, Y = 16 + 3 * X, Y = 16 + 3 * X.\nThe answer is 16. [✗](GT : 4)\nContinued on next page",
+      "source": "dit.pdf",
+      "page": 18,
+      "char_count": 288,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 164,
+      "text": "Table 7 – Continued from previous page\nDataset\nQuestion\nSelf-Verification\nSVAMP\nQ: Jake has 3 fewer peaches and 10\nmore apples than Steven. Steven\nhas ’X’ peaches and 15 apples.\nSteven has 3.0 more apples than\npeaches.\nA: Jake has 3 fewer peaches and 10 more apples\nthan Steven. Steven has X peaches and 15 apples.\nSteven has 3.0 more apples than peaches. X + 3\n= 15, X = 15 - 3, X = 1.2 The answer is 12. [✓]\nQ: An industrial machine can make\n6 shirts a minute. It worked for 5",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 165,
+      "text": "6 shirts a minute. It worked for 5\nminutes yesterday and for ’X’ min-\nutes today. The machine made 72\nshirts today.\nA: The machine can make 6 shirts a minute. It\nworked for 5 minutes yesterday and for X minutes\ntoday. The machine made 72 shirts today. So, we\ncan write the following equation: 6 * 5 + 6 * X =\n72, 30 + 6X = 72, 6X = 72 - 30, 6X = 42, X = 42\n/ 6 X = 7. The answer is 7. [✗](GT : 12)\nCommon-\nsenseQA\nQ: If there is a pond with trees\naround it, it likely located in for-\nest.",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 166,
+      "text": "around it, it likely located in for-\nest.\nA: he forest is likely located where there is a pond\nwith trees around it. The answer is Yes. [✓]\nQ: The flasks was used to distill\nelements, it is used in chemistry\nlab.\nA: The answer should be the place where the\nflask is used. But the chemistry lab is not suitable\nplace where the flask is used. The answer is No.\n[✗](GT : Yes)\nDate\nUnder-\nstand.\nQ: It was ’X’/01/2021 a week ago.\nToday is 09/08/2021.\nA: If today is 09/08/2021, so the date a week ago",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 167,
+      "text": "A: If today is 09/08/2021, so the date a week ago\nis 09/01/2021. The answer is 09. [✓]\nQ: Yesterday, Jan 21, 2011, Jane\nate 2 pizzas and 5 wings. One week\nago from today is 01/15/2011.\nA: one week ago from today is 01/15/2011. So\ntoday is 01/22/2011. So yesterday is 01/21/2011.\nSo Jan ’X’1 is 01/21/2011. So ’X’011 is 2011.\nSo The answer is 2011. [✗](GT : B)\nTable 8: Few-shot exemplars for full chain of thought prompt for AQuA.\nPROMPT FOR AQUA ALGEBRAIC WORD PROBLEMS",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 168,
+      "text": "PROMPT FOR AQUA ALGEBRAIC WORD PROBLEMS\nQ: John found that the average of 15 numbers is 40. If 10 is added to each number then the mean of the numbers is?\nAnswer Choices: (a) 50 (b) 45 (c) 65 (d) 78 (e) 64\nA: If 10 is added to each number, then the mean of the numbers also increases by 10. So the new mean would be 50. The\nanswer is (a).\nQ: If a / b = 3/4 and 8a + 5b = 22,then find the value of a.\nAnswer Choices: (a) 1/2 (b) 3/2 (c) 5/2 (d) 4/2 (e) 7/2",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 169,
+      "text": "A: If a / b = 3/4, then b = 4a / 3. So 8a + 5(4a / 3) = 22. This simplifies to 8a + 20a / 3 = 22, which means 44a / 3 = 22. So\na is equal to 3/2. The answer is (b).\nQ: A person is traveling at 20 km/hr and reached his destiny in 2.5 hr then find the distance?\nAnswer Choices: (a) 53 km (b) 55 km (c) 52 km (d) 60 km (e) 50 km\nA: The distance that the person traveled would have been 20 km/hr * 2.5 hrs = 50 km. The answer is (e).\nQ: How many keystrokes are needed to type the numbers from 1 to 500?",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 170,
+      "text": "Answer Choices: (a) 1156 (b) 1392 (c) 1480 (d) 1562 (e) 1788\nA: There are 9 one-digit numbers from 1 to 9. There are 90 two-digit numbers from 10 to 99. There are 401 three-digit\nnumbers from 100 to 500. 9 + 90(2) + 401(3) = 1392. The answer is (b).",
+      "source": "dit.pdf",
+      "page": 19,
+      "char_count": 249,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 171,
+      "text": "Table 9: Few-shot exemplars for full chain of thought prompt for Date Understanding.\nPROMPT FOR DATE UNDERSTANDING\nQ: 2015 is coming in 36 hours. What is the date one week from today in MM/DD/YYYY?\nA: If 2015 is coming in 36 hours, then it is coming in 2 days. 2 days before 01/01/2015 is 12/30/2014, so today is\n12/30/2014. So one week from today will be 01/05/2015. So the answer is 01/05/2015.\nQ: The first day of 2019 is a Tuesday, and today is the first Monday of 2019. What is the date today in MM/DD/YYYY?",
+      "source": "dit.pdf",
+      "page": 20,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 172,
+      "text": "A: If the first day of 2019 was Tuesday, then 01/01/2019 was a Tuesday. Today is the first monday, would be six days later.\nSo today is 01/07/2019. So the answer is 01/07/2019.\nQ: The concert was scheduled to be on 06/01/1943, but was delayed by one day to today. What is the date 10 days ago in\nMM/DD/YYYY?\nA: One day after 06/01/1943 is 06/02/1943, so today is 06/02/1943. 10 days before today is 05/23/1943. So the answer is\n05/23/1943.",
+      "source": "dit.pdf",
+      "page": 20,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 173,
+      "text": "05/23/1943.\nQ: It is 4/19/1969 today. What is the date 24 hours later in MM/DD/YYYY?\nA: Today is 04/19/1969. 24 hours later is one day after today, which would be 04/20/1969. So the answer is 04/20/1969.\nQ: Jane thought today is 3/11/2002, but today is in fact Mar 12, which is 1 day later. What is the date 24 hours later in\nMM/DD/YYYY?\nA: Today is 03/12/2002. So the date 24 hours later will be 03/13/2002. So the answer is 03/13/2002.",
+      "source": "dit.pdf",
+      "page": 20,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 174,
+      "text": "Q: Jane was born on the last day of Feburary in 2001. Today is her 16-year-old birthday. What is the date yesterday in\nMM/DD/YYYY?\nA: The last day of February is the 28th, so Jane was born on 02/28/2001. Today is her 16-year old birthday, so today is\n02/28/2017. So yesterday was 02/27/2017. So the answer is 02/27/2017.",
+      "source": "dit.pdf",
+      "page": 20,
+      "char_count": 320,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 175,
+      "text": "Table 10: Few-shot exemplars for full chain of thought prompt for math word problems. This set of exemplars was\nused for all math word problem datasets except AQuA.\nPROMPT FOR MATH WORD PROBLEMS\nQ: There are 15 trees in the grove. Grove workers will plant trees in the grove today. After they are done, there will be 21\ntrees. How many trees did the grove workers plant today?\nA: There are 15 trees originally. Then there were 21 trees after some more were planted. So there must have been 21 - 15",
+      "source": "dit.pdf",
+      "page": 21,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 176,
+      "text": "= 6. The answer is 6.\nQ: If there are 3 cars in the parking lot and 2 more cars arrive, how many cars are in the parking lot?\nA: There are originally 3 cars. 2 more cars arrive. 3 + 2 = 5. The answer is 5.\nQ: Leah had 32 chocolates and her sister had 42. If they ate 35, how many pieces do they have left in total?\nA: Originally, Leah had 32 chocolates. Her sister had 42. So in total they had 32 + 42 = 74. After eating 35, they had 74 -\n35 = 39. The answer is 39.",
+      "source": "dit.pdf",
+      "page": 21,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 177,
+      "text": "35 = 39. The answer is 39.\nQ: Jason had 20 lollipops. He gave Denny some lollipops. Now Jason has 12 lollipops. How many lollipops did Jason\ngive to Denny?\nA: Jason started with 20 lollipops. Then he had 12 after giving some to Denny. So he gave Denny 20 - 12 = 8. The answer\nis 8.\nQ: Shawn has five toys. For Christmas, he got two toys each from his mom and dad. How many toys does he have now?",
+      "source": "dit.pdf",
+      "page": 21,
+      "char_count": 395,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 178,
+      "text": "A: Shawn started with 5 toys. If he got 2 toys each from his mom and dad, then that is 4 more toys. 5 + 4 = 9. The answer\nis 9.\nQ: There were nine computers in the server room. Five more computers were installed each day, from monday to thursday.\nHow many computers are now in the server room?\nA: There were originally 9 computers. For each of 4 days, 5 more computers were added. So 5 * 4 = 20 computers were\nadded. 9 + 20 is 29. The answer is 29.",
+      "source": "dit.pdf",
+      "page": 21,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 179,
+      "text": "added. 9 + 20 is 29. The answer is 29.\nQ: Michael had 58 golf balls. On tuesday, he lost 23 golf balls. On wednesday, he lost 2 more. How many golf balls did\nhe have at the end of wednesday?\nA: Michael started with 58 golf balls. After losing 23 on tuesday, he had 58 - 23 = 35. After losing 2 more, he had 35 - 2 =\n33 golf balls. The answer is 33.\nQ: Olivia has $23. She bought five bagels for $3 each. How much money does she have left?",
+      "source": "dit.pdf",
+      "page": 21,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 180,
+      "text": "A: Olivia had 23 dollars. 5 bagels for 3 dollars each will be 5 x 3 = 15 dollars. So she has 23 - 15 dollars left. 23 - 15 is 8.\nThe answer is 8.",
+      "source": "dit.pdf",
+      "page": 21,
+      "char_count": 145,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 181,
+      "text": "Table 11: Few-shot exemplars for full chain of thought prompt for CSQA. There are newlines between the answer\nchoices that are omitted in the table for space reasons.\nPROMPT FOR CSQA\nQ: What do people use to absorb extra ink from a fountain pen? Answer Choices: (a) shirt pocket (b) calligrapher’s hand\n(c) inkwell (d) desk drawer (e) blotter\nA: The answer must be an item that can absorb ink. Of the above choices, only blotters are used to absorb ink. So the\nanswer is (e).",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 182,
+      "text": "answer is (e).\nQ: What home entertainment equipment requires cable?\nAnswer Choices: (a) radio shack (b) substation (c) television (d) cabinet\nA: The answer must require cable. Of the above choices, only television requires cable. So the answer is (c).\nQ: The fox walked from the city into the forest, what was it looking for? Answer Choices: (a) pretty flowers (b) hen house\n(c) natural habitat (d) storybook",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 408,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 183,
+      "text": "(c) natural habitat (d) storybook\nA: The answer must be something in the forest. Of the above choices, only natural habitat is in the forest. So the answer is\n(b).\nQ: Sammy wanted to go to where the people were. Where might he go? Answer Choices: (a) populated areas (b) race\ntrack (c) desert (d) apartment (e) roadblock\nA: The answer must be a place with a lot of people. Of the above choices, only populated areas have a lot of people. So\nthe answer is (a).",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 184,
+      "text": "the answer is (a).\nQ: Where do you put your grapes just before checking out? Answer Choices: (a) mouth (b) grocery cart (c)super market\n(d) fruit basket (e) fruit market\nA: The answer should be the place where grocery items are placed before checking out. Of the above choices, grocery cart\nmakes the most sense for holding grocery items. So the answer is (b).\nQ: Google Maps and other highway and street GPS services have replaced what? Answer Choices: (a) united states (b)\nmexico (c) countryside (d) atlas",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 185,
+      "text": "mexico (c) countryside (d) atlas\nA: The answer must be something that used to do what Google Maps and GPS services do, which is to give directions. Of\nthe above choices, only atlases are used to give directions. So the answer is (d).\nQ: Before getting a divorce, what did the wife feel who was doing all the work? Answer Choices: (a) harder (b) anguish\n(c) bitterness (d) tears (e) sadness\nA: The answer should be the feeling of someone getting divorced who was doing all the work. Of the above choices, the",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 186,
+      "text": "closest feeling is bitterness. So the answer is (c).\nTable 12: Few-shot exemplars for full chain of thought prompt for AQuA when backward verification.\nPROMPT FOR AQUA ALGEBRAIC WORD PROBLEMS\nQ: \"John found that the average of 15 numbers is ’X’. If 10 is added to each number then the mean of the numbers is 50.\"\nWhat is the answer of ’X’?\nA: If 10 is added to each number, then the mean of the numbers also increases by 10. The new mean would be 50., X + 10\n= 50, X = 40. The answer is 40.",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 187,
+      "text": "= 50, X = 40. The answer is 40.\nQ: \"If a / b = ’X’ and 8a + 5b = 22, then the value of a is 3/2.\" What is the answer of ’X’?\nA: If a / b = X, then 8a + 5b = 22 and a = 3/2, so , 8 * 3/2 + 5b = 22, 5b = 22 - 12 = 10, b = 2, X = a / b = 3/2 / 2 = 3/4. The\nanswer is 3/4.\nQ: \"A person is traveling at ’X’ km/hr and reached his destiny in 2.5 hr then find the distance is 50km.\" What is the answer\nof ’X’?",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 401,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 188,
+      "text": "of ’X’?\nA: The distance that the person traveled would have been , X km/hr * 2.5 hrs = 50 k, X = 20. The answer is 20.\nQ: \"There were ’X’ computers in the server room. Five more computers were installed each day, from monday to thursday.\nThere are 29 computers in the server room.\" What is the answer of ’X’?\nA: There were originally X computers. For each of 4 days, 5 more computers were added. So 5 * 4 = 20 computers were\nadded. And there are 29 computers. X + 20 = 29, X = 29 - 20, X = 9. The answer is 9.",
+      "source": "dit.pdf",
+      "page": 22,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 189,
+      "text": "Table 13: Few-shot exemplars for full chain of thought prompt for Date Understanding when backward verification.\nPROMPT FOR DATE UNDERSTANDING\nQ: \"’X’ is coming in 36 hours. One week from today is 01/05/2015.\" What is the answer of ’X’?\nA: If The date one week from today is 01/05/2015, so today is 12/30/2014. So the data after 36 hours is 2015. The answer\nis 2015.\nQ: \"The first day of ’X’ is a Tuesday, and today is the first Monday of 2019. Today is 01/07/2019.\" What is the answer of\n’X’?",
+      "source": "dit.pdf",
+      "page": 23,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 190,
+      "text": "’X’?\nA: If today is the first Monday of 2019 and today is 01/07/2019. So The first day of 2019 is a Tuesday. The answer is 2019.\nQ: \"The concert was scheduled to be on ’X’/01/1943, but was delayed by one day to today. 10 days ago is 05/23/1943.\"\nWhat is the answer of ’X’?\nA: 10 days ago is 05/23/1943, and the concert was delayed by one day to today, so today is 06/02/1943. So the concert\nwas scheduled to be on 06/01/1943 The answer is 06.",
+      "source": "dit.pdf",
+      "page": 23,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 191,
+      "text": "Q: \"It is ’X’/19/1969 today. 24 hours later is 04/20/1969.\" What is the answer of ’X’?\nA: 24 hours later is 04/20/1969. So today is 04/19/1969. The answer is 04.\nQ: \"Jane thought today is ’X’/12/2002, but today is in fact Mar 12, which is 1 day later. 24 hours later is 03/13/2002.\"\nWhat is the answer of ’X’?\nA: 24 hours later is 03/13/2002. So today is 03/12/2002. The answer is 03.\nQ: \"Jane was born on the last day of Feburary in ’X’. Today is her 16-year-old birthday. Yesterday is 02/27/2017\" What is",
+      "source": "dit.pdf",
+      "page": 23,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 192,
+      "text": "the answer of ’X’?\nA: Yesterday is 02/27/2017, so today is 02/28/2017, Jane was born on 02/28/2001. The answer is 2001.",
+      "source": "dit.pdf",
+      "page": 23,
+      "char_count": 119,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 193,
+      "text": "Table 14: Few-shot exemplars for full chain of thought prompt for math word problems when backward verification.\nThis set of exemplars was used for all math word problem datasets except AQuA.\nPROMPT FOR MATH WORD PROBLEMS\nQ: \"There are ’X’ trees in the grove. Grove workers will plant trees in the grove today. After they are done, there will be\n21 trees. The grove workers planted 6 trees today. ¨What is the answer of ’X’?",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 194,
+      "text": "A: There are X trees originally. The grove workers planted 6 trees today. Then there were 21 trees after some more were\nplanted. So, we can write the following equation:X + 6 = 21, X = 21 - 6, X = 15. The answer is 15.\nQ: \"If there are ’X’ cars in the parking lot and 2 more cars arrive, There are 5 cars in the parking lot.\" What is the answer\nof ’X’?\nA: There are originally X cars. 2 more cars arrive and there are 5 cars finally. So: X + 2 = 5, X = 5 - 2, X = 3. The answer\nis 3.",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 195,
+      "text": "is 3.\nQ: \"Leah had ’X’ chocolates and her sister had 42. If they ate 35, they have 39 pieces left in total.\" What is the answer of\n’X’?\nA: Originally, Leah had X chocolates. Her sister had 42. So in total they had: X + 42 = Y. After eating 35, they had 39, so,\nY = 35 + 39, Y = 74, X + 42 = 74, X = 74 - 42, X = 32. The answer is 32.\nQ: \"Jason had 20 lollipops. He gave Denny some lollipops. Now Jason has ’X’ lollipops. Jason gave Denny 8 lollipops.\"\nWhat is the answer of ’X’?",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 196,
+      "text": "What is the answer of ’X’?\nA: Jason started with 20 lollipops. Then he had X after giving some to Denny and gave Denny 8. 20 - X = 8, X = 12. The\nanswer is 12.\nQ: \"Shawn has ’X’ toys. For Christmas, he got two toys each from his mom and dad. He has 9 toys now.\" What is the\nanswer of ’X’?\nA: Shawn started with X toys. If he got 2 toys each from his mom and dad, then that is 4 more toys. X + 4 = 9, X = 9 - 4,\nX = 5. The answer is 5.",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 197,
+      "text": "X = 5. The answer is 5.\nQ: \"There were ’X’ computers in the server room. Five more computers were installed each day, from monday to thursday.\nThere are 29 computers in the server room.\" What is the answer of ’X’?\nA: There were originally X computers. For each of 4 days, 5 more computers were added. So 5 * 4 = 20 computers were\nadded. And there are 29 computers. X + 20 = 29, X = 29 - 20, X = 9. The answer is 9.",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 198,
+      "text": "Q: \"Michael had 58 golf balls. On tuesday, he lost ’X’ golf balls. On wednesday, he lost 2 more. He had 33 golf balls at\nthe end of Wednesday.\" What is the answer of ’X’?\nA: Michael started with 58 golf balls. After losing X on tuesday and he lost 2 more on wednesday, He had 33 golf balls.\nSo, we can write the following equation: 58 - X - 2 = 33, 58 - X = 35, X = 23. The answer is 23.\nQ: \"Olivia has $’X’. She bought five bagels for $3 each. She has 8 dollars left.\" What is the answer of ’X’?",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 199,
+      "text": "A: Olivia had X dollars. 5 bagels for 3 dollars each will be 5 x 3 = 15 dollars. She has 8 dollars left finally. X - 15 = 8, X =\n8 + 15, X = 23. The answer is 23.",
+      "source": "dit.pdf",
+      "page": 24,
+      "char_count": 162,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 200,
+      "text": "Table 15: Few-shot exemplars for full chain of thought prompt for CSQA when backward verification. There are\nnewlines between the answer choices that are omitted in the table for space reasons.\nPROMPT FOR CSQA\nQ: \"People use blotter to absorb extra ink from a fountain pen.\" Judge whether this statement is normal (yes or no).\nA: The Blotter is used to absorb extra ink from a fountain pen. The answer is Yes.\nQ: \"Television requires cable.\" Judge whether this statement is normal (yes or no).",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 201,
+      "text": "A: The Television is an electrical appliance, it needs electricity, so it requires cable. The answer is Yes.\nQ: \"The fox walked from the city into the forest, it was looking for a hen house.\" Judge whether this statement is normal\n(yes or no).\nA: The hen house is not in the forest, so the fox does not go to the hen house. The answer is No.\nQ: \"Sammy wanted to go to where the people were. He might go populated areas.\" Judge whether this statement is normal\n(yes or no).",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 202,
+      "text": "(yes or no).\nA: There are many people in the populated areas, so they really go here. The answer is Yes.\nQ: \"The grapes are put in the fruit market just before checking out.\" Judge whether this statement is normal (yes or no).\nA: The answer should be the place where grocery items are placed before checking out. But the fruit market is not suitable\nplace where grocery items are placed. The answer is No.",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 405,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 203,
+      "text": "Q: \"Google Maps and other highway and street GPS services have replaced the united states.\" Judge whether this statement\nis normal (yes or no).\nA: The united states is a country and Google Maps is a map, so Google Maps cannot replace the united states. The answer\nis No.\nQ: \"The wife who was doing all the work felt bitterness before getting a divorce.\" Judge whether this statement is normal\n(yes or no).\nA: The wife divorced who was doing all the work. So she felt bitterness. The answer is Yes.",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 204,
+      "text": "Table 16: Few-shot exemplars for full chain of thought prompt for AQuA when True-False Item Verification.\nPROMPT FOR AQUA ALGEBRAIC WORD PROBLEMS\nQ: \"John found that the average of 15 numbers is 40. If 10 is added to each number then the mean of the numbers is 50.\"\nDo it is correct (True or False)?\nA: The new mean would be 50. The average of 15 numbers is 4, if 10 is added to each number, then the mean of the\nnumbers also increases by 10. 50 - 40 = 10. The answer is True.",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 205,
+      "text": "Q: \"If a / b = 3/4 and 8a + 5b = 22, then the value of a is 3.\" Do it is correct (True or False)?\nA: If a is 3, a / b = 3/4, so b = 4. then 8a + 5b = 8 * 2 + 5 * 4 = 36, but 8a + 5b = 22 The answer is False.\nQ: \"A person is traveling at 20 km/hr and reached his destiny in 2.5 hr then find the distance is 65km.\" Do it is correct\n(True or False)?\nA: If 65km is driven at 20km/hr, so the driving time is 65km / 20km/hr = 3.25h, but he destiny in 2.5 hr. The answer is\nFalse.",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 206,
+      "text": "False.\nQ: \"There were 9 computers in the server room. Five more computers were installed each day, from monday to thursday.\nThere are 29 computers in the server room.\" Do it is correct (True or False)?\nA: There are 29 computers in the server room. For each of 4 days, 5 more computers were added. 5 * 4 = 20 computers\nwere added. So there were originally 9 computers. The answer is True.",
+      "source": "dit.pdf",
+      "page": 25,
+      "char_count": 387,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 207,
+      "text": "Table 17: Few-shot exemplars for full chain of thought prompt for math word problems when True-False Item\nVerification. This set of exemplars was used for all math word problem datasets except AQuA.\nPROMPT FOR MATH WORD PROBLEMS\nQ: ’There are 15 trees in the grove. Grove workers will plant trees in the grove today. After they are done, there will be 21\ntrees. The grove workers planted 4 trees today.’ Do it is correct (True or False)?",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 208,
+      "text": "A: If the Grove workers will plant 4 trees today and there will be 21 trees after they are done. 21 - 4 = 17, there are 17\ntrees in the grove, but actually there are 15 trees, 17 != 15, which is different from the theme. The answer is False.\nQ: ’If there are 3 cars in the parking lot and 2 more cars arrive, There are 5 cars in the parking lot.’ Do it is correct (True\nor False)?",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 380,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 209,
+      "text": "or False)?\nA: If there will be 5 cars in the parking lot, subtract 2 cars that will arrive, 5 - 2 = 3, so there are 2 cars in the parking lot,\nwhich is consistent with the theme. The answer is True.\nQ: ’Leah had 32 chocolates and her sister had 42. If they ate 35, they have 39 pieces left in total.’ Do it is correct (True or\nFalse)?\nA: If there are 39 pieces of chocolates and 35 pieces of chocolate are eaten, Leah and her sister have 39 + 35 = 74 in total.",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 210,
+      "text": "Her sister’s had 42, so Leah had 74 - 42 = 32, which is consistent with the theme. The answer is True.\nQ: ’Jason had 20 lollipops. He gave Denny some lollipops. Now Jason has 12 lollipops. Jason gave Denny 6 lollipops.’\nDo it is correct (True or False)?\nA: If Jason gave Denny 6 lollipops, and Jason now has 12 lollipops, so Jason originally had 6+12=18 lollipops, 18 != 20,\nwhich is different from the theme. The answer is False.",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 211,
+      "text": "Q: ’Shawn has five toys. For Christmas, he got two toys each from his mom and dad. He has 9 toys now.’ Do it is correct\n(True or False)?\nA: If Shawn now has 9 toys and his parents gaven him two each, then he originally had 9 - 2 - 2 = 5, which is consistent\nwith the theme. The answer is True.\nQ: ’There were nine computers in the server room. Five more computers were installed each day, from monday to thursday.\nThere are 18 computers in the server room.’ Do it is correct (True or False)?",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 212,
+      "text": "A: Now there are 18 computers in the server room. For each of 4 days, 5 more computers were added. So 5 * 4 = 20\ncomputers were added. So there were 18 - 20= -2 in the server room originally, -2 != 9, which is different from the theme.\nThe answer is False.\nQ: ’Michael had 58 golf balls. On tuesday, he lost 23 golf balls. On wednesday, he lost 2 more. He had 40 golf balls at the\nend of Wednesday.’ Do it is correct (True or False)?",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 213,
+      "text": "A: If Michael had 40 golf balls on Wednesday, he had 40+2=42 on Tuesday because he lost 2 golf balls on Wednesday.\nDue to lost 23 balls on Tuesday, he should have 42+23=65 on Monday, but in fact Michael has 58 golf balls original,\nwhich is different from the theme. The answer is False.\nQ: ’Olivia has $23. She bought five bagels for $3 each. She has 8 dollars left.’ Do it is correct (True or False)?",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 401,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 214,
+      "text": "A: If Olivia had $8 left and she bought five bagels for $3 each, so costs 5 * 3 = 15, so there was 8 + 15 = 23, which is\nconsistent with the theme. The answer is True.",
+      "source": "dit.pdf",
+      "page": 26,
+      "char_count": 167,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

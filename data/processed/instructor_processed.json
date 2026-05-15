@@ -1,0 +1,1324 @@
+{
+  "source": "instructor.pdf",
+  "full_path": "data\\raw\\instructor.pdf",
+  "total_pages": 18,
+  "text_chunks": 164,
+  "vision_chunks": 0,
+  "total_chunks": 164,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Towards General Text Embeddings with Multi-stage Contrastive Learning\nZehan Li1, Xin Zhang1, Yanzhao Zhang1, Dingkun Long1, Pengjun Xie1, Meishan Zhang\n1Alibaba Group\n{lizehan.lzh,linzhang.zx,zhangyanzhao.zyz,\ndingkun.ldk,pengjun.xpj}@alibaba-inc.com\nAbstract\nWe present GTE, a general-purpose text embed-\nding model trained with multi-stage contrastive\nlearning. In line with recent advancements in\nunifying various NLP tasks into a single for-\nmat, we train a unified text embedding model",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "mat, we train a unified text embedding model\nby employing contrastive learning over a di-\nverse mixture of datasets from multiple sources.\nBy significantly increasing the number of train-\ning data during both unsupervised pre-training\nand supervised fine-tuning stages, we achieve\nsubstantial performance gains over existing em-\nbedding models. Notably, even with a relatively\nmodest parameter count of 110M, GTEbase out-\nperforms the black-box embedding API pro-\nvided by OpenAI and even surpasses 10x larger",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "vided by OpenAI and even surpasses 10x larger\ntext embedding models on the massive text\nembedding benchmark. Furthermore, without\nadditional fine-tuning on each programming\nlanguage individually, our model outperforms\nprevious best code retrievers of similar size by\ntreating code as text. In summary, our model\nachieves impressive results by effectively har-\nnessing multi-stage contrastive learning, offer-\ning a powerful and efficient text embedding\nmodel with broad applicability across various",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "model with broad applicability across various\nNLP and code-related tasks.1\n1\nIntroduction\nText embeddings have became an indispensable\ncomponent in many natural language processing\ntasks, such as text classification, text retrieval, ques-\ntion answering and dialogue systems (Karpukhin\net al., 2020; Humeau et al., 2020; Choi et al., 2021;\nIzacard et al., 2022a; Long et al., 2022a; Rajapakse,\n2023). These embedding models represent texts us-\ning low-dimensional vectors and capture their sim-",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "ilarity through vector operations. The emergence\nof recent large language models (LLMs) (Radford\net al., 2018; Touvron et al., 2023; OpenAI, 2023)\nhas generated considerable interest in retrieval-\n1The GTE model is publicly available at https://\nhuggingface.co/thenlper/gte-large\nUnsupervised Contrastive Pre-training on \nMassive Text Pairs mined from the Web\nSupervised Contrastive Fine-tuning\non Annotated Text Triples from Multiple Tasks\n…\n…\nMS MARCO\nNatural Questions\nTriviaQA\nWeb Questions\nHotpotQA\nMNLI",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "TriviaQA\nWeb Questions\nHotpotQA\nMNLI\nQuora\nStackExchangeDup\nWeb Search\nOpen QA\nNatural Language Inference\nSNLI\nFact Verification\nFEVER\nParaphrase\nMEDI\nOthers\nBERRI\nFigure 1: Illustration of the multi-stage contrastive learn-\ning pipeline used to train our text embedding model.\naugmented systems based on text embedding mod-\nels that integrate the reasoning and comprehension\ncapabilities of LLMs (Izacard et al., 2022b; Ram\net al., 2023; Shi et al., 2023). Consequently, there",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "has been a growing focus on general text represen-\ntation in both industry and academia.\nThe pursuit of developing a unified model to ad-\ndress a multitude of downstream tasks has been\nlong-standing due to the diverse formats, domains\nand downstream applications of natural language.\nThe emergence of pre-trained language models has\nfurther opened up possibilities for training such a\nuniversal model. Nonetheless, within the realm\nof text representation research, previous text em-",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "bedding models have primarily focused on specific\ntasks, and their training strategies or models, tai-\nlored to a single task, may not perform optimally\nin other contexts. For example, the text represen-\ntation model SimCSE (Gao et al., 2021), trained\non symmetric text pairs, demonstrates limitations\nin text retrieval tasks. Similarly, certain text rep-\nresentation models specifically designed for dense\nretrieval tasks do not exhibit robust performance\nin sentence textual similarity tasks. Recently, there",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "has been a shift in research focus towards develop-\ning more comprehensive models for text represen-\ntation leveraging large quantities of unlabeled web\ndata through unsupervised contrastive pre-training,\ncoupled with task-specific data, prompts, or in-\nstructions to mitigate task conflicts during fine-\ntuning (Ni et al., 2022a,b; Neelakantan et al., 2022;\narXiv:2308.03281v1  [cs.CL]  7 Aug 2023",
+      "source": "instructor.pdf",
+      "page": 1,
+      "char_count": 398,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "Wang et al., 2022b; Su et al., 2023). Additionally,\nthe introduction of benchmarks, such as the Mas-\nsive Text Embedding Benchmark (MTEB) (Muen-\nnighoff et al., 2023), has established a robust basis\nfor assessing the universality of text representation\nmodels. However, a significant limitation in ex-\nisting research is the reliance on in-house data for\npre-training, creating a bottleneck in the utilization\nof pre-trained model weights or APIs. Furthermore,",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "the formulation of prompts specifically tailored for\neach task requires extra human effort during imple-\nmentation (Su et al., 2023).\nThis work presents a straightforward approach\nto construct a general text embedding (GTE) model\nsolely using contrastive learning on open-source\ndata, as illustrated in Figure 1. Specifically, we\nfirst gather a large-scale dataset comprising un-\nsupervised text pairs extracted from various data\nsources for contrastive pre-training. Surprisingly,",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "our model, pre-trained on this dataset, exhibits re-\nmarkable performance, surpassing BM25 and E5\nmodel (Wang et al., 2022b) in zero-shot text re-\ntrieval tasks and surpassing many supervised mod-\nels in the MTEB benchmark. To further enhance\nthe quality of the learned text representations, we\nobtain high-quality text pairs with human labels\nfrom multiple sources for contrastive fine-tuning.\nAfter supervised fine-tuning, our 110M BERT-\nbased (Devlin et al., 2019) model already outper-",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "based (Devlin et al., 2019) model already outper-\nforms the current commercial embedding API of\nOpenAI and ranks highly in the MTEB benchmark.\nFurthermore, since our model is trained using code\ndata as well, we evaluate its code search capabili-\nties on the CodeSearchNet benchmark, which en-\ncompasses six programming languages. Notably,\neven without language-specific fine-tuning on each\nsubset, our model significantly outperforms state-\nof-the-art code retrievers of similar size that have",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "been fine-tuned for each programming language.\nIn the rest of this paper, we provide a detailed\naccount of the data sources and training configu-\nrations employed. Subsequently, we present the\nevaluation results on widely recognized text em-\nbedding benchmarks and compare them with the\nperformance of previous state-of-the-art baselines\nthat were specifically optimized for each individual\ntask. Our model consistently demonstrates supe-\nrior performance or, at the very least, comparable",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "results to those achieved by larger models, owing\nto its incorporation of a more diverse mixture of\ntraining datasets. We aspire for our model to serve\nas a robust baseline for the research community\ninvestigating text and code embedding.\n2\nRelated Work\nText embeddings serve as low-dimensional vector\nrepresentations for texts of varying lengths and are\nessential in numerous natural language processing\n(NLP) tasks. In contrast to high-dimensional and\nsparse representations such as TF-IDF, dense text",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "sparse representations such as TF-IDF, dense text\nembeddings possess the capacity to address the lex-\nical mismatch problem and enhance the efficiency\nof text retrieval and matching.\nPre-trained language models, exemplified by\nBERT (Devlin et al., 2019) and GPT (Radford\net al., 2018), have demonstrated remarkable suc-\ncess across various NLP tasks. Nonetheless, ex-\ntracting a high-quality sentence embedding from\npre-trained language models poses a significant",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "pre-trained language models poses a significant\nchallenge due to the presence of anisotropic em-\nbedding spaces resulting from the masked language\nmodeling objective. To address this issue, subse-\nquent studies have proposed different approaches,\nincluding supervised fine-tuning (Reimers and\nGurevych, 2019), normalizing flow (Li et al., 2020),\nnormalizing flow (Li et al., 2020), whitening (Su\net al., 2021), or unsupervised contrastive learn-\ning (Gao et al., 2021). These investigations pri-",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "ing (Gao et al., 2021). These investigations pri-\nmarily concentrate on enhancing performance in\nsemantic textual similarity tasks, wherein two sen-\ntences exhibit similar formats.\nAnother line of research focuses on the text re-\ntrieval problem, where the query and document\ntypically exhibit an asymmetric relationship. In\nthis context, the dual-encoder architecture necessi-\ntates training with both positive and negative pairs.\nLee et al. (2019) propose the Inverse Close Task",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "Lee et al. (2019) propose the Inverse Close Task\n(ICT) as a self-supervised pre-training approach for\ngenerating a dense retriever. The ICT method in-\nvolves cropping a random sentence from a passage\nto construct pseudo query-document pairs. Ad-\nditionally, Chang et al. (2020) leverage the link\nstructure within Wikipedia to introduce further su-\npervision signals in the pre-training data. In a sim-\nilar vein, REALM (Guu et al., 2020) proposes a\njoint training approach, wherein a dense retriever",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "and a language model are trained concurrently. The\nlearning signal for the language model is derived\nfrom masked language modeling, with backpropa-\ngation incorporated through the retrieval step. Re-\ncent advancements, such as Contriever (Izacard\net al., 2022a) and coCondenser (Gao and Callan,",
+      "source": "instructor.pdf",
+      "page": 2,
+      "char_count": 294,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "2022), have demonstrated that constructing posi-\ntive pairs through random passage cropping yields\nsuperior results compared to the ICT task. Building\nupon the ideas presented in (Chang et al., 2020),\nsome researchers have also put forth methods for\nconstructing higher-quality positive pairs using the\nweb link topology for retriever pre-training (Zhou\net al., 2022), a technique that proves effective in\nzero-shot scenarios. Furthermore, in the field of\ndense retrieval, significant research is dedicated to",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "enhancing the text representation capabilities of\npre-trained language models through the design of\nauxiliary pre-training tasks (Gao and Callan, 2021;\nXiao et al., 2022; Gao and Callan, 2022; Wang\net al., 2022a; Long et al., 2022b; Li et al., 2023).\nThe previous two lines of research can be gen-\neralized as learning a vector representation for a\npiece of text and distinguished by the type of down-\nstream tasks. Recently, several studies have ex-\nplored the construction of unified text representa-",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "tion models through large-scale contrastive learn-\ning and prompt-based learning (Neelakantan et al.,\n2022; Wang et al., 2022b; Su et al., 2023). Ad-\nditionally, some research efforts have focused on\nconstructing evaluation datasets to better assess\nthe stability of text representation models across\ndifferent tasks and domains. BEIR (Benchmark-\ning IR) (Thakur et al., 2021) collects a substantial\nnumber of retrieval tasks from various domains to\nevaluate the robustness of dense retriever models in",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "zero-shot scenarios. Meanwhile, MTEB (Massive\nText Embedding Benchmark) (Muennighoff et al.,\n2023) benchmarks over 56 datasets spanning seven\ncategories, providing a comprehensive evaluation\nof text embedding models.\nThis study aims to develop a general text em-\nbedding model through a multi-stage training ap-\nproach. In the initial stage of unsupervised con-\ntrastive learning, we generate weak supervised cor-\nrelation text pairs using publicly available data",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "relation text pairs using publicly available data\nfrom various sources. Unlike previous study (Wang\net al., 2022b), we exclusively utilized open-source\ndata and did not employ any filtering or cleaning\nmethods. Pre-training on a large-scale text pairs\ncan effectively improve the domain generalization\nof text representation models and bridge the gap\nbetween the MLM training objective and the con-\ntrastive learning objective of representation models,\nmaking the language model more suitable for text",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "making the language model more suitable for text\nrepresentation tasks. In the supervised fine-tuning\nstage, the mixture of training data in our approach\nis more varied to further enhance the model’s ver-\nsatility. Moreover, our model does not incorpo-\nrate task-specific prompts, which enhances repro-\nducibility and ease of use.\n3\nApproach\nThe training process of our model consists of two\nstages: unsupervised pre-training and supervised\nfine-tuning. Both stages employ the learning ob-",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "fine-tuning. Both stages employ the learning ob-\njective of contrastive learning. Firstly, we will in-\ntroduce the basic framework of the model. Subse-\nquently, we will discuss the sources and construc-\ntion methods of the training data in the two stages.\nFinally, we will present some special optimization\nstrategies used to enhance the model’s performance\nduring the training process.\n3.1\nModel Architecture\nThe backbone of our embedding model is a deep\nTransformer encoder (Vaswani et al., 2017) which",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "Transformer encoder (Vaswani et al., 2017) which\ncan be initialized with pre-trained language models\nsuch as BERT (Devlin et al., 2019). Our model\nfollows the vanilla dual-encoder architecture with\nmean pooling on top of the contextualized token\nrepresentations produced by the language model.\nFormally, given a piece of text x = (x1, . . . , xn)\nconsisting of n tokens, an embedding model E con-\nvert the text into a low-dimensional dense vector\nx = E(x) ∈Rd. To implement E, we first employ",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "x = E(x) ∈Rd. To implement E, we first employ\na language model to get the deep contextualized\ntoken representations\nh = LM(x) ∈Rn×d.\n(1)\nThen we apply a lightweight mean pooling\nacross the first dimension to get the text representa-\ntion,\nx = 1\nn\nn\nX\ni=1\nhi ∈Rd\n(2)\nThe text representations are learned through the\ncontrastive objective, distinguishing semantic rele-\nvant text pairs from irrelevant ones. Such training\nprocedure requires positive and negative pairs, tak-",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "ing the format of (q, d+, d−). For a query q, a rel-\nevant document d+, a set of irrelevant documents\nD−= {d−\n1 , . . . , d−\nn }, one popular contrastive ob-\njective is the InfoNCE loss (van den Oord et al.,\n2018),\nLcl = −log\nes(q,d+)/τ\nes(q,d+)/τ +\nnP\ni=1\nes(q,d−\ni )/τ\n,\n(3)",
+      "source": "instructor.pdf",
+      "page": 3,
+      "char_count": 276,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "where s(q, d) estimates the similarity between two\npieces of text q and d via vector distance between\nq = E(q) and d = E(d).\nTo acquire text embeddings of superior quality\nthat can be applied across a wide range of scenar-\nios, we compile an extensive text pair dataset from\nmultiple formats and domains. This dataset is then\ntrained using an improved contrastive loss method\nin a multi-stage fashion.\n3.2\nUnsupervised Pre-training Data\nWeakly supervised text relevance data is readily",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "Weakly supervised text relevance data is readily\navailable in publicly accessible web sources, such\nas the inherent connection between queries and\nanswers on QA forums. These data can be exten-\nsively collected without the need for manual anno-\ntation, thereby efficiently aiding in training text rep-\nresentation models. Inspired by previous work (Ni\net al., 2022a,b; Neelakantan et al., 2022; Wang\net al., 2022b), our model is initially pre-trained\non naturally occurring text pairs extracted from",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "on naturally occurring text pairs extracted from\ndiverse sources. To ensure the versatility of the\nembedding model, we explore a range of resources\nfor text pair extraction, including web pages (e.g.,\nCommonCrawl, ClueWeb), scientific papers (e.g.,\narXiv, SemanticScholar), community QA forums\n(e.g., StackExchange), social media (e.g., Reddit),\nknowledge bases (e.g., Wikipedia, DBPedia), and\ncode repositories (e.g., StackOverflow, GitHub).\nAdditionally, we harness the presence of hyperlinks",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "in certain datasets to facilitate text pair extraction.\nTable 2 demonstrates some examples of text pair\nformat from different sources. Further details re-\ngarding the data collection process can be found\nin Appendix A. In total, we utilized ∼800M text\npairs text pairs for the unsupervised pre-training\nstage. Simple statistics and data distributions are\nillustrated in Table 1.\n3.3\nSupervised Fine-tuning Data\nIn the supervised fine-tuning stage, we use rela-\ntively lower-sized datasets with human annotation",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "tively lower-sized datasets with human annotation\nof the relevance between two pieces of text and op-\ntional hard negatives mined by an extra retriever to\nform text triples. To handle both symmetric tasks\n(e.g., semantic textual similarity) and asymmet-\nric tasks (e.g., passage retrieval), we collect data\nfrom a large variety of tasks and domains, includ-\ning web search (e.g., MS MARCO), open-domain\nQA (e.g., NQ), NLI (e.g., SNLI), fact verification\n(e.g., FEVER), paraphrases (e.g., Quora). We to-",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "(e.g., FEVER), paraphrases (e.g., Quora). We to-\ntally used ∼3M pairs for fine-tuning, which is a\nSource\nDatasets\nProp.\nSize\nWeb Page\n3\n18.7%\n147M\nAcademic Paper\n5\n5.7%\n45M\nHyperlink\n4\n13.4%\n106M\nSocial Media\n2\n41.5%\n327M\nKnowledge Base\n2\n4.8%\n38M\nCommunity QA\n7\n1.5%\n12M\nNews\n5\n0.4%\n3M\nCode\n2\n2.5%\n20M\nOthers\n3\n11.6%\n91M\nTotal\n33\n100%\n788M\nTable 1: Statistics of pre-training data.\ncombination of training data used by previous re-\nsearch (Gao et al., 2021; Gao and Callan, 2022;",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "search (Gao et al., 2021; Gao and Callan, 2022;\nAsai et al., 2023; Su et al., 2023; Li et al., 2023).\nMore details can be found in Appendix A.\n3.4\nTraining Details\nData Sampling\nIn the initial stage of unsuper-\nvised pre-training, data sources often differ signifi-\ncantly in terms of the number of training instances.\nTo address this imbalance, we employ a multino-\nmial distribution to sample data batches from differ-\nent data sources, taking into account their respec-",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "tive sizes. Suppose the whole pre-training dataset\nD consists of m different subsets {D1, . . . , Dm}\nand denote the size of each subset as ni = |Di|, at\neach training iteration, the probability of sampling\ndata from the i-th subset Di can be represented by:\npi =\nnα\ni\nPm\nj=1 nα\nj\n,\n(4)\nwhere we set α = 0.5 in this work. Furthermore,\nto prevent the model from solely learning task-\nspecific shortcuts for discrimination, we ensure\nthat all training instances within a batch originate\nfrom the same task.",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "from the same task.\nImproved Contrastive Loss\nWhen using the\ncontrastive objective, people usually reuse in-batch\ndocuments as negative candidates to improve train-\ning efficiency (Karpukhin et al., 2020). This paper\nuses an improved contrastive learning objective\nwhich is bidirectional and enlarges the negative\nsamples with both in-batched queries and docu-\nments. This can be viewd as a combination of loss\nvariants proposed by Radford et al. (2021); Ren\net al. (2021); Moiseev et al. (2023).",
+      "source": "instructor.pdf",
+      "page": 4,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "Task Type\nText Pair Format\nQuery\nDoc\nWeb Page\n(title, body)\nProvidence Real Estate | Providence Homes for Sale\nFounded by Roger Williams in 1636, Providence is\nrecognized as one of the country’s oldest cities. . .\nAcademic Paper\n(title, abstract)\nPolymer Quantum Mechanics and its Continuum Limit\nA rather non-standard quantum representation of the\ncanonical commutation relations of quantum mechanics. . .\nHyperlink\n(citation, reference)\nAfter the championship in 1996, the PGA of America",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "raised its stake to 50% and announced that .. .\nPebble Beach Golf Links The largest margin of victory\never in a major championship, surpassing the 13-shot . . .\nSocial Media\n(post, comment)\nPretty sure any team with Lebron James will be a playoff\ncontender. Considering UNC would be in the East.. .\nI was being sarcastic and making fun of the East, but\nhonestly I was really in deep thought about this . . .\nKnowledge Base\n(entity, description)\nAnimation",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "Knowledge Base\n(entity, description)\nAnimation\nAnimation is the process of creating the illusion of motion\nand shape change by means of the rapid display of . . .\nCommunity QA\n(question, answer)\nHow the human species evolved?\nA tough question as it overlaps science and theology. Since\nyou asked “how the human species evolved?” I’ll assume . . .\nNews\n(summary, content)\nNepalese Opposition Welcomes Return of Parliament\nNepal’s opposition alliance formally calls off weeks of",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "pro-democracy protests after King Gyenandra reinstates . . .\nCode\n(text, code)\nSetMaxRecords sets the MaxRecords field’s value.\nfunc (s *DescribeSnapshotCopyGrantsInput) SetMaxRecords\n(v int64) *DescribeSnapshotCopyGrantsInput { s.MaxRecords\nTable 2: Examples of mined (query, document) pairs in the pre-training data.\nConsider a batch of positive text pair samples\nB = {(q1, d1), (q2, d2), ..., (qn, dn)},\nwe use an improved contrastive loss which takes\nthe form\nLicl = −1\nn\nn\nX\ni=1\nlog es(qi,di)/τ\nZ\n(5)",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "Licl = −1\nn\nn\nX\ni=1\nlog es(qi,di)/τ\nZ\n(5)\nwith the partition function being\nZ =\nX\nj\nes(qi,dj)/τ +\nX\nj̸=i\nes(qi,qj)/τ\n+\nX\nj\nes(qj,di)/τ +\nX\nj̸=i\nes(dj,di)/τ\n(6)\nin which the first two terms are used for query to\ndocument contrast, where as the last two terms are\nused for the inverse. In this work, we use the cosine\nsimilarity as the distance metric\ns(q, d) =\nq · d\n||q||2 · ||d||2\n.\n(7)\nThe temperature τ is fixed to 0.01 in this work.\nTraining and Evaluation\nThe training of our",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "Training and Evaluation\nThe training of our\nembedding model consists of two stages. In the\nfirst stage of contrastive pre-training with only in-\nbatch negatives, using a large batch size is crucial\nto better model performance by reducing the gap\nbetween training and inference with more nega-\ntives included and providing a better approximation\nto the underlying learning objective. To facilitate\nthis, we limit the maximum sequence length to 128\nduring pre-training and distribute the use of nega-",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "tives across all GPUs. Popular techniques such as\nautomatic mixed precision training (Micikevicius\net al., 2018) with fp16, deepspeed ZeRO (Rajb-\nhandari et al., 2020) stage 1 and gradient check-\npointing (Chen et al., 2016) are also jointly used to\nreduce memory cost and scale up batch size to over\nten thousands. We run the pre-training for 50, 000\nsteps, which roughly corresponds to one epoch on\nthe whole pre-training data. We only tuned the\nlearning rate to ensure the convergence of larger",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "learning rate to ensure the convergence of larger\nmodels. we employ the AdamW optimizer with\nlinear learning rate decay and a warm-up period\nduring the initial 5% of training steps. We con-\nducted experiments on three distinct model scales:\nsmall, base, and large. These models were initial-\nized using the small-sized MiniLM (Wang et al.,\n2020) model and the base and large models of the\nBERT (Devlin et al., 2019) model. Further details\ncan be found in Table 3.\nIn the second stage of contrastive fine-tuning",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "In the second stage of contrastive fine-tuning\nwith supervised data and hard negatives, a large\nbatch size is unnecessary since hard negatives can\nalready provide a reliable gradient estimation of\nthe learning objective (Xiong et al., 2021; Li et al.,\n2023). Therefore, a global batch size of 128 and a\ntrain group size of 16 are utilized, with one positive\nexample and the remaining being either hard nega-\ntives or random negatives. Instead we increase the\nmax sequence length to 512 to better handle texts",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "max sequence length to 512 to better handle texts\nwith longer lengths. The learning rate is decreased\nby a factor of ten during fine-tuning. The model\nis fine-tuned on the collected dataset for a single\nepoch. In-batch texts are also incorporated as nega-\ntive candidates using the enhanced contrastive loss\ndescribed in Equation 5.\nAfter training, we directly take the last check-\npoint for evaluation. We run model training on up\nto 8 NVIDIA A100 GPUs with 80GB memory and",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "to 8 NVIDIA A100 GPUs with 80GB memory and\nmodel evaluation on up to 8 NVIDIA Tesla V100\nGPUs with 32GB memory. Models are trained with\nmixed precision using fp16 and evaluated with half\nprecision fp16 as well.",
+      "source": "instructor.pdf",
+      "page": 5,
+      "char_count": 210,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "Model\nParams\nLR\nGPUs\nBS\nBase LM\nGTEsmall\n30M\n3 × 10−4\n2\n16384\nmicrosoft/MiniLM-L12-H384-uncased\nGTEbase\n110M\n2 × 10−4\n4\n16384\nbert-base-uncased\nGTElarge\n330M\n5 × 10−5\n8\n16384\nbert-large-uncased\nTable 3: Pre-training configurations of models of different sizes.\n4\nExperiments\nIn this section, we provide an extensive evaluation\nof our embedding model, comparing to state-of-\nthe-art models for each task. Note that an apple-to-\napple comparison is hardly possible since different",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "models used different in-house data for pre-training\nand the base language models vary a lot. We mainly\nuse the number of model parameters as a criterion\nfor performance comparison since it is closely re-\nlated to the inference speed.\n4.1\nZero-shot Text Classification\nModel\nParams\nPrompting\nAccuracy\nE5base\n110M\n✓\n81.3\nE5large\n330M\n✓\n85.3\ncpt-text\n6B\n88.1\ncpt-text\n6B\n✓\n89.1\nGTEbase\n110M\n85.1\nGTEbase\n110M\n✓\n87.2\nTable 4: Zero shot text classification performance on",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "SST-2. All compared models are the fine-tuned ones.\nOne method to assess the quality of learned\nrepresentation is through zero-shot classifica-\ntion. (Radford et al., 2021; Neelakantan et al., 2022;\nWang et al., 2022b). We recast text classification\ninto an embedding-based similarity matching prob-\nlem. In this setting, inputs texts are converted into\nembeddings directly and labels are verbalized to\ncorresponding text to get label embeddings. Dis-\ntances between input embeddings and label embed-",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "tances between input embeddings and label embed-\ndings are measured by their inner product and label\nwith the most close embedding distance to the in-\nput text is regarded as the classification result. An\nexample is SST-2 binary sentiment classification\ntask. We consider two types of label verbalizers\nfor evaluation. The vanilla version uses the sen-\ntiment word ‘positive’ or ‘negative’ to denote the\ncorresponding labels. Prompted version uses fuzzy\nprompt template, such as ‘this is an example of",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "prompt template, such as ‘this is an example of\npositive/negative movie review’.\nZero-shot text classification accuracy on SST-\n2 is shown in Table 4. In the vanilla setting, our\n110M model already matches the performance of\nprompted E5large with 330M parameters. Using\nprompting strategy further improves results signifi-\ncantly and closes the gap with large models. Even\nwithout explicit prompt or instruction during train-\ning, our model can somewhat understand the label",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "ing, our model can somewhat understand the label\ncontext better when formatted as a natural language\ntext.\n4.2\nUnsupervised Text Retrieval\nText retrieval requires retrieving most relevant doc-\numents from a large-scale candidate sets.\nWe\nuse BEIR (Thakur et al., 2021) as our evalua-\ntion benchmark for zero-shot unsupervised text\nretrieval. BEIR is a heterogeneous information re-\ntrieval benchmark which contains retrieval tasks of\ndifferent formats and from different domains. We",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "different formats and from different domains. We\nuse the open available 15 datasets for evaluation.\nWe compare our unsupervised pre-trained check-\npoint to recent unsupervised dense retrievers such\nas Contriever (Izacard et al., 2022a) and E5 (Wang\net al., 2022b). According to Table 5, we find that\nour base size model significantly outperforms the\nmodels with comparable size, like SimCSE, Con-\ntriever and E5. Our base model is comparable to\nE5large without using human supervision.\n4.3",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "E5large without using human supervision.\n4.3\nMassive Text Embedding Benchmark\nMassive Text Embedding Benchmark (MTEB) is a\ncomprehensive semi-supervised benchmark that in-\ncorporates a limited amount of supervision data for\nevaluation. In this paper, we evaluate the English\nsubsets which encompasses 56 English datasets\nacross seven distinct tasks, including text classi-\nfication (Class.), text clustering (Clust.), pairwise\nclassification (Pair.), text reranking (Rerank.), text",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "retreival (Retr.), semantic textual similarity (STS)\nand summarization (Summ.). The evaluation met-\nrics employed in MTEB are accuracy, v-measure,\naverage precision, MAP, nDCG@10, and Spear-\nman coefficients, respectively. For further details",
+      "source": "instructor.pdf",
+      "page": 6,
+      "char_count": 242,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "Trec-COVID\nNFCorpus\nTóuche-2020\nDBPedia\nScidocs\nClimate-fever\nHotpotQA\nFiQA\nCQADupStack\nMSMARCO\nNQ\nFever\nScifact\nArguAna\nQuora\nAvg.\n0\n50\n100\nRecall@100\nSimCSE\nContriever\nBM25\nGTE\nFigure 2: Recall@100 of unsupervised text retrieval methods on BEIR benchmark (Thakur et al., 2021). We\ncompare our model GTEbase (based on BERTbase) without using any annotated data to SimCSE (Gao et al., 2021)\n(based on RoBERTalarge), Contriever (Izacard et al., 2022a) (based on BERTbase) and BM25. Baseline results are",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "borrowed from the Contriever paper (Izacard et al., 2022a) with dot product being the similarity function.\nDataset\nBM25 SimCSE Contriever CPT-S E5small E5base E5large GTEsmall GTEbase GTElarge\nMS MARCO\n22.8\n9.4\n20.6\n19.9\n25.4\n26.0\n26.2\n31.3\n31.8\n31.7\nTrec-Covid\n65.6\n26.2\n27.4\n52.9\n52.0\n61.0\n61.8\n61.8\n64.0\n64.8\nNFCorpus\n32.5\n9.9\n31.7\n32.0\n29.3\n35.8\n33.7\n34.9\n36.2\n38.1\nNQ\n32.9\n11.7\n25.4\n-\n37.3\n39.0\n41.7\n32.0\n35.3\n34.5\nHotpotQA\n60.3\n19.8\n48.1\n51.5\n46.0\n52.4\n52.2\n49.3\n50.8\n49.2\nFiQA\n23.6\n9.8\n24.5\n34.1\n38.3",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "52.2\n49.3\n50.8\n49.2\nFiQA\n23.6\n9.8\n24.5\n34.1\n38.3\n40.0\n43.2\n37.0\n36.9\n40.6\nArguAna\n31.5\n38.3\n37.9\n38.7\n42.5\n42.2\n44.4\n41.6\n41.0\n41.3\nTouche-2020\n36.7\n8.9\n19.3\n21.0\n19.9\n16.9\n19.8\n17.7\n18.2\n18.5\nCQADupStack 29.9\n13.2\n28.4\n-\n35.0\n35.4\n38.9\n38.1\n39.9\n39.8\nQuora\n78.9\n78.0\n83.5\n68.1\n85.8\n85.7\n86.1\n86.1\n85.0\n84.8\nDBPedia\n31.3\n15.0\n29.2\n27.2\n34.5\n35.4\n37.1\n33.5\n33.2\n33.6\nScidocs\n15.8\n5.5\n14.9\n-\n19.9\n21.1\n21.8\n21.5\n22.5\n22.7\nFever\n75.3\n21.1\n68.2\n57.1\n62.5\n63.4\n68.6\n71.3\n72.7\n70.5\nClimate-Fever\n21.3\n11.8\n15.5\n15.8",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "71.3\n72.7\n70.5\nClimate-Fever\n21.3\n11.8\n15.5\n15.8\n14.5\n15.4\n15.7\n21.4\n21.0\n25.4\nScifact\n66.5\n25.7\n64.9\n65.4\n68.5\n73.7\n72.3\n72.7\n74.1\n74.1\nAverage\n41.7\n20.3\n36.0\n-\n40.8\n42.9\n44.2\n43.4\n44.2\n44.6\nTable 5: nDCG@10 of different unsupervised methods on the BEIR benchmark (Thakur et al., 2021). SimCSE is\nbased on BERTbase backbone. CPT-S (Neelakantan et al., 2022) is of similar size to BERTlarge. Baseline results are",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 412,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "borrowed from E5 paper (Wang et al., 2022b). Note that Contriever uses dot product as the similarity metric while\nother models uses cosine similarity.\non the tasks covered in the MTEB benchmark,\nplease refer to the Appendix B.\nTwo settings are considered for comparison: the\nunsupervised setting and the supervised setting. In\nthe unsupervised setting, models are trained us-\ning unlabeled data, while supervised models are\nfine-tuned using high-quality datasets with human",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "fine-tuned using high-quality datasets with human\nlabels. The results of strong baseline models are\npresented in Table 6.\nIn the unsupervised setting, our model outper-\nforms the previous best model, E5, by a signifi-\ncant margin across all considered tasks, without\nthe use of task-specific prompts. This improve-\nment can be attributed to the inclusion of more\ntraining data formats and various sources of self-\nsupervision signals. Furthermore, it is worth noting",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "that our unsupervised pre-trained model narrows\nthe gap even further with larger supervised base-\nlines, such as GTR and Sentence-T5. In the super-\nvised setting, our model surpasses OpenAI results",
+      "source": "instructor.pdf",
+      "page": 7,
+      "char_count": 197,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "Params\nClass.\nClust.\nPair.\nRerank\nRetr.\nSTS\nSumm.\nAvg\n# of datasets →\n12\n11\n3\n4\n15\n10\n1\n56\nUnsupervised models\nGlove\n120M\n57.3\n27.7\n70.9\n43.3\n21.6\n61.9\n28.9\n42.0\nBERT\n110M\n61.7\n30.1\n56.3\n43.4\n10.6\n54.4\n29.8\n38.3\nSimCSE\n110M\n62.5\n29.0\n70.3\n46.5\n20.3\n74.3\n31.2\n45.5\nE5small\n30M\n67.0\n41.7\n78.2\n53.1\n40.8\n68.8\n25.2\n54.2\nE5base\n110M\n67.9\n43.4\n79.2\n53.5\n42.9\n69.5\n24.3\n55.5\nE5large\n330M\n69.0\n44.3\n80.3\n54.4\n44.2\n69.9\n24.8\n56.4\nGTEsmall\n30M\n71.0\n44.9\n82.4\n57.5\n43.4\n77.2\n30.4\n58.5\nGTEbase\n110M\n71.5\n46.0\n83.3\n58.4\n44.2",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "30.4\n58.5\nGTEbase\n110M\n71.5\n46.0\n83.3\n58.4\n44.2\n76.5\n29.5\n59.0\nGTElarge\n330M\n71.8\n46.4\n83.3\n58.8\n44.6\n76.3\n30.1\n59.3\nSupervised models\nSimCSE\n110M\n67.3\n33.4\n73.7\n47.5\n21.8\n79.1\n23.3\n48.7\nContriever\n110M\n66.7\n41.1\n82.5\n53.1\n41.9\n76.5\n30.4\n56.0\nGTRlarge\n330M\n67.1\n41.6\n85.3\n55.4\n47.4\n78.2\n29.5\n58.3\nSentence-T5large\n330M\n72.3\n41.7\n85.0\n54.0\n36.7\n81.8\n29.6\n57.1\nE5small\n30M\n71.7\n39.5\n85.1\n54.5\n46.0\n80.9\n31.4\n58.9\nE5base\n110M\n72.6\n42.1\n85.1\n55.7\n48.7\n81.0\n31.0\n60.4\nE5large\n330M\n73.1\n43.3\n85.9\n56.5\n50.0\n82.1\n31.0",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "E5large\n330M\n73.1\n43.3\n85.9\n56.5\n50.0\n82.1\n31.0\n61.4\nInstructORbase\n110M\n72.6\n42.1\n85.1\n55.7\n48.8\n81.0\n31.0\n60.4\nInstructORlarge\n330M\n73.9\n45.3\n85.9\n57.5\n47.6\n83.2\n31.8\n61.6\nOpenAIada-001\nn.a.\n70.4\n37.5\n76.9\n49.0\n18.4\n78.6\n26.9\n49.5\nOpenAIada-002\nn.a.\n70.9\n45.9\n84.9\n56.3\n49.3\n81.0\n30.8\n61.0\nGTEsmall\n30M\n72.3\n44.9\n83.5\n57.7\n49.5\n82.1\n30.4\n61.4\nGTEbase\n110M\n73.0\n46.1\n84.3\n58.6\n51.2\n82.3\n30.7\n62.4\nGTElarge\n330M\n73.3\n46.8\n85.0\n59.1\n52.2\n83.4\n31.7\n63.1\nLarger models\nInstructORxl\n1.5B\n73.1\n44.7\n86.6\n57.3\n49.3",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "InstructORxl\n1.5B\n73.1\n44.7\n86.6\n57.3\n49.3\n83.1\n32.3\n61.8\nGTRxxl\n4.5B\n67.4\n42.4\n86.1\n56.7\n48.5\n78.4\n30.6\n59.0\nSentence-T5xxl\n4.5B\n73.4\n43.7\n85.1\n56.4\n42.2\n82.6\n30.1\n59.5\nTable 6: Results on the MTEB (Muennighoff et al., 2023) (56 datasets in English subset). Compared models include\nSimCSE (Gao et al., 2021), Sentence-T5 (Ni et al., 2022a), GTR (Ni et al., 2022b), Contriever (Izacard et al., 2022a),",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 401,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "OpenAI text embedding API (Neelakantan et al., 2022), E5 (Wang et al., 2022b) and InstructOR (Su et al., 2023).\nExact parameter amount of OpenAI ada model is not available, but is suspected to be ∼300M, comparable to the\nBERT large size model.\nby a large margin despite using a modest model\nsize. GTEsmall is comparable to E5large while be-\ning 10× smaller. GTElarge establishes new state-\nof-the-art performance on the MTEB benchmark,\noutperforming the multi-task instruction-finetuned",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "embedding model, InstructORlarge, by 1.5 points\non average.\n4.4\nCode Search\nProgramming languages can be regarded as a dis-\ntinct form of text. To assess the effectiveness of our\napproach in code search, we conduct a comparative\nanalysis with other code-based language models,\nsuch as CodeBERT (Guo et al., 2021) and Graph-\nCodeBERT (Guo et al., 2021). We also compare\nour approach with a more recent code language\nmodel called UniXcoder (Guo et al., 2022), which",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "model called UniXcoder (Guo et al., 2022), which\naims to integrate various pre-training tasks into a\nunified model. CodeRetriever (Li et al., 2022) is ini-\ntialized from GraphCodeBERT and pre-trained on\nlarge-scale multi-modal code-text pairs mined and\ncleaned by heuristics. It is important to note that\nwhile the baseline models are individually trained\nand evaluated for each programming language, our\nmodel is directly evaluated across all the languages.\nIn line with recent work (Guo et al., 2021, 2022;",
+      "source": "instructor.pdf",
+      "page": 8,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "Model\nParams\nRuby\nJS\nGo\nPython\nJava\nPHP\nAvg.\nCodeBERT\n110M×6\n67.9\n62.0\n88.2\n67.2\n67.6\n62.8\n69.3\nGraphCodeBERT\n110M×6\n70.3\n64.4\n89.7\n69.2\n69.1\n64.9\n71.3\nUniXcoder\n110M×6\n74.0\n68.4\n91.5\n72.0\n72.6\n67.6\n74.4\nCodeRetriever\n110M×6\n77.1\n71.9\n92.4\n75.8\n76.5\n70.8\n77.4\nGTEbase\n110M\n76.1\n73.6\n88.1\n95.9\n80.1\n85.3\n83.2\nTable 7: Results on CodeSearchNet. Comparison on code search across 6 programming languages (Husain et al.,",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "2019) with CodeBERT (Feng et al., 2020), GraphCodeBERT (Guo et al., 2021), UniXcoder (Guo et al., 2022) and\nCodeRetriever (Li et al., 2022). This setting requires finding the corresponding code candidates from all candidates\nfrom dev and test set.\nLi et al., 2022), we mainly evaluate on the chal-\nlenging settings where the code corpus include all\ncodes from dev and test set instead of 1k randomly\nsampled code.2 The results are presented in Table 7.\nSurprisingly, our model surpasses models that are",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "Surprisingly, our model surpasses models that are\npre-trained on code and then fine-tuned for each\nprogramming language separately. This finding\ndemonstrates that, by scaling the amount of data\nand computational resources, the language model\ncan acquire high-quality code representations di-\nrectly from sequences of code tokens, without the\nneed for incorporating human knowledge about the\nstructural information of code (Guo et al., 2021).\nWe observe a significant improvement in Python,",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "We observe a significant improvement in Python,\nlikely due to its resemblance to natural language.\nOur model, pre-trained on an extensive text pairs\nspanning various domains, demonstrates effective\ncross-task knowledge transfer from text retrieval to\ncode retrieval.\n5\nAnalysis\nIn this section, we analyze the crucial factors in-\nfluencing model performance and present a series\nof ablation experiments. Unless otherwise stated,\nthe experiments are performed using a BERT-base",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "the experiments are performed using a BERT-base\nscale model with 110M parameters. The training\nsteps and epochs remain consistent across all abla-\ntion experiments.\n5.1\nImpact of Scaling\nWe investigate the impact of scaling the number\nof data sources, batch size, and model parameters\non the quality of learned text embeddings. The\nevaluation is conducted on the MTEB benchmark.\nNumber of Training Datasets\nFirst, we con-\nducted an ablation study on the number of training",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "2Evaluation on the original settings can be found in Ap-\npendix C.\ndatasets used in pre-training. Model training was\ncarried out by randomly sampling a subset from\nall available datasets. In the pre-training stage, the\nfirst group consisted of only the five largest datasets,\nranked by size. The second group included an ad-\nditional 10 randomly sampled datasets, resulting in\na mixture of 15 datasets. The third group utilized\nall 33 datasets in the pre-training process. For fine-",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "tuning, we initially started with the three datasets\nused in E5 (Wang et al., 2022b) fine-tuning and\ngradually incorporated datasets from MEDI (Su\net al., 2023) and BERRI (Asai et al., 2023) to inves-\ntigate the potential benefits. The results presented\nin Figure 3a demonstrate that the inclusion of more\ndiverse data sources consistently enhances model\nperformance during both the pre-training and fine-\ntuning stages.\nPre-training Batch Size\nWe gradually increase",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "Pre-training Batch Size\nWe gradually increase\nthe batch size by a factor of 2 while keeping the\ntraining steps fixed to study the influence of batch\nsize used in embedding model pre-training. Ac-\ncording to Figure 3b, model performance saturates\nat around a batch size of ten thousands. No per-\nformance gain is observed when further scaling up\nbatch size.\nNumber of Model Parameters\nWe investigate\nthe scaling behavior by training language models\nof various sizes, including 30M, 110M, and 330M,",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "of various sizes, including 30M, 110M, and 330M,\nwhich correspond to the small, base, and large\nscales of the BERT model. Figure 3c illustrates\nthe performance of the pre-trained and fine-tuned\nmodels. It can be observed that as the model size\ngrows exponentially, the model performance also\nimproves linearly.",
+      "source": "instructor.pdf",
+      "page": 9,
+      "char_count": 310,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "+\n++\n+++\n56\n58\n60\n62\n64\nLevel\nPT\nFT\n(a) Number of training datasets.\n211\n212\n213\n214\n56\n58\n60\n62\n64\nB\nPT\n(b) Batch size.\n30M\n110M\n330M\n56\n58\n60\n62\n64\nN\nPT\nFT\n(c) Number of model parameters.\nFigure 3: Scaling analysis of different factors during contrastive pre-training and fine-tuning. Model performance is\nmesured by average performance on MTEB.\nFigure 4: Loss during contrastive pre-training for mod-\nels of different size.\n5.2\nTraining Behavior\nWe plot the training loss of different sized models",
+      "source": "instructor.pdf",
+      "page": 10,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "during contrastive pre-training in Figure 4. Larger\nmodels have better ablity at learning to distinguish\npositive pairs from negative ones. The training loss\nexperiences minor fluctuations consistently across\nall model scales, which suggests variations in the\nquality and difficulty of data per batch.3\nWe also evaluate model performance at different\ntraining steps. It’s shown that model performance\nsaturates at 20k steps roughly corresponds to train-\ning convergence.\nSteps\n10k\n20k\n30k\n40k\n50k\nMTEB\n56.4\n59.0",
+      "source": "instructor.pdf",
+      "page": 10,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Steps\n10k\n20k\n30k\n40k\n50k\nMTEB\n56.4\n59.0\n57.8\n57.7\n59.0\nTable 8: Model performance at different training steps\nduring unsupervised contrastive pre-training.\n3We use a fixed random seed for data sampling during\nmodel training, ensuring that each model encounters the data\nbatches in the same order.\n5.3\nInfluence of Different Training Stages\nTo examine the efficacy of multi-stage contrastive\nlearning, we conducted an analysis on the training\nstrategies. We compared three settings: a) solely",
+      "source": "instructor.pdf",
+      "page": 10,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "strategies. We compared three settings: a) solely\npre-training on unsupervised text pairs extracted\nfrom diverse sources; b) solely fine-tuning on super-\nvised datasets; c) contrastive pre-training followed\nby fine-tuning. All models were initialized from\nthe original BERT base model.\nSetting\nPT\nFT\nFull\nMTEB\n59.0\n57.8\n62.4\nTable 9: Model performance at different training stages.\nPT denotes run only unsupervised pre-training. FT only\nuse supervised data for model trainining. Full apply two",
+      "source": "instructor.pdf",
+      "page": 10,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "stages in a sequential manner.\nIt can be observed from Table 9 that relying\nsolely on supervised data for fine-tuning is insuf-\nficient to achieve a high-quality text embedding\nmodel, likely due to its limited size. Conversely, un-\nsupervised pre-training using web-scale text pairs\nyields superior text embeddings compared to solely\nrelying on labeled data for fine-tuning. Neverthe-\nless, the incorporation of supervised data in a multi-\nstage fashion with unsupervised pre-training can",
+      "source": "instructor.pdf",
+      "page": 10,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "stage fashion with unsupervised pre-training can\nstill contribute to the refinement of the acquired\ntext embeddings.\n5.4\nTraining Data Mixture\nWe study the influence of mixing ratio used in sam-\npling distribution on pre-training data to model\nperformance.\nThe performance on two task categories, re-\ntrieval and STS, as well as the average performance\non MTEB is reported in Table 10. We observe\nthat neither uniformly sampling from each pre-",
+      "source": "instructor.pdf",
+      "page": 10,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "α\nRetrieval\nSTS\nMTEB\n0\n36.7\n73.2\n55.4\n0.3\n44.6\n75.9\n58.9\n0.5\n44.2\n76.5\n59.0\n1\n42.0\n75.5\n58.3\nTable 10: Influence of ratio α used in pre-training data\nsampling.\ntraining task (α = 0) nor directly combining all\ndata sources (α = 1) is the best choice. Setting α\nto 0.5 can improve results on all tasks.\n5.5\nAblation of the Contrastive Objective\nThis work uses an improved contrastive objective\nwhich can efficiently enlarges the negative pool\nunder fixed batch size. We compare it against the",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "under fixed batch size. We compare it against the\nvanilla contrastive loss with only in-batch negatives\nin both pre-training and fine-tuning stages.\nSetting\nPT\nFT\nVanilla\n57.3\n61.8\nImproved\n57.8\n62.4\nTable 11: Comparison of the vanilla contrastive loss\nwith in-batch negatives, and the improved contrastive\nloss with enlarged negative pool. For ablation we run the\npre-training (PT) for 30k steps to reduce computational\ncost. We report average score on MTEB.\nAccording to Table 11, using improved con-",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "According to Table 11, using improved con-\ntrastive loss consistently improves model perfor-\nmance in both pre-training and fine-tuning stages.\n6\nDiscussion\nDespite the strong performance on English tasks,\nour current model can only handle text with a\nlength of less than 512, as it is initialized from\nBERT and lacks multilingual capabilities. Conse-\nquently, longer texts must be truncated or split for\nencoding. However, with more data engineering\nand compute resources, the described training ap-",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "and compute resources, the described training ap-\nproach could easily be extended to a multilingual\nversion and accommodate longer contexts.\nAnother issue is the problem of data contami-\nnation resulting from large-scale pre-training on\nInternet data. Currently, we only conduct dedupli-\ncation based on exact matching of text pairs, which\nis an overly strict filter. This issue has also been\nhighlighted by Brown et al. (2020) during the train-\ning of large-scale generative language models. We",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "ing of large-scale generative language models. We\nsuspect that this is a common problem that other\nmodels also suffer from, but quantifying it without\ndetails about the training data sources is even more\nchallenging (Neelakantan et al., 2022).\nFurthermore, the models trained in this study\nare based on a non-causal architecture with bidi-\nrectional context attention. It would be intriguing\nto explore similar pre-training methods for causal\nor prefix language models, as these models could",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "or prefix language models, as these models could\noptimize generation and retrieval jointly and unify\nthem within a single model.\n7\nConclusion\nThis paper presents a multi-stage contrastive learn-\ning approach to develop text embedding model that\ncan be applied to various tasks. Our model benefits\nfrom a diverse training data mixture, enabling it to\nachieve good generalization performance for single\nvector embedding. Through extensive evaluation\non multiple benchmarks, we demonstrate the ef-",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "on multiple benchmarks, we demonstrate the ef-\nfectiveness and versatility of our text embedding\nmodel. Our future work will focus on scaling the\nmodel to support longer context, extending it to\nsupport multilingual and multi-modal applications,\nas well as exploring the benefits of prompts and\ninstructions.\nReferences\nAkari Asai, Timo Schick, Patrick Lewis, Xilun Chen,\nGautier Izacard, Sebastian Riedel, Hannaneh Ha-\njishirzi, and Wen-tau Yih. 2023. Task-aware retrieval",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "with instructions. In Findings of the Association for\nComputational Linguistics: ACL 2023, pages 3650–\n3675, Toronto, Canada. Association for Computa-\ntional Linguistics.\nTom Brown, Benjamin Mann, Nick Ryder, Melanie\nSubbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind\nNeelakantan, Pranav Shyam, Girish Sastry, Amanda\nAskell, Sandhini Agarwal, Ariel Herbert-Voss,\nGretchen Krueger, Tom Henighan, Rewon Child,\nAditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens\nWinter, Chris Hesse, Mark Chen, Eric Sigler, Ma-",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Winter, Chris Hesse, Mark Chen, Eric Sigler, Ma-\nteusz Litwin, Scott Gray, Benjamin Chess, Jack\nClark, Christopher Berner, Sam McCandlish, Alec\nRadford, Ilya Sutskever, and Dario Amodei. 2020.\nLanguage models are few-shot learners.\nIn Ad-\nvances in Neural Information Processing Systems,\nvolume 33, pages 1877–1901. Curran Associates,\nInc.\nWei-Cheng Chang, Felix X. Yu, Yin-Wen Chang, Yim-\ning Yang, and Sanjiv Kumar. 2020. Pre-training tasks\nfor embedding-based large-scale retrieval. In Inter-",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "national Conference on Learning Representations.",
+      "source": "instructor.pdf",
+      "page": 11,
+      "char_count": 48,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "Mark Chen, Jerry Tworek, Heewoo Jun, Qiming\nYuan, Henrique Ponde de Oliveira Pinto, Jared Ka-\nplan, Harri Edwards, Yuri Burda, Nicholas Joseph,\nGreg Brockman, Alex Ray, Raul Puri, Gretchen\nKrueger, Michael Petrov, Heidy Khlaaf, Girish Sas-\ntry, Pamela Mishkin, Brooke Chan, Scott Gray,\nNick Ryder, Mikhail Pavlov, Alethea Power, Lukasz\nKaiser, Mohammad Bavarian, Clemens Winter,\nPhilippe Tillet, Felipe Petroski Such, Dave Cum-\nmings, Matthias Plappert, Fotios Chantzis, Eliza-",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "mings, Matthias Plappert, Fotios Chantzis, Eliza-\nbeth Barnes, Ariel Herbert-Voss, William Hebgen\nGuss, Alex Nichol, Alex Paino, Nikolas Tezak, Jie\nTang, Igor Babuschkin, Suchir Balaji, Shantanu Jain,\nWilliam Saunders, Christopher Hesse, Andrew N.\nCarr, Jan Leike, Josh Achiam, Vedant Misra, Evan\nMorikawa, Alec Radford, Matthew Knight, Miles\nBrundage, Mira Murati, Katie Mayer, Peter Welinder,\nBob McGrew, Dario Amodei, Sam McCandlish, Ilya\nSutskever, and Wojciech Zaremba. 2021. Evaluating",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "Sutskever, and Wojciech Zaremba. 2021. Evaluating\nlarge language models trained on code.\nTianqi Chen, Bing Xu, Chiyuan Zhang, and Carlos\nGuestrin. 2016. Training deep nets with sublinear\nmemory cost.\nHyunjin Choi,\nJudong Kim,\nSeongho Joe,\nand\nYoungjune Gwon. 2021. Evaluation of bert and albert\nsentence embedding performance on downstream nlp\ntasks. 2020 25th International Conference on Pattern\nRecognition (ICPR), pages 5482–5487.\nAlexis Conneau, Douwe Kiela, Holger Schwenk, Loïc",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Alexis Conneau, Douwe Kiela, Holger Schwenk, Loïc\nBarrault, and Antoine Bordes. 2017.\nSupervised\nlearning of universal sentence representations from\nnatural language inference data. In Proceedings of\nthe 2017 Conference on Empirical Methods in Nat-\nural Language Processing, pages 670–680, Copen-\nhagen, Denmark. Association for Computational Lin-\nguistics.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2019. BERT: Pre-training of\ndeep bidirectional transformers for language under-",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "standing. In Proceedings of the 2019 Conference of\nthe North American Chapter of the Association for\nComputational Linguistics: Human Language Tech-\nnologies, Volume 1 (Long and Short Papers), pages\n4171–4186, Minneapolis, Minnesota. Association for\nComputational Linguistics.\nZhangyin Feng, Daya Guo, Duyu Tang, Nan Duan, Xi-\naocheng Feng, Ming Gong, Linjun Shou, Bing Qin,\nTing Liu, Daxin Jiang, and Ming Zhou. 2020. Code-\nBERT: A pre-trained model for programming and",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "BERT: A pre-trained model for programming and\nnatural languages. In Findings of the Association\nfor Computational Linguistics: EMNLP 2020, pages\n1536–1547, Online. Association for Computational\nLinguistics.\nLuyu Gao and Jamie Callan. 2021. Condenser: a pre-\ntraining architecture for dense retrieval. In Confer-\nence on Empirical Methods in Natural Language\nProcessing.\nLuyu Gao and Jamie Callan. 2022. Unsupervised cor-\npus aware language model pre-training for dense pas-",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "sage retrieval. In Proceedings of the 60th Annual\nMeeting of the Association for Computational Lin-\nguistics (Volume 1: Long Papers), pages 2843–2853,\nDublin, Ireland. Association for Computational Lin-\nguistics.\nTianyu Gao, Xingcheng Yao, and Danqi Chen. 2021.\nSimCSE: Simple contrastive learning of sentence em-\nbeddings. In Proceedings of the 2021 Conference\non Empirical Methods in Natural Language Process-\ning, pages 6894–6910, Online and Punta Cana, Do-\nminican Republic. Association for Computational",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "minican Republic. Association for Computational\nLinguistics.\nDaya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming\nZhou, and Jian Yin. 2022. UniXcoder: Unified cross-\nmodal pre-training for code representation. In Pro-\nceedings of the 60th Annual Meeting of the Associa-\ntion for Computational Linguistics (Volume 1: Long\nPapers), pages 7212–7225, Dublin, Ireland. Associa-\ntion for Computational Linguistics.\nDaya Guo, Shuo Ren, Shuai Lu, Zhangyin Feng,\nDuyu Tang, Shujie LIU, Long Zhou, Nan Duan,",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "Duyu Tang, Shujie LIU, Long Zhou, Nan Duan,\nAlexey Svyatkovskiy, Shengyu Fu, Michele Tufano,\nShao Kun Deng, Colin Clement, Dawn Drain, Neel\nSundaresan, Jian Yin, Daxin Jiang, and Ming Zhou.\n2021. Graphcode{bert}: Pre-training code represen-\ntations with data flow. In International Conference\non Learning Representations.\nKelvin Guu, Kenton Lee, Zora Tung, Panupong Pasupat,\nand Mingwei Chang. 2020. Retrieval augmented\nlanguage model pre-training. In Proceedings of the",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "37th International Conference on Machine Learning,\nvolume 119 of Proceedings of Machine Learning\nResearch, pages 3929–3938. PMLR.\nSamuel Humeau, Kurt Shuster, Marie-Anne Lachaux,\nand Jason Weston. 2020. Poly-encoders: Architec-\ntures and pre-training strategies for fast and accurate\nmulti-sentence scoring. In International Conference\non Learning Representations.\nHamel Husain, Ho-Hsiang Wu, Tiferet Gazit, Miltiadis\nAllamanis, and Marc Brockschmidt. 2019. Code-",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "Allamanis, and Marc Brockschmidt. 2019. Code-\nsearchnet challenge: Evaluating the state of semantic\ncode search. CoRR, abs/1909.09436.\nGautier Izacard, Mathilde Caron, Lucas Hosseini, Sebas-\ntian Riedel, Piotr Bojanowski, Armand Joulin, and\nEdouard Grave. 2022a. Unsupervised dense informa-\ntion retrieval with contrastive learning. Transactions\non Machine Learning Research.\nGautier Izacard, Patrick Lewis, Maria Lomeli, Lucas\nHosseini, Fabio Petroni, Timo Schick, Jane Dwivedi-",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "Yu, Armand Joulin, Sebastian Riedel, and Edouard\nGrave. 2022b. Few-shot Learning with Retrieval\nAugmented Language Models.\nVladimir Karpukhin, Barlas Oguz, Sewon Min, Patrick\nLewis, Ledell Wu, Sergey Edunov, Danqi Chen, and",
+      "source": "instructor.pdf",
+      "page": 12,
+      "char_count": 223,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "Wen-tau Yih. 2020. Dense passage retrieval for open-\ndomain question answering. In Proceedings of the\n2020 Conference on Empirical Methods in Natural\nLanguage Processing (EMNLP), pages 6769–6781,\nOnline. Association for Computational Linguistics.\nKenton Lee, Ming-Wei Chang, and Kristina Toutanova.\n2019. Latent retrieval for weakly supervised open\ndomain question answering. In Proceedings of the\n57th Annual Meeting of the Association for Computa-\ntional Linguistics, pages 6086–6096, Florence, Italy.",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "Association for Computational Linguistics.\nBohan Li, Hao Zhou, Junxian He, Mingxuan Wang,\nYiming Yang, and Lei Li. 2020. On the sentence\nembeddings from pre-trained language models. In\nProceedings of the 2020 Conference on Empirical\nMethods in Natural Language Processing (EMNLP),\npages 9119–9130, Online. Association for Computa-\ntional Linguistics.\nXiaonan Li, Yeyun Gong, Yelong Shen, Xipeng Qiu,\nHang Zhang, Bolun Yao, Weizhen Qi, Daxin Jiang,\nWeizhu Chen, and Nan Duan. 2022. CodeRetriever:",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "Weizhu Chen, and Nan Duan. 2022. CodeRetriever:\nA large scale contrastive pre-training method for code\nsearch. In Proceedings of the 2022 Conference on\nEmpirical Methods in Natural Language Processing,\npages 2898–2910, Abu Dhabi, United Arab Emirates.\nAssociation for Computational Linguistics.\nZehan Li, Yanzhao Zhang, Dingkun Long, and Pengjun\nXie. 2023. Challenging decoder helps in masked\nauto-encoder pre-training for dense passage retrieval.\nCoRR, abs/2305.13197.",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "CoRR, abs/2305.13197.\nKyle Lo, Lucy Lu Wang, Mark Neumann, Rodney Kin-\nney, and Daniel Weld. 2020. S2ORC: The semantic\nscholar open research corpus. In Proceedings of the\n58th Annual Meeting of the Association for Compu-\ntational Linguistics, pages 4969–4983, Online. Asso-\nciation for Computational Linguistics.\nDingkun Long, Qiong Gao, Kuan Zou, Guangwei Xu,\nPengjun Xie, Ruijie Guo, Jianfeng Xu, Guanjun\nJiang, Luxi Xing, and Ping Yang. 2022a. Multi-cpr:\nA multi domain chinese dataset for passage retrieval.",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "Proceedings of the 45th International ACM SIGIR\nConference on Research and Development in Infor-\nmation Retrieval.\nDingkun Long, Yanzhao Zhang, Guangwei Xu, and\nPengjun Xie. 2022b. Retrieval oriented masking pre-\ntraining language model for dense passage retrieval.\nArXiv, abs/2210.15133.\nPaulius Micikevicius, Sharan Narang, Jonah Alben, Gre-\ngory Diamos, Erich Elsen, David Garcia, Boris Gins-\nburg, Michael Houston, Oleksii Kuchaiev, Ganesh\nVenkatesh, and Hao Wu. 2018.\nMixed precision",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "Venkatesh, and Hao Wu. 2018.\nMixed precision\ntraining. In International Conference on Learning\nRepresentations.\nFedor Moiseev, Gustavo Hernandez Abrego, Peter Dorn-\nbach, Imed Zitouni, Enrique Alfonseca, and Zhe\nDong. 2023. SamToNe: Improving contrastive loss\nfor dual encoder retrieval models with same tower\nnegatives. In Findings of the Association for Compu-\ntational Linguistics: ACL 2023, pages 12028–12037,\nToronto, Canada. Association for Computational Lin-\nguistics.",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "guistics.\nNiklas Muennighoff, Nouamane Tazi, Loic Magne, and\nNils Reimers. 2023. MTEB: Massive text embedding\nbenchmark. In Proceedings of the 17th Conference\nof the European Chapter of the Association for Com-\nputational Linguistics, pages 2014–2037, Dubrovnik,\nCroatia. Association for Computational Linguistics.\nArvind Neelakantan, Tao Xu, Raul Puri, Alec Rad-\nford, Jesse Michael Han, Jerry Tworek, Qiming\nYuan, Nikolas Tezak, Jong Wook Kim, Chris Hallacy,\nJohannes Heidecke, Pranav Shyam, Boris Power,",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "Johannes Heidecke, Pranav Shyam, Boris Power,\nTyna Eloundou Nekoul, Girish Sastry, Gretchen\nKrueger, David Schnurr, Felipe Petroski Such, Kenny\nHsu, Madeleine Thompson, Tabarak Khan, Toki\nSherbakov, Joanne Jang, Peter Welinder, and Lilian\nWeng. 2022.\nText and code embeddings by con-\ntrastive pre-training. CoRR, abs/2201.10005.\nJianmo Ni, Gustavo Hernandez Abrego, Noah Con-\nstant, Ji Ma, Keith Hall, Daniel Cer, and Yinfei Yang.\n2022a.\nSentence-t5: Scalable sentence encoders",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "2022a.\nSentence-t5: Scalable sentence encoders\nfrom pre-trained text-to-text models. In Findings of\nthe Association for Computational Linguistics: ACL\n2022, pages 1864–1874, Dublin, Ireland. Association\nfor Computational Linguistics.\nJianmo Ni, Chen Qu, Jing Lu, Zhuyun Dai, Gustavo Her-\nnandez Abrego, Ji Ma, Vincent Zhao, Yi Luan, Keith\nHall, Ming-Wei Chang, and Yinfei Yang. 2022b.\nLarge dual encoders are generalizable retrievers. In\nProceedings of the 2022 Conference on Empirical",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "Proceedings of the 2022 Conference on Empirical\nMethods in Natural Language Processing, pages\n9844–9855, Abu Dhabi, United Arab Emirates. As-\nsociation for Computational Linguistics.\nBarlas Oguz, Kushal Lakhotia, Anchit Gupta, Patrick\nLewis, Vladimir Karpukhin, Aleksandra Piktus,\nXilun Chen, Sebastian Riedel, Scott Yih, Sonal\nGupta, and Yashar Mehdad. 2022. Domain-matched\npre-training tasks for dense retrieval. In Findings\nof the Association for Computational Linguistics:",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "of the Association for Computational Linguistics:\nNAACL 2022, pages 1524–1534, Seattle, United\nStates. Association for Computational Linguistics.\nOpenAI. 2023.\nGpt-4 technical report.\nArXiv,\nabs/2303.08774.\nAlec Radford, Jong Wook Kim, Chris Hallacy, Aditya\nRamesh, Gabriel Goh, Sandhini Agarwal, Girish Sas-\ntry, Amanda Askell, Pamela Mishkin, Jack Clark,\nGretchen Krueger, and Ilya Sutskever. 2021. Learn-\ning transferable visual models from natural language",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "supervision. In Proceedings of the 38th International\nConference on Machine Learning, volume 139 of\nProceedings of Machine Learning Research, pages\n8748–8763. PMLR.\nAlec Radford, Karthik Narasimhan, Tim Salimans, and\nIlya Sutskever. 2018. Improving language under-\nstanding by generative pre-training.",
+      "source": "instructor.pdf",
+      "page": 13,
+      "char_count": 301,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "Thilina C. Rajapakse. 2023. Dense passage retrieval:\nArchitectures and augmentation methods. Proceed-\nings of the 46th International ACM SIGIR Confer-\nence on Research and Development in Information\nRetrieval.\nSamyam Rajbhandari, Jeff Rasley, Olatunji Ruwase,\nand Yuxiong He. 2020. Zero: Memory optimizations\ntoward training trillion parameter models. In Pro-\nceedings of the International Conference for High\nPerformance Computing, Networking, Storage and\nAnalysis, SC ’20. IEEE Press.",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "Analysis, SC ’20. IEEE Press.\nOri Ram, Yoav Levine, Itay Dalmedigos, Dor Muhlgay,\nAmnon Shashua, Kevin Leyton-Brown, and Yoav\nShoham. 2023. In-context retrieval-augmented lan-\nguage models. ArXiv, abs/2302.00083.\nNils Reimers and Iryna Gurevych. 2019.\nSentence-\nBERT: Sentence embeddings using Siamese BERT-\nnetworks. In Proceedings of the 2019 Conference on\nEmpirical Methods in Natural Language Processing\nand the 9th International Joint Conference on Natu-\nral Language Processing (EMNLP-IJCNLP), pages",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "ral Language Processing (EMNLP-IJCNLP), pages\n3982–3992, Hong Kong, China. Association for Com-\nputational Linguistics.\nRuiyang Ren, Shangwen Lv, Yingqi Qu, Jing Liu,\nWayne Xin Zhao, QiaoQiao She, Hua Wu, Haifeng\nWang, and Ji-Rong Wen. 2021.\nPAIR: Leverag-\ning passage-centric similarity relation for improving\ndense passage retrieval. In Findings of the Associa-\ntion for Computational Linguistics: ACL-IJCNLP\n2021, pages 2173–2183, Online. Association for\nComputational Linguistics.",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "Computational Linguistics.\nAndrew Rosenberg and Julia Hirschberg. 2007.\nV-\nmeasure: A conditional entropy-based external clus-\nter evaluation measure. In Proceedings of the 2007\nJoint Conference on Empirical Methods in Natural\nLanguage Processing and Computational Natural\nLanguage Learning (EMNLP-CoNLL), pages 410–\n420, Prague, Czech Republic. Association for Com-\nputational Linguistics.\nWeijia Shi, Sewon Min, Michihiro Yasunaga, Minjoon\nSeo, Rich James, Mike Lewis, Luke Zettlemoyer, and",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "Wen tau Yih. 2023. Replug: Retrieval-augmented\nblack-box language models. ArXiv, abs/2301.12652.\nHongjin Su, Weijia Shi, Jungo Kasai, Yizhong Wang,\nYushi Hu, Mari Ostendorf, Wen-tau Yih, Noah A.\nSmith, Luke Zettlemoyer, and Tao Yu. 2023. One\nembedder, any task: Instruction-finetuned text em-\nbeddings. In Findings of the Association for Compu-\ntational Linguistics: ACL 2023, pages 1102–1121,\nToronto, Canada. Association for Computational Lin-\nguistics.\nJianlin Su, Jiarun Cao, Weijie Liu, and Yangyiwen Ou.",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "2021. Whitening sentence representations for better\nsemantics and faster retrieval.\nNandan Thakur, Nils Reimers, Andreas Rücklé, Ab-\nhishek Srivastava, and Iryna Gurevych. 2021. Beir:\nA heterogeneous benchmark for zero-shot evaluation\nof information retrieval models. In Proceedings of\nthe Neural Information Processing Systems Track on\nDatasets and Benchmarks, volume 1. Curran.\nHugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier\nMartinet, Marie-Anne Lachaux, Timothée Lacroix,",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "Martinet, Marie-Anne Lachaux, Timothée Lacroix,\nBaptiste Rozière, Naman Goyal, Eric Hambro, Faisal\nAzhar, Aurelien Rodriguez, Armand Joulin, Edouard\nGrave, and Guillaume Lample. 2023. Llama: Open\nand efficient foundation language models. ArXiv,\nabs/2302.13971.\nAäron van den Oord, Yazhe Li, and Oriol Vinyals. 2018.\nRepresentation learning with contrastive predictive\ncoding. CoRR, abs/1807.03748.\nAshish Vaswani, Noam Shazeer, Niki Parmar, Jakob\nUszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "Uszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz\nKaiser, and Illia Polosukhin. 2017. Attention is all\nyou need. In Advances in Neural Information Pro-\ncessing Systems, volume 30. Curran Associates, Inc.\nLiang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao,\nLinjun Yang, Daxin Jiang, Rangan Majumder, and\nFuru Wei. 2022a. Simlm: Pre-training with repre-\nsentation bottleneck for dense passage retrieval. In\nAnnual Meeting of the Association for Computational\nLinguistics.",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "Linguistics.\nLiang Wang, Nan Yang, Xiaolong Huang, Binxing\nJiao, Linjun Yang, Daxin Jiang, Rangan Majumder,\nand Furu Wei. 2022b. Text embeddings by weakly-\nsupervised contrastive pre-training. arXiv preprint\narXiv:2212.03533.\nWenhui Wang, Furu Wei, Li Dong, Hangbo Bao, Nan\nYang, and Ming Zhou. 2020. Minilm: Deep self-\nattention distillation for task-agnostic compression\nof pre-trained transformers. In Proceedings of the\n34th International Conference on Neural Information",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "Processing Systems, NIPS’20, Red Hook, NY, USA.\nCurran Associates Inc.\nGuillaume Wenzek, Marie-Anne Lachaux, Alexis Con-\nneau, Vishrav Chaudhary, Francisco Guzmán, Ar-\nmand Joulin, and Edouard Grave. 2020.\nCCNet:\nExtracting high quality monolingual datasets from\nweb crawl data. In Proceedings of the Twelfth Lan-\nguage Resources and Evaluation Conference, pages\n4003–4012, Marseille, France. European Language\nResources Association.\nFangzhao Wu, Ying Qiao, Jiun-Hung Chen, Chuhan",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "Fangzhao Wu, Ying Qiao, Jiun-Hung Chen, Chuhan\nWu, Tao Qi, Jianxun Lian, Danyang Liu, Xing Xie,\nJianfeng Gao, Winnie Wu, and Ming Zhou. 2020.\nMIND: A large-scale dataset for news recommenda-\ntion. In Proceedings of the 58th Annual Meeting of\nthe Association for Computational Linguistics, pages\n3597–3606, Online. Association for Computational\nLinguistics.\nShitao Xiao, Zheng Liu, Yingxia Shao, and Zhao Cao.\n2022. Retromae: Pre-training retrieval-oriented lan-\nguage models via masked auto-encoder. In Confer-",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "guage models via masked auto-encoder. In Confer-\nence on Empirical Methods in Natural Language\nProcessing.",
+      "source": "instructor.pdf",
+      "page": 14,
+      "char_count": 106,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "Yiqing Xie, Xiao Liu, and Chenyan Xiong. 2023. Un-\nsupervised dense retrieval training with web anchors.\nIn Proceedings of the 46th International ACM SI-\nGIR Conference on Research and Development in\nInformation Retrieval, SIGIR ’23, page 2476–2480,\nNew York, NY, USA. Association for Computing\nMachinery.\nLee Xiong, Chenyan Xiong, Ye Li, Kwok-Fung Tang,\nJialin Liu, Paul N. Bennett, Junaid Ahmed, and\nArnold Overwijk. 2021. Approximate nearest neigh-\nbor negative contrastive learning for dense text re-",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "trieval. In International Conference on Learning\nRepresentations.\nJiawei Zhou, Xiaoguang Li, Lifeng Shang, Lan Luo,\nKe Zhan, Enrui Hu, Xinyu Zhang, Hao Jiang, Zhao\nCao, Fan Yu, Xin Jiang, Qun Liu, and Lei Chen. 2022.\nHyperlink-induced pre-training for passage retrieval\nin open-domain question answering. In Proceedings\nof the 60th Annual Meeting of the Association for\nComputational Linguistics (Volume 1: Long Papers),\npages 7135–7146, Dublin, Ireland. Association for\nComputational Linguistics.\nA",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "Computational Linguistics.\nA\nMore Details about Training Data\nA.1\nPre-training Data\nWeb Page\nWithin a web page, we use title as\nquery and the body text as document. Some re-\nsources include Common Crawl, Clue Webs, MS\nMARCO documents. The task can be formatted as\ngiven a short title, find the most relevant body texts\nfrom a set of randomly sampled texts.\nAcademic Paper\nThe scientific articles usually\nhave a higher quality due to its formal nature. For\neach paper, we use the title as query and its abstract",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "as document for constructing text pairs. The ar-\nticles are mined from different websites (such as\narXiv, bioRxiv, medRxiv, PubMed and Semantic\nScholar) to cover a wide range of topics.\nHyperlink\nAnother\nimportant\ninformation\npresent on the internet is the hyperlink with text\nin it, also know as web anchors. The hyperlink\ncan provide necessary references for current\narguments.\nWe use the citation argument and\nthe text from reference as relevant text pairs for",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "contrast. This type of task is more challenging as\nit usually involves multi-hop reasoning. We used\nthree resources to incorporate the link information:\nClueWeb, Wikipedia and Semantic Scholar paper\ncitations.\nCommunity QA\nWe also used many data from\ncommunity QA websites. The UI design of such\nwebsites usually follows a structured format, where\nthe user can write their questions in the format of a\nsummaritive title and a descriptive body. These two\nfields are usually semantically consistent. In ad-",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "dition, we also consider the question answer pairs\nfrom this type of websites. The data sources we\nused include StackExchange, Yahoo Answers, Wik-\niHow and Amazon QA. Simple heuristics such as\ntext lengths and voting numbers are used to filter\nout low-quality data.\nSocial Media\nThe social media websites such\nas Twitter and Reddit usually involves people pub-\nlishing posts about one event, and many internauts\nleave their comments. The post is also structured\nwith title and body in it, which we consider as",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "with title and body in it, which we consider as\npositive pairs. Similar to Community QA, post\ncomment are also regared as positive pairs for data\nmining. We mine data from Reddit.\nNews\nNews are structured as title body pairs.\nSome news has highlighted sentences in it. We use\nthese information to construct (query,doc) pairs.\nWe used data from CCNews, MicrosoftNews, NPR,\nCNNDaily.\nKnowledge Base\nKnowledge base usually stores\ntextual descriptions knowledge about an entity or",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "textual descriptions knowledge about an entity or\nevent. The (entity, description) pairs are mined. We\nuse WikiPedia and DBPedia for text pair mining in\nthis work.\nCode\nCode can be viewed as another form of text.\nThe naturally paired text-code can be repurposed as\npositive pairs. We use GitHub and StackOverflow\nas two data sources. We reuse training set from\nCodeSearchNet which is mined from GitHub.\nOthers\nIn addition, we also use data from various\nwebsites such as Amazon reviews about the goods,",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "websites such as Amazon reviews about the goods,\ndebate websites about one argument, googaq q,a\npairs by prompting google search box with search\nlog queries.\nA.2\nFine-tuning Data\nWeb Search\nWe used MS MARCO passage re-\ntrieval benchmarks. Hard negatives are mined by\nsampling from high-ranked documents retrieval\nsystem, excluding positive ones.\nOpen QA\nWe consider Natural Questions, Trivia\nQA, Web Questions, HotpotQA, etc. In the open\ndomain QA datasets, a question and its supporting",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "domain QA datasets, a question and its supporting\nevidence passages are provided as positive pairs.\nTop ranked passage by retrieval system which do",
+      "source": "instructor.pdf",
+      "page": 15,
+      "char_count": 147,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "not include answer to the question is regared as\nhard negatives.\nNatural Language Inference\nPrior work (Con-\nneau et al., 2017) has shown that high-quality sen-\ntence embeddings can be learned from a supervised\nnatural language inference task. We use entailment\nas positive pairs and contradiction as negative pairs\nto construct training triples. The combination of\nMNLI and SNLI is used in this work.\nFact Verification\nOne argument and its support-\ning source (a Wikipedia document) is positive pairs.",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "We use training set from FEVER as data source for\nthis task.\nParaphrase\nTwo sentences with similar mean-\nings are labeled as positive pairs. This type of data\nincludes Quora and StackExchangeDupquestion.\nOthers\nIn addition to previous datasets, we also\nused miscellaneous datasets from different NLP\ntasks and domains released in MEDI (Su et al.,\n2023) and BERRI (Asai et al., 2023). By doing\nso, a sub-sampled version of pre-training data is\nalso included in fine-tuning to avoid catastrophe\nforgetting.\nA.3",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "forgetting.\nA.3\nData Sources\nThe pre-training data comes mostly from language\ncorpus released by previous work. We use Com-\nmomCrawl preprocessed by CCNet at 2019 snap-\nshot due to large computaional cost of process-\ning (Wenzek et al., 2020). Since Reddit data is\nno longer free available, we use two pre-processed\nversion by sentence-transformers 4 and Oguz et al.\n(2022) for pair mining. Text pairs mined from hy-\nperlinks come from Zhou et al. (2022) and Xie et al.",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "(2023). We also include citation pairs from the\nS2ORC dataset (Lo et al., 2020). We reuse DBPe-\ndia, debating arguments and PubMed corpus from\nBEIR (Thakur et al., 2021). Wikipedia data is taken\nfrom Izacard et al. (2022b). Microsoft News data\ncomes from Wu et al. (2020). Arxiv data is down-\nloaded from Kaggle, medRxiv and bioRxiv are\nmined via requesting public API from year 2013 to\n2022. The StackExchange and StackOverflow data\ncomes from the pre-processed version maintained",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "comes from the pre-processed version maintained\nby sentence-transformers team.5 The remaining\n4https://huggingface.co/datasets/\nsentence-transformers/reddit-title-body\n5https://huggingface.co/\nflax-sentence-embeddings\ndata comes from embedding-training-data.6 The\ntraining data is keep as it was without any specific\nfiltering, except that we use text pair exact-match\nfor training data de-duplication for some datasets.\nThe fine-tuning data is basically a combina-\ntion of previous research. For the MS MARCO",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "tion of previous research. For the MS MARCO\ndataset, we use mined hard negative by the sec-\nond stage retriever from Li et al. (2023). For NQ\ndataset, we reuse the training data released by co-\nCondenser (Gao and Callan, 2022). We use NLI\ndata released by SimCSE (Gao et al., 2021). Other\ndata comes from MEDI and BERRI (Su et al., 2023;\nAsai et al., 2023), but we discard the instructions\nwritten for each task and only use training triples.\nSome randomly sampled examples can be found in\nTable 12.\nB",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "Table 12.\nB\nMassive Text Embedding Benchmark\nClassification\nThis task is evaluated in the lin-\near probing setting. The embedding model is kept\nfrozen and used to extract text embeddings for each\nexample from train and test set. The train set em-\nbeddings are used as input features to train a lo-\ngistic regression classifier with 100 maximum it-\nerations. The accuracy on test set is reported as\nthe main evaluation metric. In this setting, differ-\nent classification tasks only need to train an extra",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "classification head with a few labeled training data.\nClustering\nA high-quality embedding model\nshould embed semantically similar texts close in\nthe embedding space. This property is evaluated by\nrunning a k-means algorithm on the embeddings\nproduced for each sentence of the test set. A mini-\nbatch k-means model is used with batch size 32 and\nk being the number of labels. Texts are partitioned\ninto k clusters. The clustering performance is mea-\nsured by the v-measure (Rosenberg and Hirschberg,",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "sured by the v-measure (Rosenberg and Hirschberg,\n2007) which is invariant to the permutation of clus-\ntering labels.\nReranking\nGiven a query and a list of relevant\nand irrelevant reference texts, reranking needs to\nrank the list of reference texts based on their sim-\nilarity to the query. The embedding model is in-\nvoked to obtain embeddings for each query and\nreference text and cosine similarity is used as the\nranking score. This inference setting is quite sim-",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "ilar to text retrieval with the reference set being\n6https://huggingface.co/\ndatasets/sentence-transformers/\nembedding-training-data",
+      "source": "instructor.pdf",
+      "page": 16,
+      "char_count": 132,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "Task Type\nText Triple Format\nquery\ndoc\nhard neg\nWeb Search\n(query, passage, negative)\nfinger cellulitis symptoms\nThe following are the most common\nsymptoms of cellulitis. However. . .\nCellulitis usually begins as\na small area of pain and . . .\nOpen QA\n(question, passage, negative)\nbig little lies season 2\nhow many episodes\nBig Little Lies (TV series).\nseries garnered several accolades. . .\nLittle People, Big World.\nfinal minutes of the season two. . .\nNatural Language Inference",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "Natural Language Inference\n(sentence, entailment, contradiction)\n(Read for Slate ’s take\non Jackson’s findings.)\nSlate had an opinion\non Jackson’s findings.\nSlate did not hold any opinion\non Jackson’s findings.\nFact Verification\n(argument, evidence, others)\nRoman Atwood is a\ncontent creator.\nRoman Bernard Atwood (born\nMay 28, 1983) is an American\nYouTube personality. . .\n6th Streamy Awards Casey Neistat\nand Jesse Wellens, PrankvsPrank . . .\nParaphrase\n(sentence, paraphrase, others)\nLexapro taken with",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "(sentence, paraphrase, others)\nLexapro taken with\ncrestor any reaction?\nCan dayquil be taken with Lexapro?\nCan stopping lexapro cause\na longer period?\nTable 12: Examples of (query, positive, negative) text triples in fine-tuning data.\nsmaller and harder to distinguish. In line with pre-\nvious work, the main evaluation metric is MAP\n(mean average precision).\nRetrieval\nWe omit the text retrieval evaluation\nsince it’s similar to that introduced in previous sec-\ntion.\nPair Classification",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "tion.\nPair Classification\nThis task needs to assign a\nlabel for a pair of texts. Popular tasks include\nduplicate or paraphrase identification, where the\nlabel is binary. The similarity score is the cosine\nsimilarity between the embeddings of two texts.\nThe average precision score is reported as the main\nevaluation metric using the best binary threshold.\nSemantic Textual Similarity\nTo determine the\nsimilarity between a given pair of sentences, con-\ntinuous scores are assigned, with higher values in-",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 158,
+      "text": "dicating greater similarity. The embedding model\nis employed to embed the sentences, and their sim-\nilarity is computed using cosine similarity. The\nestimated similarity scores is compared against hu-\nman labeled scores ranging from 1 to 5. We report\nSpearman’s correlation, which measures the rank-\nings instead of the actual scores and better suits the\nneed of evaluating sentence embeddings.\nSummarization\nThis is a text generation evalua-\ntion task which aims to automatically evaluate the",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 159,
+      "text": "quality of generated text. For the summarization\ntask, the quality of each generated summary is com-\nputed by measuring the cosine similarity between\nits embedding and the embedding of the ground\ntruth references. In the case of multiple gold refer-\nences, the closest one with highest similarity score\nis used for quality estimation. Similar to STS task,\nwe use the Spearman correlation between the rank-\ning produced by the text embedding model and the\nhuman assessments for evaluation.\nC",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 160,
+      "text": "human assessments for evaluation.\nC\nOriginal CodeSearchNet Results\nWe list the results of the original setting on Code-\nSearchNet in Table 13, where the retrieval cor-\npus contains 1k randomly sampled code snip-\npets. Compared to previous open-source code lan-\nguage models with similar architecture and size\n(CodeBERT (Feng et al., 2020) and GraphCode-\nBERT (Guo et al., 2021)), our model is superior\nin most programming languages. There is still a\nperformance gap to the code embedding model",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 161,
+      "text": "performance gap to the code embedding model\ntrained by Neelakantan et al. (2022), which used\nCodex (Chen et al., 2021) as backbone and trained\non a large-scale (code, text) pairs extracted from\nopen-source code. It is worthwhile to explore how\nto further close this gap.",
+      "source": "instructor.pdf",
+      "page": 17,
+      "char_count": 270,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 162,
+      "text": "Model\nParams\nRuby\nJS\nGo\nPython\nJava\nPHP\nAvg.\nCodeBERT\n110M × 6\n69.3\n70.6\n84.0\n86.8\n74.8\n70.6\n76.0\nGraphCodeBERT\n110M × 6\n84.1\n73.2\n87.9\n75.7\n71.1\n72.5\n77.4\ncpt-code S\n300M\n86.3\n86.0\n97.7\n99.8\n94.0\n96.7\n93.4\ncpt-code M\n1.2B\n85.5\n86.5\n97.5\n99.9\n94.4\n97.2\n93.5\nGTEbase\n110M\n79.6\n79.4\n84.2\n98.8\n86.8\n86.8\n85.9\nTable 13: Results on CodeSearchNet (Husain et al., 2019). We compare with CodeBERT (Feng et al., 2020),",
+      "source": "instructor.pdf",
+      "page": 18,
+      "char_count": 409,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 163,
+      "text": "GraphCodeBERT (Guo et al., 2021) and cpt-code (Neelakantan et al., 2022). This setting requires finding the\nrelevant code block among 1K candidates for a given natural language query.",
+      "source": "instructor.pdf",
+      "page": 18,
+      "char_count": 183,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

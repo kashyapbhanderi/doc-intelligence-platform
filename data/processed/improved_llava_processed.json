@@ -1,0 +1,1260 @@
+{
+  "source": "improved_llava.pdf",
+  "full_path": "data\\raw\\improved_llava.pdf",
+  "total_pages": 15,
+  "text_chunks": 156,
+  "vision_chunks": 0,
+  "total_chunks": 156,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Improved Baselines with Visual Instruction Tuning\nHaotian Liu1\nChunyuan Li2\nYuheng Li1\nYong Jae Lee1\n1University of Wisconsin–Madison\n2Microsoft Research, Redmond\nhttps://llava-vl.github.io\nAbstract\nLarge multimodal models (LMM) have recently shown\nencouraging progress with visual instruction tuning. In this\npaper, we present the first systematic study to investigate\nthe design choices of LMMs in a controlled setting under\nthe LLaVA framework. We show that the fully-connected",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "vision-language connector in LLaVA is surprisingly power-\nful and data-efficient. With simple modifications to LLaVA,\nnamely, using CLIP-ViT-L-336px with an MLP projection\nand adding academic-task-oriented VQA data with response\nformatting prompts, we establish stronger baselines that\nachieve state-of-the-art across 11 benchmarks. Our final\n13B checkpoint uses merely 1.2M publicly available data,\nand finishes full training in ∼1 day on a single 8-A100 node.",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "Furthermore, we present some early exploration of open\nproblems in LMMs, including scaling to higher resolution\ninputs, compositional capabilities, and model hallucination,\netc. We hope this makes state-of-the-art LMM research more\naccessible. Code and model will be publicly available.\n1. Introduction\nLarge multimodal models (LMMs) have become increas-\ningly popular in the research community, as they are\nthe key building blocks towards general-purpose assis-",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "tants [2, 30, 43]. Recent studies on LMMs are converg-\ning on a central concept known as visual instruction tun-\ning [36]. The results are promising, e.g. LLaVA [36] and\nMiniGPT-4 [62] demonstrate impressive results on natural\ninstruction-following and visual reasoning capabilities. To\nbetter understand the capability of LMMs, multiple bench-\nmarks [17, 27, 34, 37, 55] have been proposed. Recent\nworks further demonstrate improved performance by scal-",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "ing up the pretraining data [3, 14, 54], instruction-following\ndata [14, 18, 29, 58], visual encoders [3], or language mod-\nels [39], respectively. The LLaVA architecture is also lever-\naged in different downstream tasks and domains, including\nregion-level [8, 56] and pixel-level [26, 50] understanding,\nbiomedical assistants [31], image generation [5], adversarial\nstudies [6, 59].\nVQAv2\nGQA\nVizWiz\nSQA-IMG\nTextVQA\nPOPE\nMME\nMMBench\nMMBench-CN\nSEED-Bench\nLLaVA-Bench\nMM-Vet\n85.3\n1293.8\n49.5\n33.4\n63.1\n50.7\n78.9",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "MM-Vet\n85.3\n1293.8\n49.5\n33.4\n63.1\n50.7\n78.9\n53.4\n58.2\n25.6\n78.2\n57.5\n38.9\n68.2\n61.5\n1487.5\n60.6\n56.7\n58.2\n80.0\n63.3\n53.6\n71.6\n61.3\n85.9\n1531.3\n67.7\n63.6\n61.6\n72.5\n36.1\nBLIP-2\nInstructBLIP\nQwen-VL-Chat\nLLaVA-1.5\n101\n103\n# Training Samples (M)\nInstruct\nBLIP\nQwen-VL\n-Chat\nLLaVA\n-1.5\n129\n1.2\n1400\n50\n0.56\n0.67\nPre-training\nInstruction Tuning\nFigure 1. LLaVA-1.5 achieves SoTA on a broad range of 11 tasks\n(Top), with high training sample efficiency (Left) and simple mod-",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "ifications to LLaVA (Right): an MLP connector and including\nacademic-task-oriented data with response formatting prompts.\nHowever, despite many benchmarks and developments, it\nstill remains unclear what the best recipe is to train LMMs\ntowards the goal of general-purpose assistants. For exam-\nple, LLaVA [36] excels in conversational-style visual rea-\nsoning and even outperforms later approaches like Instruct-\nBLIP [14] on such benchmarks [55], while InstructBLIP",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "excels in traditional VQA benchmarks that demands single-\nword or short answers. Given the significant differences\nin the model architecture and training data between them,\nthe root cause of the disparity in their capabilities remains\nelusive, despite conjectures [37, 55]: the amount of training\ndata, the usage of resamplers like Qformer [32], etc. To this\narXiv:2310.03744v2  [cs.CV]  15 May 2024",
+      "source": "improved_llava.pdf",
+      "page": 1,
+      "char_count": 399,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "end, we present the first systematic study to investigate the\ndesign choices of LMMs in a controlled setting. Our study\noriginates from LLaVA and builds a road map by carefully\nmaking effective contributions from the perspectives of the\ninput, model, and data.\nFirst, we unveil that the fully-connected vision-language\nconnector in LLaVA is surprisingly powerful and data-\nefficient, and we establish stronger and more feasible base-\nlines built upon the LLaVA framework. We report that two",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "simple improvements, namely, an MLP cross-modal con-\nnector and incorporating academic task related data such\nas VQA, are orthogonal to the framework of LLaVA, and\nwhen used with LLaVA, lead to better multimodal under-\nstanding capabilities. In contrast to InstructBLIP [14] or\nQwen-VL [3], which trains specially designed visual resam-\nplers on hundreds of millions or even billions of image-text\npaired data, LLaVA uses one of the simplest architecture",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "design for LMMs and requires only training a simple fully-\nconnected projection layer on merely 600K image-text pairs.\nOur final model can finish training in ∼1 day on a single\n8-A100 machine and achieves state-of-the-art results on a\nwide range of benchmarks. Moreover, unlike Qwen-VL [3]\nthat includes in-house data in training, LLaVA utilizes only\npublicly available data.\nNext, we delve into an early exploration of other open\nproblems of large multimodal models. Our findings include:",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "(1) Scaling to high-resolution image inputs. We show that\nLLaVA’s architecture is versatile in scaling to higher res-\nolutions by simply dividing images into grids and main-\ntains its data efficiency; with the increased resolution, it\nimproves the model’s detailed perception capabilities and\nreduces hallucination. (2) Compositional capabilities. We\nfind that large multimodal models are capable of general-\nizing to compositional capabilities. For example, training",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "on long-form language reasoning together with shorter vi-\nsual reasoning can improve the model’s writing capability\nfor multimodal questions. (3) Data efficiency. We show\nthat randomly downsampling LLaVA’s training data mixture\nby up to 75% does not significantly decrease the model’s\nperformance, suggesting that the possibility of a more so-\nphisticated dataset compression strategy can further improve\nLLaVA’s already efficient training pipeline. (4) Data scaling.",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "We provide empirical evidence for the scaling of data granu-\nlarity in conjunction with the model’s capability is crucial\nfor an improved capability without introducing artifacts like\nhallucination.\nIn sum, we perform a systematic study on the training\nof large multimodal models, and introduce a simple yet\neffective approach to balance the multitask learning and ef-\nfective scaling for large multimodal models. Our improved\nbaselines, LLaVA-1.5, uses only public data, achieves the",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "state-of-the-art on a broad range of 11 tasks, and is signif-\nicantly more data-efficient than previous approaches. By\nrethinking the conventional approaches and exploring the\nopen problems in visual instruction tuning, we pave the way\nfor more robust and capable systems for LMMs. We hope\nthese improved and easily-reproducible baselines will pro-\nvide a reference for future research in open-source LMMs.\n2. Related Work\nInstruction-following large multimodal models (LMMs).",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "Common architectures include a pre-trained visual backbone\nto encode visual features, a pre-trained large language model\n(LLM) to comprehend the user instructions and produce\nresponses, and a vision-language cross-modal connector\nto align the vision encoder outputs to the language mod-\nels. As shown in Fig. 1, LLaVA [36] is perhaps the sim-\nplest architecture for LMMs. Optionally, visual resamplers\n(e.g. Qformer [32]) are used to reduce the number of vi-",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "sual patches [3, 14, 62]. Training an instruction-following\nLMM usually follows a two-stage protocol. First, the vision-\nlanguage alignment pretraining stage leverages image-text\npairs to align the visual features with the language model’s\nword embedding space. Earlier works utilize relatively few\nimage-text pairs (e.g. ∼600K [36] or ∼6M [62]), while some\nrecent works pretrain the vision-language connector for a spe-\ncific language model on a large amount of image-text pairs",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "(e.g. 129M [14] and 1.4B [3]), to maximize the LMM’s per-\nformance. Second, the visual instruction tuning stage tunes\nthe model on visual instructions [36], to enable the model to\nfollow users’ diverse requests on instructions that involve the\nvisual contents. Dealing with higher resolution with grids in\nLMM are studied in con-current works [1, 28, 53].\nMultimodal instruction-following data. In NLP, studies\nshow that the quality of instruction-following data largely",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "affects the capability of the resulting instruction-following\nmodels [61]. For visual instruction tuning, LLaVA [36] is the\npioneer to leverage text-only GPT-4 to expand the existing\nCOCO [35] bounding box and caption dataset to a multi-\nmodal instruction-following dataset that contains three types\nof instruction-following data: conversational-style QA, de-\ntailed description, and complex reasoning. LLaVA’s pipeline\nhas been employed to expand to textual understanding [57],",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "million-scales [58], and region-level conversations [8]. In-\nstructBLIP [14] incorporates academic-task-oriented VQA\ndatasets to further enhance the model’s visual capabilities.\nConversely, [7] identifies that such naive data merging can\nresult in models that tend to overfit to VQA datasets and\nthus are unable to participate in natural conversations. The\nauthors further propose to leverage the LLaVA pipeline to\nconvert VQA datasets to a conversational style. While this",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "proves effective for training, it introduces added complexities\nin data scaling. However, in NLP, the FLAN family [13, 51]\nshows that adding a large number of academic language\ntasks for instruction tuning can effectively improve the gen-",
+      "source": "improved_llava.pdf",
+      "page": 2,
+      "char_count": 238,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "eralization ability. In light of this, we consider investigating\nthe root cause of the inability to balance between natural\nconversations and academic tasks in multimodal models.\n3. Approach\n3.1. Preliminaries\nAs the seminal work of visual instruction tuning, LLaVA [36]\nshowcases commendable proficiency in visual reasoning ca-\npabilities, surpassing even more recent models on diverse\nbenchmarks [4, 55] for real-life visual instruction-following\ntasks. LLaVA uses a single linear layer to project the vi-",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "sual features to language space, and optimizes the whole\nLLM for visual instruction tuning. However, LLaVA falls\nshort on academic benchmarks that typically require short-\nform answers (e.g. single-word), and tends to answer yes for\nyes/no questions due to the lack of such data in the training\ndistribution.\nOn the other hand, InstructBLIP [14] is the pioneer to in-\ncorporate academic-task-oriented datasets like VQA-v2 [19]\nalong with LLaVA-Instruct [36], and demonstrates improved",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "performance on VQA benchmarks. It pretrains Qformer [32]\non 129M image-text pairs and only finetunes the instruction-\naware Qformer for visual instruction tuning. However, re-\ncent studies [7, 55] show that it does not perform as well as\nLLaVA on engaging in real-life visual conversation tasks.\nMore specifically, as shown in Table 1a, it can overfit to\nVQA training sets with short-answers, even on requests that\nrequire detailed responses.\n3.2. Response Format Prompting",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "3.2. Response Format Prompting\nWe find that the inability [7] to balance between short-\nand long-form VQA for approaches like InstructBLIP [14],\nwhich leverages instruction following data that includes both\nnatural responses and short-answers, is mainly due to the fol-\nlowing reasons. First, ambiguous prompts on the response\nformat. For example, Q: {Question} A: {Answer}. Such\nprompts do not clearly indicate the desired output format,\nand can overfit an LLM behaviorally to short-form answers",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "even for natural visual conversations. Second, not finetuning\nthe LLM. The first issue is worsened by InstructBLIP only\nfinetuning the Qformer for instruction-tuning. It requires\nthe Qformer’s visual output tokens to control the length of\nthe LLM’s output to be either long-form or short-form, as in\nprefix tuning [33], but Qformer may lack the capability of\nproperly doing so, due to its limited capacity compared with\nLLMs like LLaMA.\nThus, to enable LLaVA to better handle short-form an-",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "swers while addressing the issues of InstructBLIP, we pro-\npose to use a single response formatting prompt that clearly\nindicates the output format. It is appended at the end of VQA\nquestions when promoting short answers: Answer the ques-\ntion using a single word or phrase. We find that when the\nVisual input example, Multitask Balancing Problem:\nUser\nIs this unusual? Please explain in detail.\nInstructBLIP\nyes\n(a) Example of InstructBLIP [14] (Vicuna-13B) having difficulty balancing",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "between short- and long-form answers.\nVisual input example, Different Format Prompts:\nNormal prompt\nWhat is the color of the shirt that the man\nis wearing?\nResponse\nThe man is wearing a yellow shirt.\nAmbiguous prompt\nQ: What is the color of the shirt that the\nman is wearing? A:\nResponse\nThe man is wearing a yellow shirt.\nFormatting prompt\nWhat is the color of the shirt that the man\nis wearing? Answer the question using\na single word or phrase.\nResponse\nYellow.",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "a single word or phrase.\nResponse\nYellow.\n(b) Comparison of how different prompts regularize the output format. The\nresults are obtained zero-shot directly after LLaVA undergoes the first-stage\nvision-language alignment pretraining, without the second-stage visual\ninstruction tuning.\nTable 1. Visual input example to illustrate the challenge of (a)\nmultitask balancing and (b) different format prompts. The same\nimage input is used.\nLLM is finetuned with such prompts, LLaVA is able to prop-",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "erly adjust the output format according to the user’s instruc-\ntions (see Table 1b), and does not require additional process-\ning of the VQA answers using ChatGPT [7], which further\nenables scaling to various data sources. As shown in Table 2,\nby merely including VQAv2 [19] in training, LLaVA’s per-\nformance on MME significantly improves (1323.8 vs 809.6)\nand outperforms InstructBLIP by 111 points.\n3.3. Scaling the Data and Model\nMLP vision-language connector. Inspired by the improved",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "performance in self-supervised learning by changing from\na linear projection to an MLP [9, 10], we find that improv-\ning the vision-language connector’s representation power\nwith a two-layer MLP can improve LLaVA’s multimodal\ncapabilities, compared with the original linear projection.\nAcademic task oriented data. We further include addi-\ntional academic-task-oriented VQA datasets for VQA, OCR,\nand region-level perception, to enhance the model’s capabili-",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "ties in various ways, as shown in Table 2. We first include",
+      "source": "improved_llava.pdf",
+      "page": 3,
+      "char_count": 59,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "split\nencode\nflatten\nLLM\nresize\nencode\nflatten\nFigure 2. LLaVA-1.5-HD. Scaling LLaVA-1.5 to higher resolutions by splitting the image into grids and encoding them independently. This\nallows the model to scale to any resolution, without performing positional embedding interpolation for ViTs. We additionally concatenate\nthe feature of a downsampled image to provide the LLM with a global context.\nMethod\nLLM\nRes.\nGQA MME\nMM-Vet\nInstructBLIP\n14B\n224\n49.5\n1212.8\n25.6",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "MM-Vet\nInstructBLIP\n14B\n224\n49.5\n1212.8\n25.6\nOnly using a subset of InstructBLIP training data\n0\nLLaVA\n7B\n224\n–\n809.6\n25.5\n1\n+VQA-v2\n7B\n224\n47.0\n1197.0\n27.7\n2\n+Format prompt\n7B\n224\n46.8\n1323.8\n26.3\n3\n+MLP VL connector\n7B\n224\n47.3\n1355.2\n27.8\n4\n+OKVQA/OCR\n7B\n224\n50.0\n1377.6\n29.6\nAdditional scaling\n5\n+Region-level VQA\n7B\n224\n50.3\n1426.5\n30.8\n6\n+Scale up resolution\n7B\n336\n51.4\n1450\n30.3\n7\n+GQA\n7B\n336\n62.0∗1469.2\n30.7\n8\n+ShareGPT\n7B\n336\n62.0∗1510.7\n31.1\n9\n+Scale up LLM\n13B\n336\n63.3∗1531.3\n36.1",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "31.1\n9\n+Scale up LLM\n13B\n336\n63.3∗1531.3\n36.1\nTable 2. Scaling results on ■data, ■model, and ■resolution.\nWe choose to conduct experiments on GQA [21], MME [17], and\nMM-Vet [55] to examine the representative capabilities of VQA\nwith short answers, VQA with output formatting, and natural vi-\nsual conversations, respectively. ∗Training images of GQA were\nobserved during training.\nfour additional datasets that are used in InstructBLIP: open-\nknowledge VQA (OKVQA [41], A-OKVQA [45]) and OCR",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "knowledge VQA (OKVQA [41], A-OKVQA [45]) and OCR\n(OCRVQA [42], TextCaps [47]). A-OKVQA is converted to\nmultiple choice questions and a specific response formatting\nprompt is used: Answer with the option’s letter from the\ngiven choices directly. With only a subset of the datasets\nInstructBLIP uses, LLaVA already surpasses it on all three\ntasks in Table 2, suggesting LLaVA’s effective design. Fur-\nthermore, we find further adding region-level VQA datasets\n(Visual Genome [25], RefCOCO [24, 40]) improves the",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "model’s capability of localizing fine-grained visual details.\nAdditional scaling. We further scale up the input image\nresolution to 3362 to allow the LLM to clearly “see” the\ndetails of images, by swapping the vision encoder to CLIP-\nViT-L-336px (the highest resolution available for CLIP). In\naddition, we add the GQA dataset as an additional visual\nknowledge source. We also incorporate ShareGPT [46] data\nand scale up the LLM to 13B as in [3, 8, 39]. Results on MM-",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "Vet shows the most significant improvement when scaling\nthe LLM to 13B, suggesting the importance of the base\nLLM’s capability for visual conversations.\nLLaVA-1.5. We denote this final model with all the modifi-\ncations as LLaVA-1.5 (the last two rows in Table 2), which\nachieves an impressive performance that significantly out-\nperforms the original LLaVA [36].\nComputational cost. For LLaVA-1.5, we use the same\npretraining dataset, and keep the training iterations and batch",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "size roughly the same for instruction tuning as LLaVA [36].\nDue to the increased image input resolution to 3362, the\ntraining of LLaVA-1.5 is ∼2× as long as LLaVA: ∼6 hours\nof pretraining and ∼20 hours of visual instruction tuning,\nusing 8× A100s.\n3.4. Scaling to Higher Resolutions\nIn Sec. 3.3, we observe the advantage that scaling up the\ninput image resolution improves the model’s capabilities.\nHowever, the image resolution of the existing open source",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "CLIP vision encoders is limited to 3362, preventing the\nsupport of higher resolution images by simply replacing the\nvision encoder as we did in Sec. 3.3. In this section, we\npresent an early exploration of scaling the LMM to higher\nresolutions, while maintaining the data efficiency of LLaVA-\n1.5.\nWhen using ViT [15] as the vision encoder, to scale up\nthe resolution, previous approaches mostly choose to per-\nform positional embedding interpolation [3, 32] and adapt",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "the ViT backbone to the new resolution during finetuning.\nHowever, this usually requires the model to be finetuned on\na large-scale image-text paired dataset [3, 32], and limits the\nresolution of the image to a fixed size that the LMM can\naccept during inference.\nInstead, as shown in Fig. 2, we overcome this by dividing\nthe image into smaller image patches of the resolution that\nthe vision encoder is originally trained for, and encode them\nindependently. After obtaining the feature maps of individ-",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "ual patches, we then combine them into a single large feature",
+      "source": "improved_llava.pdf",
+      "page": 4,
+      "char_count": 61,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "Method\nLLM\nImage\nSample Size\nVQAv2\nGQA\nVisWiz\nSciQA-\nTextVQA\nSize\nPretrain\nFinetune\n[19]\n[21]\n[20]\nIMG [38]\n[48]\nBLIP-2 [32]\nVicuna-13B\n2242\n129M\n-\n65.0\n41\n19.6\n61\n42.5\nInstructBLIP [14]\nVicuna-7B\n2242\n129M\n1.2M\n–\n49.2\n34.5\n60.5\n50.1\nInstructBLIP [14]\nVicuna-13B\n2242\n129M\n1.2M\n–\n49.5\n33.4\n63.1\n50.7\nShikra [8]\nVicuna-13B\n2242\n600K\n5.5M\n77.4∗\n–\n–\n–\n–\nIDEFICS-9B [22]\nLLaMA-7B\n2242\n353M\n1M\n50.9\n38.4\n35.5\n–\n25.9\nIDEFICS-80B [22]\nLLaMA-65B\n2242\n353M\n1M\n60.0\n45.2\n36.0\n–\n30.9\nQwen-VL [3]\nQwen-7B\n4482\n1.4B†\n50M†",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "36.0\n–\n30.9\nQwen-VL [3]\nQwen-7B\n4482\n1.4B†\n50M†\n78.8∗\n59.3∗\n35.2\n67.1\n63.8∗\nQwen-VL-Chat [3]\nQwen-7B\n4482\n1.4B∗\n50M†\n78.2∗\n57.5∗\n38.9\n68.2\n61.5∗\nLLaVA-1.5\nVicuna-7B\n3362\n558K\n665K\n78.5∗\n62.0∗\n50.0\n66.8\n58.2\nLLaVA-1.5\nVicuna-13B\n3362\n558K\n665K\n80.0∗\n63.3∗\n53.6\n71.6\n61.3\nLLaVA-1.5-HD\nVicuna-13B\n4482\n558K\n665K\n81.8∗\n64.7∗\n57.5\n71.0\n62.5\nSpecialist SOTA: PaLI-X-55B [11]\n86.1∗\n72.1∗\n70.9∗\n–\n71.4∗",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 394,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "86.1∗\n72.1∗\n70.9∗\n–\n71.4∗\nTable 3. Comparison with SoTA methods on academic-task-oriented datasets. LLaVA-1.5 achieves the best performance on 4/5\nbenchmarks, and ranks the second on the other. ∗The training images/annotations of the datasets are observed during training. †Includes\nin-house data that is not publicly accessible.\nMethod\nPOPE [34]\nMME\nMMBench [37]\nSEED-Bench [27]\nLLaVA-\nMM-Vet\nrand\npop\nadv\n[17]\nen\ncn\nall\nimg\nvid\nWild [36]\n[55]\nBLIP2-14B [32]\n89.6\n85.5\n80.9\n1293.8\n–\n–\n46.4\n49.7\n36.7\n38.1\n22.4",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "85.5\n80.9\n1293.8\n–\n–\n46.4\n49.7\n36.7\n38.1\n22.4\nInstructBLIP-8B [14]\n–\n–\n–\n–\n36\n23.7\n53.4\n58.8\n38.1\n60.9\n26.2\nInstructBLIP-14B [14]\n87.7\n77\n72\n1212.8\n–\n–\n–\n–\n–\n58.2\n25.6\nShikra-13B [8]\n–\n–\n–\n–\n58.8\n–\n–\n–\n–\n–\n–\nIDEFICS-9B [22]\n–\n–\n–\n–\n48.2\n25.2\n–\n44.5\n–\n–\n–\nIDEFICS-80B [22]\n–\n–\n–\n–\n54.5\n38.1\n–\n53.2\n–\n–\n–\nQwen-VL [3]\n–\n–\n–\n–\n38.2\n7.4\n56.3\n62.3\n39.1\n–\n–\nQwen-VL-Chat [3]\n–\n–\n–\n1487.5\n60.6\n56.7\n58.2\n65.4\n37.8\n–\n–\nLLaVA-7B [36]\n76.3\n72.2\n70.1\n809.6\n38.7\n36.4\n33.5\n37.0\n23.8\n62.8\n25.5\nLLaVA-1.5-7B\n87.3\n86.1\n84.2",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "37.0\n23.8\n62.8\n25.5\nLLaVA-1.5-7B\n87.3\n86.1\n84.2\n1510.7\n64.3\n58.3\n58.6\n66.1\n37.3\n65.4\n31.1\nLLaVA-1.5-13B\n87.1\n86.2\n84.5\n1531.3\n67.7\n63.6\n61.6\n68.2\n42.7\n72.5\n36.1\nLLaVA-1.5-13B-HD\n87.5\n86.4\n85.0\n1500.1\n68.8\n61.9\n62.6\n70.1\n41.3\n72.0\n39.4\nTable 4. Comparison with SoTA methods on benchmarks for instruction-following LMMs. LLaVA-1.5 achieves the best overall\nperformance.\nmap of the target resolution, and feed that into the LLM. To\nprovide the LLM with the global context and to reduce the",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "artifact of the split-encode-merge operation, we addition-\nally concatenate the feature of a downsampled image to the\nmerged feature map. This allows us to scale the input to\nany arbitrary resolution and maintain the data efficiency of\nLLaVA-1.5. We call this resulting model LLaVA-1.5-HD.\n4. Empirical Evaluation\n4.1. Benchmarks\nWe evaluate LLaVA-1.5 on a collection of both academic-\ntask-oriented benchmarks and recent benchmarks specifi-\ncally proposed for instruction-following LMMs, totalling",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "12 benchmarks. For academic-task-oriented benchmarks,\nVQA-v2 [19] and GQA [21] evaluate model’s visual percep-\ntion capabilities on open-ended short answers. VizWiz [20]\ncontains 8,000 images to evaluate model’s zero-shot gen-\neralization on visual questions asked by visually impaired\npeople. Following InstructBLIP [14], the image subset of\nScienceQA [38] with multiple choice are used to evaluate\nthe zero-shot generalization on scientific question answering.",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "TextVQA [48] contains text-rich visual question answering.\nFor recent benchmarks proposed for instruction-following\nLMMs, POPE [34] evaluates model’s degree of hallucination\non three sampled subsets of COCO [35]: random, common,\nand adversarial and we report the F1 score on all three splits.\nOther benchmarks evaluate the model’s capabilities on a\nwide range of domains and applications, with different re-\nsponse formats. MME-Perception [17] evaluates model’s",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "visual perception with yes/no questions. MMBench [37]\nevaluates model’s answer robustness with all-round shuf-\nfling on multiple choice answers. MMBench-CN [37] is the\nChinese-translated version of MMBench. SEED-Bench [27]\nevaluates model’s performance on both images and videos\nwith multiple choice, and we sample the frame in the middle\nto evaluate the accuracy on videos. LLaVA-Bench-in-the-\nWild [36] and MM-Vet [55] evaluate model’s capabilities\nin engaging in visual conversations on a diverse range of",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "tasks, and evaluates the correctness and the helpfulness of",
+      "source": "improved_llava.pdf",
+      "page": 5,
+      "char_count": 59,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "Visual input example, Tricky Question:\nUser\nIf there are factual errors in the questions, point it out;\nif not, proceed to answering the question.\nWhat’s happening in the desert?\nGPT-4V\nSorry, I cannot answer that question as there is no\ncontext about which desert you are referring to.\nLLaVA\nIn the image, there is a city skyline with buildings and\na beach with people enjoying the sunset. The scene is\nset in a desert, which is unusual for a beach setting.\nLLaVA-1.5",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "LLaVA-1.5\nThere are no deserts in the image. The image features\na beach with palm trees, a city skyline, and a large\nbody of water.\nTable 5. LLaVA-1.5 can detect and answer tricky questions when\nprompted to verify the question.\nthe response with GPT-4 evaluation.\n4.2. Results\nWe show that LLaVA-1.5 achieves the best overall per-\nformance on 12 benchmarks, despite using magnitudes\nsmaller pretraining and instruction tuning data compared\nwith other methods [3, 14]. LLaVA-1.5 significantly outper-",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "forms LLaVA on all benchmarks for instruction-following\nLMMs. Note that it is challenging to evalute the original\nLLaVA on academic datasets like VQA-v2 [19] that demand\nopen-ended short answers.\nWhen we continue to scale up the image resolution to\n4482 with LLaVA-1.5-HD, it further improves the overall\nperformance on all benchmarks, especially on tasks that\nrequire perception of details in the images (e.g. OCR in MM-\nVet, detailed description in LLaVA-Bench-in-the-Wild [36]).",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "Moreover, we find that adding the global context effectively\nrecovers the model from the split-and-merge artifacts and\nguides the model to more easily locate the relevant regions\nfrom the high-resolution features (see appendix).\nIt is encouraging that LLaVA-1.5 achieves the best perfor-\nmance with the simplest architecture, academic compute and\npublic datasets, and yields a fully-reproducible and afford-\nable baseline for future research. The results also suggest",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "that visual instruction tuning plays an important role in im-\nproving an LMM’s capabilities, and raises questions upon\nthe common belief that LMMs require significant amount\nof vision-language alignment pretraining [3, 14, 32], despite\nthat the vision encoders (e.g. CLIP [44], OpenCLIP [23],\nEVA-CLIP [16], etc.) are already pretrained on web-scale\nimage-text paired data. LLaVA-1.5 (even the 7B model)\nVisual input example, Constrained JSON Output:\nUser",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "User\nPlease read the text in this image and return the informa-\ntion in the following JSON format (note xxx is placeholder,\nif the information is not available in the image, put \"N/A\"\ninstead).\n{\"class\": xxx, \"DLN\": xxx, \"DOB\": xxx, \"Name\": xxx, \"Ad-\ndress\": xxx, \"EXP\": xxx, \"ISS\": xxx, \"SEX\": xxx, \"HGT\": xxx,\n\"WGT\": xxx, \"EYES\": xxx, \"HAIR\": xxx, \"DONOR\": xxx}\nGPT-4V\n{\"class\": \"C\", \"DLN\": \"1234568\", \"DOB\": \"08/31/1977\",\n\"Name\": \"Ima Cardholder\", \"Address\": \"2570 24th Street, Any-",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "town, CA 95818\", \"EXP\": \"08/31/2014\", \"ISS\": \"08/31/2011\",\n\"SEX\": \"F\", \"HGT\": \"5-05\", \"WGT\": \"125 lbs\", \"EYES\":\n\"BRN\", \"HAIR\": \"BRN\", \"DONOR\": \"VETERAN\"}\nLLaVA\n{\"class\": \"Driver License\", \"DLN\": \"CA123 456 789\", \"DOB\":\n\"01/01/1990\", \"Name\": \"Amy\", \"Address\": \"Anytown, CA\",\n\"EXP\": \"08/31/2023\", \"ISS\": \"Veteran\", \"SEX\": “F\", \"HGT\":\n\"5’5\", \"WGT\": \"130\", \"EYES\": \"Brown\", \"HAIR\": \"Brown\",\n\"DONOR\": \"Unknown\"}\nLLaVA-\n1.5\n{\"class\": \"C\", \"DLN\": \"1132456789\", \"DOB\": \"08/23/1971\",",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "\"Name\": \"Ima Cardholder\", \"Address\": \"Anytown, State, Zip\",\n\"EXP\": \"08/23/2014\", \"ISS\": \"California\", \"SEX\": \"F\", \"HGT\":\n\"5’5\", \"WGT\": \"123\", \"EYES\": \"Brown\", \"HAIR\": \"Brown\",\n\"DONOR\": \"N/A\"}\nTable 6. LLaVA-1.5 can extract information from the image and\nanswer following the required format, despite a few errors com-\npared with GPT-4V. GPT-4V results are obtained from [52].\noutperforms 80B IDEFICS [22], a Flamingo-like LMM with\nbillions of trainable parameters for cross-modal connection.",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "This also makes us rethink the benefits of the vision samplers\nand the necessity of the additional large-scale pretraining, in\nterms of multimodal instruction-following capabilities.\nGlobal context. For higher resolution, we pad and resize the\nimage to a single image of 2242, and concatenate it with the\nhigh resolution features to provide a global context. Ablation\non a 7B model shows that the global context effectively\nboosts performance on all three validation benchmarks.\nGQA\nMME\nMM-Vet",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "GQA\nMME\nMM-Vet\nhigh-res patch only\n62.9\n1425.8\n31.9\n+global context\n63.8 (+0.9)\n1497.5 (+71)\n35.1 (+3.2)\n4.3. Emerging Properties\nFormat instruction generalization. Although LLaVA-1.5\nis only trained with a limited number of format instructions,\nit generalizes to others. First, VizWiz [20] requires the model",
+      "source": "improved_llava.pdf",
+      "page": 6,
+      "char_count": 309,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "GQA\nSQA-IMG\nTextVQA\nPOPE\nMME\nMMBench\nMMBench-CN\nSEED-Bench\nMM-Vet\n0.8\n0.9\n1.0\nVicuna-1.1\nVicuna-1.3\nVicuna-1.5\nLLaMA-2-Chat\nFigure 3. Ablation on LLM choices. Data points represent the\nrelative performance of the best performing variant for each dataset.\nto output “Unanswerable” when the provided content is in-\nsufficient to answer the question, and our response format\nprompt (see Appendix) effectively instructs the model to do\nso (11.1% →67.8% on unanswerable questions). We addi-",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "tionally present qualitative examples on instructing LLaVA-\n1.5 to verify tricky questions (Fig. 5), respond in a con-\nstrained JSON format (Fig. 6), and more in appendix.\nMultilingual multimodal capability. Though LLaVA-1.5\nis not finetuned for multilingual multimodal instruction fol-\nlowing at all (all visual instructions including VQA are in\nEnglish), we find that it is capable of following multilingual\ninstructions. This is partly due to the multilingual language",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "instructions in ShareGPT [46]. Although ShareGPT does not\ncontain images in its instructions, the model learns from this\ndataset the behavior of adaptively responding with the lan-\nguage that corresponds to the user’s request. We empirically\nshow that this behavior is transferred to visual conversations.\nWe also quantitatively evaluate the model’s generalization\ncapability to Chinese on MMBench-CN [37], where the\nquestions of MMBench are converted to Chinese. Notably,",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "LLaVA-1.5 outperforms Qwen-VL-Chat by +7.3% (63.6%\nvs 56.7%), despite Qwen being finetuned on Chinese multi-\nmodal instructions while LLaVA-1.5 is not.\n4.4. Ablation on LLM Choices\nIn NLP, findings [49] suggest that the capability of the\nbase LLM can affect its instruction-tuned successors. In\nthis section, we explore two families of LLMs and study\ntheir contribution to the final model’s multimodal capabil-\nity: LLaMA-based (Vicuna-v1.1, Vicuna-v1.3) and LLaMA-",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "2-based (Vicuna-v1.5, LLaMA-2-Chat). Vicuna-v1.3 and\nVicuna-v1.5 use the same ∼150K ShareGPT [46] data (2×\nGQA\nSQA-IMG\nTextVQA\nPOPE\nMME\nMMBench\nMMBench-CN\nSEED-Bench\nMM-Vet\n0.8\n0.9\n1.0\n10%\n20%\n30%\n40%\n50%\n100%\nFigure 4. Ablation on data efficiency. Data points represent the\nrelative performance of the best performing variant for each dataset.\nthat used in v1.1). Unlike Vicuna series that is only trained\nwith supervised instruction finetuning (SFT), LLaMA-2-",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "Chat is further optimized with reinforcement-learning from\nhuman-feedback (RLHF). We visualize the relative perfor-\nmance of these variants in Fig. 3.\nFirst, we find that Vicuna-v1.5 achieves the best overall\nperformance, and LLaMA-2-based models generally per-\nform better than LLaMA-1-based, suggesting the importance\nof the base language model. This is further evidenced by\nthe results on MMBench-CN [37]: despite Vicuna-v1.3 and\nv1.5 using the same ShareGPT data for instruction tuning,",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "the performance in generalization to Chinese of Vicuna-v1.3\nis significantly worse than v1.5.\nSecond, language instruction-tuning matters on specific\ncapabilities that are required by each dataset. For example,\nalthough LLaMA-2-Chat and Vicuna-v1.5 achieves almost\nthe same performance on MMBench, the generalization to\nMMBench-CN [37] of LLaMA-2-Chat is worse than Vicuna-\nv1.5, which is partly due to that the most SFT/RLHF data of\nLLaMA-2-Chat is in English and does not contain as many",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "multilingual data as in ShareGPT. Furthermore, TextVQA\nrequires both the model’s capability of identifying the text\ncharacters in the images, and also processing the noisy out-\nputs from the OCR engine; such noise may be more com-\nmonly observed in the ShareGPT data, which is collected\nin-the-wild from daily usage of ChatGPT.\n5. Open Problems in LMMs\nGiven the successful scaling of LLaVA-1.5, we conduct\nadditional studies on open problems in LMMs using the\nmodel design and data mixture of LLaVA-1.5.",
+      "source": "improved_llava.pdf",
+      "page": 7,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "5.1. Data Efficiency\nDespite the data efficiency of LLaVA-1.5 when compared\nwith approaches like InstructBLIP [14], the training of\nLLaVA-1.5 still doubles when compared with LLaVA. In\nthis section, we conduct experiments for further improving\nthe data efficiency by randomly sub-sampling the training\ndata mixture of LLaVA-1.5, with a sampling ratio ranging\nfrom 0.1 to 0.5. We visualize the relative performance of\ndifferent sampling variants in Fig. 4.\nFirst, the full data mixture provides the best knowledge",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "coverage, and allows the model to achieve the best overall\nperformance. To our surprise, with only 50% of the samples,\nthe model still maintains more than 98% of the full dataset\nperformance. This suggests that there is room for further\nimprovements in data efficiency.\nSecond, when downsampling the dataset to 50%, the\nmodel’s performance on MMBench, ScienceQA, and POPE\ndoes not decrease at all, and it even slightly improves on\nMMBench. Similarly, the model’s performance remains",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "steady when further downscaling the data from 50% to 30%.\nThese results show promise of having the less-is-more [61]\nbenefit for multimodal models as well.\n5.2. Rethinking Hallucination in LMMs\nHallucination is an important issue to tackle for LLMs and\nLMMs. Often in LMMs, we attribute the model’s hallucina-\ntion to the errors or hallucinations in the training dataset. For\nexample, the detailed descriptions in LLaVA-Instruct [36]\nmay contain a small amount of hallucinated content, and it",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "is believed that training on such data may have caused the\nmodel to hallucinate when asked to “describe the image in\ndetail”. However, we find that such hallucination is signifi-\ncantly reduced, when we scale the model’s inputs to higher\nresolutions like 4482.\nThis finding is interesting as it suggests that the LMMs\nmay be robust to a few such errors in the training data. How-\never, when the input resolution is not sufficient for the model\nto discern all details in the training data, and the amount of",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "data that is at that granularity beyond the model’s capability\nbecomes large enough, the model learns to hallucinate. This\nfurther suggests that there needs to be a balance between\nimproving the data annotation with more details and the\nmodel’s capability to properly process the information at\nsuch granularities. We hope this finding provides a reference\nfor future work in terms of dealing with hallucination and\nthe scaling of the models and data.\n5.3. Compositional Capabilities",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "5.3. Compositional Capabilities\nWe demonstrate interesting compositional capabilities in\nLLaVA-1.5: the model trained on a set of tasks indepen-\ndently generalizes to tasks that require a combination of\nthese capabilities without explicit joint training. We note\nsome of the findings below.\nFirst, we observe an improved language capability in vi-\nsual conversations after including the ShareGPT [46] data, in-\ncluding the multimodal multilingual capability as discussed",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "in Sec. 4.3. Moreover, the model is more capable at pro-\nviding longer and more detailed responses in visual conver-\nsations. Second, the additional visual knowledge from the\nacademic-task-oriented datasets, improves the visual ground-\nness of LLaVA-1.5’s responses in visual conversations, as\nevidenced quantitatively by the improved results on MM-\nVet [55] and LLaVA-Wild [36] in Table 4.\nHowever, there is still difficulty in achieving ideal per-\nformance for some tasks that require a certain combination",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "of capabilities. For example, being able to correctly answer\nthe attribute of a certain object in VQA, does not guarantee\nan accurate depiction of that object attribute in a detailed\ndescription of the whole image. Furthermore, the capability\nof engaing in conversations with certain foreign languages\n(e.g. Korean) still falls behind. See appendix for examples.\nThese findings suggest that the compositional capabilities\nof LMMs can be leveraged to improve the model’s perfor-",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "mance without significantly increasing the data by exhaus-\ntively including all task combinations. Yet, it can be further\ninvestigated, and a deeper understanding of the mechanism\nbehind the compositional capabilities of LMMs can further\nimprove the capability and the data efficiency of LLaVA-1.5.\n6. Conclusion\nIn this paper, we take a step towards demystifying the design\nof large multimodal models, and propose a simple, effective,\nand data-efficient baseline, LLaVA-1.5, for large multimodal",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "models. In addition, we explore the open problems in visual\ninstruction tuning, scale LMMs to higher resolutions, and\npresent some intriguing findings in terms of model halluci-\nnation and compositional capabilities for LMMs. We hope\nthese improved and easily-reproducible baselines as well as\nthe new findings will provide a reference for future research\nin open-source LMM.\nLimitations. Despite the promising results demonstrated\nby LLaVA-1.5, it still has limitations including prolonged",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "training for high-resolution images, lack of multiple-image\nunderstanding, limited problem solving capabilities in cer-\ntain fields. It is not exempt from producing hallucinations,\nand should be used with caution in critical applications (e.g.\nmedical). See appendix for a detailed discussion.\nAcknowledgements. This work was supported in part by\nNSF CAREER IIS2150012, and Institute of Information &\ncommunications Technology Planning & Evaluation(IITP)\ngrants funded by the Korea government(MSIT) (No. 2022-",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "0-00871, Development of AI Autonomy and Knowledge\nEnhancement for AI Agent Collaboration) and (No. RS-\n2022-00187238, Development of Large Korean Language\nModel Technology for Efficient Pre-training).",
+      "source": "improved_llava.pdf",
+      "page": 8,
+      "char_count": 200,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "Appendix\nThis appendix is organized as follows.\n• In Section A, we show implementation details for\nLLaVA-1.5-HD (Sec. A.1), data and prompts (Sec. A.2),\nand hyperparameters (Sec. A.3).\n• In Section B, we present more qualitative results for\nresponse format prompts (Sec. B.1), compositional ca-\npabilities (Sec. B.2).\n• In Section C, we discuss limitations with more details.\nA. Implementation Details\nA.1. LLaVA-1.5-HD\nA.1.1\nPreprocessing\nOverview. We use CLIP-ViT-L-14 (2242) as the base image",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "encoder. We first select and pad the input image to a target\nresolution that effectively captures its details, and split the\nimage into 2242 grids. All 2242 image patches are encoded\nby the CLIP image encoder separately and their features are\nmerged back to a single large feature map. We then post-\nprocess the resulting feature map to a flattened list of features.\nWe additionally concatenate the features of a fixed-resolution\nimage to provide the model with a global context.",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "image to provide the model with a global context.\nTarget resolution selection. We predefine a set of resolu-\ntions to support up to six grids (1x1, 1x2, 1x3, 1x4, 1x5, 1x6,\n2x2, 2x3, and their transpose). This system allows for a max-\nimum resolution of 672x448 (or 448x672). Two criteria are\nenforced in the target resolution selection: (1) Detail preser-\nvation: the selected resolution preserves as much detail from\nthe original image as possible; (2) Resource efficiency: the",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "resolution should not be excessively large to avoid unneces-\nsary consumption of pixels and memory (e.g. it should not\nselect 4482 for a 2242 input image).\nPostprocessing. We perform three steps of postprocessing\nto ensure that the final features can be processed effectively\nand efficiently by the language model. (1) Padding removal.\nFeatures corresponding exclusively to the paddings are dis-\ncarded. This reduces the number of visual tokens processed",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "by the language model and improves the efficiency. (2) Row-\nend Tokens. We append a special token to the end of each\nrow of features, to provide an explicit indication of the shape\nof the image. Unlike the original LLaVA and LLaVA-1.5\nthat uses a fixed resolution, we now use a variable resolution\nfor the image features of LLaVA-1.5-HD, such indication\nallows the language model to capture the exact shape and the\nsize of the image for each sample. (3) Flattening. Finally, we",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "flatten the image feature map and feed it into the language\nmodel along with language token features.\nData\nSize\nResponse formatting prompts\nLLaVA [36]\n158K\n–\nShareGPT [46]\n40K\n–\nVQAv2 [19]\n83K\nAnswer the question using a single word or phrase.\nGQA [21]\n72K\nOKVQA [41]\n9K\nOCRVQA [42]\n80K\nA-\nOKVQA [45]\n66K\nAnswer with the option’s letter from the given\nchoices directly.\nTextCaps [47]\n22K\nProvide a one-sentence caption for the provided\nimage.\nRefCOCO\n48K\nNote: randomly choose between the two formats\n[24, 40]",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "[24, 40]\nProvide a short description for this region.\nVG [25]\n86K\nProvide the bounding box coordinate of the region\nthis sentence describes.\nTotal\n665K\nTable 7. Instruction-following Data Mixture of LLaVA-1.5.\nData\nResponse formatting prompts\nLLaVA-Bench, MM-Vet\n–\nVQAv2, GQA, TextVQA,\nMME, POPE\nAnswer the question using a single word or\nphrase.\nScienceQA,\nMMBench,\nSEED-Bench\nAnswer with the option’s letter from the given\nchoices directly.\nVizWiz\nWhen the provided information is insufficient,",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "When the provided information is insufficient,\nrespond with ‘Unanswerable’.\nAnswer the\nquestion using a single word or phrase.\nTable 8. Response format prompt for evaluation.\nA.1.2\nTraining\nSince we compute the visual features on the original 2242\nresolution that the vision encoder is trained on, we do not\nperform additional pretraining. We also do not perform\nadditional high resolution pretraining for the visual projec-\ntors, and perform visual instruction tuning directly on the\nhigher-resolution images.",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "higher-resolution images.\nA.2. Data\nOur final training data mixture contains a variety of datasets:\nVQA [19, 21, 41, 45], OCR [42, 47], region-level VQA [24,\n25, 40], visual conversation [36] and language conversa-\ntion [46] data. We adopt multiple strategies to reduce train-\ning cost and enhance efficiency, detailed as follows:\n1. For all VQA datasets, QA pairs from the same training\nimage are merged into a single conversation.\n2. For ShareGPT [46], we filter out invalid conversations as",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "[12]. Unlike Vicuna [12], long conversations that surpass\n2048 tokens are truncated rather than splitting to multiple\nconversations. This results in ∼40K conversations.\n3. Each QA pair in A-OKVQA [45] is augmented k times,\nwhere k is the number of choices per question, to coun-\nterbalance the lack of multiple-choice data.\n4. 80K conversations are sampled from OCRVQA [42].",
+      "source": "improved_llava.pdf",
+      "page": 9,
+      "char_count": 374,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "5. For Visual Genome, we sample 10 annotations for images\nwith additional annotations.\n6. For RefCOCO, conversations are dissected into segments,\neach containing fewer than 10 conversations.\n7. We obverse that language conversations are often longer\nthan visual ones. For each batch, we sample conversa-\ntions only from a single modality, and this speeds up the\ntraining by 25%, and does not affect the final outcome.\nAll data splits are concatenated together and sampled",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "with the same probability. We present the response format-\nting prompts of the final instruction-following data mixtures\nin Table 7 and the response format prompts used for each\nevaluation benchmark in Table 8.\nA.3. Hyperparameters\nThe latest Vicuna v1.5 [60] is used as the base LLM. LLaVA-\n1.5 uses the same set of hyperparameters as the original\nLLaVA, except that we halve the learning rate in pretraining\ndue to the usage of the MLP projection layer instead of",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "the original linear projection layer design. We show the\ntraining hyperparameters for both first-stage vision-language\nalignment pretraining and the second-stage visual instruction\ntuning in Table 9. We use greedy decoding for evaluation to\nensure reproducibility.\nHyperparameter\nPretrain\nFinetune\nbatch size\n256\n128\nlr\n1e-3\n2e-5\nlr schedule\ncosine decay\nlr warmup ratio\n0.03\nweight decay\n0\nepoch\n1\noptimizer\nAdamW\nDeepSpeed stage\n2\n3\nTable 9. Hyperparameters of LLaVA-1.5 are the same as the",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "original LLaVA, except that we halve the learning rate in pretraining\ndue to the usage of the MLP projection layer.\nB. Qualitative Results\nB.1. Response Format Prompts\nWe show additional examples of LLaVA-1.5 generalizing to\ndifferent unseen response format prompts.\nFirst, as shown in Table 10, LLaVA-1.5 can provide de-\ntails at different granularities in response to user’s requests.\nWhen requested by the user, it is also capable of switching\nbetween response formats within the conversations.",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Second, we provide another example of the constrained\nprompting to generate the prompts for Stable Diffusion mod-\nels. We show an example of generating anime prompts in\nTable 12.\nVisual input example, Different Format Prompts:\nUser\nWhat is the color of the shirt that the man is\nwearing? Answer the question using a single\nword or phrase.\nLLaVA-1.5\nYellow\nUser\nIs this unusual? Please explain briefly with a\nshort sentence.\nLLaVA-1.5\nYes, it is unusual to see a man ironing clothes",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "Yes, it is unusual to see a man ironing clothes\nwhile standing on the back of a moving car.\nUser\nIs this unusual? Please explain in detail.\nLLaVA-1.5\nYes, this is an unusual scene. A man is ironing\nclothes while standing on the back of a mov-\ning yellow SUV. This is not a typical activity\none would expect to see on a city street, as iron-\ning clothes is usually done indoors, in a more\nprivate setting. The man’s actions are not only\nunconventional but also potentially dangerous,",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "unconventional but also potentially dangerous,\nas standing on the back of a moving vehicle can\nbe hazardous and may lead to accidents or in-\njuries. Additionally, the presence of a suitcase\nand a handbag in the scene suggests that the man\nmight be traveling or on the go, which further\nemphasizes the unusual nature of the situation.\nUser\nWhat is unusual about this image?\nAnswer\nbriefly with a single sentence.\nLLaVA-1.5\nA man is ironing clothes in the back of a car.\nUser\nGive a more detailed explanation.",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "User\nGive a more detailed explanation.\nLLaVA-1.5\nThe image shows a man ironing clothes in the\nback of a car, which is an unusual sight as ironing\nis typically done indoors. The man is standing\non a folding table, and the car appears to be a\ntaxi. The scene takes place on a city street, with\nother cars and a truck visible in the background.\nTable 10. LLaVA-1.5 learns to format the response according to\nthe user’s request, generalizes to unseen format instructions, and",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "can alter the response format within the conversation upon the\nuser’s request.",
+      "source": "improved_llava.pdf",
+      "page": 10,
+      "char_count": 78,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Visual input example, Visual Writing Task:\nUser\nCompose an engaging travel blog post about a recent trip to this place, highlighting cultural experiences and must-see\nattractions.\nLLaVA\nIn my recent trip to Honolulu, I had the opportunity to experience the vibrant local culture and explore the beautiful beaches\nthat this city has to offer. One of the must-see attractions was Waikiki Beach, where I witnessed a lively atmosphere with",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "people sunbathing, swimming, and playing beach games. The crystal blue waters of the Pacific Ocean were a stunning sight,\nand the white sandy beach provided the perfect spot for relaxation.\nAside from the beach, I also had the chance to immerse myself in the local culture by visiting the Pearl Harbor Memorial,\nwhich paid tribute to the events that led to the United States’ involvement in World War II. The memorial was a somber",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "reminder of the past, and it was fascinating to learn about the history surrounding the attack on Pearl Harbor.\nOther cultural experiences included trying local Hawaiian cuisine, such as poke bowls and traditional Hawaiian dishes,\nwhich were delicious and offered a unique taste of the region. I also had the opportunity to explore the city’s bustling streets,\nwhere I came across local shops, markets, and street performers, adding to the lively atmosphere.",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "Overall, my trip to Honolulu was an enriching experience, filled with cultural discoveries, breathtaking natural beauty, and\nunforgettable memories.\nLLaVA-1.5\nTitle: A Sunny Escape to the Tropical Paradise of Waikiki Beach\nIntroduction:\nI recently had the pleasure of visiting the beautiful Waikiki Beach in Hawaii, and I must say, it was an unforgettable\nexperience. The crystal blue waters, the lively atmosphere, and the stunning cityscape in the background made it a perfect",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "destination for a relaxing getaway. In this travel blog post, I’ll share my experiences and must-see attractions during my trip\nto Waikiki Beach.\nDay 1: Arrival and Exploration\nUpon arrival, I was greeted by the warm and welcoming Hawaiian culture. The vibrant colors and lively music set the tone\nfor my adventure. I decided to explore the area around Waikiki Beach, starting with the iconic Diamond Head Crater. The",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "hike to the top was a bit challenging, but the breathtaking views of the beach and the city made it worthwhile.\nDay 2: Beach Day and Cultural Experiences\nI woke up early and headed to the beach to enjoy a day of sunbathing and swimming. The beach was bustling with activity,\nand I loved watching the surfers catching waves. In the evening, I attended a traditional Hawaiian luau, where I learned\nabout the local customs and traditions, including hula dancing and the art of making leis.",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "Day 3: City Tour and Sunset Cruise\nOn the third day, I took a guided city tour to learn more about the history and culture of Hawaii. I visited the Pearl Harbor\nMemorial, the Bishop Museum, and the Iolani Palace, which was once the residence of the Hawaiian monarchs. In the\nevening, I went on a sunset cruise around the Waikiki coastline, where I enjoyed a delicious meal and witnessed the stunning\nsunset over the ocean.\nDay 4: Snorkeling and Relaxation",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "Day 4: Snorkeling and Relaxation\nFor my last day in Waikiki, I decided to go snorkeling in the crystal clear waters of Hanauma Bay. The marine life was\nincredible, and I had the opportunity to see colorful fish and coral reefs up close. After a long day of exploring, I relaxed on\nthe beach and soaked up the sun.\nConclusion:\nMy trip to Waikiki Beach was an unforgettable experience filled with adventure, culture, and relaxation. From the",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "breathtaking views of the ocean to the vibrant cityscape, this tropical paradise has something for everyone. I highly\nrecommend visiting Waikiki Beach for a sunny escape and a chance to immerse yourself in the beautiful Hawaiian culture.\nTable 11. LLaVA-1.5 provides more detailed, visually-grounded responses for writing tasks with visual inputs than LLaVA.",
+      "source": "improved_llava.pdf",
+      "page": 11,
+      "char_count": 358,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "Spanish: ¿Cuáles son las cosas de las que debería tener cuidado cuando visite aquí?\nCuando visite el lugar con la pier en el lago, debería tener cuidado de las siguientes cosas:\n1.\nMantenerse alejado del borde de la pier para evitar caer al agua o sufrir una lesión.\n2.\nNo subir a la pier si está prohibido o si no está diseñada para ello.\n3.\nNo arrojar objetos o desperdiciar en el agua, ya que esto puede dañar el ecosistema del lago.\n4.",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "4.\nNo interferir con la fauna local, como los pájaros que se pueden encontrar en la zona.\nSi decide nadar en el lago, asegúrese de conocer las condiciones del agua, como la profundidad y la presencia de algas, y de tener las habilidades y \nequipos adecuados para hacerlo de manera segura.\nTenir en cuenta estas precauciones ayudará a garantizar una experiencia segura y responsable en el lugar.\nTranslation: When visiting the place with the pier at the lake, you should be careful about the following things:\n1.",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "1.\nStay away from the edge of the pier to avoid falling into the water or getting injured.\n2.\nDo not climb onto the pier if it is prohibited or not designed for it.\n3.\nDo not throw objects or litter into the water, as this can harm the lake's ecosystem.\n4.\nDo not interfere with the local wildlife, such as birds that may be found in the area.\nIf you decide to swim in the lake, make sure to be aware of water conditions such as depth and the presence of algae, and have the appropriate",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "skills and equipment to do so safely. Taking these precautions will help ensure a safe and responsible experience at the location.\nJapanese: ここを訪れる際に注意すべきことは何ですか？\nこの場所は、寂しい湖に⾯した⽊製の桟橋です。訪れる際に注意すべきことは、桟橋の安全性と周囲の環境に対する配慮です。桟橋の\n構造が安定していることを確認し、桟橋が浸⽔していないことを確認することが重要です。また、湖の⽔深や周囲の地形に注意して、\n安全に桟橋を渡ることができるようにすることも⼤切です。さらに、湖の⽔質や周囲の⽣態系に配慮して、環境に負荷をかけないよう\nにすることも重要です。\nTranslation: This place is a wooden pier facing a serene lake. When visiting, it's important to pay attention to the safety of the pier and respect the",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "surrounding environment. Confirming the stability of the pier's structure and ensuring that it is not submerged in water are crucial. Additionally, \nbeing mindful of the lake's depth and the surrounding terrain is important to safely cross the pier. Furthermore, it's essential to consider the water \nquality of the lake and the local ecosystem to minimize any impact on the environment.\nKorean: 여기를방문할때주의해야할사항은무엇인가요?\n이장소는물체위의부두로, 맑고푸른물체에있습니다. 방문자들은이부두에서물체를감상하고, 물체주변의자연경치를즐길수",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "있습니다. 그러나이부두는물체위에있기때문에, 물체의수준이높아질수있으므로, 방문자들은물체의수준을확인하고적절한예방\n조치를취해야합니다. 또한, 부두에서물체로뛰어들지않도록주의해야합니다. 이부두는매우아름다운자연경치를제공하므로, \n방문자들은이장소를즐기면서안전한방법으로물체를감상할수있도록주의해야합니다.\nTranslation: This place is located on a pier above clear and blue water. Visitors can admire the object from this pier and enjoy the natural scenery \naround the object. However, since the pier is above the object, the object's level can be high, so visitors should check the object's level and take",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "appropriate precautions. Also, be careful not to jump from the pier into the object. This pier offers incredibly beautiful natural scenery, so visitors \nshould enjoy this place while being mindful of safe ways to appreciate the object.\nQuery: What are the things I should be cautious about when I visit here?\nReference (English): When visiting the pier over the lake, there are a few things you should be cautious about. First,",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "ensure that you have appropriate footwear with good traction, as the pier may be wet or slippery, especially if it has \nbeen raining or if there is algae on the surface. Second, be mindful of the weather conditions, as the image shows a \ncloudy sky, which could indicate potential rain or storms. It is essential to stay safe and avoid being caught in a sudden \nstorm or lightning. Lastly, be aware of your surroundings and any potential hazards, such as the presence of boats or",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "other watercraft in the area. Always follow any posted signs or guidelines to ensure a safe and enjoyable experience.\nFigure 5. Compositional capability: multilingual visual conversation. LLaVA-1.5 generalizes to multilingual visual conversations, when\ntraining on visual instruction following data (English-only) together with the text-only ShareGPT data (multilingual). However, there can\nstill be errors in some languages (e.g. Korean, errors marked in red).",
+      "source": "improved_llava.pdf",
+      "page": 12,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "B.2. Compositional Capabilities\nWe present qualitative examples of the compositional capa-\nbilities of LLaVA-1.5. As shown in Fig. 5, LLaVA-1.5 is\ncapable of participating in multilingual visual conversations\nand adapting its output language based on the user’s input,\neven though it has not been trained on multilingual visual\ninstruction data. We hypothesize this emerging bahavior is a\ncompositional capability learned from visual conversations\n(English-only) and the text-only ShareGPT data (multilin-",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "gual). However, there can still be errors in some languages\n(e.g. Korean), which could be improved by incorporating\nmore of those language data.\nAdditionally, in Table 11, we show another observed\ncompositional capability after including the ShareGPT data\nin training. LLaVA-1.5 is able to produce more detailed\nand visually-grounded responses in writing tasks with visual\ninputs than LLaVA.\nVisual input example, Constrained SD Prompt Generation:\nUser\nHere’s a formula for a Stable Diffusion im-",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "User\nHere’s a formula for a Stable Diffusion im-\nage prompt: a cartoon-style image of [adjec-\ntive] [subject] [haircut] [clothing] [doing action],\n[color scheme], detailed, trending on artstation.\nGenerate the prompt for this image.\nLLaVA-1.5\nA cartoon-style image of a young girl with a\nbob haircut, wearing a white kimono, holding\na stuffed animal, and posing for a picture, with\na color scheme of pink and white, detailed, and\ntrending on artstation.",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "trending on artstation.\nTable 12. Constrained prompt generation for Stable Diffusion.\nCorresponding components are marked in color.\nC. Limitations\nDespite the promising results demonstrated by LLaVA-1.5,\nseveral limitations must be acknowledged. First, LLaVA-\n1.5 utilizes full image patches, potentially prolonging each\ntraining iteration. While visual resamplers [3, 14, 32] re-\nduce the number of visual patches in LLMs, they currently\ncannot achieve convergence as efficiently as LLaVA with a",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "comparable amount of training data, probably due to more\ntrainable parameters in the resamplers. The development\nof a sample-efficient visual resampler could pave the way\nfor future scaling-up of instruction-following multimodal\nmodels. Second, LLaVA-1.5 is not yet capable of processing\nmultiple images due to the lack of such instruction-following\ndata, and the limit of the context length. Third, although\nLLaVA-1.5 exhibits proficiency in following complex in-",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "structions, its problem-solving capabilities can still be lim-\nited in certain domains, which could be improved with a\nmore capable language model and with high-quality, tar-\ngeted visual instruction tuning data. Finally, despite its sig-\nnificantly reduced propensity for hallucination, LLaVA-1.5\nis not exempt from producing hallucinations and occasion-\nally disseminating misinformation, and should be used with\ncaution in critical applications (e.g. medical).\nReferences",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "References\n[1] Adept AI. Fuyu-8b: A multimodal architecture for ai agents.\nhttps://www.adept.ai/blog/fuyu-8b, 2024. 2\n[2] Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine\nMiech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch,\nKatie Millican, Malcolm Reynolds, et al. Flamingo: a vi-\nsual language model for few-shot learning. arXiv preprint\narXiv:2204.14198, 2022. 1\n[3] Jinze Bai, Shuai Bai, Shusheng Yang, Shijie Wang, Sinan\nTan, Peng Wang, Junyang Lin, Chang Zhou, and Jingren",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "Zhou. Qwen-vl: A frontier large vision-language model with\nversatile abilities. arXiv preprint arXiv:2308.12966, 2023. 1,\n2, 4, 5, 6, 13\n[4] Yonatan Bitton, Hritik Bansal, Jack Hessel, Rulin Shao, Wan-\nrong Zhu, Anas Awadalla, Josh Gardner, Rohan Taori, and\nLudwig Schimdt.\nVisit-bench: A benchmark for vision-\nlanguage instruction following inspired by real-world use,\n2023. 3\n[5] Kevin Black, Michael Janner, Yilun Du, Ilya Kostrikov, and\nSergey Levine. Training diffusion models with reinforcement",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "learning. arXiv preprint arXiv:2305.13301, 2023. 1\n[6] Nicholas Carlini, Milad Nasr, Christopher A Choquette-Choo,\nMatthew Jagielski, Irena Gao, Anas Awadalla, Pang Wei Koh,\nDaphne Ippolito, Katherine Lee, Florian Tramer, et al. Are\naligned neural networks adversarially aligned? arXiv preprint\narXiv:2306.15447, 2023. 1\n[7] Delong Chen, Jianfeng Liu, Wenliang Dai, and Baoyuan\nWang. Visual instruction tuning with polite flamingo. arXiv\npreprint arXiv:2307.01003, 2023. 2, 3",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "preprint arXiv:2307.01003, 2023. 2, 3\n[8] Keqin Chen, Zhao Zhang, Weili Zeng, Richong Zhang, Feng\nZhu, and Rui Zhao. Shikra: Unleashing multimodal llm’s\nreferential dialogue magic. arXiv preprint arXiv:2306.15195,\n2023. 1, 2, 4, 5\n[9] Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geof-\nfrey Hinton. A simple framework for contrastive learning of\nvisual representations. In ICML, 2020. 3\n[10] Xinlei Chen, Haoqi Fan, Ross Girshick, and Kaiming He. Im-",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "proved baselines with momentum contrastive learning. arXiv\npreprint arXiv:2003.04297, 2020. 3\n[11] Xi Chen, Josip Djolonga, Piotr Padlewski, Basil Mustafa,\nSoravit Changpinyo, Jialin Wu, Carlos Riquelme Ruiz, Sebas-",
+      "source": "improved_llava.pdf",
+      "page": 13,
+      "char_count": 215,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "tian Goodman, Xiao Wang, Yi Tay, et al. Pali-x: On scaling\nup a multilingual vision and language model. arXiv preprint\narXiv:2305.18565, 2023. 5\n[12] Wei-Lin Chiang, Zhuohan Li, Zi Lin, Ying Sheng, Zhanghao\nWu, Hao Zhang, Lianmin Zheng, Siyuan Zhuang, Yonghao\nZhuang, Joseph E. Gonzalez, Ion Stoica, and Eric P. Xing.\nVicuna: An open-source chatbot impressing gpt-4 with 90%*\nchatgpt quality, 2023. 9\n[13] Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph,",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "Yi Tay, William Fedus, Yunxuan Li, Xuezhi Wang, Mostafa\nDehghani, Siddhartha Brahma, et al. Scaling instruction-\nfinetuned language models. arXiv preprint arXiv:2210.11416,\n2022. 2\n[14] Wenliang Dai, Junnan Li, Dongxu Li, Anthony Meng Huat\nTiong, Junqi Zhao, Weisheng Wang, Boyang Li, Pascale Fung,\nand Steven Hoi. Instructblip: Towards general-purpose vision-\nlanguage models with instruction tuning.\narXiv preprint\narXiv:2305.06500, 2023. 1, 2, 3, 5, 6, 8, 13",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "arXiv:2305.06500, 2023. 1, 2, 3, 5, 6, 8, 13\n[15] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov,\nDirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner,\nMostafa Dehghani, Matthias Minderer, Georg Heigold, Syl-\nvain Gelly, et al. An image is worth 16x16 words: Trans-\nformers for image recognition at scale.\narXiv preprint\narXiv:2010.11929, 2020. 4\n[16] Yuxin Fang, Wen Wang, Binhui Xie, Quan Sun, Ledell Wu,\nXinggang Wang, Tiejun Huang, Xinlong Wang, and Yue Cao.",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "Eva: Exploring the limits of masked visual representation\nlearning at scale. In Proceedings of the IEEE/CVF Conference\non Computer Vision and Pattern Recognition, pages 19358–\n19369, 2023. 6\n[17] Chaoyou Fu, Peixian Chen, Yunhang Shen, Yulei Qin, Meng-\ndan Zhang, Xu Lin, Zhenyu Qiu, Wei Lin, Jinrui Yang, Xiawu\nZheng, et al.\nMme: A comprehensive evaluation bench-\nmark for multimodal large language models. arXiv preprint\narXiv:2306.13394, 2023. 1, 4, 5",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "arXiv:2306.13394, 2023. 1, 4, 5\n[18] Tao Gong, Chengqi Lyu, Shilong Zhang, Yudong Wang, Miao\nZheng, Qian Zhao, Kuikun Liu, Wenwei Zhang, Ping Luo,\nand Kai Chen. Multimodal-gpt: A vision and language model\nfor dialogue with humans. arXiv preprint arXiv:2305.04790,\n2023. 1\n[19] Yash Goyal, Tejas Khot, Douglas Summers-Stay, Dhruv Ba-\ntra, and Devi Parikh. Making the v in vqa matter: Elevating\nthe role of image understanding in visual question answering.\nIn Proceedings of the IEEE conference on computer vision",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "and pattern recognition, pages 6904–6913, 2017. 3, 5, 6, 9\n[20] Danna Gurari, Qing Li, Abigale J Stangl, Anhong Guo, Chi\nLin, Kristen Grauman, Jiebo Luo, and Jeffrey P Bigham.\nVizwiz grand challenge: Answering visual questions from\nblind people. In Proceedings of the IEEE conference on\ncomputer vision and pattern recognition, pages 3608–3617,\n2018. 5, 6\n[21] Drew A Hudson and Christopher D Manning. Gqa: A new\ndataset for real-world visual reasoning and compositional",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "question answering. In CVPR, 2019. 4, 5, 9\n[22] IDEFICS.\nIntroducing idefics:\nAn open reproduction\nof state-of-the-art visual language model.\nhttps://\nhuggingface.co/blog/idefics, 2023. 5, 6\n[23] Gabriel Ilharco, Mitchell Wortsman, Ross Wightman, Cade\nGordon, Nicholas Carlini, Rohan Taori, Achal Dave, Vaishaal\nShankar, Hongseok Namkoong, John Miller, Hannaneh Ha-\njishirzi, Ali Farhadi, and Ludwig Schmidt. Openclip. 2021.\nIf you use this software, please cite it as below. 6",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "[24] Sahar Kazemzadeh, Vicente Ordonez, Mark Matten, and\nTamara Berg.\nReferitgame: Referring to objects in pho-\ntographs of natural scenes. In Proceedings of the 2014 con-\nference on empirical methods in natural language processing\n(EMNLP), pages 787–798, 2014. 4, 9\n[25] Ranjay Krishna, Yuke Zhu, Oliver Groth, Justin Johnson,\nKenji Hata, Joshua Kravitz, Stephanie Chen, Yannis Kalan-\ntidis, Li-Jia Li, David A Shamma, et al. Visual genome:\nConnecting language and vision using crowdsourced dense",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "image annotations. International journal of computer vision,\n123:32–73, 2017. 4, 9\n[26] Xin Lai, Zhuotao Tian, Yukang Chen, Yanwei Li, Yuhui\nYuan, Shu Liu, and Jiaya Jia. Lisa: Reasoning segmentation\nvia large language model. arXiv preprint arXiv:2308.00692,\n2023. 1\n[27] Bohao Li, Rui Wang, Guangzhi Wang, Yuying Ge, Yix-\niao Ge, and Ying Shan. Seed-bench: Benchmarking mul-\ntimodal llms with generative comprehension. arXiv preprint\narXiv:2307.16125, 2023. 1, 5",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "arXiv:2307.16125, 2023. 1, 5\n[28] Bo Li, Peiyuan Zhang, Jingkang Yang, Yuanhan Zhang, Fanyi\nPu, and Ziwei Liu. Otterhd: A high-resolution multi-modality\nmodel, 2023. 2\n[29] Bo Li, Yuanhan Zhang, Liangyu Chen, Jinghao Wang, Fanyi\nPu, Jingkang Yang, Chunyuan Li, and Ziwei Liu. Mimic-it:\nMulti-modal in-context instruction tuning. arXiv preprint\narXiv:2306.05425, 2023. 1\n[30] Chunyuan Li, Zhe Gan, Zhengyuan Yang, Jianwei Yang, Lin-\njie Li, Lijuan Wang, and Jianfeng Gao. Multimodal founda-",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "tion models: From specialists to general-purpose assistants.\narXiv preprint arXiv:2309.10020, 2023. 1\n[31] Chunyuan Li, Cliff Wong, Sheng Zhang, Naoto Usuyama,\nHaotian Liu, Jianwei Yang, Tristan Naumann, Hoifung Poon,\nand Jianfeng Gao. Llava-med: Training a large language-and-\nvision assistant for biomedicine in one day. arXiv preprint\narXiv:2306.00890, 2023. 1\n[32] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-\n2: Bootstrapping language-image pre-training with frozen",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "image encoders and large language models. arXiv preprint\narXiv:2301.12597, 2023. 1, 2, 3, 4, 5, 6, 13\n[33] Xiang Lisa Li and Percy Liang.\nPrefix-tuning: Optimiz-\ning continuous prompts for generation.\narXiv preprint\narXiv:2101.00190, 2021. 3\n[34] Yifan Li, Yifan Du, Kun Zhou, Jinpeng Wang, Wayne Xin\nZhao, and Ji-Rong Wen.\nEvaluating object hallucina-\ntion in large vision-language models.\narXiv preprint\narXiv:2305.10355, 2023. 1, 5\n[35] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays,",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "Pietro Perona, Deva Ramanan, Piotr Dollár, and C Lawrence\nZitnick. Microsoft COCO: Common objects in context. In\nECCV, 2014. 2, 5\n[36] Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee.\nVisual instruction tuning. In NeurIPS, 2023. 1, 2, 3, 4, 5, 6,\n8, 9",
+      "source": "improved_llava.pdf",
+      "page": 14,
+      "char_count": 259,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "[37] Yuan Liu, Haodong Duan, Yuanhan Zhang, Bo Li, Songyang\nZhang, Wangbo Zhao, Yike Yuan, Jiaqi Wang, Conghui He,\nZiwei Liu, et al. Mmbench: Is your multi-modal model an\nall-around player? arXiv preprint arXiv:2307.06281, 2023.\n1, 5, 7\n[38] Pan Lu, Swaroop Mishra, Tanglin Xia, Liang Qiu, Kai-Wei\nChang, Song-Chun Zhu, Oyvind Tafjord, Peter Clark, and\nAshwin Kalyan. Learn to explain: Multimodal reasoning via\nthought chains for science question answering. Advances in",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "Neural Information Processing Systems, 2022. 5\n[39] Yadong Lu, Chunyuan Li, Haotian Liu, Jianwei Yang, Jian-\nfeng Gao, and Yelong Shen. An empirical study of scal-\ning instruct-tuned large multimodal models. arXiv preprint\narXiv:2309.09958, 2023. 1, 4\n[40] Junhua Mao, Jonathan Huang, Alexander Toshev, Oana Cam-\nburu, Alan L Yuille, and Kevin Murphy. Generation and\ncomprehension of unambiguous object descriptions. In Pro-\nceedings of the IEEE conference on computer vision and",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "pattern recognition, pages 11–20, 2016. 4, 9\n[41] Kenneth Marino, Mohammad Rastegari, Ali Farhadi, and\nRoozbeh Mottaghi. Ok-vqa: A visual question answering\nbenchmark requiring external knowledge. In Conference on\nComputer Vision and Pattern Recognition (CVPR), 2019. 4, 9\n[42] Anand Mishra, Shashank Shekhar, Ajeet Kumar Singh, and\nAnirban Chakraborty. Ocr-vqa: Visual question answering by\nreading text in images. In 2019 international conference on\ndocument analysis and recognition (ICDAR), pages 947–952.",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "IEEE, 2019. 4, 9\n[43] OpenAI.\nGpt-4v(ision) system card.\nhttps://cdn.\nopenai.com/papers/GPTV_System_Card.pdf,\n2023. 1\n[44] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya\nRamesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry,\nAmanda Askell, Pamela Mishkin, Jack Clark, et al. Learning\ntransferable visual models from natural language supervision.\narXiv preprint arXiv:2103.00020, 2021. 6\n[45] Dustin Schwenk, Apoorv Khandelwal, Christopher Clark,\nKenneth Marino, and Roozbeh Mottaghi. A-okvqa: A bench-",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "mark for visual question answering using world knowledge.\nIn European Conference on Computer Vision, pages 146–162.\nSpringer, 2022. 4, 9\n[46] ShareGPT. https://sharegpt.com/, 2023. 4, 7, 8, 9\n[47] Oleksii Sidorov, Ronghang Hu, Marcus Rohrbach, and Aman-\npreet Singh. Textcaps: a dataset for image captioning with\nreading comprehension. In Computer Vision–ECCV 2020:\n16th European Conference, Glasgow, UK, August 23–28,\n2020, Proceedings, Part II 16, pages 742–758. Springer, 2020.\n4, 9",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "4, 9\n[48] Amanpreet Singh, Vivek Natarajan, Meet Shah, Yu Jiang, Xin-\nlei Chen, Dhruv Batra, Devi Parikh, and Marcus Rohrbach.\nTowards vqa models that can read. In Proceedings of the\nIEEE/CVF conference on computer vision and pattern recog-\nnition, pages 8317–8326, 2019. 5\n[49] Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Am-\njad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya\nBatra, Prajjwal Bhargava, Shruti Bhosale, et al. Llama 2:\nOpen foundation and fine-tuned chat models. arXiv preprint",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "arXiv:2307.09288, 2023. 7\n[50] Wenhai Wang, Zhe Chen, Xiaokang Chen, Jiannan Wu,\nXizhou Zhu, Gang Zeng, Ping Luo, Tong Lu, Jie Zhou, Yu\nQiao, et al. Visionllm: Large language model is also an\nopen-ended decoder for vision-centric tasks. arXiv preprint\narXiv:2305.11175, 2023. 1\n[51] Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu,\nAdams Wei Yu, Brian Lester, Nan Du, Andrew M Dai, and\nQuoc V Le. Finetuned language models are zero-shot learners.\narXiv preprint arXiv:2109.01652, 2021. 2",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "arXiv preprint arXiv:2109.01652, 2021. 2\n[52] Zhengyuan Yang, Linjie Li, Kevin Lin, Jianfeng Wang,\nChung-Ching Lin, Zicheng Liu, and Lijuan Wang. The dawn\nof lmms: Preliminary explorations with gpt-4v (ision). arXiv\npreprint arXiv:2309.17421, 2023. 6\n[53] Jiabo Ye, Anwen Hu, Haiyang Xu, Qinghao Ye, Ming Yan,\nGuohai Xu, Chenliang Li, Junfeng Tian, Qi Qian, Ji Zhang,\nQin Jin, Liang He, Xin Alex Lin, and Fei Huang. Ureader:\nUniversal ocr-free visually-situated language understanding",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "with multimodal large language model, 2023. 2\n[54] Qinghao Ye, Haiyang Xu, Guohai Xu, Jiabo Ye, Ming Yan,\nYiyang Zhou, Junyang Wang, Anwen Hu, Pengcheng Shi,\nYaya Shi, et al.\nmplug-owl: Modularization empowers\nlarge language models with multimodality. arXiv preprint\narXiv:2304.14178, 2023. 1\n[55] Weihao Yu, Zhengyuan Yang, Linjie Li, Jianfeng Wang,\nKevin Lin, Zicheng Liu, Xinchao Wang, and Lijuan Wang.\nMm-vet: Evaluating large multimodal models for integrated",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "capabilities. arXiv preprint arXiv:2308.02490, 2023. 1, 3, 4,\n5, 8\n[56] Shilong Zhang, Peize Sun, Shoufa Chen, Min Xiao, Wenqi\nShao, Wenwei Zhang, Kai Chen, and Ping Luo. Gpt4roi:\nInstruction tuning large language model on region-of-interest.\narXiv preprint arXiv:2307.03601, 2023. 1\n[57] Yanzhe Zhang, Ruiyi Zhang, Jiuxiang Gu, Yufan Zhou,\nNedim Lipka, Diyi Yang, and Tong Sun. Llavar: Enhanced\nvisual instruction tuning for text-rich image understanding.\narXiv preprint arXiv:2306.17107, 2023. 2",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "arXiv preprint arXiv:2306.17107, 2023. 2\n[58] Bo Zhao, Boya Wu, and Tiejun Huang. Svit: Scaling up\nvisual instruction tuning. arXiv preprint arXiv:2307.04087,\n2023. 1, 2\n[59] Yunqing Zhao, Tianyu Pang, Chao Du, Xiao Yang, Chongx-\nuan Li, Ngai-Man Cheung, and Min Lin. On evaluating\nadversarial robustness of large vision-language models. arXiv\npreprint arXiv:2305.16934, 2023. 1\n[60] Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan\nZhuang, Zhanghao Wu, Yonghao Zhuang, Zi Lin, Zhuohan Li,",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "Dacheng Li, Eric. P Xing, Hao Zhang, Joseph E. Gonzalez,\nand Ion Stoica. Judging llm-as-a-judge with mt-bench and\nchatbot arena, 2023. 10\n[61] Chunting Zhou, Pengfei Liu, Puxin Xu, Srini Iyer, Jiao Sun,\nYuning Mao, Xuezhe Ma, Avia Efrat, Ping Yu, Lili Yu,\net al. Lima: Less is more for alignment. arXiv preprint\narXiv:2305.11206, 2023. 2, 8\n[62] Deyao Zhu, Jun Chen, Xiaoqian Shen, Xiang Li, and Mo-\nhamed Elhoseiny. Minigpt-4: Enhancing vision-language\nunderstanding with advanced large language models. arXiv",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "preprint arXiv:2304.10592, 2023. 1, 2",
+      "source": "improved_llava.pdf",
+      "page": 15,
+      "char_count": 37,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

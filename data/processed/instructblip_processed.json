@@ -1,0 +1,1436 @@
+{
+  "source": "instructblip.pdf",
+  "full_path": "data\\raw\\instructblip.pdf",
+  "total_pages": 22,
+  "text_chunks": 178,
+  "vision_chunks": 0,
+  "total_chunks": 178,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "VisionLLM: Large Language Model is also\nan Open-Ended Decoder for Vision-Centric Tasks\nWenhai Wang∗1, Zhe Chen∗2,1, Xiaokang Chen∗3,1, Jiannan Wu∗4,1, Xizhou Zhu5,1\nGang Zeng3, Ping Luo4,1, Tong Lu2, Jie Zhou6, Yu Qiao1, Jifeng Dai†6,1\n1OpenGVLab, Shanghai AI Laboratory\n2Nanjing University\n3Peking University\n4The University of HongKong\n5SenseTime Research\n6Tsinghua University\nCode: https://github.com/OpenGVLab/VisionLLM\nDemo: https://github.com/OpenGVLab/InternGPT\nAbstract",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "Abstract\nLarge language models (LLMs) have notably accelerated progress towards artificial\ngeneral intelligence (AGI), with their impressive zero-shot capacity for user-tailored\ntasks, endowing them with immense potential across a range of applications.\nHowever, in the field of computer vision, despite the availability of numerous\npowerful vision foundation models (VFMs), they are still restricted to tasks in a\npre-defined form, struggling to match the open-ended task capabilities of LLMs.",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "In this work, we present an LLM-based framework for vision-centric tasks, termed\nVisionLLM. This framework provides a unified perspective for vision and language\ntasks by treating images as a foreign language and aligning vision-centric tasks\nwith language tasks that can be flexibly defined and managed using language\ninstructions. An LLM-based decoder can then make appropriate predictions based\non these instructions for open-ended tasks. Extensive experiments show that the",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "proposed VisionLLM can achieve different levels of task customization through\nlanguage instructions, from fine-grained object-level to coarse-grained task-level\ncustomization, all with good results. It’s noteworthy that, with a generalist LLM-\nbased framework, our model can achieve over 60% mAP on COCO, on par with\ndetection-specific models. We hope this model can set a new baseline for generalist\nvision and language models. The code and demo shall be released.\n1\nIntroduction",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "1\nIntroduction\nThe emergence of large language models (LLMs) like ChatGPT [41] has revolutionized the landscape\nof artificial general intelligence (AGI), showcasing their impressive zero-shot capabilities in ad-\ndressing various natural language processing (NLP) tasks through user-tailored prompts or language\ninstructions. Despite these advancements, it’s essential to note that the triumph of LLMs does not\neffortlessly extend to pure vision and vision-language tasks, due to the inherent disparities between",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "modalities and task formats.\nThe field of computer vision presents a unique set of challenges and paradigms that differ from\nthose of NLP. The traditional paradigm of vision foundation models is pre-training followed by\nfine-tuning [59, 12, 51, 61, 18, 52], which is effective but comes with significant marginal costs\nwhen adapting to diverse downstream scenarios. As shown in Figure 1a, while approaches such as",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 413,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "multi-task unification [44, 58, 1, 57, 81] have been used to achieve generalist capability, they often\nstruggle to overcome the limitations imposed by pre-defined tasks, resulting in a gap in open-ended\n∗Equal contribution. This work is done when Zhe Chen, Xiaokang Chen, and Jiannan Wu are interns at\nShanghai AI Laboratory. † Corresponding to Jifeng Dai <daijifeng@tsinghua.edu.cn>.\narXiv:2305.11175v2  [cs.CV]  25 May 2023",
+      "source": "instructblip.pdf",
+      "page": 1,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "Vision\nGeneralist Model\nPre-defined tasks:\ndetection, captioning, \nVQA, grounding, ...\n(a) Vision generalist models [59,\n61, 83] are constrained by the for-\nmat of pre-defined tasks.\nVisual\nPrompt Tuning\n(b) Visual prompt tuning [26, 64,\n62] are inconsistent with the for-\nmat of LLMs.\nVision + LLM\nTask deﬁned \nby  instruc6ons\nDesired output:\n<c1> <p1> <p3> ...\n(c) VisionLLM (ours) can flexibly\nmanage vision-centric tasks using\nlanguage instructions like LLMs.",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "language instructions like LLMs.\nFigure 1: Comparison of our VisionLLM with popular paradigms. Unlike current vision generalist\nmodels that depend on pre-defined task formats and visual prompt tuning models that are inconsistent\nwith large language models (LLMs), VisionLLM leverages the power of LLMs for open-ended vision\ntasks by using language instructions.\ntask capabilities compared to LLMs. Recently, visual prompt tuning [26, 74, 79, 76, 62] has emerged",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "as a way to flexibly outline some pure vision tasks (see Figure 1b), such as object detection, instance\nsegmentation, and pose estimation, using visual masking. However, the format of visual prompts\nconsiderably deviates from that of language instructions, making it challenging to directly apply the\nreasoning abilities and world knowledge of LLMs to vision tasks. Therefore, there is an urgent\nneed for a unified generalist framework that can seamlessly integrate the strengths of LLMs with the",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "specific requirements of vision-centric tasks.\nIn this work, we present VisionLLM, a novel framework that aligns the definitions of vision-centric\ntasks with the methodologies of LLMs. Leveraging the reasoning and parsing capacities of LLMs,\nVisionLLM is designed to empower open-ended task capabilities for vision-centric tasks. Specifically,\nit comprises three core components: (1) a unified language instruction designed for vision and",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "vision-language tasks, (2) a language-guided image tokenizer, and (3) an LLM-based open-ended\ntask decoder that orchestrates various tasks using language instructions. With this framework, a\nwide range of vision-centric tasks can be seamlessly integrated, including object detection, instance\nsegmentation, image captioning, and visual grounding. In addition, the framework also facilitates\ntask customization at different levels of granularity, allowing for the customization of target objects,",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "output formats, task descriptions, etc.\nCompared to current popular API-based applications [68, 73, 50, 35, 30], our model takes a unified,\nend-to-end approach to integrate VFMs and LLMs, streamlining and enhancing the overall efficiency\nof the overall process, and leveraging the strengths and data of both VFMs and LLMs within a\nsingle, cohesive system. Furthermore, our model surpasses the limitations of generalist vision models",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "pre-trained on pre-defined tasks. VisionLLM can effectively manage vision-centric tasks through\nlanguage instructions, embodying a flexible and open-ended approach that is not constrained by\npre-set tasks. This versatility makes VisionLLM a robust and powerful generalist model for vision\nand vision-language tasks, opening up new possibilities for the development of unified generalist\nmodels that bridge the domains of vision and language.\nIn summary, our main contributions are as follows:",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "(1) We propose VisionLLM, the first framework that leverages the power of LLMs to address vision-\ncentric tasks in an open-ended and customizable manner. By aligning the definitions of vision-centric\ntasks with LLM methodologies, VisionLLM breaks new ground in enabling the unified modeling of\nvision and language, opening up possibilities for advancing the field.\n(2) We overcome many difficulties when porting LLMs to vision-centric tasks, by designing unified",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "language instruction that matches the format of language models and covers various vision-centric\ntasks including visual perception. Correspondingly, we develop a language-guided image tokenizer\nand an LLM-based task decoder that can handle open-ended tasks according to the given language\ninstructions based on the LLMs’ reasoning and parsing capabilities.\n2",
+      "source": "instructblip.pdf",
+      "page": 2,
+      "char_count": 359,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "Human: “Identify the objects \nin <image> that belong to \n{‘What is the child eating?’: \n<c0>, ‘red gamepad': <c1>}\nand draw a bounding box \naround each one. The output \nshould be a list of tuples in  \nthe format (c, x1, y1, x2, y2), where c is the class label and \nx1, y1, x2, y2 are the coordinates of the top-left and \nbottom-right corners of the bounding box. The coordinates \nshould be within the range 1024.\"\nVisionLLM: \"The bounding boxes are [(<c0>, 226.4, 229.8,",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "363.1, 347.4), (<c1>, 441.1, 183.5, 538.6, 269.9)].\"\n<c1>\n<c0>\n(a) Object Detection with Customized Class Set (e.g.,\nquestion, reasoning text, open-vocabulary descrip-\ntion)\nHuman: \"For each object in \n<image> that is a member \nof {'motorbike': <c0>}, \noutput a tuple with the \nclass label and the \ncoordinates of a polygon \nwith 16 points that\nencloses the object.  The coordinates should be within \nthe range 1024. The output format should be (c, x1, y1, \nx2, y2, ..., x16, y16).\"",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "x2, y2, ..., x16, y16).\"\nVisionLLM: \"The detected polygons are [(<c0>, 135.3, \n95.7, 123.4, 53.4, 84.9, 57.6, 66.8, 60.5, 60.1, 72.3, \n34.2, 71.4, ..., 124.9, 119.3)].\"\n<c0>\n(b) Object Location with Editable Output Format\nwhich is placed on top of a wooden table. The dog has \nits head in the middle of the cooling pad, and a fan is \npositioned behind it, blowing air onto the pad. The \ntable is outdoors, in a grassy area, and there are two \nchairs placed around it, one on each side. The scene",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "appears to be set in a sunny weather, with a bright and \nsunny sky, which contributes to the overall outdoor \natmosphere.\"\nHuman: \"Provide a long \ndescription of the <image>.\"\nVisionLLM:  \"The image \nfeatures a white dog laying \ndown on a foldable outdoor \ncooling pad , \n(c) Image Description with Controllable Text Length\nHuman: \"With the objects \nin the <image>, if you feel \nhot, what will you do?\"\nVisionLLM: \"First, You can \nalso try turning off the \ncomputer and other \nelectrical appliances in the",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "computer and other \nelectrical appliances in the\nroom to reduce the heat generated by their operation.\nAs an alternative, you can use the desk fan provided in \nthe image to create a cooling effect in the room. You \ncan plug in the fan and adjust its settings to ensure it \nblows air in a direction that reaches the room’s \noccupants effectively.\"\n(d) Visual Question Answer with Complex Reasoning\nFigure 2: Results and visualizations of our VisionLLM. Guided by language instructions, our",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "unified generalist framework showcases its effectiveness on diverse open-ended vision-centric tasks.\nThe text marked with a gray background indicates the customized instructions and the desired outputs.\n(3) We construct a series of tasks with different granularities to verify the effectiveness of our\nmodels, ranging from easy to hard, and from pre-defined to flexible. Through these validations, we\ndemonstrate the remarkable generality of our models, showcasing their ability to handle diverse",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "scenarios, including random object categories, random output formats, and random task descriptions,\nas shown in Figure 2. The successful outcomes of these validations underscore the tremendous\npotential of our model in harnessing the capabilities of LLMs to control and guide vision-centric\ntasks. In addition, with a generalist LLM-based framework, our model also yields promising results\non various vision-centric tasks. Notably, our generalist model achieves an impressive mAP score of",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "60+% on the COCO dataset, surpassing many detection-specific models [82, 7, 22] and approaching\nthe state-of-the-art record.\n2\nRelated Work\n2.1\nLarge Language Model\nLarge language models (LLMs) have gained significant attention in the field of natural language\nprocessing (NLP) and artificial general intelligence (AGI), due to their impressive capabilities\nin language generation, in-context learning, world knowledge, and reasoning. The GPT family,",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "including GPT-3 [6], ChatGPT [41], GPT-4 [40], and InstructGPT [42] are most representative\nworks of LLMs. Other LLMs like OPT [78], LLaMA [54], MOSS [15], and GLM [77] have\nalso made substantial contributions to the field. These models achieve high performance and are\nopen-sourced, serving as valuable resources for training large models and as foundations for further\nfine-tuning for specific purposes. For instance, Alpaca [53] introduces a self-instruct framework",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "that facilitates instruction tuning of the LLaMA model, reducing the reliance on human-written\n3",
+      "source": "instructblip.pdf",
+      "page": 3,
+      "char_count": 96,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "instruction data. Recently, the emergence of these LLMs has also opened up API-based applications\nfor solving vision-centric tasks. These applications have integrated visual APIs with language models\nto enable decision-making or planning based on visual information, such as Visual ChatGPT [68],\nMM-REACT [73], HuggingGPT [50], InternGPT [35], and VideoChat [30]. However, despite the\nconvenience of using language-based instructions to define tasks and describe visual elements, these",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "interactive systems [68, 73, 50, 35, 30] still face limitations in capturing fine-grained visual details\nand understanding complex visual contexts, which hinder their ability to effectively connecting vision\nand language models. In summary, while LLMs have shown tremendous potential in various NLP\napplications, their applicability to vision-centric tasks has been limited by the challenges posed by\nmodalities and task formats.\n2.2\nVision Generalist Model",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "2.2\nVision Generalist Model\nThe pursuit of generalist models [83, 38, 70], which aim to handle a wide range of tasks using a\nshared architecture and parameters, has been a long-standing goal in the machine learning community.\nInspired by the success of sequence-to-sequence (seq2seq) models in the field of NLP [44], recent\nadvancements such as OFA [58], Flamingo [1], and GIT [57] propose modeling diverse tasks as",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 415,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "sequence generation tasks. Unified-IO [38], Pix2Seq v2 [9], and UniTab [71] extend this idea by using\ndiscrete coordinate tokens to encode and decode spatial information for more tasks. Gato [47] also\nincorporates reinforcement learning tasks into the seq2seq framework, while GPV [21] develops a\ngeneral-purpose vision system by combining a seq2seq module with a DETR-based visual encoder [7].\nHowever, these methods suffer from some limitations, such as slow inference speed and performance",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "degradation due to the non-parallel auto-regressive decoding process. Uni-Perceivers [83, 81, 28]\nsolve these issues by unifying different tasks using the maximum likelihood target for each input\nbased on representation similarity, regardless of their modality, making it possible to support both\ngeneration and non-generation tasks in a unified framework. Nevertheless, these generalist models\nare still restricted by pre-defined tasks and cannot support flexible open-ended task customization",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "based on language instructions like LLMs.\n2.3\nInstruction Tuning\nLanguage instructions are a powerful way to express various NLP tasks and examples for LLMs,\nas introduced by GPT-3 [6]. Following this idea, subsequent works, such as InstructGPT [42],\nFLAN [14, 67], and OPT-IML [25], explore the instruction-tuning method [66, 65] and demonstrate\nthat this simple approach effectively enhances the zero-shot and few-shot capabilities of LLMs.",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "The language instruction paradigm has also been adopted by the computer vision community to\ndefine image-to-text tasks. Flamingo [1] is a milestone work that uses vision and language inputs as\nprompts and achieves remarkable few-shot results in various vision-language tasks, such as image\ncaptioning [10] and VQA [3]. BLIP-2 [29] further connects the visual encoder with LLMs through a\nquerying transformer and a linear projection layer to build strong multimodal models. MiniGPT-4 [80]",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "and LLaVA [33] finetune the BLIP-2-style models on synthetic multimodal instruction-following\ndata to unleash the potential of LLMs. However, these models mainly focus on image-to-text\ntasks and fail to address visual perception, such as object detection, instance segmentation, pose\nestimation, etc. To tackle image inpainting tasks, Bar et al. [4] introduces the first visual prompting\nframework that utilizes inpainting with discrete tokens on images. Painter [63] and SegGPT [64]",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "employ masked image modeling on raw pixels for in-context learning with paired images. While\nthese visual prompt models demonstrate good results in segmentation tasks, their applicability to\nnumerous real-world vision tasks is challenging. Moreover, defining the visual prompts as image\ninpainting is inconsistent with the language instructions in LLMs, hard to leverage the reasoning,\nparsing ability, and world knowledge of LLMs. In this work, we aim to align vision-centric tasks",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "with language tasks, use language instructions to unifiedly and flexibly define all tasks, and solve\nthem with a shared LLM-based task decoder.\n3\nVisionLLM\n3.1\nOverall Architecture\nThis work targets to provide a unified generalist framework that can seamlessly integrate the strengths\nof large language models (LLMs) with the specific requirements of vision-centric tasks. As shown in\n4",
+      "source": "instructblip.pdf",
+      "page": 4,
+      "char_count": 386,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "Random Query\nLanguage-Guided\nImage Token\n...\n<text>\n<text>\nDesired Output:\n<c1> <p1> <p3> ...\nOpen-Ended Task \nDecoder with LLM\nLanguage-Guided\nImage Tokenizer\nBackbone\n...\nVision-language example: \"Describe the image <image> in details.\"\nVision-only example: \"For each object in image <image> that is a member of class set <class>, output a\ntuple with the class label and the coordinates of a polygon with 16 points that encloses the object. The",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "coordinates should be within range <range>. The output format should be (c, x1, y1, ...).\"\nLanguage Instructions <text>\n𝐹!\n𝐹\"\n𝑇\nFigure 3: Overall architecture of the proposed VisionLLM. It consists of three parts: a unified\nlanguage instruction designed to accommodate both vision and vision-language tasks, an image\ntokenizer that encodes visual information guided by language instructions, and an LLM-based open-\nended task decoder that executes diverse tasks defined by language instructions.",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "Figure 3, the overall architecture of VisionLLM consists of three key designs: (1) a unified language\ninstruction that provides a consistent interface for vision-centric task definition and customization;\n(2) a language-guided image tokenizer, which encodes visual information in alignment with the given\nlanguage prompt, enabling the model to comprehend and parse the visual content effectively; and\n(3) an LLM-based open-task decoder, which utilizes the encoded visual information and language",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "instructions to generate satisfactory predictions or outputs. The three designs work together to achieve\na flexible and open-ended framework that can handle various vision-centric tasks at different levels of\ntask customization through language instructions.\nDifferent from previous interactive systems [68, 73, 50, 35, 30] that rely on APIs, our VisionLLM\npresents a more flexible and end-to-end pipeline. Given language instructions that describe the current",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "tasks and an input image, the model first uses a language-guided image tokenizer to encode the image\ntokens based on the given prompt. Then, the image tokens and language instructions are fed to an\nLLM-based open-ended task decoder. Finally, it evaluates the generated outputs against the task\ndefinition given by the unified language instructions, enabling the model to produce task-specific\nresults. This seamless, end-to-end pipeline enables VisionLLM to effectively combine vision and",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "language, achieving remarkable performance in open-ended and customizable vision-centric tasks.\n3.2\nUnified Language Instruction\nWe first introduce unified language instructions to describe vision-centric tasks. This design enables\nthe unification of various vision-only and vision-language task descriptions and allows for flexible\ntask customization.\nVision-Language Tasks. The instructions for vision-language tasks such as image captioning and",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "visual question answering (VQA) are straightforward and similar to NLP tasks. Following previous\nmethods [29, 83, 33], we describe the image captioning task like “The image is <image>. Please\ngenerate a caption for the image: ”, and the VQA task like “The image is <image>. Please generate\nan answer for the image according to the question: <question>”. Here, <image> and <question>\nare the placeholdersok of the image tokens and the question, respectively.",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "Vision-Only Tasks. Designing effective language instructions for vision tasks is a challenging\nendeavor due to the differences in modality and task format between vision and language. Here, we\ndescribe vision tasks by providing a task description and specifying the desired output format via\nlanguage instructions.\n(1) The task description conveys the intended task to the language model. Following self-instruct [65],",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "we design a set of seed instructions with placeholders and employ LLMs to generate a large number\nof related task descriptions and randomly select one of them during training.\n5",
+      "source": "instructblip.pdf",
+      "page": 5,
+      "char_count": 177,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "(2) For conventional visual perception tasks like object detection and instance segmentation, we\npropose a unified output format represented as a tuple (C, P), where C denotes the class index\nin the category set <class>, and P = {xi, yi}N\ni=1 represents N points that locate the object. To\nalign with the format of word tokens, both the class index C and the coordinates of points xi, yi are\ntransformed into discretized tokens. Specifically, the class index is an integer starting from 0, and",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "the continuous coordinates of the points are uniformly discretized into an integer within the range\n[-<range>, <range>]. For object detection and visual grounding tasks, the point number N is equal\nto 2, representing the the top-left and bottom-right points of object’s bounding box. In the case of\ninstance segmentation, we employ multiple (N >8) points along the object boundary to represent an\ninstance mask [69]. Other perception tasks such as pose estimation (keypoint detection) can also be",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "formulated as language instructions in this way.\nAn example of language instruction for the instance segmentation task is as follows: “Segment all the\nobjects of category set <class> within the <range> of the image and generate a list of the format\n(c, x1, y1, x2, y2, ..., x8, y8). Here, c represents the index of the class label starting from 0, and (x1,\ny1, x2, y2, ..., x8, y8) correspond to the offsets of boundary points of the object relative to the center\npoint. The image is: <image>”.\n3.3",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "point. The image is: <image>”.\n3.3\nLanguage-Guided Image Tokenizer\nVisionLLM considers images as a kind of foreign language and converts them into token represen-\ntations. Unlike previous works [17, 60, 34] that utilize fixed-size patch embeddings to represent\nimages, we introduce the language-guided image tokenizer to flexibly encode visual information that\naligns with task-specific language prompts or instructions.",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "Specifically, give an image X∈RH×W ×3 with height H and width W, we first feed it to the image\nbackbones (e.g., ResNet [23]) and extract visual features Fv of four different scales. Addition-\nally, we leverage a text encoder (e.g., BERT [16]) to extract the language features Fl from given\nprompts. The language features are then injected into each scale of visual features through cross-\nattention [55], yielding multi-scale language-aware visual features, enabling the alignment of features\nacross modalities.",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "across modalities.\nAfterward, we propose to adopt a transformer-based network (e.g., Deformable DETR [82]) with M\nrandom-initialized queries Q={qi}M\ni=1 to capture the high-level information of images. We build\nthe transformer-based network on top of the multi-scale language-aware visual features to extract M\nimage tokens T ={(ei, li)}M\ni=1, each of which is represented by an embedding ei and a location li,\ndenoting the semantic and positional information of the token. This design not only represents the",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "images independent of input resolution but also extracts the visual representation that is informative\nwith respect to the language prompts.\n3.4\nLLM-based Open-Ended Task Decoder\nWe build our decoder on Alpaca [53], an LLM that is adapted from LLaMA [54], to handle various\nvision-related tasks with language guidance. However, Alpaca has some inherent drawbacks for\nvision-centric tasks, such as (1) It only has a few digit tokens (e.g., 0∼9) in its vocabulary, which",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "restricts its ability to locate objects by numbers; (2) It uses multiple tokens to represent the category\nname, resulting in an inefficient scheme in object classification; and (3) It is a causal model that is\ninefficient for visual perception tasks.\nTo tackle these issues, we expand the vocabulary of LLM with additional tokens specially designed\nfor vision-centric tasks. First, we add a set of location tokens, denoted as {<p-512>, ..., <p0>,",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "..., <p512>}, where <p i> represents the discretized offset of i ∈[−512, 512] to the location li\nof the image token, and the relative value to image height or width is equal to i/512. These\ntokens successfully transform the object localization task from continuous variable prediction to\nmore unified discrete bin classification. Second, we introduce semantics-agnostic classification\ntokens {<c0>, <c1>, ..., <c511>} to replace category name tokens, which overcomes the inefficiency",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "of using multiple tokens to represent categories. The mapping between category names and the\nclassification tokens is flexibly provided in the category set <class> of language instructions, such as\n{\"person\":<c0>, \"car\":<c1>, \"black cat\":<c2>,...}. This design allows our model to select\nthe appropriate category name from the provided category set, facilitating efficient and accurate\nobject classification.\n6",
+      "source": "instructblip.pdf",
+      "page": 6,
+      "char_count": 410,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "LLM-based Open-Ended Task Decoder\nTask defined\nby instructions\nparsing\nformat 1: \"< cls > <x1> <y1> ...\"\nformat 2: \"<bos>\"\n...\nformat n: ...\nFigure 4: Illustration of the “output-format-as-\nquery” decoding process. “<cls> <x1> <y1> ...”\ndenote the queries of the object’s class index and\nboundary points, and “<bos>” denotes the begin-\nning of string.\nMoreover, to address the inefficiency caused\nby the causal framework, we introduce output-\nformat-as-query decoding. We first use LLMs to",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "format-as-query decoding. We first use LLMs to\nparse the structural output format from the task\ninstructions (e.g., “<cls> <x1> <y1> <x2>\n<y2>” for object detection, “<bos>” for image\ncaptioning), and then feed the tokens of struc-\ntural output format as queries to the decoder\nto generate the desired output according to the\nqueries. This simple method enables our model\nto not only avoid inefficient token-by-token de-\ncoding in visual perception tasks, but also keep",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "coding in visual perception tasks, but also keep\na unified framework for vision-language tasks.\nIn this way, the output of object location and\nclassification is formulated as a foreign lan-\nguage, thus unifying these vision-centric tasks\ninto the format of token classification. Therefore, both vision-language and vision-only tasks can be\nsupervised with the cross entropy loss like language tasks. In addition, for efficient training, we adopt",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "the Low-Rank Adaptation (LoRA) approach [24], which allows us to train and fine-tune the models\nwithout excessive computational costs. It also acts as a bridge between the language and visual tokens,\nfacilitating effective alignment between the two modalities, ensuring better task customization, and\nimproving the convergence of the overall system.\n4\nExperiment\n4.1\nExperimental Settings\nDatasets. VisionLLM unifies the output formats of vision and language tasks as vocabulary gen-",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "eration, which enables models to be jointly trained on a wide range of tasks. In the experiments,\nwe investigate the general modeling capacities of VisionLLM on five vision-centric tasks, including\nobject detection, instance segmentation, visual grounding, image captioning, and visual question\nanswering. For object detection and instance segmentation, COCO2017 [32] is used for training and\nevaluation. For visual grounding, we combine the annotations of RefCOCO [75], RefCOCO+ [75]",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "and RefCOCOg [39] for training, resulting in over 120k referred objects in total. And our models are\nevaluated on the validation set of RefCOCO. For image captioning and visual question answering, we\nadopt COCO Caption [10] and LLaVA-Instruct-150K [33] as the training source. We evaluate the im-\nage captioning performance on the COCO Karpathy test split following common practice [28, 58, 71].\nWe mainly use qualitative results (see Figure 2d) to demonstrate the VQA capability of our model,",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "as LLaVA-Instruct-150K is not compatible with the standard VQA benchmark. These tasks differ\nin their granularity, ranging from coarse-grained image level to fine-grained pixel level, enabling a\ncomprehensive evaluation of the model’s ability to adapt to different levels of customization through\nlanguage instructions.\nImplementation Details. We implement two variants of VisionLLM with two image backbones, i.e.,\nResNet [23] and InternImage-H [59]. For the language-guided image tokenizer, we adopt BERT-",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "Base [5] as the text encoder and Deformable DETR (D-DETR) [82] to capture high-level information.\nWe set the number of queries M to 100, and the number of encoder/decoder layers to 6 for D-DETR.\nFor the LLM, we employ Alpaca-7B [53], a LLaMA [54] model fine-tuned with instructions, and\nequip it with LoRA [24] for parameter-efficient fine-tuning.\nThe model is trained in two stages. In the first stage, we initialize the model with the pre-trained",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "weights of D-DETR, BERT, and Alpaca-7B, and train the visual backbone and the language-guided\nimage tokenizer, while freezing most parameters of the LLM except a few LoRA parameters. To\nsimplify the training complexity, in this stage, we mainly focus on object detection tasks with random\nobject categories and task descriptions. In the second stage, we freeze the visual backbone and\nintroduce the unified supervision of multiple tasks. Unless otherwise specified, the training runs for",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "50 epochs on 4 × 8 NVIDIA A100 GPUs. AdamW [36] is used as the optimizer, with one sample per\nGPU. We employ the cosine annealing schedule [37] as the learning policy, with an initial learning\n7",
+      "source": "instructblip.pdf",
+      "page": 7,
+      "char_count": 194,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "Table 1: Results on standard vision-centric tasks. ‘Intern-H” denotes InternImage-H [59]. “sep”\nindicates that the model is separately trained on each task.\nMethod\nBackbone Open-\nEnded\nDetection\nInstance Seg.\nGrounding\nCaptioning\nAP AP50 AP75 AP AP50 AP75\nP@0.5\nBLEU-4 CIDEr\nSpecialist Models\nFaster R-CNN-FPN [48] ResNet-50\n-\n40.3 61.0 44.0\n-\n-\n-\n-\n-\n-\nDETR-DC5 [7]\nResNet-50\n-\n43.3 63.1 45.9\n-\n-\n-\n-\n-\n-\nDeformable-DETR [82]\nResNet-50\n-\n45.7 65.0 49.1\n-\n-\n-\n-\n-\n-\nMask R-CNN [22]\nResNet-50\n-",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "-\n-\n-\n-\n-\n-\nMask R-CNN [22]\nResNet-50\n-\n41.0 61.7 44.9 37.1 58.4 40.1\n-\n-\n-\nPolar Mask [69]\nResNet-50\n-\n-\n-\n-\n30.5 52.0 31.1\n-\n-\n-\nPix2Seq [8]\nResNet-50\n-\n43.2 61.0 46.1\n-\n-\n-\n-\n-\n-\nUNITER [11]\nResNet-101\n-\n-\n-\n-\n-\n-\n-\n81.4\n-\n-\nVILLA [19]\nResNet-101\n-\n-\n-\n-\n-\n-\n-\n82.4\n-\n-\nMDETR [27]\nResNet-101\n-\n-\n-\n-\n-\n-\n-\n86.8\n-\n-\nVL-T5 [13]\nT5-B\n-\n-\n-\n-\n-\n-\n-\n-\n-\n116.5\nGeneralist Models\nUniTab [72]\nResNet-101\n-\n-\n-\n-\n-\n-\n-\n88.6\n-\n115.8\nUni-Perceiver [83]\nViT-B\n-\n-\n-\n-\n-\n-\n-\n-\n32.0\n-\nUni-Perceiver-MoE [81]\nViT-B\n-\n-\n-\n-",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "-\n-\n-\n32.0\n-\nUni-Perceiver-MoE [81]\nViT-B\n-\n-\n-\n-\n-\n-\n-\n-\n33.2\n-\nUni-Perceiver-V2 [28]\nViT-B\n-\n58.6\n-\n-\n50.6\n-\n-\n-\n35.4\n116.9\nPix2Seq v2 [9]\nViT-B\n-\n46.5\n-\n-\n38.2\n-\n-\n-\n34.9\n-\nVisionLLM-R50sep\nResNet-50\n-\n44.8 64.1 48.5 25.2 50.6 22.4\n84.4\n30.8\n112.4\nVisionLLM-R50\nResNet-50\n✓\n44.6 64.0 48.1 25.1 50.0 22.4\n80.6\n31.0\n112.5\nVisionLLM-H\nIntern-H\n✓\n60.2 79.3 65.8 30.6 61.2 27.6\n86.7\n32.1\n114.2\nrate of 2 × 10−4. In addition to the experiments in the main paper, more experimental settings and",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "ablation studies are provided in the supplementary material due to space limitations.\n4.2\nTask-Level Customization\nWe first evaluate the task-level customization capability of VisionLLM. VisionLLM supports coarse-\ngrained task customization, including visual perception tasks and visual-language tasks. Table 1\npresents the evaluation results on four standard vision-centric tasks, including object detection,\ninstance segmentation, visual grounding, and image captioning. We compare our model with task-",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "specific methods as well as recently-proposed vision generalist models. Note that, unless specifically\nmentioned, the results of our model come from a shared-parameter generalist model and switch\ndifferent tasks by changing the language instructions only. Detailed instructions could be found in\nthe supplementary material.\nObject Detection. Object detection is a fundamental computer vision task that involves identifying",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "and localizing objects of interest within an image. Our method achieves comparable or higher results\nto others, 44.6 mAP, with a ResNet-50 [23] backbone. With the same backbone i.e. ResNet-50,\nour method outperforms Pix2Seq [8] by 1.4 mAP, which also discretizes the output coordinates to\nintegers. Furthermore, benefiting from the output-format-as-query framework (see Sec. 3.4), we can\ndecode multiple predictions in parallel during inference, making our approach more efficient. Using",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "InternImage-H [59] as the visual backbone, we obtained 60.2% mAP, which is close to the current\nstate-of-the-art detection-specific model [59], demonstrating the scalability of our generalist model.\nVisual Grounding. Visual grounding associates textual descriptions with corresponding regions\nor objects within an image. Training visual grounding and object detection can potentially conflict\nwith each other, as object detection aims to detect all the objects, while visual grounding should only",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "localize the referred object and suppress other objects. Benefiting from our unified task instructions\nand the strong instruction comprehension capabilities of LLMs, our model performs both tasks\neffectively and achieves a result of 80.6 P@0.5 for visual grounding. With InternImage-H as the\nbackbone, we achieve 86.7 P@0.5 on the validation set of RefCOCO.\nInstance Segmentation. Instance segmentation involves identifying and segmenting individual",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "objects within an image. We employ a flexible number of points (i.e., 8∼24) along the object\nboundary to represent an instance mask. Compared to mainstream models specific to instance\nsegmentation, our model has a comparable mask AP50 (61.2% with InternImage-H [59]) but relatively\nlow mask AP75. This gap could potentially arise from factors as follows: (1) We discretize the output\n8",
+      "source": "instructblip.pdf",
+      "page": 8,
+      "char_count": 385,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "Table 2: Experiments of object-level and output format customization. We conduct these\nexperiments based on VisionLLM-R50, and report the performance of box AP and mask AP on\nCOCO minival for (a) and (b), respectively. “#Classes” and “#Points” indicate the number of classes\nand boundary points, respectively. “*” indicates that we report the mean AP of the given classes, e.g.,\n10 classes.\n(a) Object-level customization.\n#Classes\nAP\nAP50 AP75 APS APM APL\n10∗\n48.9\n72.6\n51.2\n31.7\n47.5\n67.3\n20∗\n52.7\n73.6\n56.8",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "48.9\n72.6\n51.2\n31.7\n47.5\n67.3\n20∗\n52.7\n73.6\n56.8\n31.8\n53.2\n70.5\n40∗\n49.3\n70.7\n53.2\n33.1\n53.6\n63.8\n80∗\n44.6\n64.0\n48.1\n26.7\n47.9\n60.5\n(b) Output format customization.\n#Points\nAP\nAP50 AP75 APS APM APL\n8\n18.5\n45.7\n11.6\n9.9\n19.7\n28.7\n14\n22.9\n48.3\n19.4\n11.0\n25.1\n36.0\n16\n24.2\n49.9\n20.9\n11.5\n26.3\n36.8\n24\n25.1\n50.0\n22.4\n12.5\n27.4\n38.2\nTable 3: Ablation studies on language-guided image tokenizer and hyper-parameters.\n(a) Effect of text encoder in the\nlanguage-guided image tokenizer.\nw/ BERT Freeze COCO RefCOCO\n-\n-",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "w/ BERT Freeze COCO RefCOCO\n-\n-\n44.7\n48.1\n✓\n-\n44.8\n84.1\n✓\n✓\n1.3\n34.3\n(b) Effect of image tokenization\nmethod.\nTokenization\nAP\nAverage Pooling\n23.1\nOurs\n44.8\n(c) Effect of the num-\nber of bins (#Bins).\n#Bins\nAP\n257\n34.9\n513\n40.8\n1025\n44.8\n2049\n44.8\ncoordinates to integers for unifying tasks, which introduces information loss; (2) Due to the memory\nand computational constraint, the number of points in our model is limited, which also results in a",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "performance drop; and (3) Point-based methods typically yield lower results compared to direct mask\nprediction methods, such as Mask R-CNN [22].\nImage Captioning. We also evaluate our model in a representative vision-language task, i.e. image\ncaptioning task, and report the BLEU-4 [43] and CIDEr [56] metrics. Note that we do not adopt the\nbeam search [2] or CIDEr optimization [49]. We can observe that VisionLLM achieves competitive",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "performance to previous methods. With ResNet-50, we obtain a BLEU-4 score of 31.0 and a CIDEr\nscore of 112.5. When using InternImage-H as the backbone, our model achieves a comparable\nBLEU-4 score of 32.1 and a CIDEr score of 114.2. These results demonstrate the effectiveness of\nVisionLLM in generating descriptive and contextually relevant captions for images.\n4.3\nObject-Level & Output Format Customization\nOur VisionLLM not only allows for customizing the task description, but also for adjusting the",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "target object and the output format using language instructions. Here, we evaluate our model’s\nfine-grained customization ability on COCO. In particular, to customize the target object, we modify\nthe <class> in language instructions to change the model’s recognition target from 10 classes to\n80 classes. Likewise, to customize the output format, we modify the number of points in language\ninstructions to change the task output format. Table 2 shows that our method can perform well for",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "both object-level and output format changes.\n4.4\nAblation Study\nIn this section, we analyze the effect of key components and hyper-parameters on VisionLLM. Unless\notherwise specified, we use ResNet-50 [23] backbone and perform the ablation experiments for object\ndetection tasks with random classes and task descriptions on COCO2017 [32].\nSingle Task vs. Multiple Tasks. We perform an ablation study to assess the impact of multi-task",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "learning with language instructions on VisionLLM. As shown in Table 1, the single-task trained\nmodel VisionLLM-R50sep is slightly better than the jointly trained model VisionLLM-R50 except\nimage captioning. This is due to the multitasking conflicts that also affect previous generalist\nmodels [83, 81], and it reflects a trade-off between accuracy and generalization.\nText Encoder in Language-Guided Image Tokenizer. We examine the role of text encoder (i.e.,",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "BERT) in our language-guided image tokenizer in Table 3a, where we report the results for object\n9",
+      "source": "instructblip.pdf",
+      "page": 9,
+      "char_count": 98,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "detection and visual grounding. The first two rows show that BERT is not essential for object\ndetection but it is crucial for visual grounding. We also investigate the effect of freezing the text\nencoder during training. The last row indicates that freezing BERT hinders the alignment of vision\nand language modalities and thus degrades the performance for both tasks.\nImage Tokenization Method. As a comparison to our query-based tokenization, we employ average",
+      "source": "instructblip.pdf",
+      "page": 10,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "pooling on the feature maps from the D-DETR encoder to obtain M patch embeddings, which serve\nas token representations for the image. Results in Table 3b indicate a clear advantage of our method.\nThis is due to its ability to capture information from objects of various sizes in a more flexible way.\nNumber of Localization Tokens. We vary the number of localization tokens from 257 (i.e., -\n128∼128) to 2049 (i.e., -1024∼1024), to investigate its impact on visual perception performance. As",
+      "source": "instructblip.pdf",
+      "page": 10,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "presented in Table 3c, the model consistently exhibits improvement as the number of localization\ntokens increases until it reaches a saturation point. Remarkably, a substantial performance boost\nis observed when the number is raised from 257 to 1025 (+9.9 AP). These results indicate that a\nhigher number of localization tokens enables the models to achieve finer localization abilities, thereby\nimproving localization accuracy.\n5\nConclusion",
+      "source": "instructblip.pdf",
+      "page": 10,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "improving localization accuracy.\n5\nConclusion\nIn this paper, we have presented VisionLLM, a novel framework that leverages the power of large\nlanguage models (LLMs) to address vision-centric tasks in an open-ended and customizable manner.\nWe have designed unified language instruction that matches the format of language models and covers\nvarious vision-centric tasks including visual perception. We have also developed a language-guided",
+      "source": "instructblip.pdf",
+      "page": 10,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "image tokenizer and an LLM-based task decoder that can handle open-ended tasks according to the\ngiven language instructions. We have verified the effectiveness of our models on a series of tasks\nwith different granularities, demonstrating their remarkable generality and flexibility.\nBroader Impact. We envision that this work will promote the fusion of visual and language tasks.\nIn addition, since our work is built on open-source pre-trained vision foundation models and large",
+      "source": "instructblip.pdf",
+      "page": 10,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "language models, requiring low training resources, thus reducing the carbon footprint. We do not\nforesee obvious undesirable ethical/social impacts at this moment.\n10",
+      "source": "instructblip.pdf",
+      "page": 10,
+      "char_count": 166,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "Appendix\nA\nExample Instructions\nAs described in Sec. 3.2 of the main paper, we follow self-instruct [65] to design a set of seed\ninstructions with placeholders and employ LLMs to create diverse related task descriptions for\ncoarse-grained task-level customization. Here, we show some examples of instructions for task-level\ncustomization, including object detection, instance segmentation, visual grounding, image captioning,",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "and visual question answering (VQA). Following various instructions, our model can elegantly switch\namong different vision-centric tasks and accomplish them in a unified manner like LLMs.\nA.1\nObject Detection\nExample 1. “Please examine the image and identify all objects in the category set <class>. For each\nobject, specify its location within the range <range> by determining the top-left and bottom-right\ncorners of its bounding box. To indicate the object’s class and location, provide the output in the",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "format (c, x1, y1, x2, y2), where ‘c’ represents the class index starting from 0, and (x1, y1, x2, y2)\ncorrespond to the offsets of the bounding box corners relative to the center point. The image is:\n<image>”\nExample 2. “Identify all the objects in the image that belong to the category set <class> and predict\na bounding box around each one. The output should be a list in the format (c, x1, y1, x2, y2), where c",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "represents the index of the class label starting from 0, and x1, y1, x2, y2 are the offsets of the top-left\nand bottom-right corners of the box relative to the center point. The coordinates should be within\n<range>. The image is: <image>”\nExample 3. “For each object in the image that is a member of the category set <class>, output a\ntuple with the index of class label starting from 0 and the offsets of corners relative to the center point",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "that encloses the object. The offsets should be in the order of top-left and bottom-right corners of the\nrectangle and should be within <range>. The output format should be (c, x1, y1, x2, y2). The image\nis: <image>”\nA.2\nInstance Segmentation\nExample 1. “Segment the objects from the image with class labels from <class> and output their\ncoordinates within range <range>. The coordinates should be given as the boundary points relative",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "to the center point, and the output format should be (c, x1, y1, x2, y2, ..., x20, y20), where c is the\nindex of the class label that starts from 0. The image is: <image>”\nExample 2. “Segment all the objects from the category set <class> in the provided image and output\na tuple (c, x1, y1, x2, y2, ..., x14, y14) for each, where c is the index of the class label in the category\nset that starts from 0, and (x1, y1, x2, y2, ..., x14, y14) correspond to the offsets of boundary points",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "on the instance mask relative to the center point which should be within <range>. The image is:\n<image>”\nExample 3. “In the provided image, please segment all the objects in category set <class> within\nthe range <range> by providing their coordinates in the (c, x1, y1, x2, y2, ..., x24, y24) format, where\n‘c’ denotes the index of the class label starting from 0, and (x1, y1, x2, y2, ..., x24, y24) stand for the\noffsets of boundary points relative to the center point. The image is: <image>”\nA.3",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "A.3\nVisual Grounding\nExample 1. “Please find the object in the category set {<expression>:<cls0>} within the range\n<range>. Please provide the output in the format (c, x1, y1, x2, y2), where c is the class index starting\nfrom 0, and (x1, y1, x2, y2) are the offsets of the top-left and bottom-right corners of the bounding\nbox relative to the center point. The image is: <image>”\nExample 2.\n“Given the input image, category set {<expression>:<cls0>}, and the range",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "<range>, please locate the object in the image and output the corresponding coordinates in the tuple\n(c, x1, y1, x2, y2), where c is the index of the class label starting from 0, and (x1, y1, x2, y2) are the\n11",
+      "source": "instructblip.pdf",
+      "page": 11,
+      "char_count": 210,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "offsets of the top-left and bottom-right corners of the rectangle relative to the center point. The image\nis: <image>”\nExample 3. “For each object in the image that belongs to the {<expression>:<cls0>} category\nset, please provide the class label (starting from 0) and the offsets from the center of a bounding\nbox that encloses the object. The corner offsets should be in the order of top-left and bottom-right,\nand within the range <range>. The output should be in the format (c, x1, y1, x2, y2). The image is:",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 512,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "<image>”\nA.4\nImage Captioning\nExample 1. “The image is <image>. Write a caption: ”\nExample 2. “The image is <image>. Please describe this image: ”\nExample 3. “With the objects in the <image>, please generate a caption for the image: ”\nA.5\nVisual Question Answering\nExample 1. “The image is <image>. Please generate an answer according to the question:\n<question>. ”\nExample 2. “The image is <image>. Please answer the question <question> according to the\nimage. ”",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "image. ”\nExample 3. “With the objects in the <image>, <question>. ”\nB\nLoss Function\nVisionLLM consists of two model components: language-guided image tokenizer and LLM-based\nopen-task decoder. So the total loss L of our model can be written as:\nL = Ltok + Ldec,\n(1)\nwhere Ltok and Ldec denote the loss of language-guided image tokenizer and LLM-based open-task\ndecoder, respectively. We introduce the two loss functions as follows:",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 431,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Language-Guided Image Tokenizer. Different from the Q-Former [29], we use a supervision\nmethod similar to that of Deformable DETR [82], but with a different loss Ltok: category-agnostic\nclassification (focal loss [31]) and center point regression (L1 loss). As explained in Sec. 3.3, our\nimage tokenizer extracts M image tokens T = {(ei, li)}M\ni=1, each of which is represented by an\nembedding ei and a location li (i.e., absolute coordinates of the center point).",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "LLM-Based Open-Ended Task Decoder. We handle two cases in decoding processing differently.\n(1) For regular word prediction, we train with standard next-token supervision [54, 45, 6, 46]; (2) For\nunordered set prediction (e.g., bounding boxes), we first output a sequence of tokens according to the\noutput format (see the output-format-as-query paradigm in Sec. 3.4), then use bipartite matching to\nalign the LLM-predicted outputs with the ground truths. Despite the differences, we use cross-entropy",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "to compute the loss Ldec in a unified way for both cases.\nC\nTraining Schedule\nAs shown in Figure 5, to speed up the convergence of VisionLLM, we split the training schedule of\nVisionLLM into two stages:\nStage 1. In this stage, we initialize the language-guided image tokenizer by loading the pre-trained\nweights of Deformable DETR [82] and BERT [16]. Additionally, Alpaca [53] is employed as the\nLLM-based open-ended task decoder. To align visual tokens with text tokens, we make the language-",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "guided image tokenizer trainable while freezing most parameters of the pre-trained Alpaca, with only\na few LoRA [24] parameters left tunable. We only focus on object detection in this stage to simplify\nthe training difficulty, with random task descriptions and object categories.\nStage 2. The second stage builds upon the model weights obtained from the first stage. For efficiency,\nwe freeze the visual backbone (e.g., ResNet [23]) in the language-guided image tokenizer. Notably,\n12",
+      "source": "instructblip.pdf",
+      "page": 12,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "0\n10\n20\n30\n40\n50\n0\n10\n20\n30\n40\n50\nDetection mAP (%)\nEpoch\nSingle-Stage\nTwo Stages (ours)\nStage-1 (Object Detection)\nStage-2 (Multiple Tasks)\nFigure 5: Comparison of two training schedules for VisionLLM. We found that a two-stage\ntraining from easy to hard converges faster than a single-stage training.\nTable 4: More ablation studies for VisionLLM.\n(a) Effect of randomness.\nRandomness\nAP\nNone\n45.2\n+ Random Task Description\n45.1\n++ Random Object Category\n44.8\n+++ Random Output Format\n44.6",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "44.8\n+++ Random Output Format\n44.6\n(Multi-task Joint Training)\n(b) Effect of LoRA [24].\nLoRA\nRandomness\nAP\n✗\n✗\n45.2\n✗\n✓\n1.2\n✓\n✓\n44.8\n(c) Effect of the number\nof image tokens.\n#Tokens\nAP\n50\n44.5\n100\n44.8\n200\n45.1\n300\n45.2\n(d) Effect of Seq2Seq.\nSeq2Seq\nAP\n✓\n-\n✗\n44.8\n(e) Large vocabulary object detection.\nDataset\n#Classes\nAP\nCOCO\n80\n44.8\nLVIS\n1203\n18.9\nthis stage introduces the unified supervision of multiple tasks, including object detection, instance",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "segmentation, visual grounding, image captioning, and VQA, facilitating the model to leverage the\npower of LLMs to understand and manipulate visual information holistically.\nD\nMore Ablation Studies\nIn this section, we provide more ablation studies and analysis of VisionLLM. Unless otherwise\nspecified, we use ResNet-50 [23] backbone and perform the ablation experiments for object detection\ntasks with random task descriptions and object categories on COCO 2017 [32].",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "Randomness. In Table 4a, we examine the effect of introducing randomness during training for\nVisionLLM, including randomness in task descriptions, object categories, and output formats (i.e.,\nmulti-task joint training). Initially, without any randomness, the model achieves a box AP of 45.2.\nHowever, as randomness is gradually applied, interesting phenomena emerge: while there is a slight\ndecrease (45.2 →44.6) in the AP of standard detection with the introduction of randomness, the",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "overall benefits of enhanced task customization and open-ended capabilities outweigh this minor\ntrade-off. Overall, introducing randomness during training in VisionLLM positively impacts its\ncapacity for open-ended tasks and customization.\nLow-Rank Adaptation (LoRA). As shown in Table 4b, when randomness is not applied, the\nmodel achieves 45.2 box AP without using LoRA [24]. However, when randomness is employed,\nit is observed that the model fails to converge without using LoRA. Conversely, when LoRA and",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "randomness are used together, the model is able to converge. This indicates that LoRA plays a crucial\nrole as a bridge between the language and visual tokens, enabling effective alignment between the\ntwo modalities and improving the convergence of the overall system.\nNumber of Image Tokens. We vary the number of image tokens from 50 to 300 to investigate\ntheir impact on the performance. Results are presented in Table 4c. As the number of image tokens",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "increases, the performance continues to improve. This makes sense because a larger number of\n13",
+      "source": "instructblip.pdf",
+      "page": 13,
+      "char_count": 95,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "1\n2\n3\n4\n5\n6\n7\n8\n44.8\n44.7\n44.8\n44.7\n44.8\n44.7\n44.7\n44.8\nPrompt\nAP\nFigure 6: Evaluation results using eight different prompts. The first six prompts use different task\ndescriptions of object detection, while the last two prompts employ random category orders. These\nresults show that the performance of different prompts is similar, only a 0.1 AP gap is observed.\nbicycle\ncar\nmotorcycle\nairplane\nbus\ntrain\ntruck\nboat\ntraffic light\nfire hydrant\nstop sign\nparking meter\nbench\nbird\ncat\ndog\nhorse\nsheep\ncow\nelephant",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "bench\nbird\ncat\ndog\nhorse\nsheep\ncow\nelephant\nbear\nzebra\ngiraffe\nbackpack\numbrella\nhandbag\ntie\nsuitcase\nfrisbee\nskis\nsnowboard\nsports ball\nkite\nbaseball bat\nbaseball glove\nskateboard\nsurfboard\ntennis racket\nbottle\nwine glass\ncup\nfork\nknife\nspoon\nbowl\nbanana\napple\nsandwich\norange\nbroccoli\ncarrot\nhot dog\npizza\ndonut\ncake\nchair\ncouch\npotted plant\nbed\ndining table\ntoilet\ntv\nlaptop\nmouse\nremote\nkeyboard\ncell phone\nmicrowave\noven\ntoaster\nsink\nrefrigerator\nbook\nclock\nvase\nscissors\nteddy bear\nhair drier\ntoothbrush\n0",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "vase\nscissors\nteddy bear\nhair drier\ntoothbrush\n0\n10\n20\n30\n40\n50\n60\n70\nmAP (%)\nstandard 80 classes\nrandom 40 classes\n(a) We randomly select 40 classes in random order to form the category set.\nbicycle\ncar\nmotorcycle\nairplane\nbus\ntrain\ntruck\nboat\ntraffic light\nfire hydrant\nstop sign\nparking meter\nbench\nbird\ncat\ndog\nhorse\nsheep\ncow\nelephant\nbear\nzebra\ngiraffe\nbackpack\numbrella\nhandbag\ntie\nsuitcase\nfrisbee\nskis\nsnowboard\nsports ball\nkite\nbaseball bat\nbaseball glove\nskateboard\nsurfboard\ntennis racket\nbottle",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "skateboard\nsurfboard\ntennis racket\nbottle\nwine glass\ncup\nfork\nknife\nspoon\nbowl\nbanana\napple\nsandwich\norange\nbroccoli\ncarrot\nhot dog\npizza\ndonut\ncake\nchair\ncouch\npotted plant\nbed\ndining table\ntoilet\ntv\nlaptop\nmouse\nremote\nkeyboard\ncell phone\nmicrowave\noven\ntoaster\nsink\nrefrigerator\nbook\nclock\nvase\nscissors\nteddy bear\nhair drier\ntoothbrush\n0\n10\n20\n30\n40\n50\n60\n70\nmAP (%)\nstandard 80 classes\nrandom 80 classes\n(b) We randomly change the order of 80 classes to form the category set.",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "Figure 7: Per-category AP on COCO dataset. We randomly select some categories to form the\ncategory set <class> in language instructions.\nimage tokens provides a more detailed description of the image content. Considering computational\ncomplexity, we adopted 100 image tokens in our experiments.\nRobustness to Prompt Changes. Since VisionLLM is trained with random prompts, including\nrandom task descriptions and random categories, one may ask whether there is a large performance",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "variance across different prompts. To validate the stability of VisionLLM, we conduct experiments\nusing eight different prompts. The first six prompts employ different task descriptions, while the last\ntwo prompts involve random category orders. In the case of random category orders, we map the\ncategories back to the COCO standard category order for evaluation. As shown in Figure 6, most\nevaluation results are distributed closely to 44.8 AP. The performance differences among prompts are",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "marginal, demonstrating that VisionLLM is robust to different prompts.\nInstruction Following Capability. As shown in Figure 7, when the prompt only contains 40 classes,\nthe performance for these categories remains normal, while the performance for the remaining\ncategories is close to zero. This indicates that VisionLLM can dynamically detect objects based on\nthe given class set <class> in instructions while disregarding the other classes that are not mentioned.",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "This result highlights the flexibility of VisionLLM in adhering to instructions.\nOutput-Format-As-Query vs. Seq2Seq. In VisionLLM, we introduce the output-format-as-query\nframework for LLM decoder. Alternatively, we also experiment with the sequence generation method\nlike Pix2Seq [8] for object detection with random task descriptions and object categories. However,\nwe find that the loss is hard to converge in this paradigm, which indicates that the seq2seq decoding",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "may need a more detailed design or a longer training schedule for the open-ended visual tasks, while\nthe proposed output-format-as-query framework is more effective for open-ended tasks.\nLarge-Vocabulary Object Recognization. To validate the capacity of VisionLLM in the large-\nvocabulary scenario, we further conduct the experiments on the challenging dataset LVIS [20] with\n1203 categories. Due to the limited number of language tokens, we randomly select 80 classes",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "for training in each iteration. During inference, we divide the 1203 categories into 16 groups and\n14",
+      "source": "instructblip.pdf",
+      "page": 14,
+      "char_count": 101,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "#Points=8\n#Points=14\n#Points=16\n#Points=24\nFigure 8: Customization of instance masks using the different number of points. Notably, we\nonly modify the output format mentioned in the prompt, i.e. the number of segmentation points. For\nmore details, please see the example prompts provided in Sec. A.2.\npredict the results in a sliding-window manner. As shown in Table 4e, without tricks like federal loss,\nVisionLLM-R50 can achieve 18.9 mAP on LVIS.\nE\nQualitative Analysis",
+      "source": "instructblip.pdf",
+      "page": 15,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "E\nQualitative Analysis\nCustomization of Segmentation Points. In this experiment, we focus on modifying the output\nformat mentioned in the prompt, specifically the number of points for instance segmentation (see\nSec. A.2). The results are visualized in Figure 8. Remarkably, by increasing the number of points\nfor segmentation, we observe that the model successfully predicts more refined object masks. This\nvalidates the capability of our method to precisely customize the output format, showcasing fine-",
+      "source": "instructblip.pdf",
+      "page": 15,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "grained control over the segmentation process.\nCustomization of Category Set. We change the content of the category set <class> in language\ninstructions and visualize the predictions in Figure 9. It is observed that the model can correctly\npredict the object category according to the provided category set. This demonstrates that VisionLLM\nhas a strong capacity to understand and reason over the semantic information of language instructions,",
+      "source": "instructblip.pdf",
+      "page": 15,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "which allows it for flexible category customization in open-vocabulary scenarios.\nImage Description & VQA. Benefiting from the power of LLMs, VisionLLM exhibits a strong\nability in generating long descriptions for images and answering visual questions with complex\nreasoning. We show the examples in Figure 10.\n15",
+      "source": "instructblip.pdf",
+      "page": 15,
+      "char_count": 313,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "Instruction: “Identify the objects in the image that belong to \n{‘person’: <c0>, ..., ‘frisbee': <c29>, ...} and draw a bounding \nbox around each one. The output should be a list of tuples in \nthe format (c, x1, y1, x2, y2), where ‘c’ represents the index \nof the class label starting from 0, and x1, y1, x2, y2 are the \noffsets of the top-left and bottom-right corners of the box \nrelative to the center point. The coordinates should be \nwithin <range>. The image is: <image>”",
+      "source": "instructblip.pdf",
+      "page": 16,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "within <range>. The image is: <image>”\nInstruction: “Identify the objects in the image that belong to \n{‘person’: <c0>, ‘bicycle’: <c1>, ..., ‘backpack': <c24>, ..., \n‘toothbrush’: <c79>} and draw a bounding box around each\none. The output should be a list of tuples in the format (c, x1, \ny1, x2, y2), where ‘c’ represents the index of the class label \nstarting from 0, and x1, y1, x2, y2 are the offsets of the top-\nleft and bottom-right corners of the box relative to the",
+      "source": "instructblip.pdf",
+      "page": 16,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "center point. The coordinates should be within <range>. The \nimage is: <image>”\nInstruction : “Identify the objects in the image that belong \nto {‘frisbee': <c0>} and draw a bounding box around each\none. The output should be a list of tuples in the format (c, x1, \ny1, x2, y2), where ‘c’ represents the index of the class label \nstarting from 0, and x1, y1, x2, y2 are the offsets of the top-\nleft and bottom-right corners of the box relative to the \ncenter point. The coordinates should be within <range>. The",
+      "source": "instructblip.pdf",
+      "page": 16,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "image is: <image>”\nInstruction: “Identify the objects in the image that belong to \n{‘bicycle’: <c0>, ‘surfboard’: <c1>, ‘sports ball': <c2>, \n‘backpack’: <c3>, ‘the man wearing blue T-shirt’: <c4>} and \ndraw a bounding box around each one. The output should be \na list of tuples in the format (c, x1, y1, x2, y2), where ‘c’\nrepresents the index of the class label starting from 0, and x1, \ny1, x2, y2 are the offsets of the top-left and bottom-right \ncorners of the box relative to the center point. The",
+      "source": "instructblip.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "coordinates should be within <range>. The image is: <image>”\nFigure 9: Customization of category set. These results demonstrate that VisionLLM can correctly\ndetect the specified objects according to the category set <class> provided in language instructions.\n16",
+      "source": "instructblip.pdf",
+      "page": 16,
+      "char_count": 261,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "Instruction: “The image is: <image>. Analyze the image in a \ncomprehensive and detailed manner.”\nVisionLLM: “The image features a busy city street with a \nlarge red double-decker bus driving down the road. There \nare several people walking on the sidewalk, some of whom \nare carrying backpacks. The bus is positioned towards the \nleft side of the image. There are several people walking \nalong the sidewalk, with some closer to the bus and others \nfurther away. The overall atmosphere suggests a busy urban",
+      "source": "instructblip.pdf",
+      "page": 17,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "environment with people going about their daily routines.”\nVisionLLM: “The image features a large, open-air market \nfilled with a variety of fruits and vegetables. There are \nnumerous mangoes, watermelons and apples displayed in \nthe market, with some fruits placed closer to the foreground \nand others further back. The market is bustling with activity \nas people can be seen browsing and purchasing the fresh \nproduce. The market is likely a popular destination for those \nseeking a fresh and healthy diet.”",
+      "source": "instructblip.pdf",
+      "page": 17,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "seeking a fresh and healthy diet.”\nInstruction: “The image is: <image>. Write a detailed\ndescription of the given image.”\nInstruction: “The image is: <image>. Write a short description of the given image.”\nVisionLLM: “The image features a lively open-air market with a variety of fruits and vegetables. People \nare busy browsing and buying fresh produce.”\n(a) Image description with controllable text length\nInstruction: “The image is: <image>. Please generate an",
+      "source": "instructblip.pdf",
+      "page": 17,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "answer according to the question: what reasons could there \nbe for the cat squatting on the shoes?”\nVisionLLM: “There could be several reasons. One possibility \nis that the cat is seeking warmth or comfort, as shoes can \nprovide a cozy and warm surface for the cat to rest on. \nAnother reason could be that the cat is seeking attention or \naffection from its owner, who is standing nearby. Cats are \nknown to be curious creatures, and they may be seeking \nattention or attention from their owners.”",
+      "source": "instructblip.pdf",
+      "page": 17,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "attention or attention from their owners.”\nVisionLLM: “The working environment in this office space \nappears to be open, spacious, and well-equipped. There are \nseveral desks set up for employees, providing ample \nworkspace for each individual. The office features a modern \nand contemporary design, which suggests a creative and \ncollaborative work environment. The presence of several \nchairs and the organization of the office, including the \nlaptops and monitors, indicate that the space is well-",
+      "source": "instructblip.pdf",
+      "page": 17,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "maintained and conducive to productivity. Overall, the office \nappears to be a pleasant and efficient work environment for \nits employees.”\nInstruction: “The image is: <image>. What do you think of \nthe working environment here?”\n(b) Visual question answering with reasoning\nFigure 10: Visualization of the image description and VQA capabilities of VisionLLM.\n17",
+      "source": "instructblip.pdf",
+      "page": 17,
+      "char_count": 362,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "References\n[1] Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc,\nArthur Mensch, Katie Millican, Malcolm Reynolds, et al. Flamingo: a visual language model for few-shot\nlearning. arXiv preprint arXiv:2204.14198, 2022. 1, 4\n[2] Peter Anderson, Xiaodong He, Chris Buehler, Damien Teney, Mark Johnson, Stephen Gould, and Lei\nZhang. Bottom-up and top-down attention for image captioning and visual question answering. In",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2018. 9\n[3] Stanislaw Antol, Aishwarya Agrawal, Jiasen Lu, Margaret Mitchell, Dhruv Batra, C Lawrence Zitnick,\nand Devi Parikh. Vqa: Visual question answering. In Proceedings of the IEEE International Conference\non Computer Vision, 2015. 4\n[4] Amir Bar, Yossi Gandelsman, Trevor Darrell, Amir Globerson, and Alexei Efros. Visual prompting via\nimage inpainting. Advances in Neural Information Processing Systems, 2022. 4",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "[5] Gedas Bertasius, Heng Wang, and Lorenzo Torresani. Is space-time attention all you need for video\nunderstanding? In International Conference on Machine Learning, 2021. 7\n[6] Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind\nNeelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Language models are few-shot learners.\nAdvances in Neural Information Processing Systems, 2020. 3, 4, 12",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "[7] Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander Kirillov, and Sergey\nZagoruyko. End-to-end object detection with transformers. In European Conference on Computer Vision,\n2020. 3, 4, 8\n[8] Ting Chen, Saurabh Saxena, Lala Li, David J Fleet, and Geoffrey Hinton. Pix2seq: A language modeling\nframework for object detection. arXiv preprint arXiv:2109.10852, 2021. 8, 14\n[9] Ting Chen, Saurabh Saxena, Lala Li, Tsung-Yi Lin, David J Fleet, and Geoffrey Hinton. A unified sequence",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "interface for vision tasks. arXiv preprint arXiv:2206.07669, 2022. 4, 8\n[10] Xinlei Chen, Hao Fang, Tsung-Yi Lin, Ramakrishna Vedantam, Saurabh Gupta, Piotr Dollár, and\nC Lawrence Zitnick. Microsoft coco captions: Data collection and evaluation server. arXiv preprint\narXiv:1504.00325, 2015. 4, 7\n[11] Yen-Chun Chen, Linjie Li, Licheng Yu, Ahmed El Kholy, Faisal Ahmed, Zhe Gan, Yu Cheng, and Jingjing\nLiu. Uniter: Universal image-text representation learning. In Computer Vision–ECCV 2020: 16th European",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part XXX. Springer, 2020. 8\n[12] Zhe Chen, Yuchen Duan, Wenhai Wang, Junjun He, Tong Lu, Jifeng Dai, and Yu Qiao. Vision transformer\nadapter for dense predictions. In International Conference on Learning Representations, 2023. 1\n[13] Jaemin Cho, Jie Lei, Hao Tan, and Mohit Bansal. Unifying vision-and-language tasks via text generation.\nIn International Conference on Machine Learning, 2021. 8",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "[14] Hyung Won Chung, Le Hou, Shayne Longpre, Barret Zoph, Yi Tay, William Fedus, Eric Li, Xuezhi\nWang, Mostafa Dehghani, Siddhartha Brahma, et al. Scaling instruction-finetuned language models. arXiv\npreprint arXiv:2210.11416, 2022. 4\n[15] MOSS contributors. Moss. https://github.com/OpenLMLab/MOSS, 2023. 3\n[16] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: Pre-training of deep bidirec-\ntional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018. 6, 12",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "[17] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas\nUnterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et al. An image is\nworth 16x16 words: Transformers for image recognition at scale. In International Conference on Learning\nRepresentations, 2021. 6\n[18] Yuxin Fang, Wen Wang, Binhui Xie, Quan Sun, Ledell Wu, Xinggang Wang, Tiejun Huang, Xinlong Wang,",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "and Yue Cao. Eva: Exploring the limits of masked visual representation learning at scale. arXiv preprint\narXiv:2211.07636, 2022. 1\n[19] Zhe Gan, Yen-Chun Chen, Linjie Li, Chen Zhu, Yu Cheng, and Jingjing Liu. Large-scale adversarial\ntraining for vision-and-language representation learning. Advances in Neural Information Processing\nSystems, 2020. 8\n18",
+      "source": "instructblip.pdf",
+      "page": 18,
+      "char_count": 352,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "[20] Agrim Gupta, Piotr Dollar, and Ross Girshick. Lvis: A dataset for large vocabulary instance segmentation.\nIn Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 5356–5364,\n2019. 14\n[21] Tanmay Gupta, Amita Kamath, Aniruddha Kembhavi, and Derek Hoiem. Towards general purpose vision\nsystems. arXiv preprint arXiv:2104.00743, 2021. 4\n[22] Kaiming He, Georgia Gkioxari, Piotr Dollár, and Ross Girshick. Mask r-cnn. In Proceedings of the",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "IEEE/CVF International Conference on Computer Vision, 2017. 3, 8, 9\n[23] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition.\nIn Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2016. 6, 7, 8, 9, 12,\n13\n[24] Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and\nWeizhu Chen. Lora: Low-rank adaptation of large language models. arXiv preprint arXiv:2106.09685,\n2021. 7, 12, 13",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "2021. 7, 12, 13\n[25] Srinivasan Iyer, Xi Victoria Lin, Ramakanth Pasunuru, Todor Mihaylov, Dániel Simig, Ping Yu, Kurt\nShuster, Tianlu Wang, Qing Liu, Punit Singh Koura, et al. Opt-iml: Scaling language model instruction\nmeta learning through the lens of generalization. arXiv preprint arXiv:2212.12017, 2022. 4\n[26] Menglin Jia, Luming Tang, Bor-Chun Chen, Claire Cardie, Serge Belongie, Bharath Hariharan, and\nSer-Nam Lim. Visual prompt tuning. In European Conference on Computer Vision, 2022. 2",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "[27] Aishwarya Kamath, Mannat Singh, Yann LeCun, Gabriel Synnaeve, Ishan Misra, and Nicolas Carion.\nMdetr-modulated detection for end-to-end multi-modal understanding. In Proceedings of the IEEE/CVF\nInternational Conference on Computer Vision, 2021. 8\n[28] Hao Li, Jinguo Zhu, Xiaohu Jiang, Xizhou Zhu, Hongsheng Li, Chun Yuan, Xiaohua Wang, Yu Qiao,\nXiaogang Wang, Wenhai Wang, et al. Uni-perceiver v2: A generalist model for large-scale vision and",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "vision-language tasks. arXiv preprint arXiv:2211.09808, 2022. 4, 7, 8\n[29] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: Bootstrapping language-image pre-training\nwith frozen image encoders and large language models. arXiv preprint arXiv:2301.12597, 2023. 4, 5, 12\n[30] KunChang Li, Yinan He, Yi Wang, Yizhuo Li, Wenhai Wang, Ping Luo, Yali Wang, Limin Wang, and\nYu Qiao. Videochat: Chat-centric video understanding. arXiv preprint arXiv:2305.06355, 2023. 2, 4, 5",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "[31] Tsung-Yi Lin, Priya Goyal, Ross Girshick, Kaiming He, and Piotr Dollár. Focal loss for dense object\ndetection. In Proceedings of the IEEE/CVF International Conference on Computer Vision, 2017. 12\n[32] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Dollár,\nand C Lawrence Zitnick. Microsoft coco: Common objects in context. In European Conference on\nComputer Vision. Springer, 2014. 7, 9, 13",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "Computer Vision. Springer, 2014. 7, 9, 13\n[33] Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. arXiv preprint\narXiv:2304.08485, 2023. 4, 5, 7\n[34] Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and Baining Guo. Swin\ntransformer: Hierarchical vision transformer using shifted windows. In Proceedings of the IEEE/CVF\nInternational Conference on Computer Vision, 2021. 6",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 431,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "[35] Zhaoyang Liu, Yinan He, Wenhai Wang, Weiyun Wang, Yi Wang, Shoufa Chen, Qinglong Zhang, Yang\nYang, Qingyun Li, Jiashuo Yu, et al. Interngpt: Solving vision-centric tasks by interacting with chatbots\nbeyond language. arXiv preprint arXiv:2305.05662, 2023. 2, 4, 5\n[36] Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. In International Conference on\nLearning Representations. 7",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 404,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "Learning Representations. 7\n[37] Ilya Loshchilov and Frank Hutter. Sgdr: Stochastic gradient descent with warm restarts. arXiv preprint\narXiv:1608.03983, 2016. 7\n[38] Jiasen Lu, Christopher Clark, Rowan Zellers, Roozbeh Mottaghi, and Aniruddha Kembhavi. Unified-io: A\nunified model for vision, language, and multi-modal tasks. arXiv preprint arXiv:2206.08916, 2022. 4\n[39] Junhua Mao, Jonathan Huang, Alexander Toshev, Oana Camburu, Alan L Yuille, and Kevin Murphy.",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "Generation and comprehension of unambiguous object descriptions. In Proceedings of the IEEE Conference\non Computer Vision and Pattern Recognition, 2016. 7\n19",
+      "source": "instructblip.pdf",
+      "page": 19,
+      "char_count": 157,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "[40] OpenAI. Gpt-4 technical report. arXiv, 2023. 3\n[41] TB OpenAI. Chatgpt: Optimizing language models for dialogue. OpenAI, 2022. 1, 3\n[42] Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong Zhang,\nSandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to follow instructions with\nhuman feedback. Advances in Neural Information Processing Systems, 2022. 3, 4",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "[43] Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. Bleu: a method for automatic evaluation\nof machine translation. In Proceedings of the 40th annual meeting of the Association for Computational\nLinguistics, 2002. 9\n[44] Alec Radford, Karthik Narasimhan, Tim Salimans, Ilya Sutskever, et al. Improving language understanding\nby generative pre-training. 2018. 1, 4\n[45] Alec Radford, Karthik Narasimhan, Tim Salimans, Ilya Sutskever, et al. Improving language understanding",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 158,
+      "text": "by generative pre-training. OpenAI, 2018. 12\n[46] Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et al. Language\nmodels are unsupervised multitask learners. OpenAI blog, 1(8):9, 2019. 12\n[47] Scott Reed, Konrad Zolna, Emilio Parisotto, Sergio Gomez Colmenarejo, Alexander Novikov, Gabriel\nBarth-Maron, Mai Gimenez, Yury Sulsky, Jackie Kay, Jost Tobias Springenberg, et al. A generalist agent.\narXiv preprint arXiv:2205.06175, 2022. 4",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 159,
+      "text": "arXiv preprint arXiv:2205.06175, 2022. 4\n[48] Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun. Faster r-cnn: Towards real-time object detection\nwith region proposal networks. In Advances in Neural Information Processing Systems, 2015. 8\n[49] Steven J Rennie, Etienne Marcheret, Youssef Mroueh, Jerret Ross, and Vaibhava Goel. Self-critical\nsequence training for image captioning. In Proceedings of the IEEE Conference on Computer Vision and\nPattern Recognition, 2017. 9",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 160,
+      "text": "Pattern Recognition, 2017. 9\n[50] Yongliang Shen, Kaitao Song, Xu Tan, Dongsheng Li, Weiming Lu, and Yueting Zhuang. Hugginggpt:\nSolving ai tasks with chatgpt and its friends in huggingface. arXiv preprint arXiv:2303.17580, 2023. 2, 4,\n5\n[51] Weijie Su, Xizhou Zhu, Chenxin Tao, Lewei Lu, Bin Li, Gao Huang, Yu Qiao, Xiaogang Wang, Jie Zhou,\nand Jifeng Dai. Towards all-in-one pre-training via maximizing multi-modal mutual information. In",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 161,
+      "text": "Proceedings of the IEEE/CVF International Conference on Computer Vision, 2023. 1\n[52] Chenxin Tao, Xizhou Zhu, Gao Huang, Yu Qiao, Xiaogang Wang, and Jifeng Dai. Siamese image modeling\nfor self-supervised vision representation learning. arXiv preprint arXiv:2206.01204, 2022. 1\n[53] Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann Dubois, Xuechen Li, Carlos Guestrin, Percy Liang,\nand Tatsunori B Hashimoto. Alpaca: A strong, replicable instruction-following model. Stanford Center for",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 162,
+      "text": "Research on Foundation Models. https://crfm. stanford. edu/2023/03/13/alpaca. html, 2023. 3, 6, 7, 12\n[54] Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix,\nBaptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, et al. Llama: Open and efficient foundation\nlanguage models. arXiv preprint arXiv:2302.13971, 2023. 3, 6, 7, 12\n[55] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 163,
+      "text": "Kaiser, and Illia Polosukhin. Attention is all you need. Advances in Neural Information Processing Systems,\n30, 2017. 6\n[56] Ramakrishna Vedantam, C Lawrence Zitnick, and Devi Parikh. Cider: Consensus-based image description\nevaluation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2015. 9\n[57] Jianfeng Wang, Zhengyuan Yang, Xiaowei Hu, Linjie Li, Kevin Lin, Zhe Gan, Zicheng Liu, Ce Liu,",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 164,
+      "text": "and Lijuan Wang. Git: A generative image-to-text transformer for vision and language. arXiv preprint\narXiv:2205.14100, 2022. 1, 4\n[58] Peng Wang, An Yang, Rui Men, Junyang Lin, Shuai Bai, Zhikang Li, Jianxin Ma, Chang Zhou, Jingren\nZhou, and Hongxia Yang. Unifying architectures, tasks, and modalities through a simple sequence-to-\nsequence learning framework. arXiv preprint arXiv:2202.03052, 2022. 1, 4, 7",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 407,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 165,
+      "text": "[59] Wenhai Wang, Jifeng Dai, Zhe Chen, Zhenhang Huang, Zhiqi Li, Xizhou Zhu, Xiaowei Hu, Tong Lu, Lewei\nLu, Hongsheng Li, et al. Internimage: Exploring large-scale vision foundation models with deformable\nconvolutions. In Proceedings of the IEEE/CVF International Conference on Computer Vision, 2023. 1, 2,\n7, 8\n20",
+      "source": "instructblip.pdf",
+      "page": 20,
+      "char_count": 315,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 166,
+      "text": "[60] Wenhai Wang, Enze Xie, Xiang Li, Deng-Ping Fan, Kaitao Song, Ding Liang, Tong Lu, Ping Luo, and\nLing Shao. Pvt v2: Improved baselines with pyramid vision transformer. Computational Visual Media,\n8(3):415–424, 2022. 6\n[61] Wenhui Wang, Hangbo Bao, Li Dong, Johan Bjorck, Zhiliang Peng, Qiang Liu, Kriti Aggarwal,\nOwais Khan Mohammed, Saksham Singhal, Subhojit Som, et al. Image as a foreign language: Beit\npretraining for all vision and vision-language tasks. arXiv preprint arXiv:2208.10442, 2022. 1, 2",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 167,
+      "text": "[62] Xinlong Wang, Wen Wang, Yue Cao, Chunhua Shen, and Tiejun Huang. Images speak in images: A\ngeneralist painter for in-context visual learning. arXiv preprint arXiv:2212.02499, 2022. 2\n[63] Xinlong Wang, Wen Wang, Yue Cao, Chunhua Shen, and Tiejun Huang. Images speak in images: A\ngeneralist painter for in-context visual learning. arXiv preprint arXiv:2212.02499, 2022. 4\n[64] Xinlong Wang, Xiaosong Zhang, Yue Cao, Wen Wang, Chunhua Shen, and Tiejun Huang. Seggpt:",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 168,
+      "text": "Segmenting everything in context. arXiv preprint arXiv:2304.03284, 2023. 2, 4\n[65] Yizhong Wang, Yeganeh Kordi, Swaroop Mishra, Alisa Liu, Noah A Smith, Daniel Khashabi, and\nHannaneh Hajishirzi. Self-instruct: Aligning language model with self generated instructions. arXiv\npreprint arXiv:2212.10560, 2022. 4, 5, 11\n[66] Yizhong Wang, Swaroop Mishra, Pegah Alipoormolabashi, Yeganeh Kordi, Amirreza Mirzaei, Anjana\nArunkumar, Arjun Ashok, Arut Selvan Dhanasekaran, Atharva Naik, David Stap, et al. Benchmarking",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 169,
+      "text": "generalization via in-context instructions on 1,600+ language tasks. arXiv preprint arXiv:2204.07705,\n2022. 4\n[67] Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, Andrew M\nDai, and Quoc V Le. Finetuned language models are zero-shot learners. arXiv preprint arXiv:2109.01652,\n2021. 4\n[68] Chenfei Wu, Shengming Yin, Weizhen Qi, Xiaodong Wang, Zecheng Tang, and Nan Duan. Visual chatgpt:",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 170,
+      "text": "Talking, drawing and editing with visual foundation models. arXiv preprint arXiv:2303.04671, 2023. 2, 4,\n5\n[69] Enze Xie, Peize Sun, Xiaoge Song, Wenhai Wang, Xuebo Liu, Ding Liang, Chunhua Shen, and Ping Luo.\nPolarmask: Single shot instance segmentation with polar representation. In Proceedings of the IEEE/CVF\nConference on Computer Vision and Pattern Recognition, 2020. 6, 8\n[70] Bin Yan, Yi Jiang, Jiannan Wu, Dong Wang, Ping Luo, Zehuan Yuan, and Huchuan Lu. Universal instance",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 171,
+      "text": "perception as object discovery and retrieval. arXiv preprint arXiv:2303.06674, 2023. 4\n[71] Zhengyuan Yang, Zhe Gan, Jianfeng Wang, Xiaowei Hu, Faisal Ahmed, Zicheng Liu, Yumao Lu, and\nLijuan Wang. Unitab: Unifying text and box outputs for grounded vision-language modeling. In European\nConference on Computer Vision, pages 521–539. Springer, 2022. 4, 7\n[72] Zhengyuan Yang, Zhe Gan, Jianfeng Wang, Xiaowei Hu, Faisal Ahmed, Zicheng Liu, Yumao Lu, and",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 172,
+      "text": "Lijuan Wang. Unitab: Unifying text and box outputs for grounded vision-language modeling. In European\nConference on Computer Vision, 2022. 8\n[73] Zhengyuan Yang, Linjie Li, Jianfeng Wang, Kevin Lin, Ehsan Azarnasab, Faisal Ahmed, Zicheng Liu,\nCe Liu, Michael Zeng, and Lijuan Wang. Mm-react: Prompting chatgpt for multimodal reasoning and\naction. arXiv preprint arXiv:2303.11381, 2023. 2, 4, 5\n[74] Yuan Yao, Ao Zhang, Zhengyan Zhang, Zhiyuan Liu, Tat-Seng Chua, and Maosong Sun. Cpt: Colorful",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 173,
+      "text": "prompt tuning for pre-trained vision-language models. arXiv preprint arXiv:2109.11797, 2021. 2\n[75] Licheng Yu, Patrick Poirson, Shan Yang, Alexander C Berg, and Tamara L Berg. Modeling context in\nreferring expressions. In European Conference on Computer Vision. Springer, 2016. 7\n[76] Yuhang Zang, Wei Li, Kaiyang Zhou, Chen Huang, and Chen Change Loy. Unified vision and language\nprompt learning. arXiv preprint arXiv:2210.07225, 2022. 2",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 174,
+      "text": "[77] Aohan Zeng, Xiao Liu, Zhengxiao Du, Zihan Wang, Hanyu Lai, Ming Ding, Zhuoyi Yang, Yifan Xu, Wendi\nZheng, Xiao Xia, et al. Glm-130b: An open bilingual pre-trained model. arXiv preprint arXiv:2210.02414,\n2022. 3\n[78] Susan Zhang, Stephen Roller, Naman Goyal, Mikel Artetxe, Moya Chen, Shuohui Chen, Christopher\nDewan, Mona Diab, Xian Li, Xi Victoria Lin, et al. Opt: Open pre-trained transformer language models.\narXiv preprint arXiv:2205.01068, 2022. 3\n21",
+      "source": "instructblip.pdf",
+      "page": 21,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 175,
+      "text": "[79] Yuanhan Zhang, Kaiyang Zhou, and Ziwei Liu. Neural prompt search. arXiv preprint arXiv:2206.04673,\n2022. 2\n[80] Deyao Zhu, Jun Chen, Xiaoqian Shen, Xiang Li, and Mohamed Elhoseiny. Minigpt-4: Enhancing vision-\nlanguage understanding with advanced large language models. arXiv preprint arXiv:2304.10592, 2023.\n4\n[81] Jinguo Zhu, Xizhou Zhu, Wenhai Wang, Xiaohua Wang, Hongsheng Li, Xiaogang Wang, and Jifeng\nDai. Uni-perceiver-moe: Learning sparse generalist models with conditional moes. arXiv preprint",
+      "source": "instructblip.pdf",
+      "page": 22,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 176,
+      "text": "arXiv:2206.04674, 2022. 1, 4, 8, 9\n[82] Xizhou Zhu, Weijie Su, Lewei Lu, Bin Li, Xiaogang Wang, and Jifeng Dai. Deformable detr: Deformable\ntransformers for end-to-end object detection. In International Conference on Learning Representations,\n2021. 3, 6, 7, 8, 12\n[83] Xizhou Zhu, Jinguo Zhu, Hao Li, Xiaoshi Wu, Hongsheng Li, Xiaohua Wang, and Jifeng Dai. Uni-\nperceiver: Pre-training unified architecture for generic perception for zero-shot and few-shot tasks. In",
+      "source": "instructblip.pdf",
+      "page": 22,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 177,
+      "text": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2022. 2, 4, 5, 8, 9\n22",
+      "source": "instructblip.pdf",
+      "page": 22,
+      "char_count": 105,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

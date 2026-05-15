@@ -1,0 +1,1244 @@
+{
+  "source": "faiss.pdf",
+  "full_path": "data\\raw\\faiss.pdf",
+  "total_pages": 13,
+  "text_chunks": 154,
+  "vision_chunks": 0,
+  "total_chunks": 154,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "IEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n1 \n \nEfficient and robust approximate nearest \nneighbor search using Hierarchical Navigable \nSmall World graphs \nYu. A. Malkov, D. A. Yashunin \nAbstract — We present a new approach for the approximate K-nearest neighbor search based on navigable small world \ngraphs with controllable hierarchy (Hierarchical NSW, HNSW). The proposed solution is fully graph-based, without any need for",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "additional search structures, which are typically used at the coarse search stage of the most proximity graph techniques. \nHierarchical NSW incrementally builds a multi-layer structure consisting from hierarchical set of proximity graphs (layers) for \nnested subsets of the stored elements. The maximum layer in which an element is present is selected randomly with an \nexponentially decaying probability distribution. This allows producing graphs similar to the previously studied Navigable Small",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "World (NSW) structures while additionally having the links separated by their characteristic distance scales. Starting search \nfrom the upper layer together with utilizing the scale separation boosts the performance compared to NSW and allows a \nlogarithmic complexity scaling. Additional employment of a heuristic for selecting proximity graph neighbors significantly \nincreases performance at high recall and in case of highly clustered data. Performance evaluation has demonstrated that the",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "proposed general metric space search index is able to strongly outperform previous opensource state-of-the-art vector-only \napproaches. Similarity of the algorithm to the skip list structure allows straightforward balanced distributed implementation. \nIndex Terms — Graph and tree search strategies, Artificial Intelligence, Information Search and Retrieval, Information Storage \nand Retrieval, Information Technology and Systems, Search process, Graphs and networks, Data Structures, Nearest neighbor",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "search, Big data, Approximate search, Similarity search \n——————————      —————————— \n1 INTRODUCTION\nonstantly growing amount of the available infor-\nmation resources has led to high demand in scalable \nand efficient similarity search data structures. One of the \ngenerally used approaches for information search is the \nK-Nearest Neighbor Search (K-NNS). The K-NNS as-\nsumes you have a defined distance function between the \ndata elements and aims at finding the K elements from",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "the dataset which minimize the distance to a given query. \nSuch algorithms are used in many applications, such as \nnon-parametric machine learning algorithms, image fea-\ntures matching in large scale databases [1] and semantic \ndocument retrieval [2]. A naïve approach to K-NNS is to \ncompute the distances between the query and every ele-\nment in the dataset and select the elements with minimal \ndistance. Unfortunately, the complexity of the naïve ap-",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "proach scales linearly with the number of stored elements \nmaking it infeasible for large-scale datasets. This has led \nto a high interest in development of fast and scalable K-\nNNS algorithms.  \nExact solutions for K-NNS [3-5] may offer a substantial \nsearch speedup only in case of relatively low dimensional \ndata due to “curse of dimensionality”. To overcome this \nproblem a concept of Approximate Nearest Neighbors \nSearch (K-ANNS) was proposed, which relaxes the condi-",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "tion of the exact search by allowing a small number of \nerrors. The quality of an inexact search (the recall) is de-\nfined as the ratio between the number of found true near-\nest neighbors and K. The most popular K-ANNS solu-\ntions are based on approximated versions of tree algo-\nrithms [6, 7], locality-sensitive hashing (LSH) [8, 9] and \nproduct quantization (PQ) [10-17]. Proximity graph K-\nANNS algorithms [10, 18-26] have recently gained popu-\nlarity offering a better performance on high dimensional",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "datasets. However, the power-law scaling of the proximi-\nty graph routing causes extreme performance degrada-\ntion in case of low dimensional or clustered data.  \nIn this paper we propose the Hierarchical Navigable \nSmall World (Hierarchical NSW, HNSW), a new fully \ngraph based incremental K-ANNS structure, which can \noffer a much better logarithmic complexity scaling. The \nmain contributions are: explicit selection of the graph’s \nenter-point node, separation of links by different scales",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "and use of an advanced heuristic to select the neighbors. \nAlternatively, Hierarchical NSW algorithm can be seen as \nan extension of the probabilistic skip list structure [27] \nwith proximity graphs instead of the linked lists. Perfor-\nmance evaluation has demonstrated that the proposed \ngeneral metric space method is able to strongly outper-\nform previous opensource state-of-the-art approaches \nsuitable only for vector spaces. \n————————————————",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "———————————————— \n Y. Malkov is with the Federal state budgetary institution of science \nInstitute of Applied Physics of the Russian Academy of Sciences, 46 \nUl'yanov Street, 603950 Nizhny Novgorod, Russia. E-mail:  \nyurymalkov@mail.ru. \n D. Yashunin. Addres: 31-33 ul. Krasnozvezdnaya, 603104 Nizhny \nNovgorod, Russia. E-mail: yashuninda@yandex.ru \nC\nThis work has been submitted to the IEEE for possible publication. Copyright \nmay be transferred without notice, after which this version may no longer be",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "accessible.",
+      "source": "faiss.pdf",
+      "page": 1,
+      "char_count": 11,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "2 \nIEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n \n2 RELATED WORKS \n2.1 Proximity graph techniques \nIn the vast majority of studied graph algorithms search-\ning takes a form of greedy routing in k-Nearest Neighbor \n(k-NN) graphs [10, 18-26]. For a given proximity graph, \nwe start the search at some enter point (it can be random \nor supplied by a separate algorithm) and iteratively trav-\nerse the graph. At each step of the traversal the algorithm",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "examines the distances from a query to the neighbors of a \ncurrent base node and then selects as the next base node \nthe adjacent node that minimizes the distance, while con-\nstantly keeping track of the best discovered neighbors. \nThe search is terminated when some stopping condition \nis met (e.g. the number of distance calculations). Links to \nthe closest neighbors in a k-NN graph serve as a simple \napproximation of the Delaunay graph [25, 26] (a graph",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "which guranties that the result of a basic greedy graph \ntraversal is always the nearest neighbor). Unfortunately, \nDelaunay graph cannot be efficiently constructed without \nprior information about the structure of a space [4], but its \napproximation by the nearest neighbors can be done by \nusing only distances between the stored elements. It was \nshown that proximity graph approaches with such \napproximation perform competitive to other k-ANNS \nthechniques, such as kd-trees or LSH [18-26].",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "thechniques, such as kd-trees or LSH [18-26]. \nThe main drawbacks of the k-NN graph approaches \nare: 1) the power law scaling of the number of steps with \nthe dataset size during the routing process [28, 29]; 2) a \npossible loss of global connectivity which leads to poor \nsearch results on clusetered data. To overcome these \nproblems many hybrid approaches have been proposed \nthat use auxiliary algorithms applicable only for vector \ndata \n(such \nas \nkd-trees [18, 19] \nand \nproduct",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "data \n(such \nas \nkd-trees [18, 19] \nand \nproduct \nquantization [10]) to find better candidates for the enter \nnodes by doing a coarse search.  \nIn [25, 26, 30] authors proposed a proximity graph \nK-ANNS algorithm called Navigable Small World (NSW, \nalso known as Metricized Small World, MSW), which \nutilized navigable graphs, i.e. graphs with logarithmic or \npolylogarithmic scaling of the number of hops during the \ngreedy traversal with the respect of the network",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "greedy traversal with the respect of the network \nsize [31, 32]. The NSW graph is constructed via consecu-\ntive insertion of elements in random order by bidirection-\nally connecting them to the M closest neighbors from the \npreviously inserted elements. The M closest neighbors are \nfound using the structure’s search procedure (a variant of \na greedy search from multiple random enter nodes). \nLinks to the closest neighbors of the elements inserted in \nthe beginning of the construction later become bridges",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "between the network hubs that keep the overall graph \nconnectivity and allow the logarithmic scaling of the \nnumber of hops during greedy routing.  \nConstruction phase of the NSW structure can be effi-\nciently parallelized without global synchronization and \nwithout mesuarable effect on accuracy [26], being a good \nchoice for distributed search systems. The NSW approach \ndelivered the state-of-the-art performance on some da-\ntasets [33, 34], however, due to the overall polylogarith-",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "mic complexity scaling, the algorithm was still prone to \nsevere performance degradation on low dimensional da-\ntasets (on which NSW could lose to tree-based algorithms \nby several orders of magnitude [34]). \n2.2 Navigable small world models \nNetworks with logarithmic or polylogarithmic scaling of \nthe greedy graph routing are known as the navigable \nsmall world networks [31, 32]. Such networks are an im-\nportant topic of complex network theory aiming at un-",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "derstanding of underlying mechanisms of real-life net-\nworks formation in order to apply them for applications \nof scalable routing [32, 35, 36] and distributed similarity \nsearch [25, 26, 30, 37-40].  \nThe first works to consider spatial models of navigable \nnetworks were done by J. Kleinberg [31, 41] as social net-\nwork models for the famous Milgram experiment [42]. \nKleinberg studied a variant of random Watts-Strogatz \nnetworks [43], using a regular lattice graph in d-",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "dimensional vector space together with augmentation of \nlong-range links following a specific long link length dis-\ntribution r-. For =d the number of hops to get to the \ntarget by greedy routing scales polylogarithmically (in-\nstead of a power law for any other value of ). This idea \nhas inspired development of many K-NNS and K-ANNS \nalgorithms based on the navigation effect [37-40]. But \neven though the Kleinberg’s navigability criterion in \nprinciple can be extended for more general spaces, in or-",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "der to build such a navigable network one has to know \nthe data distribution beforehand. In addition, greedy \nrouting in Kleinberg’s graphs suffers from polylogarith-\nmic complexity scalability at best. \nAnother well-known class of navigable networks are \nthe scale-free models [32, 35, 36], which can reproduce \nseveral features of real-life networks and advertised for \nrouting applications [35]. However, networks produced \nby such models have even worse power law complexity",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "scaling of the greedy search [44] and, just like the Klein-\nberg’s model, scale-free models require global knowledge \nof the data distribution, making them unusable for search \napplications. \nThe above-described NSW algorithm uses a simpler, \npreviously unknown model of navigable networks, al-\nlowing decentralized graph construction and suitable for \ndata in arbitrary spaces. It was suggested [44] that the \nNSW network formation mechanism may be responsible",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "for navigability of large-scale biological neural networks \n(presence of which is disputable): similar models were \nable to describe growth of small brain networks, while the \nmodel predicts several high-level features observed in \nlarge scale neural networks. However, the NSW model \nalso suffers from the polylogarithmic search complexity \nof the routing process.  \n3 MOTIVATION \nThe ways of improving the NSW search complexity can \nbe identified through the analysis of the routing process,",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "which was studied in detail in [32, 44]. The routing can be \ndivided into two phases: “zoom-out” and “zoom-in” [32]. \nThe greedy algorithm starts in the “zoom-out” phase",
+      "source": "faiss.pdf",
+      "page": 2,
+      "char_count": 169,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "AUTHOR ET AL.:  TITLE \n3 \n \nfrom a low degree node and traverses the graph simulta-\nneously increasing the node’s degree until the characteris-\ntic radius of the node links length reaches the scale of the \ndistance to the query. Before the latter happens, the aver-\nage degree of a node can stay relatively small, which \nleads to an increased probability of being stuck in a dis-\ntant false local minimum.  \nOne can avoid the described problem in NSW by start-\ning the search from a node with the maximum degree",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "(good candidates are the first nodes inserted in the NSW \nstructure [44]), directly going to the “zoom-in” phase of \nthe search. Tests show that setting hubs as starting points \nsubstantially increases probability of successful routing in \nthe structure and provides significantly better perfor-\nmance at low dimensional data. However, it still has only \na polylogarithmic complexity scalability of a single \ngreedy search at best, and performs worse on high di-\nmensional data compared to Hierarchical NSW.",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "mensional data compared to Hierarchical NSW.  \nThe reason for the polylogarithmic complexity scaling \nof a single greedy search in NSW is that the overall num-\nber of distance computations is roughly proportional to a \nproduct of the average number of greedy algorithm hops \nby the average degree of the nodes on the greedy path. \nThe average number of hops scales logarithmically \n[26, 44], while the average degree of the nodes on the \ngreedy path also scales logarithmically due to the facts",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "that: 1) the greedy search tends to go through the same \nhubs as the network grows [32, 44]; 2) the average num-\nber of hub connections grows logarithmically with an \nincrease of the network size. Thus we get an overall pol-\nylogarithmic dependence of the resulting complexity.  \nThe idea of Hierarchical NSW algorithm is to separate \nthe links according to their length scale into different lay-\ners and then search in a multilayer graph. In this case we",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "can evaluate only a needed fixed portion of the connec-\ntions for each element independently of the networks \nsize, thus allowing a logarithmic scalability. In such struc-\nture the search starts from the upper layer which has only \nthe longest links (the “zoom-in” phase). The algorithm \ngreedily traverses through the elements from the upper \nlayer until a local minimum is reached (see Fig. 1 for illus-\ntration). After that, the search switches to the lower layer",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "(which has shorter links), restarts from the element which \nwas the local minimum in the previous layer and the pro-\ncess repeats. The maximum number of connections per \nelement in all layers can be made constant, thus allowing \na logarithmic complexity scaling of routing in a navigable \nsmall world network. \nOne way to form such a layered structure is to explicit-\nly set links with different length scales by introducing \nlayers. For every element we select an integer level l",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "which defines the maximum layer for which the element \nbelongs to. For all elements in a layer a proximity graph \n(i.e. graph containing only “short” links that approximate \nDelaunay graph) is built incrementally. If we set an expo-\nnentially decaying probability of l (i.e. following a geo-\nmetric distribution) we get a logarithmic scaling of the \nexpected number of layers in the structure. The search \nprocedure is an iterative greedy search starting from the \ntop layer and finishing at the zero layer.",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "top layer and finishing at the zero layer.  \nIn case we merge connections from all layers, the struc-\nture becomes similar to the NSW graph (in this case the l \ncan be put in correspondence to the node degree in \nNSW). In contrast to NSW, Hierarchical NSW construc-\ntion algorithm does not require the elements to be shuf-\nfled before the insertion - the stochasticity is achieved by \nusing level randomization, thus allowing truly incremen-\ntal indexing even in case of temporarily alterating data",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "distribution (though changing the order of the insertion \nslightly alters the performace due to only partially de-\ntermenistic construction procedure). \nThe Hierarchical NSW idea is also very similar to a \nwell-known 1D probabilistic skip list structure [27] and \ncan be described using its terms. The major difference to \nskip list is that we generalize the structure by replacing \nthe linked list with proximity graphs. The Hierarchical \nLayer=0\nLayer=1\nLayer=2\nDecreasing characteristic radius\nCluster 2",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "Decreasing characteristic radius\nCluster 2\nInserted \nelement\ne2\nCluster 1\n \nFig. 1. Illustration of the Hierarchical NSW idea. The search starts \nfrom an element from the top layer (shown red). Red arrows show \ndirection of the greedy algorithm from the entry point to the query \n(shown green). \nFig. 2. Illustration of the heuristic used to select the graph neigh-\nbors for two isolated clusters. A new element is inserted on the \nboundary of Cluster 1. All of the closest neighbors of the element",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "belong to the Cluster 1, thus missing the edges of Delaunay graph \nbetween the clusters. The heuristic, however, selects element e2 \nfrom Cluster 2, thus, maintaining the global connectivity in case the \ninserted element is the closest to e2 compared to any other element \nfrom Cluster 1.",
+      "source": "faiss.pdf",
+      "page": 3,
+      "char_count": 288,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "4 \nIEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n \nNSW approach thus can utilize the same methods for \nmaking the distributed approximate search/overlay \nstructures [45]. \nFor the selection of the proximity graph connections \nduring the element insertion we utilize a heuristic that \ntakes into account the distances between the candidate \nelements to create diverse connections (a similar algo-\nrithm was utilized in the spatial approximation tree [4] to",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "select the tree children) instead of just selecting the closest \nneighbors. The heuristic examines the candidates starting \nfrom the nearest (with respect to the inserted element) \nand creates a connection to a candidate only if it is closer \nto the base (inserted) element compared to any of the al-\nready connected candidates (see Section 4 for the details).  \nWhen the number of candidates is large enough the \nheuristic allows getting the exact relative neighborhood",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "graph [46] as a subgraph, a minimal subgraph of the De-\nlaunay graph deducible by using only the distances be-\ntween the nodes. The relative neighborhood graph allows \neasily keeping the global connected component, even in \ncase of highly clustered data (see Fig. 2 for illustration). \nNote that the heuristic creates extra edges compared to \nthe exact relative neighborhood graphs, allowing control-\nling the number of the connections which is important for",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "search performance. For the case of 1D data the heuristic \nallows getting the exact Delaunay subgraph (which in \nthis case coincides with the relative neighborhood graph) \nby using only information about the distances between \nthe elements, thus making a direct transition from Hierar-\nchical NSW to the 1D probabilistic skip list algorithm.  \nBase variant of the Hierarchical NSW proximity \ngraphs was also used in ref. [18] (called ‘sparse neighbor-\nhood graphs’) for proximity graph searching. Similar",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "heuristic was also a focus of the FANNG algorithm [47] \n(published shortly after the first versions of the current \nmanuscript were posted online) with a slightly different \ninterpretation, based on the sparse neighborhood graph’s \nproperty of the exact routing [18]. \n4 ALGORITHM DESCRIPTION \nNetwork construction algorithm (alg. 1) is organized via \nconsecutive insertions of the stored elements into the \ngraph structure. For every inserted element an integer",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "maximum layer l is randomly selected with an exponen-\ntially decaying probability distribution (normalized by \nthe mL parameter, see line 4 in alg. 1). \nThe first phase of the insertion process starts from the \ntop layer by greedily traversing the graph in order to find \nthe ef closest neighbors to the inserted element q in the \nlayer. After that, the algorithm continues the search from \nthe next layer using the found closest neighbors from the \nprevious layer as enter points, and the process repeats.",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "Closest neighbors at each layer are found by a variant of \nthe greedy search algorithm described in alg. 2, which is \nan updated version of the algorithm from [26]. To obtain \nthe approximate ef nearest neighbors in some layer lс, a \ndynamic list W of ef closest found elements (initially \nfilled with enter points) is kept during the search. The list \nis updated at each step by evaluating the neighborhood of \nthe closest previously non-evaluated element in the list",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "until the neighborhood of every element from the list is \nevaluated. Compared to limiting the number of distance \ncalculations, Hierarchical NSW stop condition has an ad-\nvantage - it allows discarding candidates for evalution \nthat are further from the query than the furthest element \nin the list, thus avoiding bloating of search structures. As \nin NSW, the list is emulated via two priority queues for \nbetter performance. The distinctions from NSW (along",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "with some queue optimizations) are: 1) the enter point is a \nfixed parameter; 2) instead of changing the number of \nmulti-searches, the quality of the search is controlled by a \ndifferent parameter ef (which was set to K in NSW [26]). \nAlgorithm 1 \nINSERT(hnsw, q, M, Mmax, efConstruction, mL) \nInput: multilayer graph hnsw, new element q, number of established \nconnections M, maximum number of connections for each element \nper layer Mmax, size of the dynamic candidate list efConstruction, nor-",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "malization factor for level generation mL \nOutput: update hnsw inserting element q \n1  W ← ∅    // list for the currently found nearest elements \n2  ep ← get enter point for hnsw \n3  L ← level of ep    // top layer for hnsw \n4  l ← ⌊-ln(unif(0..1))∙mL⌋  // new element’s level \n5  for lc ← L … l+1 \n6     W ← SEARCH-LAYER(q, ep, ef=1, lc) \n7     ep ← get the nearest element from W to q \n8  for lc ← min(L, l) … 0 \n9      W ← SEARCH-LAYER(q, ep, efConstruction, lc)",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "10    neighbors ← SELECT-NEIGHBORS(q, W, M, lc) // alg. 3 or alg. 4 \n11    add bidirectionall connectionts from neighbors to q at layer lc \n12    for each e ∈ neighbors   // shrink connections if needed \n13       eConn ← neighbourhood(e) at layer lc    \n14       if │eConn│ > Mmax // shrink connections of e \n                                           // if lc = 0 then Mmax = Mmax0 \n15          eNewConn ← SELECT-NEIGHBORS(e, eConn,  Mmax, lc)",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "// alg. 3 or alg. 4 \n16          set neighbourhood(e) at layer lc to eNewConn \n17    ep ← W \n18 if l > L \n19    set enter point for hnsw to q \nAlgorithm 2 \nSEARCH-LAYER(q, ep, ef, lc) \nInput: query element q, enter points ep, number of nearest to q ele-\nments to return ef, layer number lc \nOutput: ef closest neighbors to q \n1  v ← ep      // set of visited elements \n2  C ← ep     // set of candidates",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 403,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "2  C ← ep     // set of candidates  \n3  W ← ep    // dynamic list of found nearest neighbors \n4  while │C│ > 0 \n5     c ← extract nearest element from C to q \n6     f ← get furthest element from W to q \n7     if distance(c, q) > distance(f, q) \n8        break   // all elements in W are evaluated \n9     for each e ∈ neighbourhood(c) at layer lc   // update C and W \n10        if e ∉ v \n11          v ← v ⋃ e \n12          f ← get furthest element from W to q",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "12          f ← get furthest element from W to q \n13          if distance(e, q) < distance(f, q) or │W│ < ef \n14             C ← C ⋃ e \n15             W ← W ⋃ e  \n16             if │W│ > ef \n17                remove furthest element from W to q  \n18 return W",
+      "source": "faiss.pdf",
+      "page": 4,
+      "char_count": 258,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "AUTHOR ET AL.:  TITLE \n5 \n \nAlgorithm 3 \nSELECT-NEIGHBORS-SIMPLE(q, C, M) \nInput: base element q, candidate elements C, number of neighbors to \nreturn M \nOutput: M nearest elements to q   \nreturn M nearest elements from C to q \nAlgorithm 5 \nK-NN-SEARCH(hnsw, q, K, ef) \nInput: multilayer graph hnsw, query element q, number of nearest \nneighbors to return K, size of the dynamic candidate list ef \nOutput: K nearest elements to q \n1  W ← ∅   // set for the current nearest elements",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "2  ep ← get enter point for hnsw \n3  L ← level of ep    // top layer for hnsw \n4  for lc ← L … 1 \n5     W ← SEARCH-LAYER(q, ep, ef=1, lc) \n6     ep ← get nearest element from W to q \n7  W ← SEARCH-LAYER(q, ep, ef, lc =0) \n8 return K nearest elements from W to q  \nDuring the first phase of the search the ef parameter is set \nto 1 (simple greedy search) to avoid introduction of addi-\ntional parameters. \nWhen the search reaches the layer that is equal or less",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "than l, the second phase of the construction algorithm is \ninitiated. The second phase differs in two points: 1) the ef \nparameter is increased from 1 to efConstruction in order \nto control the recall of the greedy search procedure; 2) the \nfound closest neighbors on each layer are also used as \ncandidates for the connections of the inserted element.  \nTwo methods for the selection of M neighbors from the \ncandidates were considered: simple connection to the",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "closest elements (alg. 3) and the heuristic that accounts for \nthe distances between the candidate elements to create \nconnections in diverse directions (alg. 4), described in the \nSection 3. The heuristic has two additional parameters: \nextendCandidates (set to false by default) which extends \nthe candidate set and useful only for extremely clustered \ndata, and keepPrunedConnections which allows getting \nfixed number of connection per element. The maximum",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "number of connections that an element can have per layer \nis defined by the parameter Mmax for every layer higher \nthan zero (a special parameter Mmax0 is used for the \nground layer separately). If a node is already full at the \nmoment of making of a new connection, then its extended \nconnection list gets shrunk by the same algorithm that \nused for the neighbors selection (algs. 3 or 4). \nThe insertion procedure terminates when the connec-\ntions of the inserted elements are established on the zero",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "layer.  \nThe K-ANNS search algorithm used in Hierarchical \nNSW is presented in alg. 5. It is roughly equivalent to the \ninsertion algorithm for an item with layer l=0. The differ-\nence is that the closest neighbors found at the ground \nlayer which are used as candidates for the connections are \nnow returned as the search result. The quality of the \nsearch is controlled by the ef parameter (corresponding to \nefConstruction in the construction algorithm).  \n4.1 Influence of the construction parameters",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "4.1 Influence of the construction parameters \nAlgorithm construction parameters mL and Mmax0 are re-\nsponsible for maintaining the small world navigability in \nthe constructed graphs. Setting mL to zero (this corre-\nsponds to a single layer in the graph) and Mmax0 to M \nleads to production of directed k-NN graphs with a pow-\ner-law search complexity well studied before [21, 29] (as-\nsuming using the alg. 3 for neighbor selection). Setting mL \nto zero and Mmax0 to infinity leads to production of NSW",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "graphs with polylogarithmic complexity [25, 26]. Finally, \nsetting mL to some non-zero value leads to emergence of \ncontrollable hierarchy graphs which allow logarithmic \nsearch complexity by introduction of layers (see the Sec-\ntion 3).  \nTo achieve the optimum performance advantage of the \ncontrollable hierarchy, the overlap between neighbors on \ndifferent layers (i.e. percent of element neighbors that are \nalso belong to other layers) has to be small. In order to",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "decrease the overlap we need to decrease the mL. Howev-\ner, at the same time, decreasing mL leads to an increase of \naverage hop number during a greedy search on each lay-\ner, which negatively affects the performance. This leads to \nexistence of the optimal value for the mL parameter.  \nA simple choice for the optimal mL is 1/ln(M), this cor-\nresponds to the skip list parameter p=1/M with an aver-\nage single element overlap between the layers. Simula-\ntions done on an Intel Core i7 5930K CPU show that the",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "proposed selection of mL is a reasonable choice (see Fig. 3 \nfor data on 10M random d=4 vectors). In addition, the \nplot demonstrates a massive speedup on low dimensional \ndata when increasing the mL from zero and the effect of \nusing the heuristic for selection of the graph connections. \nIt is hard to expect the same behavior for high dimen-\nsional data since in this case the k-NN graph already has \nAlgorithm 4 \nSELECT-NEIGHBORS-HEURISTIC(q, C, M, lc, extendCandidates, keep-\nPrunedConnections)",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "PrunedConnections) \nInput: base element q, candidate elements C, number of neighbors to \nreturn M, layer number lc, flag indicating whether or not to extend \ncandidate list extendCandidates, flag indicating whether or not to add \ndiscarded elements keepPrunedConnections \nOutput: M elements selected by the heuristic \n1  R ← ∅ \n2  W ← C   // working queue for the candidates \n3  if extendCandidates   // extend candidates by their neighbors \n4    for each e ∈ C",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "4    for each e ∈ C \n5       for each eadj ∈ neighbourhood(e) at layer lc \n6          if eadj ∉ W \n7             W ← W ⋃ eadj \n8  Wd ← ∅   // queue for the discarded candidates \n9  while │W│ > 0 and │R│< M \n10    e ← extract nearest element from W to q  \n11    if e is closer to q compared to any element from R \n12       R ← R ⋃ e \n13    else \n14       Wd ← Wd ⋃ e \n15  if keepPrunedConnections  // add some of the discarded \n                                                  // connections from Wd",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "16    while │Wd│> 0 and │R│< M \n17       R ← R ⋃ extract nearest element from Wd to q  \n18 return R",
+      "source": "faiss.pdf",
+      "page": 5,
+      "char_count": 99,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "6 \nIEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n \nvery short greedy algorithm paths [28]. Surprisingly, in-\ncreasing the mL from zero leads to a measurable increase \nin speed on very high dimensional data (100k dense ran-\ndom d=1024 vectors, see plot in Fig. 4), and does not in-\ntroduce any penalty for the Hierarchical NSW approach. \nFor real data such as SIFT vectors [1] (which have com-\nplex mixed structure), the performance improvement by \nincreasing the mL is higher, but less prominent at current",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "settings compared to improvement from the heuristic (see \nFig. 5 for 1-NN search performance on 5 million 128-\ndimensional SIFT vectors from the learning set of BIG-\nANN [13]).  \nSelection of the Mmax0 (the maximum number of con-\nnections that an element can have in the zero layer) also \nhas a strong influence on the search performance, espe-\ncially in case of high quality (high recall) search. Simula-\ntions show that setting Mmax0 to M (this corresponds to k-",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "NN graphs on each layer if the neighbors selection heuris-\ntic is not used) leads to a very strong performance penalty \nat high recall. Simulations also suggest that 2∙M is a good \nchoice for Mmax0: setting the parameter higher leads to \nperformance degradation and excessive memory usage. \nIn Fig. 6 there are presented results of search performance \nfor the 5M SIFT learn dataset depending on the Mmax0 pa-\nrameter (done on an Intel Core i5 2400 CPU). The sug-",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "gested value gives performance close to optimal at differ-\nent recalls. \nIn all of the considered cases, use of the heuristic for \nproximity graph neighbors selection (alg. 4) leads to a \nhigher or similar search performance compared to the \nnaïve connection to the nearest neighbors (alg. 3). The \neffect is the most prominent for low dimensional data, at \nhigh recall for mid-dimensional data and for the case of \nhighly clustered data (ideologically discontinuity can be",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "regarded as a local low dimensional feature), see the \ncomparison in Fig. 7 (Core i5 2400 CPU). When using the \nclosest neighbors as connections for the proximity graph, \nthe Hierarchical NSW algorithm fails to achieve a high \nrecall for clustered data because the search stucks at the \nclusters boundaries. Contrary, when the heuristic is used \n(together with candidates’ extension, line 3 in Alg. 4), \nclustering leads to even higher performance. For uniform",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "and very high dimensional data there is a little difference \nbetween the neighbors selecting methods (see Fig. 4), pos-\nsibly due to the fact that in this case almost all of the \nnearest neighbors are selected by the heuristic. \nThe only meaningful construction parameter left for \nthe user is M. A reasonable range of M is from 5 to 48. \nSimulations show that smaller M generally produces bet-\nter results for lower recalls and/or lower dimensional \ndata, while bigger M is better for high recall and/or high",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "dimensional data (see Fig. 8 for illustration, Core i5 2400 \nCPU). The parameter also defines the memory consump-\ntion of the algorithm (which is proportional to M), so it \nshould be selected with care. \nSelection of the efConstruction parameter is straight-\nforward. As it was suggested in [26] it has to be large \nenough to produce K-ANNS recall close to unity during \nthe construction process (0.95 is enough for the most use-\ncases). And just like in [26], this parameter can possibly \n0,0\n0,5\n1,0\n1,5\n2,0",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "0,0\n0,5\n1,0\n1,5\n2,0\n0,01\n0,02\n0,03\n0,04\nQuery time, ms\nmL\n10M d=4 random vectors,\nM=6, Mmax0=12\nRecall 0.9, 1-NN\n Simple neighbors\n Heuristic\nAutoselect\n \n0,0\n0,5\n1,0\n1,5\n2,0\n14,1\n14,2\n14,3\n14,4\n14,5\nQuery time, ms\nmL\n100k random vectors, d=1024\nM=20, Mmax0=40,\nRecall=0.9, 1-NN\n Simple neighbors\n Heuristic\nAutoselect\n \n0,0\n0,5\n1,0\n1,5\n2,0\n0,09\n0,10\n0,11\n0,12\n0,13\n0,14\n0,15\nQuery time, ms\nmL\n5M SIFT, d=128,\nM=16, Mmax0=32,\nRecall=0.9, 1-NN\n Simple Neighbors\n Heuristic\nAutoselect",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "Simple Neighbors\n Heuristic\nAutoselect\nFig. 3. Plots for query time vs mL parameter \nfor 10M random vectors with d=4. The au-\ntoselected value 1/ln(M) for mL is shown by \nan arrow. \nFig. 4. Plots for query time vs mL parame-\nter for 100k random vectors with d=1024. \nThe autoselected value 1/ln(M) for mL is \nshown by an arrow. \nFig. 5. Plots for query time vs mL parameter \nfor 5M SIFT learn dataset. The autoselected \nvalue 1/ln(M) for mL is shown by an arrow. \n0\n20\n40\n60\n80\n100\n120\n140\n160\n180\n200\n0.1\n1",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "0\n20\n40\n60\n80\n100\n120\n140\n160\n180\n200\n0.1\n1\nQuery time, ms\nMmax0\n5M SIFT, d=128, M=20,\nmL=0.33, 10-NN\n Recall=0.4\n Recall=0.8\n Recall=0.94\nAutoselect\n \n0,2\n0,4\n0,6\n0,8\n1,0\n0,01\n0,1\nQuery time, ms\nRecall\n10M random vectors, d=10 \nM=16, 10-NN\n baseline - no clusters\n heuristic - no clusters\n baseline - 100 clusters\n heuristic - 100 clusters\n10\n-3\n10\n-2\n10\n-1\n10\n0\n0,01\n0,1\n1\nQuery time, ms\nRecall error (1-recall)\n5M SIFT, d=128,\n10-NN\n M=2\n M=3\n M=6\n M=12\n M=20\n M=40",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "10-NN\n M=2\n M=3\n M=6\n M=12\n M=20\n M=40\n \nFig. 6. Plots for query time vs Mmax0 pa-\nrameter for 5M SIFT learn dataset. The \nautoselected value 2∙M for Mmax0 is shown \nby an arrow. \nFig. 7. Effect of the method of neighbor \nselections (baseline corresponds to alg. 3, \nheuristic to alg. 4) on clustered (100 ran-\ndom isolated clusters) and non-clustered \nd=10 random vector data. \nFig. 8. Plots for recall error vs query time \nfor different parameters of M for Hierar-\nchical NSW on 5M SIFT learn dataset.",
+      "source": "faiss.pdf",
+      "page": 6,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "AUTHOR ET AL.:  TITLE \n7 \n \nbe auto-configured by using sample data. \nThe construction process can be easily and efficiently \nparallelized with only few synchronization points (as \ndemonstrated in Fig. 9) and no measurable effect on index \nquality. Construction speed/index quality tradeoff is con-\ntrolled via the efConstruction parameter. The tradeoff \nbetween the search time and the index construction time \nis presented in Fig. 10 for a 10M SIFT dataset and shows",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "that a reasonable quality index can be constructed for \nefConstruction=100 on a 4X 2.4 GHz 10-core Xeon E5-\n4650 v2 CPU server in just 3 minutes. Further increase of \nthe efConstruction leads to little extra performance but in \nexchange of significantly longer construction time.  \n \n4.2 Complexity analysis \n4.2.1 Search complexity \nThe complexity scaling of a single search can be strictly \nanalyzed under the assumption that we build exact De-\nlaunay graphs instead of the approximate ones. Suppose",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "we have found the closest element on some layer (this is \nguaranteed by having the Delaunay graph) and then de-\nscended to the next layer. One can show that the average \nnumber of steps before we find the closest element in the \nlayer is bounded by a constant.  \nIndeed, the layers are not correlated with the spatial \npositions of the data elements and, thus, when we trav-\nerse the graph there is a fixed probability p=exp(-mL) that \nthe next node belongs to the upper layer. However, the",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "search on the layer always terminates before it reaches the \nelement which belongs to the higher layer (otherwise the \nsearch on the upper layer would have stopped on a dif-\nferent element), so the probability of not reaching the tar-\nget on s-th step is bounded by exp(-s· mL). Thus the ex-\npected number of steps in a layer is bounded by a sum of \ngeometric progression S =1/(1-exp(-mL)), which is inde-\npendent of the dataset size. \nIf we assume that the average degree of a node in the",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "Delaunay graph is capped by a constant C in the limit of \nthe large dataset (this is the case for random Euclid da-\nta [48], but can be in principle violated in exotic spaces), \nthen the overall average number of distance evaluations \nin a layer is bounded by a constant C· S, independently of \nthe dataset size.  \nAnd since the expectation of the maximum layer index \nby the construction scales as O(log(N)), the overall com-\nplexity scaling is O(log(N)), in agreement with the simu-",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "lations on low dimensional datasets.  \nThe inital assumption of having the exact Delaunay \ngraph violates in Hierarchical NSW due to usage of ap-\nproximate edge selection heuristic with a fixed number of \nneighbors per element. Thus, to avoid stucking into a lo-\ncal minimum the greedy search algorithm employs a \nbacktracking procedure on the zero layer. Simulations \nshow that at least for low dimensional data (Fig. 11, d=4) \nthe dependence of the required ef parameter (which de-",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "termines the complexity via the minimal number of hops \nduring the backtracking) to get a fixed recall saturates \nwith the rise of the dataset size. The backtracking com-\nplexity is an additive term in respect to the final complex-\nity, thus, as follows from the empirical data, inaccuracies \nof the Delaunay graph approximation do not alter the \nscaling.  \nSuch empirical investigation of the Delaunay graph \napproximation resilience requires having the average",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "number of Delaunay graph edges independent of the da-\ntaset to evidence how well the edges are approximated \nwith a constant number of connections in Hierarchical \nNSW. However, the average degree of Delaunay graph \nscales exponentially with the dimensionality [39]), thus \nfor high dimensional data (e.g. d=128) the aforemen-\ntioned condition requires having extremely large da-\ntasets, making such empricial investigation unfeasible. \nFurther analitical evidence is required to confirm whether",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "the resilience of Delaunay graph aproximations general-\nizes to higher dimensional spaces.  \n4.2.2 Construction complexity \nThe construction is done by iterative insertions of all ele-\nments, while the insertion of an element is merely a se-\nquence of K-ANN-searches at different layers with a sub-\nsequent use of heuristic (which has fixed complexity at \nfixed efConstruction). The average number of layers for \nan element to be added in is a constant that depends on \nmL: \n \n\n\n\n\n1\nln(\n(0,1))\n1\n1\nL\nL\nE l\nE",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "mL: \n \n\n\n\n\n1\nln(\n(0,1))\n1\n1\nL\nL\nE l\nE\nunif\nm\nm\n\n\n\n\n  \n(1) \nThus, the insertion complexiy scaling is the same as the \none for the search, meaning that at least for relatively low \ndimensional datasets the construction time scales as \nO(N∙log(N)). \n0\n5\n10\n15\n20\n25\n30\n35\n40\n0\n10\n20\n30\n40\n50\n60\n70\n80\n90\nBuild time, minutes\nThread count\n10M SIFT, d=128, M=16, \nefConstruction=100\n 4X Xeon E5-4650 v2 (4x10 cores)\n Core i7-6850K (6 cores+HT)\n \n0\n2\n4\n6\n8\n10\n12\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\nQuery time, ms",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "6\n8\n10\n12\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\nQuery time, ms\nBuild time, minutes\n10M SIFT, d=128, M=16,\nRecall 0.9, 1-NN\n \n10\n0\n10\n1\n10\n2\n10\n3\n10\n4\n10\n5\n10\n6\n10\n7\n10\n8\n10\n9\n0\n2\n4\n6\n8\n10\n12\nAverage ef to reach target recall\nDataset size\nRandom vectors, d=4\nM=6, Mmax0=12, 1-NN\n Recall=0.9\n Recall=0.99\n Recall=0.999\nFig. 9. Construction time for Hierarchical \nNSW on 10M SIFT dataset for different \nnumbers of threads on two CPUs. \nFig. 10. Plots of the query time vs construc-\ntion time tradeoff for Hierarchical NSW on",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "tion time tradeoff for Hierarchical NSW on \n10M SIFT dataset. \nFig. 11. Plots of the ef parameter required \nto get fixed accuracies vs the dataset size \nfor d=4 random vector data.",
+      "source": "faiss.pdf",
+      "page": 7,
+      "char_count": 180,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "8 \nIEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n \n10\n-5\n10\n-4\n10\n-3\n10\n-2\n10\n-1\n10\n0\n100\n1000\n10000\n100000\nDistance computations\nRecall error (1-recall)\n(a) 10M random vectors, d=4\nM=6, 10-NN\n NSW\n Hierarchical NSW\n10\n2\n10\n3\n10\n4\n10\n5\n10\n6\n10\n7\n10\n8\n0\n200\n400\n600\n800\n1000\n1200\nDistance computations\nDataset size\n(b) Random vectors, d=8\nM=6, Recall=0.95, 10-NN\n NSW\n Hierarchical NSW\n10\n2\n10\n3\n10\n4\n10\n5\n10\n6\n10\n7\n10\n8\n0,0\n0,5\n1,0\n1,5\n2,0\n2,5\nQuery time, ms\nDataset size\n(c) Random vectors, d=8",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "Dataset size\n(c) Random vectors, d=8\nM=6, Recall=0.95, 10-NN\n NSW\n Hierarchical NSW\n \nFig. 12. Comparison between NSW and Hierarchical NSW: (a) distance calculation number vs accuracy tradeoff for a 10 million 4-\ndimensional random vectors dataset; (b-c) performance scaling in terms of number of distance calculations (b) and raw query(c) time on \na 8-dimensional random vectors dataset. \n4.2.3 Memory cost \nThe memory consumption of the Hierarchical NSW is",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "mostly defined by the storage of graph connections. The \nnumber of connections per element is Mmax0 for the zero \nlayer and Mmax for all other layers. Thus, the average \nmemory \nconsumption \nper \nelement \nis \n(Mmax0+mL ∙Mmax)∙bytes_per_link. If we limit the maximum \ntotal number of elements by approximately four billions, \nwe can use four-byte unsigned integers to store the con-\nnections. Tests suggest that typical close to optimal M \nvalues usually lie in a range between 6 and 48. This",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "means that the typical memory requirements for the in-\ndex (excluding the size of the data) are about 60-450 bytes \nper object, which is in a good agreement with the simula-\ntions.  \n5 PERFORMANCE EVALUATION \nThe Hierarchical NSW algorithm was implemented in \nC++ on top of the Non Metric Space Library \n(nmslib) [49]1, which already had a functional NSW im-\nplementation (under name “sw-graph”). Due to several \nlimitations posed by the library, to achieve a better per-",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "formance, the Hierarchical NSW implementation uses \ncustom distance functions together with C-style memory \nmanagement, which avoids unnecessary implicit address-\ning and allows efficient hardware and software prefetch-\ning during the graph traversal. \nComparing the performance of K-ANNS algorithms is \na nontrivial task since the state-of-the-art is constantly \nchanging as new algorithms and implementations are \nemerging. In this work we concentrated on comparison",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "with the best algorithms in Euclid spaces that have open \nsource implementations. An implementation of the Hier-\narchical NSW algorithm presented in this paper is also \ndistributed as a part of the open source nmslib library1 \ntogether with an external C++ memory-efficient header-\nonly version with support for incremental index construc-\ntion2.  \nThe comparison section consists of four parts: compar-\nison to the baseline NSW (5.1), comparison to the state-of-",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "the-art algorithms in Euclid spaces (5.2), rerun of the sub-\n \n1 https://github.com/searchivarius/nmslib \n2 https://github.com/nmslib/hnsw \nset of tests [34] in general metric spaces in which NSW \nfailed (5.3) and comparison to state-of-the-art PQ-\nalgorithms on a large 200M SIFT dataset (5.4). \n5.1 Comparison with baseline NSW \nFor the baseline NSW algorithm implementation, we used \nthe “sw-graph” from nmslib 1.1 (which is slightly updat-\ned compared to the implementation tested in [33, 34]) to",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "demonstrate the improvements in speed and algorithmic \ncomplexity (measured by the number of distance compu-\ntations). \nFig. 12(a) presents a comparison of Hierarchical NSW \nto the basic NSW algorithm for d=4 random hypercube \ndata made on a Core i5 2400 CPU (10-NN search). Hierar-\nchical NSW uses much less distance computations during \na search on the dataset, especially at high recalls. \nThe scalings of the algorithms on a d=8 random hyper-\ncube dataset for a 10-NN search with a fixed recall of 0.95",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "are presented in Fig. 12(b). It clearly demostrates that Hi-\nerarchical NSW has a complexity scaling for this setting \nnot worse than logarithmic and outperforms NSW at any \ndataset size. The performance advantage in absolute time \n(Fig. 12(c)) is even higher due to improved algorithm im-\nplementaion. \n5.2 Comparison in Euclid spaces \nThe main part of the comparison was carried out on vec-\ntor datasets with use of the popular K-ANNS benchmark \nann-benchmark3 as a testbed. The testing system utilizes",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "python bindings of the algorithms – it consequentially \nruns the K-ANN search for one thousand queries (ran-\ndomly extracted from the initial dataset) with preset algo-\nrithm parameters producing an output containing recall \nand average time of a single search. The considered algo-\nrithms are:  \n1. \nBaseline NSW algorithm from nmslib 1.1 \n(“sw-graph”). \n2. \nFLANN 1.8.4 [6]. A popular library4 containing \nseveral algorithms, built-in in OpenCV5. We used \nthe available auto-tuning procedure with several",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "the available auto-tuning procedure with several \nreruns to infer the best parameters. \n3. \nAnnoy6, 02.02.2016 build. A popular algorithm \n \n3 https://github.com/erikbern/ann-benchmarks \n4 https://github.com/mariusmuja/flann \n5 https://github.com/opencv/opencv \n6 https://github.com/spotify/annoy",
+      "source": "faiss.pdf",
+      "page": 8,
+      "char_count": 296,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "AUTHOR ET AL.:  TITLE \n9 \n \nbased on random projection tree forest.  \n4. \nVP-tree. A general metric space algorithm with \nmetric pruning [50] implemented as a part of \nnmslib 1.1. \n5. \nFALCONN7, version 1.2. A new efficient LSH al-\ngorithm for cosine similarity data [51]. \nThe comparison was done on a 4X Xeon E5-4650 v2 \nDebian OS system with 128 Gb of RAM. For every algo-\nrithm we carefully chose the best results at every recall \nrange to evaluate the best possible performance (with",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "initial values from the testbed defaults). All tests were \ndone in a single thread regime. Hierarchical NSW was \ncompiled using the GCC 5.3 with -Ofast optimization \nflag. \nThe parameters and description of the used datasets \nare outlined in Table 1. For all of the datasets except \nGloVe we used the L2 distance. For GloVe we used the \ncosine similarity which is equivalent to L2 after vector \nnormalization. The brute-force (BF) time is measured by \nthe nmslib library.",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "the nmslib library.  \nResults for the vector data are presented in Fig. 13. For \nSIFT, GloVE, DEEP and CoPhIR datasets Hierarchical \nNSW clearly outperforms the rivals by a large margin. \nFor low dimensional data (d=4) Hierarchical NSW is \n \n7 https://github.com/FALCONN-LIB/FALCONN \nslightly faster at high recall compared to the Annoy while \nstrongly outperforms the other algorithms.  \n5.3 Comparison in general spaces \nA recent comparison of algorithms [34] in general spaces",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "(i.e. non-symmetric or with violation of triangle inequali-\nty) showed that the baseline NSW algorithm has severe \nproblems on low dimensional datasets. To test the per-\nformance of the Hierarchical NSW algorithm we have \nrepeated a subset of tests from [34] on which NSW per-\nformed poorly or suboptimal. For that purpose we used a \nbuilt-in nmslib testing system which had scripts to run \ntests from [34]. The evaluated algorithms included the \nVP-tree, permutation techniques (NAPP and bruteforce",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "filtering) [49, 55-57], the basic NSW algorithm and \nNNDescent-produced proximity graphs [29] (both in pair \nwith the NSW graph search algorithm). As in the original \ntests, for every dataset the test includes the results of ei-\nther NSW or NNDescent, depending on which structure \nperformed better. No custom distance functions or special \nTABLE 1 \n Parameters of the used datasets on vector spaces \nbenchmark. \nDataset \nDescription \nSize \nd \nBF time \nSpace \nSIFT \nImage feature vectors [13] \n1M \n128 \n94 ms",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "SIFT \nImage feature vectors [13] \n1M \n128 \n94 ms \nL2 \nGloVe \nWord embeddings trained on tweets [52] \n1.2M \n100 \n95 ms \ncosine \nCoPhIR \nMPEG-7 features extracted from the images [53] \n2M \n272 \n370 ms \nL2 \nRandom vectors \nRandom vectors in hypercube \n30M \n4 \n590 ms \nL2 \nDEEP \nOne million subset of the billion deep image \nfeatures dataset [14] \n1M \n96 \n60 ms \nL2 \nMNIST \nHandwritten digit images [54] \n60k \n784 \n22 ms \nL2 \nTABLE 2. \n Used datasets for repetition of the Non-Metric data tests \nsubset. \nDataset",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "subset. \nDataset \nDescription \nSize \nd \nBF time \nDistance \nWiki-sparse \nTF-IDF (term frequency–inverse document \nfrequency) vectors (created via GENSIM [58]) \n4M \n105 \n5.9 s \nSparse cosine  \n \nWiki-8 \nTopic histograms created from sparse TF-IDF \nvectors of the wiki-sparse dataset (created via \nGENSIM [58]) \n2M \n8 \n- \nJensen–\nShannon \n(JS) \ndivergence \nWiki-128 \nTopic histograms created from sparse TF-IDF \nvectors of the wiki-sparse dataset (created via \nGENSIM [58]) \n2M \n128 \n1.17 s \nJensen–\nShannon \n(JS)",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "2M \n128 \n1.17 s \nJensen–\nShannon \n(JS) \ndivergence \nImageNet \nSignatures extracted from LSVRC-2014 with \nSQFD (signature quadratic form) distance [59] \n1M \n272 \n18.3 s \nSQFD \nDNA \nDNA (deoxyribonucleic acid) dataset sampled \nfrom the Human Genome 5 [34]. \n1M \n- \n2.4 s \nLevenshtein \n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\n0,01\n0,1\n1\n10\n100\nQuery time, ms\nRecall\n1M SIFT, 10-NN\nBF: 94 ms\n Hierarchical NSW\n NSW\n Annoy\n VP-tree\n FLANN\n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\n0,01\n0,1\n1\n10\n100\nQuery time, ms\nRecall\n1.2M GloVe, 10-NN\nBF: 95 ms",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "Query time, ms\nRecall\n1.2M GloVe, 10-NN\nBF: 95 ms\n Hierarchical NSW\n NSW\n Annoy\n VP-tree\n FLANN\n FALCONN\n0,01\n0,1\n1\n10\n100\n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\nRecall\nQuery time, ms\n2M CoPhIR, 10-NN\nBF: 370 ms\n Hierarchical NSW\n NSW\n Annoy\n VP-tree\n FLANN\n0,01\n0,1\n1\n0,2\n0,4\n0,6\n0,8\n1,0\nRecall\nQuery time, ms\n30M random d=4,10-NN\nBF: 590 ms\n Hierachical NSW\n NSW\n Annoy\n VP-tree\n FLANN\n0,1\n1\n10\n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\nRecall\nQuery time, ms\n60k MNIST, 10-NN\nBF: 22 ms\n Hierarchical NSW\n NSW\n Annoy\n VP-tree\n FLANN\n0,01\n0,1\n1",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "NSW\n Annoy\n VP-tree\n FLANN\n0,01\n0,1\n1\n10\n100\n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\nRecall\nQuery time, ms\n1M Deep,10-NN\nBF: 60 ms\n Hierarchical NSW\n NSW\n Annoy\n VP-tree\n FLANN\nFig. 13. Results of the comparison of Hierarchical NSW with open source implementations of K-ANNS algorithms on five datasets for 10-\nNN searches. The time of a brute-force search is denoted as the BF.",
+      "source": "faiss.pdf",
+      "page": 9,
+      "char_count": 362,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "10 \nIEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n \nmemory management were used in this case for Hierar-\nchical NSW leading to some performance loss.  \nThe datasets are summarized in Table 2. Further de-\ntails of the datasets, spaces and algorithm parameter se-\nlection can be found in the original work [34]. The brute-\nforce (BF) time is measured by the nmslib library. \nThe results are presented in Fig. 14. Hierarchical NSW \nsignificantly improves the performance of NSW and is a",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "leader for any of the tested datasets. The strongest en-\nhancement over NSW, almost by 3 orders of magnitude is \nobserved for the dataset with the lowest dimensionality, \nthe wiki-8 with JS-divergence. This is an important result \nthat demonstrates the robustness of Hierarchical NSW, as \nfor the original NSW this dataset was a stumbling block. \nNote that for the wiki-8 to nullify the effect of implemen-\ntation results are presented for the distance computations \nnumber instead of the CPU time.",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "number instead of the CPU time. \n5.4 Comparison with product quantization based \nalgorithms. \nProduct quantization K-ANNS algorithms [10-17] are \nconsidered as the state-of-the-art on billion scale datasets \nsince they can efficiently compress stored data, allowing \nmodest RAM usage while achieving millisecond search \ntimes on modern CPUs.  \nTo compare the performance of Hierarchical NSW \nagainst PQ algorithms we used the facebook Faiss library8 \nas the baseline (a new library with state-of-the-art PQ",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "algorithms [12, 15] implementations, released after the \ncurrent manuscript was submitted) compiled with the \nOpenBLAS backend. The tests where done for a 200M \nsubset of 1B SIFT dataset [13] on a 4X Xeon E5-4650 v2 \nserver with 128Gb of RAM. The ann-benchmark testbed \nwas not feasible for these experiments because of its reli-\nance on 32-bit floating point format (requiring more than \n100 Gb just to store the data). To get the results for Faiss \nPQ algorithms we have utilized built-in scripts with the",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "parameters from Faiss wiki9. For the Hierarchical NSW \nalgorithm we used a special build outside of the nmslib \nwith a small memory footprint, simple non-vectorized \n \n8 https://github.com/facebookresearch/faiss 2017 May build. From 2018 \nFaiss library has its own implementation of Hierarchical NSW. \n9 https://github.com/facebookresearch/faiss/wiki/Indexing-1G-vectors \nTABLE 3. \n Parameters for comparison between Hierarchical NSW \nand Faiss on a 200M subset of 1B SIFT dataset. \nAlgorithm \nBuild time",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "Algorithm \nBuild time \nPeak memory (runtime) \nParameters \nHierarchical NSW \n5.6 hours \n64 Gb \nM=16, efConstruction=500 (1) \nHierarchical NSW \n42 minutes \n64 Gb \nM=16, efConstruction=40 (2) \nFaiss \n12 hours \n30 Gb \nOPQ64, IMI2x14, PQ64 (1) \nFaiss \n11 hours \n23.5 Gb \nOPQ32, IMI2x14, PQ32 (2) \n \n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\n0,1\n1\n10\n100\nQuery time, ms\nRecall\n200M SIFT, 1-NN\n Faiss 1\n Faiss 2\n HNSW 1\n HNSW 2\n1\n10\n100\n0,1\n0,2\n0,3\n0,4\n0,5\n0,6\nQuery time, ms\nDataset size, millions",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "0,5\n0,6\nQuery time, ms\nDataset size, millions\n \nFig. 15 Results of comparison with Faiss library on the 200M \nSIFT dataset from [13]. The inset shows the scaling of the query \ntime vs the dataset size for Hierarchical NSW. \n0,2\n0,4\n0,6\n0,8\n1,0\n0,1\n1\n10\n100\nQuery time, ms\nRecall\n2M Wiki-128 (JS-div), 10-NN\nBF: 1.17 s\n Hierarchical NSW\n NSW\n VP-tree\n NAPP\n0,80\n0,85\n0,90\n0,95\n1,00\n10\n100\n1000\nQuery time, ms\nRecall\n1M ImageNet, 10-NN\nBF: 18.3 s\n Hierarchical NSW\n NSW\n VP-tree\n NAPP\n bruto-force filtering\n0,6",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "NSW\n VP-tree\n NAPP\n bruto-force filtering\n0,6\n0,7\n0,8\n0,9\n1,0\n100\n1000\n10000\n100000\nNumber of distance computations\nRecall\n2M Wiki-8 (JS-div), 10-NN\n Hierarchical NSW\n Old kNN(NNDescent)\n VP-tree\n NAPP\n0,6\n0,8\n1,0\n10\n100\n1000\nQuery time, ms\nRecall\n1M DNA (edit dist), 10-NN\nBF: 2.4 s \n Hierarchical NSW\n Old kNN (NNDescent)\n VP-tree\n NAPP\n brute-force filt. bin.\n0,0\n0,2\n0,4\n0,6\n0,8\n1,0\n1\n10\n100\n1000\nQuery time, ms\nRecall\n4M Wiki-sparse, 10-NN\nBF: 5.9 s\n Hierarchical NSW\n NSW\n NAPP",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "BF: 5.9 s\n Hierarchical NSW\n NSW\n NAPP\nFig. 14. Results of the comparison of Hierarchical NSW with general space K-ANNS algorithms from the Non Metric Space Library on \nfive datasets for 10-NN searches. The time of a brute-force search is denoted as the BF.",
+      "source": "faiss.pdf",
+      "page": 10,
+      "char_count": 257,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "AUTHOR ET AL.:  TITLE \n11 \n \ninteger distance functions and support for incremental \nindex construction10.  \nThe results are presented in Fig. 15 with summariza-\ntion of the parameters in Table 3. The peak memory con-\nsumption was measured by using linux “time –v” tool in \nseparate test runs after index construction for both of the \nalgorithms. Even though Hierarchical NSW requires sig-\nnificantly more RAM, it can achieve much higher accura-\ncy, while offering a massive advance in search speed and",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "much faster index construction.  \nThe inset in Fig. 15 presents the scaling of the query \ntime vs the dataset size for Hierarchical NSW. Note that \nthe scaling deviates from the pure logarithm, possibly \ndue to relatively high dimensionality of the dataset. \n6 DISCUSSION \nBy using structure decomposition of navigable small \nworld graphs together with the smart neighbor selection \nheuristic the proposed Hierarchical NSW approach over-\ncomes several important problems of the basic NSW",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "structure advancing the state-of–the-art in K-ANN search. \nHierarchical NSW offers an excellent performance and is \na clear leader on a large variety of the datasets, surpas-\nsing the opensource rivals by a large margin in case of \nhigh dimensional data. Even for the datasets where the \nprevious algorithm (NSW) has lost by orders of magni-\ntude, Hierarchical NSW was able to come first. Hierar-\nchical NSW supports continuous incremental indexing \nand can also be used as an efficient method for getting",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "approximations of the k-NN and relative neighborhood \ngraphs, which are byproducts of the index construction. \nRobustness of the approach is a strong feature which \nmakes it very attractive for practical applications. The \nalgorithm is applicable in generalized metric spaces per-\nforming the best on any of the datasets tested in this pa-\nper, and thus eliminating the need for complicated selec-\ntion of the best algorithm for a specific problem. We stress",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "the importance of the algorithm’s robustness since the \ndata may have a complex structure with different effec-\ntive dimensionality across the scales. For instance, a da-\ntaset can consist of points lying on a curve that randomly \nfills a high dimensional cube, thus being high dimension-\nal at large scale and low dimensional at small scale. In \norder to perform efficient search in such datasets an ap-\nproximate nearest neighbor algorithm has to work well \nfor both cases of high and low dimensionality.",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "for both cases of high and low dimensionality. \nThere are several ways to further increase the efficien-\ncy and applicability of the Hierarchical NSW approach. \nThere is still one meaningful parameter left which strong-\nly affects the construction of the index – the number of \nadded connections per layer M. Potentially, this parame-\nter \ncan \nbe \ninferred \ndirectly \nby \nusing \ndifferent \nheuristics [4]. It would also be interesting to compare Hi-\nerarchical NSW on the full 1B SIFT and 1B DEEP",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "erarchical NSW on the full 1B SIFT and 1B DEEP \ndatasets [10-14] and add support for element updates and \nremoval. \nOne of the apparent shortcomings of the proposed ap-\n \n10 https://github.com/nmslib/hnsw \nproach compared to the basic NSW is the loss of the pos-\nsibility of distributed search. The search in the Hierar-\nchical NSW structure always starts from the top layer, \nthus the structure cannot be made distributed by using \nthe same techniques as described in [26] due to cognes-",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "tion of the higher layer elements. Simple workarounds \ncan be used to distribute the structure, such as partition-\ning the data across cluster nodes studied in [6], however \nin this case, the total parallel throughput of the system \ndoes not scale well with the number of computer nodes. \nStill, there are other possible known ways to make this \nparticular structure distributed. Hierarchical NSW is ide-\nologically \nvery \nsimilar \nto \nthe \nwell-known \none-",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "very \nsimilar \nto \nthe \nwell-known \none-\ndimensional exact search probabilistic skip list structure, \nand thus can use the same techniques to make the struc-\nture distributed [45]. Potentially this can lead to even bet-\nter distributed performance compared to the base NSW \ndue to logarithmic scalability and ideally uniform load on \nthe nodes.  \n7 ACKNOWLEDGEMENTS \nWe thank Leonid Boytsov for many helpful discussions, \nassistance with Non-Metric Space Library integration and",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "comments on the manuscript. We thank Seth Hoffert and \nAzat Davletshin for the suggestions on the manuscript \nand the algorithm and fellows who contributed to the \nalgorithm on the github repository. We also thank Valery \nKalyagin for support of this work. \nThe reported study was funded by RFBR, according to \nthe research project No. 16-31-60104 mol_а _dk. \n8 REFERENCES \n[1] D. G. Lowe, \"Distinctive image features from scale-invariant \nkeypoints,\" International journal of computer vision, vol. 60, no. 2,",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "pp. 91-110, 2004. \n[2] S. Deerwester, S. T. Dumais, T. K. Landauer, G. W. Furnas, and \nR. A. Harshman, \"Indexing by Latent Semantic Analysis,\" J. \nAmer. Soc. Inform. Sci., vol. 41, pp. 391-407, 1990. \n[3] P. N. Yianilos, \"Data structures and algorithms for nearest \nneighbor search in general metric spaces,\" in SODA, 1993, vol. \n93, no. 194, pp. 311-321. \n[4] G. Navarro, \"Searching in metric spaces by spatial approxima-\ntion,\" The VLDB Journal, vol. 11, no. 1, pp. 28-46, 2002.",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "[5] E. S. Tellez, G. Ruiz, and E. Chavez, \"Singleton indexes for \nnearest neighbor search,\" Information Systems, 2016. \n[6] M. Muja and D. G. Lowe, \"Scalable nearest neighbor algorithms \nfor high dimensional data,\" Pattern Analysis and Machine Intelli-\ngence, IEEE Transactions on, vol. 36, no. 11, pp. 2227-2240, 2014. \n[7] M. E. Houle and M. Nett, \"Rank-based similarity search: Reduc-\ning the dimensional dependence,\" Pattern Analysis and Machine",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "Intelligence, IEEE Transactions on, vol. 37, no. 1, pp. 136-150, \n2015. \n[8] A. Andoni, P. Indyk, T. Laarhoven, I. Razenshteyn, and L. \nSchmidt, \"Practical and optimal LSH for angular distance,\" in \nAdvances in Neural Information Processing Systems, 2015, pp. \n1225-1233. \n[9] P. Indyk and R. Motwani, \"Approximate nearest neighbors: \ntowards removing the curse of dimensionality,\" in Proceedings of \nthe thirtieth annual ACM symposium on Theory of computing, 1998, \npp. 604-613: ACM.",
+      "source": "faiss.pdf",
+      "page": 11,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "12 \nIEEE TRANSACTIONS ON JOURNAL NAME,  MANUSCRIPT ID \n \n[10] J. Wang, J. Wang, G. Zeng, R. Gan, S. Li, and B. Guo, \"Fast \nneighborhood graph search using cartesian concatenation,\" in \nMultimedia Data Mining and Analytics: Springer, 2015, pp. 397-\n417. \n[11] M. Norouzi, A. Punjani, and D. J. Fleet, \"Fast exact search in \nhamming space with multi-index hashing,\" Pattern Analysis and \nMachine Intelligence, IEEE Transactions on, vol. 36, no. 6, pp. \n1107-1119, 2014.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "1107-1119, 2014. \n[12] A. Babenko and V. Lempitsky, \"The inverted multi-index,\" in \nComputer Vision and Pattern Recognition (CVPR), 2012 IEEE Con-\nference on, 2012, pp. 3069-3076: IEEE. \n[13] H. Jegou, M. Douze, and C. Schmid, \"Product quantization for \nnearest neighbor search,\" Pattern Analysis and Machine Intelli-\ngence, IEEE Transactions on, vol. 33, no. 1, pp. 117-128, 2011. \n[14] A. Babenko and V. Lempitsky, \"Efficient indexing of billion-",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "scale datasets of deep descriptors,\" in Proceedings of the IEEE \nConference on Computer Vision and Pattern Recognition, 2016, pp. \n2055-2063. \n[15] M. Douze, H. Jégou, and F. Perronnin, \"Polysemous codes,\" in \nEuropean Conference on Computer Vision, 2016, pp. 785-801: \nSpringer. \n[16] Y. Kalantidis and Y. Avrithis, \"Locally optimized product quan-\ntization for approximate nearest neighbor search,\" in Proceed-\nings of the IEEE Conference on Computer Vision and Pattern Recog-\nnition, 2014, pp. 2321-2328.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "nition, 2014, pp. 2321-2328. \n[17] P. Wieschollek, O. Wang, A. Sorkine-Hornung, and H. Lensch, \n\"Efficient large-scale approximate nearest neighbor search on \nthe gpu,\" in Proceedings of the IEEE Conference on Computer Vision \nand Pattern Recognition, 2016, pp. 2027-2035. \n[18] S. Arya and D. M. Mount, \"Approximate Nearest Neighbor \nQueries in Fixed Dimensions,\" in SODA, 1993, vol. 93, pp. 271-\n280. \n[19] J. Wang and S. Li, \"Query-driven iterated neighborhood graph",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "search for large scale indexing,\" in Proceedings of the 20th ACM \ninternational conference on Multimedia, 2012, pp. 179-188: ACM. \n[20] Z. Jiang, L. Xie, X. Deng, W. Xu, and J. Wang, \"Fast Nearest \nNeighbor Search in the Hamming Space,\" in MultiMedia Model-\ning, 2016, pp. 325-336: Springer. \n[21] E. Chávez and E. S. Tellez, \"Navigating k-nearest neighbor \ngraphs to solve nearest neighbor searches,\" in Advances in Pat-\ntern Recognition: Springer, 2010, pp. 270-280.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "tern Recognition: Springer, 2010, pp. 270-280. \n[22] K. Aoyama, K. Saito, H. Sawada, and N. Ueda, \"Fast approxi-\nmate similarity search based on degree-reduced neighborhood \ngraphs,\" in Proceedings of the 17th ACM SIGKDD international \nconference on Knowledge discovery and data mining, 2011, pp. 1055-\n1063: ACM. \n[23] G. Ruiz, E. Chávez, M. Graff, and E. S. Téllez, \"Finding Near \nNeighbors Through Local Search,\" in Similarity Search and Ap-\nplications: Springer, 2015, pp. 103-109.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "plications: Springer, 2015, pp. 103-109. \n[24] R. Paredes, \"Graphs for metric space searching,\" PhD thesis, \nUniversity of Chile, Chile, 2008. Dept. of Computer Science \nTech \nReport \nTR/DCC-2008-10. \nAvailable \nat \nhttp://www.dcc.uchile.cl/~raparede/publ/08PhDthesis.pdf, \n2008. \n[25] Y. Malkov, A. Ponomarenko, A. Logvinov, and V. Krylov, \n\"Scalable distributed algorithm for approximate nearest neigh-\nbor search problem in high dimensional general metric spaces,\"",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "in Similarity Search and Applications: Springer Berlin Heidelberg, \n2012, pp. 132-147. \n[26] Y. Malkov, A. Ponomarenko, A. Logvinov, and V. Krylov, \"Ap-\nproximate nearest neighbor algorithm based on navigable small \nworld graphs,\" Information Systems, vol. 45, pp. 61-68, 2014. \n[27] W. Pugh, \"Skip lists: a probabilistic alternative to balanced \ntrees,\" Communications of the ACM, vol. 33, no. 6, pp. 668-676, \n1990. \n[28] C. C. Cartozo and P. De Los Rios, \"Extended navigability of",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "small world networks: exact results and new insights,\" Physical \nreview letters, vol. 102, no. 23, p. 238703, 2009. \n[29] W. Dong, C. Moses, and K. Li, \"Efficient k-nearest neighbor \ngraph construction for generic similarity measures,\" in Proceed-\nings of the 20th international conference on World wide web, 2011, \npp. 577-586: ACM. \n[30] A. Ponomarenko, Y. Malkov, A. Logvinov, and V. Krylov, \"Ap-\nproximate Nearest Neighbor Search Small World Approach,\" in",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "International Conference on Information and Communication Tech-\nnologies & Applications, Orlando, Florida, USA, 2011. \n[31] J. M. Kleinberg, \"Navigation in a small world,\" Nature, vol. 406, \nno. 6798, pp. 845-845, 2000. \n[32] M. Boguna, D. Krioukov, and K. C. Claffy, \"Navigability of \ncomplex networks,\" Nature Physics, vol. 5, no. 1, pp. 74-80, 2009. \n[33] A. Ponomarenko, N. Avrelin, B. Naidan, and L. Boytsov, \n\"Comparative Analysis of Data Structures for Approximate",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "Nearest Neighbor Search,\" In Proceedings of The Third Interna-\ntional Conference on Data Analytics, 2014. \n[34] B. Naidan, L. Boytsov, and E. Nyberg, \"Permutation search \nmethods are efficient, yet faster search is possible,\" VLDB Pro-\ncedings, vol. 8, no. 12, pp. 1618-1629, 2015. \n[35] D. Krioukov, F. Papadopoulos, M. Kitsak, A. Vahdat, and M. \nBoguná, \"Hyperbolic geometry of complex networks,\" Physical \nReview E, vol. 82, no. 3, p. 036106, 2010.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "Review E, vol. 82, no. 3, p. 036106, 2010. \n[36] A. Gulyás, J. J. Bíró, A. Kőrösi, G. Rétvári, and D. Krioukov, \n\"Navigable networks as Nash equilibria of navigation games,\" \nNature Communications, vol. 6, p. 7651, 2015. \n[37] Y. Lifshits and S. Zhang, \"Combinatorial algorithms for nearest \nneighbors, near-duplicates and small-world design,\" in Proceed-\nings of the Twentieth Annual ACM-SIAM Symposium on Discrete \nAlgorithms, 2009, pp. 318-326: Society for Industrial and Ap-\nplied Mathematics.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "plied Mathematics. \n[38] A. Karbasi, S. Ioannidis, and L. Massoulie, \"From Small-World \nNetworks to Comparison-Based Search,\" Information Theory, \nIEEE Transactions on, vol. 61, no. 6, pp. 3056-3074, 2015. \n[39] O. Beaumont, A.-M. Kermarrec, and É. Rivière, \"Peer to peer \nmultidimensional overlays: Approximating complex struc-\ntures,\" in Principles of Distributed Systems: Springer, 2007, pp. \n315-328. \n[40] O. Beaumont, A.-M. Kermarrec, L. Marchal, and É. Rivière,",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "\"VoroNet: A scalable object network based on Voronoi tessella-\ntions,\" in Parallel and Distributed Processing Symposium, 2007. \nIPDPS 2007. IEEE International, 2007, pp. 1-10: IEEE. \n[41] J. Kleinberg, \"The small-world phenomenon: An algorithmic \nperspective,\" in Proceedings of the thirty-second annual ACM sym-\nposium on Theory of computing, 2000, pp. 163-170: ACM. \n[42] J. Travers and S. Milgram, \"An experimental study of the small \nworld problem,\" Sociometry, pp. 425-443, 1969.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "world problem,\" Sociometry, pp. 425-443, 1969. \n[43] D. J. Watts and S. H. Strogatz, \"Collective dynamics of ‘small-\nworld’networks,\" Nature, vol. 393, no. 6684, pp. 440-442, 1998. \n[44] Y. A. Malkov and A. Ponomarenko, \"Growing homophilic net-\nworks are natural navigable small worlds,\" PloS one, p. \ne0158162, 2016. \n[45] M. T. Goodrich, M. J. Nelson, and J. Z. Sun, \"The rainbow skip \ngraph: a fault-tolerant constant-degree distributed data struc-",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "ture,\" in Proceedings of the seventeenth annual ACM-SIAM sympo-\nsium on Discrete algorithm, 2006, pp. 384-393: Society for Indus-\ntrial and Applied Mathematics. \n[46] G. T. Toussaint, \"The relative neighbourhood graph of a finite \nplanar set,\" Pattern recognition, vol. 12, no. 4, pp. 261-268, 1980. \n[47] B. Harwood and T. Drummond, \"FANNG: fast approximate \nnearest neighbour graphs,\" in Proceedings of the IEEE Conference \non Computer Vision and Pattern Recognition, 2016, pp. 5713-5722.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "[48] R. A. Dwyer, \"Higher-dimensional Voronoi diagrams in linear \nexpected time,\" Discrete & Computational Geometry, vol. 6, no. 3, \npp. 343-367, 1991.",
+      "source": "faiss.pdf",
+      "page": 12,
+      "char_count": 151,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "AUTHOR ET AL.:  TITLE \n13 \n \n[49] L. Boytsov and B. Naidan, \"Engineering Efficient and Effective \nNon-metric Space Library,\" in Similarity Search and Applications: \nSpringer, 2013, pp. 280-293. \n[50] L. Boytsov and B. Naidan, \"Learning to prune in metric and \nnon-metric spaces,\" in Advances in Neural Information Processing \nSystems, 2013, pp. 1574-1582. \n[51] A. Andoni and I. Razenshteyn, \"Optimal Data-Dependent \nHashing for Approximate Near Neighbors,\" presented at the",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "Proceedings of the Forty-Seventh Annual ACM on Symposium \non Theory of Computing, Portland, Oregon, USA, 2015. \n[52] J. Pennington, R. Socher, and C. D. Manning, \"Glove: Global \nvectors for word representation,\" Proceedings of the Empiricial \nMethods in Natural Language Processing (EMNLP 2014), vol. 12, \npp. 1532-1543, 2014. \n[53] P. Bolettieri et al., \"CoPhIR: a test collection for content-based \nimage retrieval,\" arXiv preprint arXiv:0905.4627, 2009.",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "[54] Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner, \"Gradient-based \nlearning applied to document recognition,\" Proceedings of the \nIEEE, vol. 86, no. 11, pp. 2278-2324, 1998. \n[55] E. Chávez, M. Graff, G. Navarro, and E. Téllez, \"Near neighbor \nsearching with K nearest references,\" Information Systems, vol. \n51, pp. 43-61, 2015. \n[56] E. C. Gonzalez, K. Figueroa, and G. Navarro, \"Effective proxim-\nity retrieval by ordering permutations,\" Pattern Analysis and",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "Machine Intelligence, IEEE Transactions on, vol. 30, no. 9, pp. \n1647-1658, 2008. \n[57] E. S. Tellez, E. Chávez, and G. Navarro, \"Succinct nearest \nneighbor search,\" Information Systems, vol. 38, no. 7, pp. 1019-\n1030, 2013. \n[58] P. Sojka, \"Software framework for topic modelling with large \ncorpora,\" in In Proceedings of the LREC 2010 Workshop on New \nChallenges for NLP Frameworks, 2010: Citeseer. \n[59] C. Beecks, \"Distance-based similarity models for content-based",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "multimedia retrieval,\" Hochschulbibliothek der Rheinisch-\nWestfälischen Technischen Hochschule Aachen, 2013. \n \n \nYury A. Malkov received a Master’s degree in \nphysics from Nizhny Novgorod State University in \n2009, and a PhD degree in laser physics from the \nInstitute of Applied Physics RAS in 2015. He is \nauthor of 20+ papers on physics and computer \nscience. Yury currently occupies a position of a \nProject Leader in Samsung AI Center in Moscow. \nHis current research interests include deep learn-",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "ing, scalable similarity search, biological and \nartificial neural networks. \n \nDmitry A. Yashunin received a Master’s degree \nin physics from Nizhny Novgorod State University \nin 2009, and a PhD degree in laser physics from \nthe Institute of Applied Physics RAS in 2015. \nFrom 2008 to 2012 he was working in Mera Net-\nworks. He is author of 10+ papers on physics. \nDmitry currently woks at Intelli-Vision in the posi-\ntion of a leading research engineer. His current research interests",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "include scalable similarity search, computer vision and deep learn-\ning.",
+      "source": "faiss.pdf",
+      "page": 13,
+      "char_count": 72,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

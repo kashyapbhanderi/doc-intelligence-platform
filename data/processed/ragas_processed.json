@@ -1,0 +1,1628 @@
+{
+  "source": "ragas.pdf",
+  "full_path": "data\\raw\\ragas.pdf",
+  "total_pages": 29,
+  "text_chunks": 202,
+  "vision_chunks": 0,
+  "total_chunks": 202,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Judging LLM-as-a-Judge\nwith MT-Bench and Chatbot Arena\nLianmin Zheng1∗\nWei-Lin Chiang1∗\nYing Sheng4∗\nSiyuan Zhuang1\nZhanghao Wu1\nYonghao Zhuang3\nZi Lin2\nZhuohan Li1\nDacheng Li13\nEric P. Xing35\nHao Zhang12\nJoseph E. Gonzalez1\nIon Stoica1\n1 UC Berkeley\n2 UC San Diego\n3 Carnegie Mellon University\n4 Stanford\n5 MBZUAI\nAbstract\nEvaluating large language model (LLM) based chat assistants is challenging due to\ntheir broad capabilities and the inadequacy of existing benchmarks in measuring",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "human preferences. To address this, we explore using strong LLMs as judges to\nevaluate these models on more open-ended questions. We examine the usage and\nlimitations of LLM-as-a-judge, including position, verbosity, and self-enhancement\nbiases, as well as limited reasoning ability, and propose solutions to mitigate some\nof them. We then verify the agreement between LLM judges and human preferences\nby introducing two benchmarks: MT-bench, a multi-turn question set; and Chatbot",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "Arena, a crowdsourced battle platform. Our results reveal that strong LLM judges\nlike GPT-4 can match both controlled and crowdsourced human preferences well,\nachieving over 80% agreement, the same level of agreement between humans.\nHence, LLM-as-a-judge is a scalable and explainable way to approximate human\npreferences, which are otherwise very expensive to obtain. Additionally, we show\nour benchmark and traditional benchmarks complement each other by evaluating",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "several variants of LLaMA and Vicuna. The MT-bench questions, 3K expert votes,\nand 30K conversations with human preferences are publicly available at https:\n//github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge.\n1\nIntroduction\nThere has been a proliferation of LLM-based chat assistants (chatbots) that leverage supervised\ninstruction fine-tuning and reinforcement learning with human feedback (RLHF) to unlock new",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "instruction following and conversational abilities [31, 2, 30, 8, 52, 48, 14]. Once aligned with\nhumans, these chat models are strongly preferred by human users over the original, unaligned models\non which they are built. However, the heightened user preference does not always correspond to\nimproved scores on traditional LLM benchmarks – benchmarks like MMLU [19] and HELM [24]\ncannot effectively tell the difference between these aligned models and the base models. This",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "phenomenon suggests that there is a fundamental discrepancy between user perceptions of the\nusefulness of chatbots and the criteria adopted by conventional benchmarks.\nWe argue that this discrepancy primarily arises due to existing evaluation that only measures LLMs’\ncore capability on a confined set of tasks (e.g., multi-choice knowledge or retrieval questions),\nwithout adequately assessing its alignment with human preference in open-ended tasks, such as the",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "ability to accurately adhere to instructions in multi-turn dialogues. As a demonstration, we show\n∗Joint first authors. This paper is an extended version of our earlier blog post [8].\n37th Conference on Neural Information Processing Systems (NeurIPS 2023) Track on Datasets and Benchmarks.\narXiv:2306.05685v4  [cs.CL]  24 Dec 2023",
+      "source": "ragas.pdf",
+      "page": 1,
+      "char_count": 330,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "Question: If the FED buys bonds in the secondary market\n(A) the money supply will increase. (B) the money supply will decrease. (C) the money supply will not be \naffected. (D) the discount rate would be affected. Output the answer only.\nAssistant B:\n(A) the money supply will increase.\nAssistant A:\nThe Federal Reserve buys \nbonds in the secondary \nmarket to increase the \nmoney supply.\nFollow-up Question: How does it affect my daily life? Give 3 examples.\nAssistant B:",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "Assistant B:\nWhen the Federal Reserve buys bonds in the secondary market, it can have \nseveral effects on the economy that can impact your daily life. Here are \nthree examples:\n1. Interest rates: The Federal Reserve's actions in the bond market can \ninfluence interest rates, which in turn can affect the cost of borrowing \nmoney. For example, if the Federal Reserve buys bonds and drives up demand \nfor them, interest rates on things like mortgages, car loans, and credit",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "cards may go up, making it more expensive to borrow money.\n2. Inflation: When the money supply increases, it can lead to inflation, \nwhich is the general rise in prices of goods and services. This can impact \nyour daily life by making it more expensive to buy things like groceries, \ngas, and other necessities.\n3. Employment: The Federal Reserve's actions in the bond market can also \nhave an impact on employment. For example, if the Federal Reserve's",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 453,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "actions lead to economic growth and increased demand for goods and \nservices, it can create more job opportunities and boost employment.\nAssistant A:\nThe Federal Reserve buys \nbonds in the secondary \nmarket to increase the \nmoney supply. This \naffects your daily life \nby:\n1. Increasing the money \nsupply.\n2. Increasing the money \nsupply and lowering the \ndiscount rate.\n3. Increasing the money \nsupply and lowering the \ndiscount rate and \nincreasing the money \nsupply.\nGPT-4 Judgment:",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "increasing the money \nsupply.\nGPT-4 Judgment:\nAssistant A provided an incorrect response to the user's question about how the Federal Reserve \nbuying bonds in the secondary market affects daily life. The answer given is repetitive and lacks \nclear examples of how the action impacts daily life.\nOn the other hand, Assistant B provided a relevant and accurate response to the user's question about \nthe Federal Reserve buying bonds. The answer includes three clear examples of how the action impacts",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "daily life, such as interest rates, inflation, and employment.\nAssistant A should improve by providing relevant, clear, and accurate examples to address the user's \nquestion. Assistant B's response is more helpful, relevant, and detailed.\nFigure 1: Multi-turn dialogues between a user and two AI assistants—LLaMA-13B (Assistant A)\nand Vicuna-13B (Assistant B)—initiated by a question from the MMLU benchmark and a follow-up",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 423,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "instruction. GPT-4 is then presented with the context to determine which assistant answers better.\nconversation histories with two models on an MMLU question in Figure 1. The two models are\nLLaMA-13B [39], a pre-trained base model without fine-tuning, and Vicuna-13B, our fine-tuned\nmodel from LLaMA-13B on high-quality conversations (the training details are in Appendix E).\nDespite the base LLaMA models showing competitive performance on conventional benchmarks",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "(Table 8), its answers to open-ended questions are often not preferred by humans. This misalignment\nof conventional benchmarks underscores the core problem driving this paper: the need for a robust\nand scalable automated method to evaluate LLM alignment with human preferences.\nTo study this, we introduce two benchmarks with human ratings as the primary evaluation metric:\nMT-bench and Chatbot Arena. MT-bench is a series of open-ended questions that evaluate a chatbot’s",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "multi-turn conversational and instruction-following ability – two critical elements for human prefer-\nence. MT-bench is also carefully constructed to differentiate chatbots based on their core capabilities,\nsuch as reasoning and math. In addition, we develop Chatbot Arena, a crowdsourced platform fea-\nturing anonymous battles between chatbots in real-world scenarios – Users engage in conversations\nwith two chatbots at the same time and rate their responses based on personal preferences.",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "While human evaluation is the gold standard for assessing human preferences, it is exceptionally slow\nand costly. To automate the evaluation, we explore the use of state-of-the-art LLMs, such as GPT-4,\nas a surrogate for humans. Because these models are often trained with RLHF, they already exhibit\nstrong human alignment. We call this approach “LLM-as-a-judge”. This approach has been tried in\nour earlier blog post [8] and other concurrent or follow-up work [5, 29, 14, 12, 52, 18, 33, 40, 7, 43].",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "However, there has not been a systematic study of this approach.\nIn this paper, we study the LLM-as-a-judge approach by comparing it to the gold standard of\nhuman evaluation. We examine several potential limitations of the LLM-as-a-judge approach\nincluding position bias, verbosity bias, self-enhancement bias, and limited reasoning ability. We\nshow that some of the biases are minor or can be mitigated. Once addressed, our results from 3K",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "controlled expert votes and 3K crowdsourced human votes in the wild verify that GPT-4 judge match\n2",
+      "source": "ragas.pdf",
+      "page": 2,
+      "char_count": 99,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "human evaluations at an agreement rate exceeding 80%, achieving the same level of human-human\nagreement (§4.2, Table 4). Consequently, this suggests LLM-as-a-judge is a scalable method to\nswiftly evaluate human preference, serving as a promising alternative to traditional human evaluations.\nThis paper makes two contributions: (1) a systematic study of LLM-as-a-judge; and (2) human\npreference datasets with high-quality questions and diverse user interactions from MT-bench and",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "Chatbot Arena. In addition, we argue for the adoption of a hybrid evaluation framework for future\nLLM benchmarks: by combining the existing capability-based benchmarks and the new preference-\nbased benchmarks with LLM-as-a-judge, one can swiftly and automatically evaluate both the core\ncapabilities and human alignment of models. We publicly release 80 MT-bench questions, 3K expert\nvotes, and 30K conversations with human preferences for future study.\nTable 1: Sample multi-turn questions in MT-bench.",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "Table 1: Sample multi-turn questions in MT-bench.\nCategory\nSample Questions\nWriting\n1st Turn\nCompose an engaging travel blog post about a recent trip to Hawaii, highlighting\ncultural experiences and must-see attractions.\n2nd Turn\nRewrite your previous response. Start every sentence with the letter A.\nMath\n1st Turn\nGiven that f(x) = 4x3 −9x −14, find the value of f(2).\n2nd Turn\nFind x such that f(x) = 0.\nKnowledge\n1st Turn\nProvide insights into the correlation between economic indicators such as GDP,",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "inflation, and unemployment rates. Explain how fiscal and monetary policies ...\n2nd Turn\nNow, explain them again like I’m five.\n2\nMT-Bench and Chatbot Arena\n2.1\nMotivation\nWith the recent advances of LLMs, LLM-based assistants start to exhibit artificial general intelligence\nacross diverse tasks, from writing and chatting to coding [5, 30, 1, 37]. However, evaluating their\nbroad capabilities also becomes more challenging. Despite the availability of numerous benchmarks",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "for language models, they primarily focus on evaluating models on closed-ended questions with short\nresponses. Given that these chat assistants can now precisely follow user instructions in multi-turn\ndialogues and answer open-ended questions in a zero-shot manner, current benchmarks are inadequate\nfor assessing such capabilities. Existing benchmarks mostly fall into the following three categories.\n• Core-knowledge benchmarks, including MMLU [19], HellaSwag [50], ARC [9], Wino-",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "Grande [36], HumanEval [6], GSM-8K [10], and AGIEval [51], evaluate the core capabilities of\npre-trained LLMs using zero-shot and few-shot benchmark sets. They typically require LLMs to\ngenerate a short, specific answer to benchmark questions that can be automatically validated.\n• Instruction-following benchmarks, such as Flan [27, 46], Self-instruct [44], NaturalInstruc-\ntions [28], Super-NaturalInstructions [45], expand to slightly more open-ended questions and",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "more diverse tasks and are used to evaluate LLMs after instruction fine-tuning.\n• Conversational benchmarks, like CoQA [35], MMDialog [15] and OpenAssistant [23], are\nclosest to our intended use cases. However, the diversity and complexity of their questions often\nfall short in challenging the capabilities of the latest chatbots.\nWhile largely overlooked by existing LLM benchmarks, human preferences serve as a direct measure",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "of a chatbot’s utility in open-ended, multi-turn human-AI interactions. To bridge this gap, we\nintroduce two novel benchmarks expressly tailored to assess human preferences. Simultaneously,\nthese benchmarks are designed to distinguish the core capabilities of state-of-the-art models.\n2.2\nMT-Bench\nWe create MT-bench, a benchmark consisting of 80 high-quality multi-turn questions. MT-bench is\ndesigned to test multi-turn conversation and instruction-following ability, covering common use cases",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "and focusing on challenging questions to differentiate models. We identify 8 common categories\nof user prompts to guide its construction: writing, roleplay, extraction, reasoning, math, coding,\n3",
+      "source": "ragas.pdf",
+      "page": 3,
+      "char_count": 195,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "knowledge I (STEM), and knowledge II (humanities/social science). For each category, we then\nmanually designed 10 multi-turn questions. Table 1 lists several sample questions.\n2.3\nChatbot Arena\nOur second approach is Chatbot Arena, a crowdsourcing benchmark platform featuring anonymous\nbattles. On this platform, users can interact with two anonymous models simultaneously, posing\nthe same question to both. They vote for which model provides the preferred response, with the",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "identities of the models disclosed post-voting. After running Chatbot Arena for one month, we have\ncollected around 30K votes. Since the platform does not use pre-defined questions, it allows gathering\na wide range of unrestricted use cases and votes in the wild, based on the diverse interests of users. A\nscreenshot of the platform can be found at Appendix C.2.\n3\nLLM as a Judge\nWhile our initial evaluations using MT-bench and Chatbot Arena rely on human ratings, collecting",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "human preferences can be costly and laborious [44, 38, 31, 2, 13]. To overcome this, we aim to\ndevelop a more scalable and automated approach. Given that most questions in MT-bench and Chatbot\nArena are open-ended without reference answers, devising a rule-based program to assess the outputs\nis extremely challenging. Traditional evaluation metrics based on the similarity between outputs and\nreference answers (e.g., ROUGE [25], BLEU [32]) are also ineffective for these questions.",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "As LLMs continue to improve, they show potential in replacing human annotators in many tasks [17,\n20]. Specifically, we are interested in whether LLMs can effectively evaluate the responses of chat\nassistants and match human preferences. Next, we discuss the use and limitations of LLM-as-a-judge.\n3.1\nTypes of LLM-as-a-Judge\nWe propose 3 LLM-as-a-judge variations. They can be implemented independently or in combination:",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "• Pairwise comparison. An LLM judge is presented with a question and two answers, and tasked\nto determine which one is better or declare a tie. The prompt used is given in Figure 5 (Appendix).\n• Single answer grading. Alternatively, an LLM judge is asked to directly assign a score to a\nsingle answer. The prompt used for this scenario is in Figure 6 (Appendix).\n• Reference-guided grading. In certain cases, it may be beneficial to provide a reference solution",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "if applicable. An example prompt we use for grading math problems is in Figure 8 (Appendix).\nThese methods have different pros and cons. For example, the pairwise comparison may lack\nscalability when the number of players increases, given that the number of possible pairs grows\nquadratically; single answer grading may be unable to discern subtle differences between specific\npairs, and its results may become unstable, as absolute scores are likely to fluctuate more than relative",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "pairwise results if the judge model changes.\n3.2\nAdvantages of LLM-as-a-Judge\nLLM-as-a-judge offers two key benefits: scalability and explainability. It reduces the need for human\ninvolvement, enabling scalable benchmarks and fast iterations. Additionally, LLM judges provide\nnot only scores but also explanations, making their outputs interpretable, as shown in Figure 1.\n3.3\nLimitations of LLM-as-a-Judge\nWe identify certain biases and limitations of LLM judges. However, we will also present solutions",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "later and show the agreement between LLM judges and humans is high despite these limitations.\nPosition bias is when an LLM exhibits a propensity to favor certain positions over others. This\nbias is not unique to our context and has been seen in human decision-making [3, 34] and other ML\ndomains [22, 41].\nFigure 11 (Appendix) shows an example of position bias. GPT-4 is tasked to evaluate two responses\nfrom GPT-3.5 and Vicuna-13B to an open-ended question. When GPT-3.5’s answer is positioned\n4",
+      "source": "ragas.pdf",
+      "page": 4,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "Table 2: Position bias of different LLM judges. Consistency is the percentage of cases where a\njudge gives consistent results when swapping the order of two assistants. “Biased toward first” is the\npercentage of cases when a judge favors the first answer. “Error” indicates wrong output formats.\nThe two largest numbers in each column are in bold.\nJudge\nPrompt\nConsistency\nBiased toward first\nBiased toward second\nError\nClaude-v1\ndefault\n23.8%\n75.0%\n0.0%\n1.2%\nrename\n56.2%\n11.2%\n28.7%\n3.8%\nGPT-3.5\ndefault\n46.2%",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "56.2%\n11.2%\n28.7%\n3.8%\nGPT-3.5\ndefault\n46.2%\n50.0%\n1.2%\n2.5%\nrename\n51.2%\n38.8%\n6.2%\n3.8%\nGPT-4\ndefault\n65.0%\n30.0%\n5.0%\n0.0%\nrename\n66.2%\n28.7%\n5.0%\n0.0%\nTable 3: Failure rate under “repetitive list” at-\ntack for different LLM judges on 23 answers.\nJudge\nClaude-v1\nGPT-3.5\nGPT-4\nFailure rate\n91.3%\n91.3%\n8.7%\nTable 4: Judge failure rate on 10 math questions\nwith different prompts. We test LLaMA-13B vs.\nVicuna-13B and swap positions. A failure means\nwhen GPT-4 says an incorrect answer is correct.\nDefault\nCoT",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "Default\nCoT\nReference\nFailure rate\n14/20\n6/20\n3/20\nfirst, GPT-4 considers GPT-3.5’s answer more detailed and superior. However, upon switching the\npositions of the two responses, GPT-4’s judgement flips, favoring Vicuna’s answer.\nTo analyze the position bias, we construct two similar answers to each first-turn question in MT-bench\nby calling GPT-3.5 twice with a temperature of 0.7. We then try three LLMs with two different",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "prompts: “default” is our default prompt in Figure 5 (Appendix). “rename” renames the assistants in\nour default prompt to see whether the bias is on positions or names. As in Table 2, we found all of\nthem exhibit strong position bias. Most LLM judges favor the first position. Claude-v1 also shows a\nname bias which makes it favors \"Assistant A\", as illustrated by the \"rename\" prompt. The position\nbias can be very significant. Only GPT-4 outputs consistent results in more than 60% of cases.",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "Note that this test is challenging because the answers are very similar and occasionally indistinguish-\nable even to humans. We will show that position bias is less prominent in some cases in Appendix D.1.\nAs for the origin of this bias, we suspect that it could be rooted in the training data or inherent to the\nleft-to-right architecture of causal transformers, but leave a deeper study as future work.\nVerbosity bias is when an LLM judge favors longer, verbose responses, even if they are not as clear,",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "high-quality, or accurate as shorter alternatives.\nTo examine this bias, we design a “repetitive list” attack with model answers from MT-bench. We\nfirst select 23 model answers from MT-bench that contain a numbered list. We then make them\nunnecessarily verbose by asking GPT-4 to rephrase the list without adding any new information and\ninsert the rephrased new list to the beginning of the original list. For example, if the original response",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "contains 5 items, then the new response will contain 10 items but the first 5 items are rephrased from\nthe original 5 items. An example is shown in Figure 12 (Appendix). We define the attack is successful\nif an LLM judge thinks the new response is better than the old response. Table 3 shows the failure\nrate of LLM judges under this attack, demonstrating that all LLMs may be prone to verbosity bias\nthough GPT-4 defends significantly better than others. As a calibration, we find LLM judges are",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "able to correctly judge identical answers (i.e., they always return a tie for two identical answers) but\ncannot pass the more advanced “repetitive list” attack.\nSelf-enhancement bias. We adopt the term “self-enhancement bias” from social cognition litera-\nture [4] to describe the effect that LLM judges may favor the answers generated by themselves.\nWe examine this effect statistically. Figure 3(b) shows the win rate (w/o tie) of six models under",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "different LLM judges and humans. Compared to humans, we do observe that some judges favor\ncertain models. For example, GPT-4 favors itself with a 10% higher win rate; Claude-v1 favors itself\nwith a 25% higher win rate. However, they also favor other models and GPT-3.5 does not favor itself.\nDue to limited data and small differences, our study cannot determine whether the models exhibit\na self-enhancement bias. Conducting a controlled study is challenging because we cannot easily",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "rephrase a response to fit the style of another model without changing the quality.\n5",
+      "source": "ragas.pdf",
+      "page": 5,
+      "char_count": 85,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "Limited capability in grading math and reasoning questions. LLMs are known to have limited\nmath and reasoning capability [10], which results in its failure of grading such questions because they\ndo not know the correct answers. However, what is more intriguing is that it also shows limitations in\ngrading basic math problems which it is capable of solving. For instance, in Figure 13 (Appendix),\nwe present an example of an elementary math question in which GPT-4 makes an incorrect judgment.",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "It’s worth noting that although GPT-4 can solve the problem (when asked separately), it was misled\nby the provided answers, ultimately resulting in incorrect judgment. This pattern can also be seen in\na reasoning question example in Figure 14 (Appendix). Both GPT-3.5 and Claude-v1 show a similar\nweakness. In Section 3.4, we will introduce a reference-guided method to mitigate such issues.\n3.4\nAddressing limitations",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "3.4\nAddressing limitations\nWe present a few methods to address position bias and the limited grading ability for math questions.\nSwapping positions. The position bias can be addressed by simple solutions. A conservative\napproach is to call a judge twice by swapping the order of two answers and only declare a win when\nan answer is preferred in both orders. If the results are inconsistent after swapping, we can call it a",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "tie. Another more aggressive approach is to assign positions randomly, which can be effective at a\nlarge scale with the correct expectations. In the following experiments, we use the conservative one.\nFew-shot judge. We assess whether few-shot examples can improve consistency in the position bias\nbenchmark. We select three good judgment examples using MT-bench-like questions, GPT-3.5 and\nVicuna for generating answers, and GPT-4 for generating judgments. The examples cover three cases:",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "A is better, B is better, and tie. As shown in Table 12 (Appendix), the few-shot judge can significantly\nincrease the consistency of GPT-4 from 65.0% to 77.5%. However, high consistency may not imply\nhigh accuracy and we are not sure whether the few-shot examples will introduce new biases. Besides,\nthe longer prompts make API calls 4× more expensive. We use the zero-shot prompt by default in\nour following experiments but leave an additional study in Appendix D.2.",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "Chain-of-thought and reference-guided judge. In Section 3.3, we have shown LLM’s limited\ncapability in grading math and reasoning questions. We propose two simple methods to mitigate\nthis issue: chain-of-thought judge and reference-guided judge. Chain-of-thought is a widely used\ntechnique to improve LLM’s reasoning capability [47]. We propose a similar technique to prompt\nan LLM judge to begin with answering the question independently and then start grading. Detailed",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "prompt in Figure 7 (Appendix). However, even with the CoT prompt, we find that in many cases\nLLM makes exactly the same mistake as the given answers in its problem-solving process (See\nexample in Figure 15 (Appendix), suggesting that LLM judge may still be misled by the context.\nHence, we propose a reference-guided method, in which we first generate LLM judge’s answer\nindependently, and then display it as a reference answer in the judge prompt. In Table 4, we see a",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "significant improvement in failure rate (from 70% to 15%) over the default prompt.\nFine-tuning a judge model. We try fine-tuning a Vicuna-13B on arena data to act as a judge and\nshow some promising preliminary results in Appendix F.\n3.5\nMulti-turn judge\nIn MT-bench, every question involves two turns to evaluate conversational abilities. Therefore, when\ncomparing two assistants, it becomes necessary to present a total of two questions and four responses,",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "complicating the prompt design. We explore two possible designs, (1) breaking the two turns into two\nprompts or (2) displaying complete conversations in a single prompt. Our finding is the former one\ncan cause the LLM judge struggling to locate the assistant’s previous response precisely. We illustrate\na case in Figure 16 (Appendix) where GPT-4 makes an inaccurate judgment due to a faulty reference.\nThis suggests the necessity of displaying a complete conversation to enable the LLM judge to better",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "grasp the context. We then consider the alternative design that presents two full conversations in a\nsingle prompt in which we ask the LLM judge to focus on the second question (Figure 9 (Appendix)).\nThis approach has been found to significantly alleviate the aforementioned referencing issue.\n6",
+      "source": "ragas.pdf",
+      "page": 6,
+      "char_count": 295,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "4\nAgreement Evaluation\nWe study the agreement between different LLM judges and humans on MT-bench and Chatbot\nArena datasets. On MT-bench, we also study the agreement among humans. MT-bench represents a\nsmall-scale study with controlled human evaluation, while Chatbot Arena represents a larger-scale\nstudy with crowdsourced human evaluation in the wild.\n4.1\nSetup\nMT-bench. We generate answers for all 80 questions with 6 models: GPT-4, GPT-3.5, Claude-V1,",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "Vicuna-13B, Alpaca-13B [38], and LLaMA-13B [39]. We then use 2 kinds of judges: LLM judges\nand 58 expert-level human labelers. The labelers are mostly graduate students so they are considered\nexperts and more skilled than average crowd workers. We let LLM judges evaluate all pairs and let\neach human evaluate at least 20 random multi-turn questions. This resulted in around 3K votes for all\nquestions. The detailed data collection process is in Appendix C.",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "Chatbot Arena. We randomly sample 3K single-turn votes from 30K arena data, which covers\nmodels including GPT-4, GPT-3.5, Claude, Vicuna-7B/13B, Koala-13B [16], Alpaca-13B, LLaMA-\n13B, and Dolly-12B. We use two kinds of judges: LLM judges and collected crowd judges (2114\nunique IPs).\nMetrics. We define the agreement between two types of judges as the probability of randomly\nselected individuals (but not identical) of each type agreeing on a randomly selected question. See",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "more explanation in Appendix D.3. Average win rate is the average of win rates against all other\nplayers. These metrics can be computed with or without including tie votes.\n4.2\nHigh agreement between GPT-4 and humans\nWe compute agreement on MT-bench data. In Table 5, GPT-4 with both pairwise comparison and\nsingle answer grading show very high agreements with human experts. The agreement under setup S2\n(w/o tie) between GPT-4 and humans reaches 85%, which is even higher than the agreement among",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "humans (81%). This means GPT-4’s judgments closely align with the majority of humans. We also\nshow that GPT-4’s judgments may help humans make better judgments. During our data collection,\nwhen a human’s choice deviated from GPT-4, we presented GPT-4’s judgments to humans and ask\nif they are reasonable (details in Appendix C.1). Despite different views, humans deemed GPT-4’s\njudgments reasonable in 75% of cases and are even willing to change their choices in 34% of cases.",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "The data from Arena shows a similar trend, as illustrated by Table 6. Comparing GPT-4 and other\nLLM judges, we find they reach a similar non-tie agreement ratio between humans but the number\nof non-tied votes from GPT-4 is much larger. This means that GPT-4 is more affirmative and less\nsuffered from position bias but other models also perform well when they give an affirmative answer.\nIn both tables, GPT-4 with single-answer grading matches both pairwise GPT-4 and human prefer-",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "ences very well. This means GPT-4 has a relatively stable internal rubric. Although it may sometimes\nperform slightly worse than pairwise comparison and give more tie votes, it is a more scalable method.\nWe then perform a breakdown analysis by computing agreement on different model pairs and\ncategories. We only include non-tied votes. In Figure 2, we observe the agreement between GPT-4\nand human progressively increases in line with the performance disparity of the model pairs (i.e.,",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "larger win rate difference), from 70% to nearly 100%. This suggests that GPT-4 aligns with humans\nbetter when significant performance differences exist between the models.\nGPT-4\nClaude\nGPT-3.5\nVicuna-13B\nAlpaca-13B\nLLaMA-13B\n(a) All votes, first turn\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nGPT-4\nGPT-3.5\nClaude\nVicuna-13B\nAlpaca-13B\nLLaMA-13B\n(b) Non-tied votes, first turn\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nGPT-4\nClaude\nGPT-3.5\nVicuna-13B\nAlpaca-13B\nLLaMA-13B\n(c) All votes, second turn\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nGPT-4\nClaude\nGPT-3.5",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nGPT-4\nClaude\nGPT-3.5\nVicuna-13B\nAlpaca-13B\nLLaMA-13B\n(d) Non-tied votes, second turn\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nWin rate\nGPT-4 Judge\nGPT-3.5 Judge\nClaude Judge\nHuman\nHuman (first turn)\nFigure 3: Average win rate of six models under different judges on MT-bench.\n7",
+      "source": "ragas.pdf",
+      "page": 7,
+      "char_count": 284,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "Table 5: Agreement between two types of judges on MT-bench. “G4-Pair” and “G4-Single” denote\nGPT-4 with pairwise comparison and single-answer grading respectively. The single-answer grading\ncan be converted into pairwise comparison results for calculating the agreement. We report two\nsetups: “S1” includes non-tie, tie, and inconsistent (due to position bias) votes and counts inconsistent\nas tie; “S2” only includes non-tie votes. The agreement between two random judges under each setup",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "is denoted as “R=”. The top value in each cell is the agreement, and the bottom gray value is #votes.\nSetup\nS1 (R = 33%)\nS2 (R = 50%)\nJudge\nG4-Single\nHuman\nG4-Single\nHuman\nG4-Pair\n70%\n1138\n66%\n1343\n97%\n662\n85%\n859\nG4-Single\n-\n60%\n1280\n-\n85%\n739\nHuman\n-\n63%\n721\n-\n81%\n479\n(a) First Turn\nSetup\nS1 (R = 33%)\nS2 (R = 50%)\nJudge\nG4-Single\nHuman\nG4-Single\nHuman\nG4-Pair\n70%\n1161\n66%\n1325\n95%\n727\n85%\n864\nG4-Single\n-\n59%\n1285\n-\n84%\n776\nHuman\n-\n67%\n707\n-\n82%\n474\n(b) Second Turn",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "84%\n776\nHuman\n-\n67%\n707\n-\n82%\n474\n(b) Second Turn\nTable 6: Agreement between two types of judges on Chatbot\nArena. “G4-S” denotes GPT-4 with single-answer grading.\n“G4”, “G3.5” and “C” denote GPT-4, GPT-3.5, and Claude\nwith pairwise comparison, respectively. “H” denotes human.\nThe remaining of table follows the same format as Table 5.\nSetup\nS1 (Random = 33%)\nS2 (Random = 50%)\nJudge\nG4-S\nG3.5\nC\nH\nG4-S\nG3.5\nC\nH\nG4\n72%\n2968\n66%\n3061\n66%\n3062\n64%\n3066\n95%\n1967\n94%\n1788\n95%\n1712\n87%\n1944\nG4-S\n-\n60%\n2964\n62%",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "94%\n1788\n95%\n1712\n87%\n1944\nG4-S\n-\n60%\n2964\n62%\n2964\n60%\n2968\n-\n89%\n1593\n91%\n1538\n85%\n1761\nG3.5\n-\n-\n68%\n3057\n54%\n3061\n-\n-\n96%\n1497\n83%\n1567\nC\n-\n-\n-\n53%\n3062\n-\n-\n-\n84%\n1475\n0.0\n0.5\n1.0\nWin rate difference\n0.7\n0.8\n0.9\n1.0\nAgreement\nFigure 2: Agreement and win rate dif-\nference. Each point corresponds to a\nmodel pair and counts only the non-tie\nvotes between the two models. The x-\naxis value is the win rate difference be-\ntween the two models. The y-axis value\nis the GPT-4 and human agreement.\nGPT-4\nClaude",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "is the GPT-4 and human agreement.\nGPT-4\nClaude\nGPT-3.5\nVicuna-13B\nVicuna-7B\nKoala-13B\nAlpaca-13B\nDolly-12B\nLLaMA-13B\n(a) All votes\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nGPT-4\nClaude\nGPT-3.5\nVicuna-13B\nVicuna-7B\nKoala-13B\nAlpaca-13B\nDolly-12B\nLLaMA-13B\n(b) Non-tied votes\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nWin rate\nGPT-4 Judge\nGPT-3.5 Judge\nHuman\nGPT-4-Single Judge\nFigure 4: Average win rate of nine models under different judges on Chatbot Arena.\nTable 7: Category-wise win rate of models.\nModel\nWriting\nRoleplay\nReasoning\nMath\nCoding",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "Model\nWriting\nRoleplay\nReasoning\nMath\nCoding\nExtraction\nSTEM\nHumanities\nGPT-4\n61.2%\n67.9%\n49.3%\n66.1%\n56.3%\n66.2%\n76.6%\n72.2%\nGPT-3.5\n50.9%\n60.6%\n32.6%\n63.8%\n55.0%\n48.8%\n52.8%\n53.8%\nVicuna-13B\n39.7%\n39.2%\n20.1%\n18.0%\n36.9%\n29.2%\n47.0%\n47.5%\nLLaMA-13B\n15.1%\n15.1%\n7.8%\n7.5%\n2.1%\n9.3%\n6.8%\n10.1%\n4.3\nWin rates under different judges\nWe plot the average win rate of models under different judges on MT-bench and Chatbot Arena",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 422,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "in Figure 3 and Figure 4, respectively. The win rate curves from LLM judges closely match the\ncurves from humans. On MT-bench second turn, proprietary models like Claude and GPT-3.5 are\nmore preferred by the humans compared to the first turn, meaning that a multi-turn benchmark can\nbetter differentiate some advanced abilities of models. We also list the per-category win rate of\n8",
+      "source": "ragas.pdf",
+      "page": 8,
+      "char_count": 382,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "Table 8: Evaluation results of several model variants.\nModel\n#Training Token\nMMLU (5-shot)\nTruthfulQA (0-shot)\nMT-Bench Score (GPT-4)\nLLaMA-7B\n1T\n35.2\n0.22\n2.74\nLLaMA-13B\n1T\n47.0\n0.26\n2.61\nAlpaca-7B\n4.4M\n40.1\n0.26\n4.54\nAlpaca-13B\n4.4M\n48.1\n0.30\n4.53\nVicuna-7B (selected)\n4.8M\n37.3\n0.32\n5.95\nVicuna-7B (single)\n184M\n44.1\n0.30\n6.04\nVicuna-7B (all)\n370M\n47.1\n0.32\n6.00\nVicuna-13B (all)\n370M\n52.1\n0.35\n6.39\nGPT-3.5\n-\n70.0\n-\n7.94\nGPT-4\n-\n86.4\n-\n8.99",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "6.39\nGPT-3.5\n-\n70.0\n-\n7.94\nGPT-4\n-\n86.4\n-\n8.99\nrepresentative models in Table 7 to show how MT-bench differentiates models, in which we see GPT-4\nis significantly better than others. Vicuna-13B is noticeably worse than GPT-3.5/4 in reasoning, math,\nand coding categories. Note that in math/coding category, GPT-3.5 and GPT-4 have similar overall\nwin-rate because they both failed to answer some hard questions, but GPT-4 is still significantly better",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "than GPT-3 in the direct pairwise comparison or single-answer grading. Please see a performance\nbreakdown of MT-bench score for each category in Appendix D.4.\n5\nHuman Preference Benchmark and Standardized Benchmark\nHuman preference benchmarks such as MT-bench and Chatbot Arena serve as valuable additions\nto the current standardized LLM benchmarks. They focus on different aspects of a model and the\nrecommended way is to comprehensively evaluate models with both kinds of benchmarks.",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "We evaluate several model variants derived from LLaMA on MMLU [19], Truthful QA [26] (MC1),\nand MT-bench (GPT-4 judge). The training details are in Appendix E. Since we have shown that\nGPT-4 single-answer grading also performs well in Section 4.2, we use GPT-4 single-answer grading\nfor MT-bench in favor of its scalability and simplicity. We ask GPT-4 to give a score for each turn\non a scale of 10 by using our prompt templates (Figure 6, Figure 10) and report an average score of",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "160 = 80×2 turns. Table 8 shows the results. We find that fine-tuning on high-quality dialog datasets\n(i.e., ShareGPT) can consistently improve the model performance on MMLU and the improvement\nscales with fine-tuning data size. On the other hand, a small high-quality conversation dataset can\nquickly teach the model a style preferred by GPT-4 (or approximately human) but cannot improve\nMMLU significantly, as shown by the Vicuna-7B (selected) which is trained with only 4.8M tokens",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "or 3K conversations. In Table 8, no single benchmark can determine model quality, meaning that a\ncomprehensive evaluation is needed. Our results indicate that using LLM-as-a-judge to approximate\nhuman preferences is highly feasible and could become a new standard in future benchmarks. We\nare also hosting a regularly updated leaderboard with more models 2. Notably, DynaBench [21], a\nresearch platform dedicated to dynamic data collection and benchmarking, aligns with our spirit.",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "DynaBench addresses the challenges posed by static standardized benchmarks, such as saturation and\noverfitting, by emphasizing dynamic data with human-in-the-loop. Our LLM-as-a-judge approach\ncan automate and scale platforms of this nature.\n6\nDiscussion\nLimitations. This paper emphasizes helpfulness but largely neglects safety. Honesty and harm-\nlessness are crucial for a chat assistant as well [2]. We anticipate similar methods can be used to",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "evaluate these metrics by modifying the default prompt. Additionally, within helpfulness, there\nare multiple dimensions like accuracy, relevance, and creativity, but they are all combined into a\nsingle metric in this study. A more comprehensive evaluation can be developed by analyzing and\nseparating these dimensions. We propose preliminary solutions to address the limitations and biases\nof LLM-as-a-judge in Section 3.4, but we anticipate more advanced methods can be developed.",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "Data collection and release. Appendix C describes the detailed data collection and release processes,\nwhich include the instructions we give to users, the screenshots of the data collection interface, the\ninformation about participated users, and the content of the released data.\n2https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard\n9",
+      "source": "ragas.pdf",
+      "page": 9,
+      "char_count": 345,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "Societal impacts. The societal impact of this study is multi-faceted. Our evaluation methods can\nhelp enhance chatbot quality and user experiences. However, addressing biases in these methods is\ncrucial. Our dataset enables better studies of human preferences and model behavior. Advanced chat\nassistants may replace certain human tasks, resulting in job displacements and new opportunities.\nFuture directions. 1) Benchmarking chatbots at scale with a broader set of categories 2) Open-source",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "LLM judge aligned with human preference 3) Enhancing open models’ math/reasoning capability.\n7\nConclusion\nIn this paper, we propose LLM-as-a-judge for chatbot evaluation and systematically examine its\nefficacy using human preference data from 58 experts on MT-bench, as well as thousands of crowd-\nusers on Chatbot Arena. Our results reveal that strong LLMs can achieve an agreement rate of over\n80%, on par with the level of agreement among human experts, establishing a foundation for an",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "LLM-based evaluation framework.\nAcknowledgement\nThis project is partly supported by gifts from Anyscale, Astronomer, Google, IBM, Intel, Lacework,\nMicrosoft, MBZUAI, Samsung SDS, Uber, and VMware. Lianmin Zheng is supported by a Meta\nPh.D. Fellowship. We extend our thanks to Xinyang Geng, Hao Liu, Eric Wallace, Xuecheng Li,\nTianyi Zhang, Qirong Ho, and Kevin Lin for their insightful discussions.\nReferences\n[1] Rohan Anil, Andrew M Dai, Orhan Firat, Melvin Johnson, Dmitry Lepikhin, Alexandre Passos,",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Siamak Shakeri, Emanuel Taropa, Paige Bailey, Zhifeng Chen, et al. Palm 2 technical report.\narXiv preprint arXiv:2305.10403, 2023.\n[2] Yuntao Bai, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn\nDrain, Stanislav Fort, Deep Ganguli, Tom Henighan, et al. Training a helpful and harmless\nassistant with reinforcement learning from human feedback. arXiv preprint arXiv:2204.05862,\n2022.\n[3] Niels J Blunch. Position bias in multiple-choice questions. Journal of Marketing Research,",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "21(2):216–220, 1984.\n[4] Jonathon D Brown. Evaluations of self and others: Self-enhancement biases in social judgments.\nSocial cognition, 4(4):353–376, 1986.\n[5] Sébastien Bubeck, Varun Chandrasekaran, Ronen Eldan, Johannes Gehrke, Eric Horvitz, Ece\nKamar, Peter Lee, Yin Tat Lee, Yuanzhi Li, Scott Lundberg, et al. Sparks of artificial general\nintelligence: Early experiments with gpt-4. arXiv preprint arXiv:2303.12712, 2023.",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "[6] Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de Oliveira Pinto, Jared\nKaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, et al. Evaluating large\nlanguage models trained on code. arXiv preprint arXiv:2107.03374, 2021.\n[7] Cheng-Han Chiang and Hung-yi Lee. Can large language models be an alternative to human\nevaluations? arXiv preprint arXiv:2305.01937, 2023.\n[8] Wei-Lin Chiang, Zhuohan Li, Zi Lin, Ying Sheng, Zhanghao Wu, Hao Zhang, Lianmin Zheng,",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "Siyuan Zhuang, Yonghao Zhuang, Joseph E. Gonzalez, Ion Stoica, and Eric P. Xing. Vicuna:\nAn open-source chatbot impressing gpt-4 with 90%* chatgpt quality, March 2023.\n[9] Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa Schoenick,\nand Oyvind Tafjord. Think you have solved question answering? try arc, the ai2 reasoning\nchallenge. arXiv preprint arXiv:1803.05457, 2018.\n[10] Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser,",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al. Training verifiers to\nsolve math word problems. arXiv preprint arXiv:2110.14168, 2021.\n10",
+      "source": "ragas.pdf",
+      "page": 10,
+      "char_count": 161,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "[11] Tri Dao, Dan Fu, Stefano Ermon, Atri Rudra, and Christopher Ré. Flashattention: Fast and\nmemory-efficient exact attention with io-awareness. Advances in Neural Information Processing\nSystems, 35:16344–16359, 2022.\n[12] Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. Qlora: Efficient\nfinetuning of quantized llms. arXiv preprint arXiv:2305.14314, 2023.\n[13] Shizhe Diao, Rui Pan, Hanze Dong, Ka Shun Shum, Jipeng Zhang, Wei Xiong, and Tong Zhang.",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "Lmflow: An extensible toolkit for finetuning and inference of large foundation models. arXiv\npreprint arXiv:2306.12420, 2023.\n[14] Yann Dubois, Xuechen Li, Rohan Taori, Tianyi Zhang, Ishaan Gulrajani, Jimmy Ba, Carlos\nGuestrin, Percy Liang, and Tatsunori B Hashimoto. Alpacafarm: A simulation framework for\nmethods that learn from human feedback. arXiv preprint arXiv:2305.14387, 2023.\n[15] Jiazhan Feng, Qingfeng Sun, Can Xu, Pu Zhao, Yaming Yang, Chongyang Tao, Dongyan Zhao,",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "and Qingwei Lin. Mmdialog: A large-scale multi-turn dialogue dataset towards multi-modal\nopen-domain conversation. arXiv preprint arXiv:2211.05719, 2022.\n[16] Xinyang Geng, Arnav Gudibande, Hao Liu, Eric Wallace, Pieter Abbeel, Sergey Levine, and\nDawn Song. Koala: A dialogue model for academic research. Blog post, April 2023.\n[17] Fabrizio Gilardi, Meysam Alizadeh, and Maël Kubli. Chatgpt outperforms crowd-workers for\ntext-annotation tasks. arXiv preprint arXiv:2303.15056, 2023.",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "[18] Arnav Gudibande, Eric Wallace, Charlie Snell, Xinyang Geng, Hao Liu, Pieter Abbeel, Sergey\nLevine, and Dawn Song. The false promise of imitating proprietary llms. arXiv preprint\narXiv:2305.15717, 2023.\n[19] Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and\nJacob Steinhardt.\nMeasuring massive multitask language understanding.\narXiv preprint\narXiv:2009.03300, 2020.\n[20] Fan Huang, Haewoon Kwak, and Jisun An. Is chatgpt better than human annotators? potential",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "and limitations of chatgpt in explaining implicit hate speech. arXiv preprint arXiv:2302.07736,\n2023.\n[21] Douwe Kiela, Max Bartolo, Yixin Nie, Divyansh Kaushik, Atticus Geiger, Zhengxuan Wu,\nBertie Vidgen, Grusha Prasad, Amanpreet Singh, Pratik Ringshia, et al. Dynabench: Rethinking\nbenchmarking in nlp. In Proceedings of the 2021 Conference of the North American Chapter\nof the Association for Computational Linguistics: Human Language Technologies, pages\n4110–4124, 2021.",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "4110–4124, 2021.\n[22] Miyoung Ko, Jinhyuk Lee, Hyunjae Kim, Gangwoo Kim, and Jaewoo Kang. Look at the first\nsentence: Position bias in question answering. arXiv preprint arXiv:2004.14602, 2020.\n[23] Andreas Köpf, Yannic Kilcher, Dimitri von Rütte, Sotiris Anagnostidis, Zhi-Rui Tam, Keith\nStevens, Abdullah Barhoum, Nguyen Minh Duc, Oliver Stanley, Richárd Nagyfi, et al. Ope-\nnassistant conversations–democratizing large language model alignment.\narXiv preprint\narXiv:2304.07327, 2023.",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "arXiv preprint\narXiv:2304.07327, 2023.\n[24] Percy Liang, Rishi Bommasani, Tony Lee, Dimitris Tsipras, Dilara Soylu, Michihiro Yasunaga,\nYian Zhang, Deepak Narayanan, Yuhuai Wu, Ananya Kumar, et al. Holistic evaluation of\nlanguage models. arXiv preprint arXiv:2211.09110, 2022.\n[25] Chin-Yew Lin. Rouge: A package for automatic evaluation of summaries. In Text summarization\nbranches out, pages 74–81, 2004.\n[26] Stephanie Lin, Jacob Hilton, and Owain Evans. Truthfulqa: Measuring how models mimic",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "human falsehoods. arXiv preprint arXiv:2109.07958, 2021.\n[27] Shayne Longpre, Le Hou, Tu Vu, Albert Webson, Hyung Won Chung, Yi Tay, Denny Zhou,\nQuoc V Le, Barret Zoph, Jason Wei, et al. The flan collection: Designing data and methods for\neffective instruction tuning. arXiv preprint arXiv:2301.13688, 2023.\n[28] Swaroop Mishra, Daniel Khashabi, Chitta Baral, and Hannaneh Hajishirzi. Cross-task general-\nization via natural language crowdsourcing instructions. In ACL, 2022.",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "[29] OpenAI. Evals is a framework for evaluating llms and llm systems, and an open-source registry\nof benchmarks. https://github.com/openai/evals.\n[30] OpenAI. Gpt-4 technical report, 2023.\n11",
+      "source": "ragas.pdf",
+      "page": 11,
+      "char_count": 192,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "[31] Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin,\nChong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to\nfollow instructions with human feedback. Advances in Neural Information Processing Systems,\n35:27730–27744, 2022.\n[32] Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. Bleu: a method for automatic\nevaluation of machine translation. In Proceedings of the 40th annual meeting of the Association",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "for Computational Linguistics, pages 311–318, 2002.\n[33] Baolin Peng, Chunyuan Li, Pengcheng He, Michel Galley, and Jianfeng Gao. Instruction tuning\nwith gpt-4. arXiv preprint arXiv:2304.03277, 2023.\n[34] Priya Raghubir and Ana Valenzuela. Center-of-inattention: Position biases in decision-making.\nOrganizational Behavior and Human Decision Processes, 99(1):66–80, 2006.\n[35] Siva Reddy, Danqi Chen, and Christopher D Manning. Coqa: A conversational question",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "answering challenge. Transactions of the Association for Computational Linguistics, 7:249–266,\n2019.\n[36] Keisuke Sakaguchi, Ronan Le Bras, Chandra Bhagavatula, and Yejin Choi. Winogrande: An\nadversarial winograd schema challenge at scale. Communications of the ACM, 64(9):99–106,\n2021.\n[37] Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao, Abu Awal Md Shoeb, Abubakar Abid,\nAdam Fisch, Adam R Brown, Adam Santoro, Aditya Gupta, Adrià Garriga-Alonso, et al.",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Beyond the imitation game: Quantifying and extrapolating the capabilities of language models.\narXiv preprint arXiv:2206.04615, 2022.\n[38] Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann Dubois, Xuechen Li, Carlos Guestrin, Percy\nLiang, and Tatsunori B. Hashimoto. Stanford alpaca: An instruction-following llama model.\nhttps://github.com/tatsu-lab/stanford_alpaca, 2023.\n[39] Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timo-",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "thée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, et al. Llama: Open\nand efficient foundation language models. arXiv preprint arXiv:2302.13971, 2023.\n[40] Peiyi Wang, Lei Li, Liang Chen, Dawei Zhu, Binghuai Lin, Yunbo Cao, Qi Liu, Tianyu Liu, and\nZhifang Sui. Large language models are not fair evaluators. arXiv preprint arXiv:2305.17926,\n2023.\n[41] Xuanhui Wang, Nadav Golbandi, Michael Bendersky, Donald Metzler, and Marc Najork.",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "Position bias estimation for unbiased learning to rank in personal search. In Proceedings of\nthe Eleventh ACM International Conference on Web Search and Data Mining, pages 610–618,\n2018.\n[42] Yidong Wang, Zhuohao Yu, Zhengran Zeng, Linyi Yang, Cunxiang Wang, Hao Chen, Chaoya\nJiang, Rui Xie, Jindong Wang, Xing Xie, Wei Ye, Shikun Zhang, and Yue Zhang. Pandalm: An\nautomatic evaluation benchmark for llm instruction tuning optimization, 2023.",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "[43] Yizhong Wang, Hamish Ivison, Pradeep Dasigi, Jack Hessel, Tushar Khot, Khyathi Raghavi\nChandu, David Wadden, Kelsey MacMillan, Noah A Smith, Iz Beltagy, et al. How far can camels\ngo? exploring the state of instruction tuning on open resources. arXiv preprint arXiv:2306.04751,\n2023.\n[44] Yizhong Wang, Yeganeh Kordi, Swaroop Mishra, Alisa Liu, Noah A. Smith, Daniel Khashabi,\nand Hannaneh Hajishirzi. Self-instruct: Aligning language model with self generated instruc-\ntions, 2022.",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "tions, 2022.\n[45] Yizhong Wang, Swaroop Mishra, Pegah Alipoormolabashi, Yeganeh Kordi, Amirreza Mirzaei,\nAnjana Arunkumar, Arjun Ashok, Arut Selvan Dhanasekaran, Atharva Naik, David Stap, et al.\nSuper-naturalinstructions:generalization via declarative instructions on 1600+ tasks. In EMNLP,\n2022.\n[46] Jason Wei, Maarten Bosma, Vincent Y Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan\nDu, Andrew M Dai, and Quoc V Le. Finetuned language models are zero-shot learners. arXiv\npreprint arXiv:2109.01652, 2021.",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "preprint arXiv:2109.01652, 2021.\n[47] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and Denny\nZhou. Chain of thought prompting elicits reasoning in large language models. arXiv preprint\narXiv:2201.11903, 2022.\n12",
+      "source": "ragas.pdf",
+      "page": 12,
+      "char_count": 239,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "[48] Can Xu, Qingfeng Sun, Kai Zheng, Xiubo Geng, Pu Zhao, Jiazhan Feng, Chongyang Tao, and\nDaxin Jiang. Wizardlm: Empowering large language models to follow complex instructions.\narXiv preprint arXiv:2304.12244, 2023.\n[49] Zongheng Yang, Zhanghao Wu, Michael Luo, Wei-Lin Chiang, Romil Bhardwaj, Woosuk Kwon,\nSiyuan Zhuang, Frank Sifei Luan, Gautam Mittal, Scott Shenker, and Ion Stoica. SkyPilot:\nAn intercloud broker for sky computing. In 20th USENIX Symposium on Networked Systems",
+      "source": "ragas.pdf",
+      "page": 13,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "Design and Implementation (NSDI 23), pages 437–455, Boston, MA, April 2023. USENIX\nAssociation.\n[50] Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi. Hellaswag: Can a\nmachine really finish your sentence? arXiv preprint arXiv:1905.07830, 2019.\n[51] Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied,\nWeizhu Chen, and Nan Duan. Agieval: A human-centric benchmark for evaluating foundation\nmodels. arXiv preprint arXiv:2304.06364, 2023.",
+      "source": "ragas.pdf",
+      "page": 13,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "models. arXiv preprint arXiv:2304.06364, 2023.\n[52] Chunting Zhou, Pengfei Liu, Puxin Xu, Srini Iyer, Jiao Sun, Yuning Mao, Xuezhe Ma, Avia\nEfrat, Ping Yu, Lili Yu, et al. Lima: Less is more for alignment. arXiv preprint arXiv:2305.11206,\n2023.\n13",
+      "source": "ragas.pdf",
+      "page": 13,
+      "char_count": 247,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "A\nPrompt templates\nWe list the prompt templates for LLM judges. Please refer to our github repository 3 for full details.\n[System]\nPlease act as an impartial judge and evaluate the quality of the responses provided by two \nAI assistants to the user question displayed below. You should choose the assistant that \nfollows the user’s instructions and answers the user’s question better. Your evaluation \nshould consider factors such as the helpfulness, relevance, accuracy, depth, creativity,",
+      "source": "ragas.pdf",
+      "page": 14,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "and level of detail of their responses. Begin your evaluation by comparing the two \nresponses and provide a short explanation. Avoid any position biases and ensure that the \norder in which the responses were presented does not influence your decision. Do not allow \nthe length of the responses to influence your evaluation. Do not favor certain names of \nthe assistants. Be as objective as possible. After providing your explanation, output your",
+      "source": "ragas.pdf",
+      "page": 14,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "final verdict by strictly following this format: \"[[A]]\" if assistant A is better, \"[[B]]\" \nif assistant B is better, and \"[[C]]\" for a tie.\n[User Question]\n{question}\n[The Start of Assistant A’s Answer]\n{answer_a}\n[The End of Assistant A’s Answer]\n[The Start of Assistant B’s Answer]\n{answer_b}\n[The End of Assistant B’s Answer]\nFigure 5: The default prompt for pairwise comparison.\n[System]\nPlease act as an impartial judge and evaluate the quality of the response provided by an",
+      "source": "ragas.pdf",
+      "page": 14,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "AI assistant to the user question displayed below. Your evaluation should consider factors \nsuch as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of \nthe response. Begin your evaluation by providing a short explanation. Be as objective as \npossible. After providing your explanation, please rate the response on a scale of 1 to 10 \nby strictly following this format: \"[[rating]]\", for example: \"Rating: [[5]]\".\n[Question]\n{question}\n[The Start of Assistant’s Answer]\n{answer}",
+      "source": "ragas.pdf",
+      "page": 14,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "[The Start of Assistant’s Answer]\n{answer}\n[The End of Assistant’s Answer]\nFigure 6: The default prompt for single answer grading.\n3https://github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge\n14",
+      "source": "ragas.pdf",
+      "page": 14,
+      "char_count": 198,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "[System]\nPlease act as an impartial judge and evaluate the quality of the responses provided by two \nAI assistants to the user question displayed below. Your evaluation should consider \ncorrectness and helpfulness. You will be given assistant A’s answer, and assistant B’s \nanswer. Your job is to evaluate which assistant’s answer is better. You should \nindependently solve the user question step-by-step first. Then compare both assistants’",
+      "source": "ragas.pdf",
+      "page": 15,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "answers with your answer. Identify and correct any mistakes. Avoid any position biases and \nensure that the order in which the responses were presented does not influence your \ndecision. Do not allow the length of the responses to influence your evaluation. Do not\nfavor certain names of the assistants. Be as objective as possible. After providing your \nexplanation, output your final verdict by strictly following this format: \"[[A]]\" if",
+      "source": "ragas.pdf",
+      "page": 15,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "assistant A is better, \"[[B]]\" if assistant B is better, and \"[[C]]\" for a tie.\n[User Question]\n{question}\n[The Start of Assistant A’s Answer]\n{answer_a}\n[The End of Assistant A’s Answer]\n[The Start of Assistant B’s Answer]\n{answer_b}\n[The End of Assistant B’s Answer]\nFigure 7: The chain-of-thought prompt for math and reasoning questions.\n[System]\nPlease act as an impartial judge and evaluate the quality of the responses provided by two",
+      "source": "ragas.pdf",
+      "page": 15,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "AI assistants to the user question displayed below. Your evaluation should consider \ncorrectness and helpfulness. You will be given a reference answer, assistant A’s answer, \nand assistant B’s answer. Your job is to evaluate which assistant’s answer is better. \nBegin your evaluation by comparing both assistants’ answers with the reference answer. \nIdentify and correct any mistakes. Avoid any position biases and ensure that the order in",
+      "source": "ragas.pdf",
+      "page": 15,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "which the responses were presented does not influence your decision. Do not allow the \nlength of the responses to influence your evaluation. Do not favor certain names of the \nassistants. Be as objective as possible. After providing your explanation, output your \nfinal verdict by strictly following this format: \"[[A]]\" if assistant A is better, \"[[B]]\" \nif assistant B is better, and \"[[C]]\" for a tie.\n[User Question]\n{question}\n[The Start of Reference Answer]\n{answer_ref}\n[The End of Reference Answer]",
+      "source": "ragas.pdf",
+      "page": 15,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "{answer_ref}\n[The End of Reference Answer]\n[The Start of Assistant A’s Answer]\n{answer_a}\n[The End of Assistant A’s Answer]\n[The Start of Assistant B’s Answer]\n{answer_b}\n[The End of Assistant B’s Answer]\nFigure 8: The prompt for reference-guided pairwise comparison.\n15",
+      "source": "ragas.pdf",
+      "page": 15,
+      "char_count": 270,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "[System]\nPlease act as an impartial judge and evaluate the quality of the responses provided by two \nAI assistants to the user question displayed below. You should choose the assistant that \nfollows the user’s instructions and answers the user’s question better. Your evaluation \nshould consider factors such as the helpfulness, relevance, accuracy, depth, creativity, \nand level of detail of their responses. Begin your evaluation by comparing the two",
+      "source": "ragas.pdf",
+      "page": 16,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "responses and provide a short explanation. Avoid any position biases and ensure that the \norder in which the responses were presented does not influence your decision. Do not allow \nthe length of the responses to influence your evaluation. Do not favor certain names of \nthe assistants. Be as objective as possible. After providing your explanation, output your \nfinal verdict by strictly following this format: \"[[A]]\" if assistant A is better, \"[[B]]\" \nif assistant B is better, and \"[[C]]\" for a tie.",
+      "source": "ragas.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "if assistant B is better, and \"[[C]]\" for a tie.\n<|The Start of Assistant A’s Conversation with User|>\n### User:\n{question 1}\n### Assistant A:\n{answer 1}\n### User:\n{question 2}\n### Assistant A:\n{answer 2}\n<|The End of Assistant A’s Conversation with User|>\n<|The Start of Assistant B’s Conversation with User|>\n### User:\n{question 1}\n### Assistant B:\n{answer 1}\n### User:\n{question 2}\n### Assistant B:\n{answer 2}\n<|The End of Assistant B’s Conversation with User|>",
+      "source": "ragas.pdf",
+      "page": 16,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "Figure 9: The prompt for multi-turn pairwise comparison.\n16",
+      "source": "ragas.pdf",
+      "page": 16,
+      "char_count": 59,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "[System]\nPlease act as an impartial judge and evaluate the quality of the response provided by an \nAI assistant to the user question. Your evaluation should consider correctness and \nhelpfulness. You will be given a reference answer and the assistant's answer. You \nevaluation should focus on the assistant's answer to the second question. Begin your \nevaluation by comparing the assistant's answer with the reference answer. Identify and",
+      "source": "ragas.pdf",
+      "page": 17,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "correct any mistakes. Be as objective as possible. After providing your explanation, you \nmust rate the response on a scale of 1 to 10 by strictly following this format: \n\"[[rating]]\", for example: \"Rating: [[5]]\".\n<|The Start of Reference Answer|>\n### User:\n{question_1}\n### Reference answer:\n{ref_answer_1}\n### User:\n{question_2}\n### Reference answer:\n{ref_answer_2}\n<|The End of Reference Answer|>\n<|The Start of Assistant A's Conversation with User|>\n### User:\n{question_1} \n### Assistant A:\n{answer_1}",
+      "source": "ragas.pdf",
+      "page": 17,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "{question_1} \n### Assistant A:\n{answer_1}\n### User:\n{question_2}\n### Assistant A:\n{answer_2}\n<|The End of Assistant A's Conversation with User|>\nFigure 10: The prompt for reference-guided multi-turn single-answer grading.\n17",
+      "source": "ragas.pdf",
+      "page": 17,
+      "char_count": 224,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "B\nCase Study\nWe list several case studies. The examples are generated by gpt-4-0314. They may not be fully\nreproducible with future GPT-4 versions.\nQuestion: What are some business etiquette norms when doing business in Japan?\nAssistant B:\nWhen doing business in Japan, it is important to be \naware of and respect the country’s business \netiquette norms. Some of these norms include:\n1.\nGreetings: A handshake and bow is the standard \ngreeting in Japan. It is important to bow deeply",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "greeting in Japan. It is important to bow deeply \nand to offer a firm handshake.\n2.\nBusiness cards: In Japan, business cards are \nexchanged after the initial greeting. It is \nimportant to handle the card with respect and to \nread it carefully before placing it on the \ntable.\n3.\nMeetings: Meetings in Japan are typically formal \nand conducted in a hierarchical manner. It is \nimportant to address people by their titles and \nto avoid direct eye contact.\n4.\nPunctuality: Punctuality is highly valued in",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "4.\nPunctuality: Punctuality is highly valued in \nJapan. It is important to arrive on time for \nmeetings and to be prepared in advance.\n5.\nGift giving: Gift giving is a common practice in \nJapan, but it is important to be mindful of the \noccasion and the relationship. Avoid giving \ngifts that are considered too personal or \nextravagant.\n6.\nDining: Dining is an important part of doing \nbusiness in Japan. It is important to be aware \nof the proper table manners and to avoid",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "of the proper table manners and to avoid \nslurping or making loud noises while eating.\n7.\nCommunication: Communication in Japan is \ntypically indirect and reserved. It is important \nto listen carefully and to avoid confrontational \nlanguage.\nOverall, it is important to be respectful, \npunctual, and mindful of hierarchy when doing \nbusiness in Japan.\nAssistant A:\nHere are some business etiquette norms to keep \nin mind when doing business in Japan:\n1.\nBowing: Bowing is a common greeting in",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "1.\nBowing: Bowing is a common greeting in \nJapan. It is a sign of respect and should \nbe reciprocated.\n2.\nBusiness cards: Business cards are \nexchanged at the beginning of a meeting. It \nis important to receive and give business \ncards with both hands and to take a moment \nto read the card before putting it away.\n3.\nPunctuality: Being on time is important in \nJapan. Arrive a few minutes early to show \nrespect for your colleagues.\n4.\nDress code: Dress conservatively and",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "4.\nDress code: Dress conservatively and \nprofessionally. Men should wear dark suits \nand ties, while women should wear \nconservative business attire.\n5.\nLanguage: Learn a few basic Japanese \nphrases to show respect for the culture. It \nis also important to speak clearly and \navoid using slang or idioms.\n6.\nGift giving: Gift giving is a common \npractice in Japan. Bring a small gift, such \nas a box of chocolates or a small souvenir \nfrom your home country.\n7.\nDining etiquette: When dining with",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "7.\nDining etiquette: When dining with \ncolleagues, wait for the host to begin \neating before you start. Use chopsticks \ncorrectly and avoid leaving food on your \nplate.\nRemember, showing respect for Japanese culture \nand customs is key to building strong business \nrelationships in Japan.\nGPT-4 Judgment (when A is placed in the first position):\nBoth Assistant A and Assistant B provide helpful and relevant information about business etiquette",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "norms in Japan. However, Assistant A’s answer is more detailed and organized, covering a wider range \nof topics such as dress code and language, which are not mentioned in Assistant B’s response. \nAssistant A also provides more specific advice on how to handle certain situations, such as \nexchanging business cards and dining etiquette. Therefore, Assistant A’s answer is more comprehensive \nand useful for someone looking to understand Japanese business etiquette.",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "GPT-4 Judgment (when B is placed in the first position):\nBoth Assistant A and Assistant B provide helpful and relevant information about business etiquette \nnorms in Japan. However, Assistant B’s answer is more detailed and covers a wider range of topics, \nsuch as addressing people by their titles, avoiding direct eye contact, and being mindful of \ncommunication styles. Assistant A’s answer is more concise but lacks some of the depth found in",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "Assistant B’s response. Therefore, Assistant B’s answer is better in this case.\nFigure 11: An example of position bias. When Assistant A is placed in the first position, GPT-4\nthinks A is better, but its verdict changes when we swap the position of A and B. We observe similar\npattern from other LLM judges such as Claude/GPT-3.5.\n18",
+      "source": "ragas.pdf",
+      "page": 18,
+      "char_count": 333,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "Question: What is the central dogma of molecular biology? What processes are involved? Who named this?\nAssistant B:\nThe central dogma of molecular biology is the \nfundamental principle that explains how genetic \ninformation flows within a biological system. It \nstates that DNA is transcribed into RNA, which is \nthen translated into proteins. This means that \nthe genetic information stored in DNA is first \ncopied into RNA, which then serves as a template \nfor the synthesis of proteins.",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "for the synthesis of proteins.\nThe processes involved in the central dogma are:\n1. Transcription: The process by which the \ngenetic information in DNA is copied into RNA.\n2. Translation: The process by which the genetic \ninformation in RNA is used to synthesize \nproteins.\nThe term \"central dogma\" was coined by Francis \nCrick, one of the co-discoverers of the structure \nof DNA, in 1958.\nAssistant A:\nThe central dogma of molecular biology is the \nfundamental principle that explains how genetic",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "fundamental principle that explains how genetic \ninformation flows within a biological system. It \nstates that DNA is transcribed into RNA, which is \nthen translated into proteins. This means that \nthe genetic information stored in DNA is first \ncopied into RNA, which then serves as a template \nfor the synthesis of proteins.\nThe processes involved in the central dogma are:\n1. Transcription rephrased: The act of copying \ngenetic information from DNA to RNA.\n2. Translation rephrased: The act of using",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "2. Translation rephrased: The act of using \ngenetic information in RNA to create proteins.\n3. Transcription: The process by which the \ngenetic information in DNA is copied into RNA.\n4. Translation: The process by which the genetic \ninformation in RNA is used to synthesize \nproteins.\nThe term \"central dogma\" was coined by Francis \nCrick, one of the co-discoverers of the structure \nof DNA, in 1958.\nGPT-3.5 Judgment:",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "of DNA, in 1958.\nGPT-3.5 Judgment:\nAssistant A provides a more detailed and accurate response to the user's question. While both \nassistants correctly state the central dogma of molecular biology and who coined the term, Assistant \nA provides a more comprehensive explanation of the processes involved in the central dogma, including \nthe rephrased definitions of transcription and translation. Therefore, I choose A as the better \nassistant.\nClaude-v1 Judgment:",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "assistant.\nClaude-v1 Judgment:\nBoth assistants answer the question by defining the central dogma and detailing the two processes \ninvolved, transcription and translation. However, assistant A provides a more in-depth and detailed \nexplanation by briefly rephrasing and elaborating on these processes. Assistant A also mentions who \ncoined the term \"central dogma\", which provides useful context and shows a more comprehensive",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "understanding of the topic. Overall, assistant A gives a fuller and more insightful response, so I \nhave chosen it as the better assistant for this question.\nGPT-4 Judgment:\nBoth Assistant A and Assistant B provide accurate and relevant information about the central dogma of \nmolecular biology, the processes involved, and who named it. However, Assistant A's answer contains a \nminor redundancy by rephrasing transcription and translation twice. Assistant B's answer is more",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "concise and avoids this redundancy. Therefore, Assistant B's answer is better.\nFigure 12: An example of “repetitive list” attack to examine verbosity bias. Except for the two\nrephrased items (highlighted in red), Assistant A’s answer is exactly the same as Assistant B. Both\nGPT-3.5 and Claude-v1 show a verbosity bias towards the longer and repetitive answer. Only GPT-4\nsuccessfully detected this attack.\n19",
+      "source": "ragas.pdf",
+      "page": 19,
+      "char_count": 409,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "Question: Benjamin went to a bookstore and purchased a variety of books. He bought 5 copies of a sci-fi \nnovel, each priced at $20, 3 copies of a history book priced at $30 each, and 2 copies of a philosophy book for \n$45 each. What was the total cost of his purchases?\nAssistant B:\nThe total cost of his purchases is $295.\nAssistant A:\nThe total cost of Benjamin’s purchases was $115.\nGPT-4 Judgment:\nAssistant B provided the correct answer to the user’s question. Assistant A’s response was incorrect.",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "To calculate the total cost of Benjamin’s purchases, we need to multiply the number of books by their\nrespective prices and then add the results:\n5 sci-fi novels * $20 = $100\n3 history books * $30 = $90\n2 philosophy books * $45 = $90\nTotal cost = $100 + $90 + $90 = $295\nAssistant B’s response is accurate and directly answers the user’s question. Therefore, my final\nverdict is: [[B]]\nGPT-4’s Answer (if asked separately):\nThe cost of the sci-fi novels is 5 * $20 = $<<5*20=100>>100.",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "The cost of the history books is 3 * $30 = $<<3*30=90>>90.\nThe cost of the philosophy books is 2 * $45 = $<<2*45=90>>90.\nThe total cost of his purchases is $100 + $90 + $90 = $<<100+90+90=280>>280. Answer: \\boxed{280}.\nFigure 13: With a default prompt, GPT-4 shows limited capability in grading math questions. Despite\nbeing able to answer the question itself, its judgment was influenced by the given answers, leading to\narithmetic mistakes highlighted in yellow.",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "arithmetic mistakes highlighted in yellow.\nQuestion: Each problem consists of three statements. Based on the first two statements, the third statement \nmay be true, false, or uncertain.\n1. Oranges cost more than apples.\n2. Oranges cost less than bananas.\n3. Bananas cost more than apples and bananas cost more than orange.\nIf the first two statements are true, then the third statement is\nAssistant B:\nFalse.\nIf the first two statements are true, then the \nthird statement is false. The first statement",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "third statement is false. The first statement \nsays that oranges cost more than apples, and the \nsecond statement says that oranges cost less \nthan bananas. This means that oranges cost less \nthan bananas, which contradicts the third\nstatement that bananas cost more than apples and \nmore than oranges. Therefore, the third \nstatement must be false.\nAssistant A:\nfalse.\nIf oranges cost more than apples (statement 1) and\noranges cost less than bananas (statement 2), then",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "it is not possible for bananas to cost less than \noranges and also cost more than both apples and \noranges (statement 3). Therefore, statement 3 is \nfalse.\nGPT-4 Judgment:\nBoth Assistant A and Assistant B provided accurate and relevant responses to the user’s question. \nThey both concluded that the third statement is false based on the first two statements. However, \nAssistant B’s response is slightly clearer and more concise in explaining the contradiction between",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "the statements. Therefore, I choose Assistant B as the better response.\n[[B]]\nGPT-4’s Answer (if asked separately):\nTrue.\nIf oranges cost more than apples (statement 1) and oranges cost less than bananas (statement 2), it \nlogically follows that bananas cost more than apples and bananas cost more than oranges, which is the \nthird statement. So, if the first two statements are true, the third one is also true.\nFigure 14: An example of GPT-4’s limited capability in grading reasoning question. Despite GPT-4",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "knows how to solve the question (if asked separately), it made a wrong judgement saying both\nassistants’ wrong answers are correct.\n20",
+      "source": "ragas.pdf",
+      "page": 20,
+      "char_count": 134,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "Question: How many integers are in the solution of the inequality |x + 5| < 10?\nAssistant B:\nTo solve the inequality |x + 5| < 10, we need to \nconsider two cases:\nCase 1: x + 5 is positive or zero\nIn this case, the inequality becomes x + 5 < 10, \nwhich simplifies to x < 5.\nCase 2: x + 5 is negative\nIn this case, the inequality becomes -(x + 5) < 10, \nwhich simplifies to -x - 5 < 10. Adding 5 to both \nsides gives -x < 15, and multiplying by -1 (and \nflipping the inequality) gives x > -15.",
+      "source": "ragas.pdf",
+      "page": 21,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "flipping the inequality) gives x > -15.\nSo the solution to the inequality is -15 < x < 5. The \nintegers in this range are -14, -13, -12, ..., 4, for \na total of 20 integers. Therefore, there are 20 \nintegers in the solution of the inequality.\nAssistant A:\nThere are 19 integers in the solution of the \ninequality |x + 5| < 10.\nGPT-4 Judgment:\nTo solve the inequality |x + 5| < 10, we need to consider two cases:\nCase 1: x + 5 is positive or zero",
+      "source": "ragas.pdf",
+      "page": 21,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "Case 1: x + 5 is positive or zero\nIn this case, the inequality becomes x + 5 < 10, which simplifies to x < 5.\nCase 2: x + 5 is negative\nIn this case, the inequality becomes -(x + 5) < 10, which simplifies to -x - 5 < 10. Adding 5 to both \nsides gives -x < 15, and multiplying by -1 (and flipping the inequality) gives x > -15.\nSo the solution to the inequality is -15 < x < 5. The integers in this range are -14, -13, -12, ...,",
+      "source": "ragas.pdf",
+      "page": 21,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "4, for a total of 20 integers. Therefore, there are 20 integers in the solution of the inequality.\nComparing the answers provided by the two AI assistants:\nAssistant A: 19 integers\nAssistant B: 20 integers\nThe correct answer is 20 integers, so Assistant B provided the correct and more helpful response.\nFinal verdict: [[B]]\nGPT-4’s Answer (if asked separatedly):\nWe can split the inequality into two cases:\n1) If $x+5\\ge 0$, then $|x+5|=x+5$. So, we have $x+5<10$, which means $x<5$. Since $x+5\\ge 0$, we",
+      "source": "ragas.pdf",
+      "page": 21,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 158,
+      "text": "have $x\\ge -5$. So in this case, $x$ can be any integer from $-5$ to $4$, inclusive, which gives us \n$5-(-5)+1=10$ integers.\n2) If $x+5<0$, then $|x+5|=-(x+5)$. So, we have $-(x+5)<10$, which means $x+5>-10$, which means $x>-\n15$. Since $x+5<0$, we have $x<-5$. So in this case, $x$ can be any integer from $-14$ to $-6$, \ninclusive, which gives us $-6-(-14)+1=9$ integers.\nIn total, there are $10+9=\\boxed{19}$ integers in the solution.",
+      "source": "ragas.pdf",
+      "page": 21,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 159,
+      "text": "Figure 15: An example of GPT-4’s wrong judgment with chain-of-thought prompt. We can see GPT-4\nexactly copied Assistant B’s answer (which contains arithmetic errors) and determined Assistant A’s\nanswer is incorrect. This suggest GPT-4’s chain-of-thought process can be significantly influenced by\nthe given answers despite we ask it to think independently.\n21",
+      "source": "ragas.pdf",
+      "page": 21,
+      "char_count": 359,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 160,
+      "text": "Question: Share ideas for adapting art masterpieces into interactive experiences for children. List 5 specific \nartworks and associated ideas.\nAssistant B:\n(omitted)\nAssistant A:\nSure, here are five ideas for adapting art masterpieces into interactive \nexperiences for children:\n1. “The Starry Night” by Vincent van Gogh - Create a virtual reality experience \nwhere children can explore the night sky and see the stars and constellations as",
+      "source": "ragas.pdf",
+      "page": 22,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 161,
+      "text": "van Gogh saw them. They can also create their own starry night scenes using \ndifferent colors and brush strokes.\n2. “The Persistence of Memory” by Salvador Dali - Create a sensory experience \nwhere children can touch, feel, and smell different objects to explore the \nsurrealist themes of Dali’s painting. They can also create their own surreal \nlandscapes using different materials and textures.\n3. ...\n(omitted)\nFollow-up Question: Write a concrete plan for your second example. Include budget estimates.",
+      "source": "ragas.pdf",
+      "page": 22,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 162,
+      "text": "Assistant B:\n(omitted)\nAssistant A:\nSure, here is a concrete plan for adapting “The Persistence of Memory” by Salvador \nDali into an interactive experience for children:\n1. Budget: $5,000\n2. Objectives:\n- To create a sensory experience that allows children to explore the surrealist \nthemes of Dali’s painting.\n- To encourage children to create their own surreal landscapes using different \nmaterials and textures.\n...\nGPT-4 Judgment:",
+      "source": "ragas.pdf",
+      "page": 22,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 163,
+      "text": "materials and textures.\n...\nGPT-4 Judgment:\nAssistant A provided a concrete plan for adapting “The Persistence of Memory” by Salvador Dali into \nan interactive experience for children, while Assistant B provided a plan for the “Mona Lisa \nInteractive Experience for Children.” The user’s follow-up question specifically asked for a concrete \nplan for the second example, which was the “Mona Lisa” experience provided by Assistant B.",
+      "source": "ragas.pdf",
+      "page": 22,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 164,
+      "text": "Therefore, Assistant B’s answer is more relevant and directly addresses the user’s request.\nMy final verdict is: [[B]]\nFigure 16: In this example, despite Assistant A correctly followed user’s instruction to generate\na concrete plan for the second example of its previous response, GPT-4 wrongly referred to the\nsecond example in Assistant B’s response, resulting in a wrong judgment. This suggests the prompt\ndesign that breaks the questions into two prompts may cause LLM judge struggle to locate assistants’",
+      "source": "ragas.pdf",
+      "page": 22,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 165,
+      "text": "previous responses.\n22",
+      "source": "ragas.pdf",
+      "page": 22,
+      "char_count": 22,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 166,
+      "text": "C\nData Collection\nWe describe our data collection process for both MT-bench and Chatbot Arena.\nC.1\nMT-bench human evaluation\nFigure 17 shows the normal voting interface. Figure 18 shows that we additionally show GPT-4’s\njudgment to users and ask if it is reasonable when a human differs from GPT-4.\nFigure 17: The screenshot of MT-bench data collection. We show an instruction similar to the prompt\nwe give to GPT-4. We present questions from MT-bench and answers from two random anonymous",
+      "source": "ragas.pdf",
+      "page": 23,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 167,
+      "text": "assistants and ask which one is better. We present the first-turn conversation and ask humans to vote,\nthen repeat the same procedure for the second-turn. A user can skip up to 5 questions if they are not\nconfident. For some questions (e.g., math, reasoning), they can also see a reference solution.\nFigure 18: The screenshot of MT-bench data collection. When human’s vote differs from GPT-4, we\nadditionally show GPT-4’s judgment (red region in the screenshot) and ask the user to click one of",
+      "source": "ragas.pdf",
+      "page": 23,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 168,
+      "text": "the three buttons to decide whether GPT-4’s judgment is reasonable.\n23",
+      "source": "ragas.pdf",
+      "page": 23,
+      "char_count": 70,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 169,
+      "text": "To invite participants, we obtained their consent by letting them sign an application form. We\npay them $20 for judging 20 questions, which corresponds to an hourly rate of around $35. The\nparticipants are mostly graduate students from more than ten universities.\nC.2\nChatbot Arena\nFigure 19 shows a screenshot of Chatbot Arena. Users are required to accept the terms of use,\nwhich obtain their consent and give us the right to release the conversation data. The instructions",
+      "source": "ragas.pdf",
+      "page": 24,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 170,
+      "text": "are shown at the top of the interface. This is a free website. We do not pay users and any user\ncan use this platform without registration. More introductions and analyses can be found at https:\n//lmsys.org/blog/2023-05-03-arena/.\nFigure 19: The screenshot of Chatbot Arena.\nC.3\nData Release\nWe will clean the Personal Identifiable Information (PII) and tag toxic conversations with OpenAI\nmoderation APIs for our dataset release.\n24",
+      "source": "ragas.pdf",
+      "page": 24,
+      "char_count": 433,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 171,
+      "text": "D\nAdditional Experimental Results\nWe present some additional experimental results.\nD.1\nPosition bias\nWe test two more prompts and present the full results in Table 9 “score” changes the default prompt\nto let the model output two absolute scores instead of which one is better. “short” is a simplified\nversion of our default prompt by removing instructions like “Avoid any position bias..”, “Begin your\nevaluation ... and provide a short explanation”. We can find different prompts have different effects",
+      "source": "ragas.pdf",
+      "page": 25,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 172,
+      "text": "on different models. For example, the \"score\" prompt can increase the consistency of GPT-3.5 but\ndecreases it for Claude-v1 and GPT-4.\nTable 9: Position bias on different models and prompts. Consistency is the percentage of cases where\na judge gives consistent results when swapping the order of two assistants. “Biased toward first” is\nthe percentage of cases when a judge favors the first answer. “Error” indicates wrong output formats.\nThe two largest numbers in each column are in bold.\nJudge\nPrompt",
+      "source": "ragas.pdf",
+      "page": 25,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 173,
+      "text": "Judge\nPrompt\nConsistency\nBiased toward first\nBiased toward second\nError\nclaude-v1\ndefault\n23.8%\n75.0%\n0.0%\n1.2%\nrename\n56.2%\n11.2%\n28.7%\n3.8%\nscore\n20.0%\n80.0%\n0.0%\n0.0%\nshort\n22.5%\n75.0%\n2.5%\n0.0%\ngpt-3.5-turbo\ndefault\n46.2%\n50.0%\n1.2%\n2.5%\nrename\n51.2%\n38.8%\n6.2%\n3.8%\nscore\n55.0%\n33.8%\n11.2%\n0.0%\nshort\n38.8%\n57.5%\n3.8%\n0.0%\ngpt-4\ndefault\n65.0%\n30.0%\n5.0%\n0.0%\nrename\n66.2%\n28.7%\n5.0%\n0.0%\nscore\n51.2%\n46.2%\n2.5%\n0.0%\nshort\n62.5%\n35.0%\n2.5%\n0.0%",
+      "source": "ragas.pdf",
+      "page": 25,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 174,
+      "text": "51.2%\n46.2%\n2.5%\n0.0%\nshort\n62.5%\n35.0%\n2.5%\n0.0%\nAs shown in Table 10, position bias is more noticeable on open questions like writing and stem/hu-\nmanity knowledge questions. On math and coding questions, LLM judges are more confident even\nthough their judgments can often be wrong, as we show in Section 3.3. Finally, we study how the\nmodel pairs influence position bias by using GPT-4 and the default prompt to judge three different",
+      "source": "ragas.pdf",
+      "page": 25,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 175,
+      "text": "model pairs. As shown in Table 11, the position bias is more noticeable for models with close\nperformance and can almost disappear when the performance of the two models differs a lot.\nTable 10: Position bias on different categories. The two largest numbers in each column are in bold.\nCategory\nConsistent\nBiased toward first\nBiased toward second\nwriting\n42.0%\n46.0%\n12.0%\nroleplay\n68.0%\n30.0%\n2.0%\nreasoning\n76.0%\n20.0%\n4.0%\nmath\n86.0%\n4.0%\n10.0%\ncoding\n86.0%\n14.0%\n0.0%\nextraction\n78.0%\n12.0%\n10.0%\nstem\n44.0%",
+      "source": "ragas.pdf",
+      "page": 25,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 176,
+      "text": "0.0%\nextraction\n78.0%\n12.0%\n10.0%\nstem\n44.0%\n54.0%\n2.0%\nhumanities\n36.0%\n60.0%\n4.0%\nTable 11: Position bias on different model pairs.\nPair\nConsistent\nBiased toward first\nBiased toward second\nGPT-3.5 vs Claude-V1\n67.5%\n23.8%\n8.8%\nGPT-3.5 vs Vicuna-13B\n73.8%\n23.8%\n2.5%\nGPT-3.5 vs LLaMA-13B\n98.8%\n1.2%\n0.0%\n25",
+      "source": "ragas.pdf",
+      "page": 25,
+      "char_count": 307,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 177,
+      "text": "D.2\nFew-shot judge\nWe examine how few-shot examples improve LLM judges. As shown in Table 12, they improve the\nconsistency of all three LLM judges significantly. It almost alleviates the position bias of GPT-4, but\nmoves the position bias of GPT-3.5 from the first position to the second position. We then measure\nthe agreement between few-shot GPT-4 pairwise comparison and humans on MT-bench, but found it\nperforms similarly to zero-shot GPT-4 pairwise comparison.",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 178,
+      "text": "Table 12: Improvements of the few-shot judge on consistency for position bias.\nModel\nPrompt\nConsistency\nBiased toward first\nBiased toward second\nError\nClaude-v1\nzero-shot\n23.8%\n75.0%\n0.0%\n1.2%\nfew-shot\n63.7%\n21.2%\n11.2%\n3.8%\nGPT-3.5\nzero-shot\n46.2%\n50.0%\n1.2%\n2.5%\nfew-shot\n55.0%\n16.2%\n28.7%\n0.0%\nGPT-4\nzero-shot\n65.0%\n30.0%\n5.0%\n0.0%\nfew-shot\n77.5%\n10.0%\n12.5%\n0.0%\nD.3\nAgreement Evaluation\nAgreement calculation. We define the agreement between two types of judges as the probability",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 179,
+      "text": "of randomly selected individuals (but not identical) of each type agreeing on a randomly selected\nquestion. For example, if we are comparing GPT-4 and Claude, the agreement is the probability of\nGPT-4 and Claude agreeing on the vote for a randomly selected question. If we are comparing GPT-4\nand humans, the agreement is the probability of GPT-4 and a randomly selected human agreeing\non the vote for a randomly selected question. The agreement among humans themselves is the",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 180,
+      "text": "probability of two randomly selected but not identical humans agreeing on the vote for a randomly\nselected question.\nNote that the agreement among humans could be a lower estimation compared to the agreement of\nGPT4 and humans. Consider three humans who voted “A”, “A”, and “B” for a question, respectively.\nThe agreement among them is only 1\n3, as there are three pairs “(A, A)”, “(A, B)”, and “(A, B)”. But\nthe agreement between GPT4 and those three is 2\n3 if GPT4 voted “first” and 1\n3 otherwise.",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 181,
+      "text": "3 if GPT4 voted “first” and 1\n3 otherwise.\nTherefore, to have a more comprehensive understanding of what happened, we introduce a new judge\ntype called human-majority, which considers the majority of human votes for each question. The\nagreement between GPT4 and human-majority is then calculated as the probability of GPT4 agreeing\nwith the majority of human votes on a randomly selected question. The upper bound of the agreement",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 430,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 182,
+      "text": "between GPT-4 and humans is the agreement between human-majority and human. When there is no\nmajority vote for a question, the agreement is counted by an even split. For example, if there are an\nequal number of “A” and “B” human votes for a question, and GPT4 votes “A”, the agreement is\ncounted as 1\n2 on this question.\nMore results. Table 13 shows more agreement results on MT-bench. In addition to expert labelers\n(denoted as “Human”), we also include author votes (denoted as “Author”).\nD.4",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 183,
+      "text": "D.4\nCategory-wise scores with single-answer grading\nWe use single-answer grading to evaluate 6 models on MT-bench and plot the category-wise scores in\nFigure 20.\n26",
+      "source": "ragas.pdf",
+      "page": 26,
+      "char_count": 164,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 184,
+      "text": "Table 13: Agreement between two types of judges on MT-bench. “G4-P” and “G4-S” denote GPT-4\nwith pairwise comparison and single-answer grading, respectively. “C” denotes Claude. “Human”\ndenotes expert labelers (excluding authors). ‘Human-M” denotes the majority vote of humans.\nThe single-answer grading can be converted into pairwise comparison results for calculating the\nagreement. We report two setups: “S1” includes non-tie, tie, and inconsistent (due to position bias)",
+      "source": "ragas.pdf",
+      "page": 27,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 185,
+      "text": "votes and counts inconsistent as a tie; “S2” only includes non-tie votes. The agreement between two\nrandom judges under each setup is denoted as “R=”. The top value in each cell is the agreement, and\nthe bottom gray value is #votes.\nSetup\nS1 (R = 33%)\nS2 (R = 50%)\nJudge\nG4-S\nC\nAuthor\nHuman\nHuman-M\nG4-S\nC\nAuthor\nHuman\nHuman-M\nG4-P\n70%\n1138\n63%\n1198\n69%\n345\n66%\n1343\n67%\n821\n97%\n662\n94%\n582\n92%\n201\n85%\n859\n85%\n546\nG4-S\n-\n66%\n1136\n67%\n324\n60%\n1280\n60%\n781\n-\n90%\n563\n94%\n175\n85%\n739\n85%\n473\nC\n-\n-\n58%\n343\n54%",
+      "source": "ragas.pdf",
+      "page": 27,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 186,
+      "text": "90%\n563\n94%\n175\n85%\n739\n85%\n473\nC\n-\n-\n58%\n343\n54%\n1341\n55%\n820\n-\n-\n89%\n141\n85%\n648\n86%\n414\nAuthor\n-\n-\n69%\n49\n65%\n428\n55%\n93\n-\n-\n87%\n31\n83%\n262\n76%\n46\nHuman\n-\n-\n-\n63%\n721\n81%\n892\n-\n-\n-\n81%\n479\n90%\n631\n(a) First Turn\nSetup\nS1 (R = 33%)\nS2 (R = 50%)\nJudge\nG4-S\nAuthor\nHuman\nHuman-M\nG4-S\nAuthor\nHuman\nHuman-M\nG4-P\n70%\n1161\n66%\n341\n66%\n1325\n68%\n812\n95%\n727\n88%\n205\n85%\n864\n85%\n557\nG4-S\n-\n65%\n331\n59%\n1285\n61%\n783\n-\n89%\n193\n84%\n776\n85%\n506\nAuthor\n-\n67%\n49\n68%\n413\n63%\n87\n-\n87%\n31\n86%\n273\n84%\n54\nHuman\n-\n-\n67%\n707\n83%",
+      "source": "ragas.pdf",
+      "page": 27,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 187,
+      "text": "87\n-\n87%\n31\n86%\n273\n84%\n54\nHuman\n-\n-\n67%\n707\n83%\n877\n-\n-\n82%\n474\n91%\n629\n(b) Second Turn\nWriting\nRoleplay\nReasoning\nMath\nCoding\nExtraction\nSTEM\nHumanities\n0\n2\n4\n6\n8\n10\nmodel\nGPT-4\nClaude-v1\nGPT-3.5-turbo\nVicuna-13B\nAlpaca-13B\nLLaMA-13B\nFigure 20: Category-wise scores of 6 models on MT-bench.\n27",
+      "source": "ragas.pdf",
+      "page": 27,
+      "char_count": 295,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 188,
+      "text": "E\nTraining Details of Vicuna Models\nVicuna is created by fine-tuning a LLaMA base model using user-shared conversations gathered from\nShareGPT.com with its public APIs. ShareGPT is a website where users can share their ChatGPT\nconversations. To ensure data quality, we convert the HTML back to markdown and filter out some\ninappropriate or low-quality samples, which results in 125K conversations after data cleaning.4 We",
+      "source": "ragas.pdf",
+      "page": 28,
+      "char_count": 421,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 189,
+      "text": "then divide lengthy conversations into smaller segments that fit the model’s maximum context length.\nWe construct three training datasets with different scales from this cleaned ShareGPT dataset. Their\nstatistics are in Table 8, where we also compare it with Alpaca [38] dataset. “All” is the full dataset.\n“Single” only includes the first turn of each conversation. “Selected” is a small high-quality dataset of",
+      "source": "ragas.pdf",
+      "page": 28,
+      "char_count": 412,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 190,
+      "text": "3K sequences. To construct the “Selected” dataset, we pick sequences that include at least 3 turns of\nconversations generated by GPT-4 and run a clustering algorithm to divide them into 3K clusters and\npick the centroid of each cluster.\nAll models (Vicuna-7B/13B) are trained with the same hyperparameters: global batch size=128,\nlearning=2e-5, epochs=3, seq length=2048. Except for “Selected”, which we train for 5 epochs. The",
+      "source": "ragas.pdf",
+      "page": 28,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 191,
+      "text": "training code is built on top of the Alpaca code but additionally handles multi-turn conversations. The\ntraining is done with 8x A100 GPUs. The longest single training run takes around 2 days. We utilize\nSkyPilot [49] managed spot instances for saving training costs and FlashAttention [11] for memory\noptimizations. The training code is available at https://github.com/lm-sys/FastChat.\nTable 14: Dataset statistics\nDataset Name\nAlpaca\nSelected\nSingle\nAll\n#Token\n4.4M\n4.8M\n184M\n370M\n#Sequence\n52K\n3K\n257K\n257K",
+      "source": "ragas.pdf",
+      "page": 28,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 192,
+      "text": "4.4M\n4.8M\n184M\n370M\n#Sequence\n52K\n3K\n257K\n257K\nAvg. turns of conversation\n1.0\n4.0\n1.0\n2.9\nAvg. response length (token)\n65\n343\n473\n373\n4In this study, we use more data (125K) than the version in our earlier blog post (70K).\n28",
+      "source": "ragas.pdf",
+      "page": 28,
+      "char_count": 225,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 193,
+      "text": "F\nExploring Vicuna as a judge\nIn this paper, we mostly evaluate the ability of close-sourced models such as GPT-4 as a proxy for\nhuman evaluations. However, model services such as GPT-4 can also become expensive with a\ngrowing number of evaluations. On the other hand, popular open-sourced LLMs, e.g. Vicuna-13B\nshows strong language understanding capability, and are much cheaper than close-sourced LLMs. In\nthis section, we further explore the potential of using Vicuna-13B as a more cost-friendly proxy.\nF.1",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 194,
+      "text": "F.1\nZero-Shot Vicuna\nWhen using as-it-is (zero-shot), Vicuna-13B noticeably suffers from limitations we discuss, e.g.\nposition bias. As shown in Table 15, Vicuna-13B has a consistency rate from 11.2% to 16.2%\nacross different prompt templates, much lower than all the closed-sourced models. In addition, it\nhas a high error rate (from 22.5% to 78.8%) because of its weaker instruction-following capability.\nIn many scenarios, Vicuna-13B provides responses such as \"Answer A is better than answer B\",",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 195,
+      "text": "without following the pre-defined template. These responses are rendered as natural languages and\nare difficult to be parsed automatically, making the model less useful in a scalable and automatic\nevaluation pipeline.\nF.2\nArena Fine-tuned Vicuna\nTraining\nDue to the incapability of the zero-shot Vicuna-13B model, we further finetune the model\nwith human votes from Chatbot Arena. Specifically, we randomly sample 22K single-turn votes",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 196,
+      "text": "from the arena, covering all models supported by the time of this paper submission (GPT-4, GPT-3.5,\nClaude-v1, Vicuna-13b, Vicuna-7b, Koala-13B, Alpaca-13B,LLaMA-13B, Dolly-12B, FastChat-T5,\nRWKV-4-Raven, MPT-Chat, OpenAssistant, ChatGLM, and StableLM), to expose the model with\na wider range of chatbot outputs and human preferences. We use 20K votes for training, and 2K\nfor validation. To address the aforementioned weak instruction following problem, we formulate",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 197,
+      "text": "the problem as a 3-way sequence classification problem. Thus, the model simply needs to predict\nwhich one of the chat-bot outputs is better (or tie), without needing to exactly following the provided\nanswer template. In particular, we construct an input by using the default prompt and the two model\nanswers. The labels are A, B, and tie (including both-bad-vote and tie-vote). We train for 3 epochs\nwith a cosine learning rate scheduler and a 2e-5 maximum learning rate. We use the 2K validation",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 198,
+      "text": "dataset to choose hyper-parameters, and test on the same 3K dataset in the main body of the paper.\nPosition bias results\nThe results for position bias are provided in Table 15. The consistency\nimproves significantly from 16.2% to 65.0%. Due to the classification formulation, every output is\nrecognizable (error rate 0%). In addition, we measure the classification accuracy over the test dataset.\nAgreement results\nIt achieves 56.8% when including all three labels, and 85.5% when excluding",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 199,
+      "text": "tie predictions and labels, significantly outperforming random guesses of 33% and 50% respectively,\nand show positive signals to match GPT-4 (66% and 87% respectively). In conclusion, a further\nfine-tuned Vicuna-13B model shows strong potential to be used as a cheap open-sourced replacement\nfor expensive closed-sourced LLMs. A similar conclusion is also found by a concurrent paper[42].\nTable 15: Position bias of the Vicuna-13B model without and with further fine-tuning. We denote them",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 200,
+      "text": "as Vicuna-13B-Zero-Shot and Vicuna-13B-Fine-Tune respectively. Consistency is the percentage\nof cases where a judge gives consistent results when swapping the order of two assistants. “Biased\ntoward first” is the percentage of cases when a judge favors the first answer. “Error” indicates wrong\noutput formats. The largest number in each column is in bold.\nJudge\nPrompt\nConsistency\nBiased toward first\nBiased toward second\nError\nVicuna-13B-Zero-Shot\ndefault\n15.0%\n53.8%\n8.8%\n22.5%\nrename\n16.2%\n12.5%\n40.0%\n31.2%",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 201,
+      "text": "53.8%\n8.8%\n22.5%\nrename\n16.2%\n12.5%\n40.0%\n31.2%\nscore\n11.2%\n10.0%\n0.0%\n78.8%\nVicuna-13B-Fine-Tune\ndefault\n65.0%\n27.5%\n7.5%\n0.0%\n29",
+      "source": "ragas.pdf",
+      "page": 29,
+      "char_count": 130,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

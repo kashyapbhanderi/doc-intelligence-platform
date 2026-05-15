@@ -1,0 +1,1044 @@
+{
+  "source": "dpr.pdf",
+  "full_path": "data\\raw\\dpr.pdf",
+  "total_pages": 16,
+  "text_chunks": 129,
+  "vision_chunks": 0,
+  "total_chunks": 129,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "SSMBA: Self-Supervised Manifold Based Data Augmentation for\nImproving Out-of-Domain Robustness\nNathan Ng\nUniversity of Toronto\nVector Institute\nKyunghyun Cho\nNew York University\nMarzyeh Ghassemi\nUniversity of Toronto\nVector Institute\nAbstract\nModels that perform well on a training do-\nmain often fail to generalize to out-of-domain\n(OOD) examples. Data augmentation is a com-\nmon method used to prevent overﬁtting and im-\nprove OOD generalization. However, in natu-",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "prove OOD generalization. However, in natu-\nral language, it is difﬁcult to generate new ex-\namples that stay on the underlying data man-\nifold. We introduce SSMBA, a data augmen-\ntation method for generating synthetic training\nexamples by using a pair of corruption and re-\nconstruction functions to move randomly on\na data manifold.\nWe investigate the use of\nSSMBA in the natural language domain, lever-\naging the manifold assumption to reconstruct\ncorrupted text with masked language mod-",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "corrupted text with masked language mod-\nels. In experiments on robustness benchmarks\nacross 3 tasks and 9 datasets, SSMBA con-\nsistently outperforms existing data augmenta-\ntion methods and baseline models on both\nin-domain and OOD data, achieving gains\nof 0.8% accuracy on OOD Amazon reviews,\n1.8% accuracy on OOD MNLI, and 1.4 BLEU\non in-domain IWSLT14 German-English. 1\n1\nIntroduction\nTraining distributions often do not cover all of the\ntest distributions we would like a supervised clas-",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "siﬁer or model to perform well on. Often, this\nis caused by biased dataset collection (Torralba\nand Efros, 2011) or test distribution drift over time\n(Quionero-Candela et al., 2009). Therefore, a key\nchallenge in training machine learning models in\nthese settings is ensuring they are robust to unseen\nexamples. Since it is impossible to generalize to\nthe entire distribution, methods often focus on the\nadjacent goal of out-of-domain robustness.\nData augmentation is a common technique used",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "Data augmentation is a common technique used\nto improve out-of-domain (OOD) robustness by\nsynthetically generating new training examples\n1Code\nis\navailble\nat\nhttps://github.com/\nnng555/ssmba\nM\nx\nx′\nˆx\nFigure 1: SSMBA moves along the data manifold M\nby using a corruption function to perturb an example x\noff the data manifold, then using a reconstruction func-\ntion to project it back on.\n(Simard et al., 1998), often by perturbing exist-\ning examples in the input space (Perez and Wang,",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "ing examples in the input space (Perez and Wang,\n2017). If data concentrates on a low-dimensional\nmanifold (Chapelle et al., 2006), then these syn-\nthetic examples should lie in a manifold neigh-\nborhood of the original examples (Chapelle et al.,\n2000). Training models to be robust to such lo-\ncal perturbations has been shown to be effective in\nimproving performance and generalization in semi-\nsupervised and self-supervised settings (Bachman\net al., 2014; Szegedy et al., 2014; Sajjadi et al.,",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "2016). When the underlying data manifold exhibits\neasy-to-characterize properties, as in natural im-\nages, simple transformations such as translation\nand rotation can quickly generate local training\nexamples. However, in domains such as natural\nlanguage, it is much more difﬁcult to ﬁnd a set of\ninvariances that preserves meaning or semantics.\nIn this paper we propose Self-Supervised\nManifold Based Data Augmentation (SSMBA): a\ndata augmentation method for generating synthetic",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "data augmentation method for generating synthetic\nexamples in domains where the data manifold is\ndifﬁcult to heuristically characterize. Motivated by\nthe use of denoising auto-encoders as generative\nmodels (Bengio et al., 2013), we use a corruption\nfunction to stochastically perturb examples off the\ndata manifold, then use a reconstruction function to\nproject them back on (Figure 1). This ensures new\narXiv:2009.10195v2  [cs.CL]  4 Oct 2020",
+      "source": "dpr.pdf",
+      "page": 1,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "examples lie within the manifold neighborhood of\nthe original example. SSMBA is applicable to any\nsupervised task, requires no task-speciﬁc knowl-\nedge, and does not rely on class- or dataset-speciﬁc\nﬁne-tuning.\nWe investigate the use of SSMBA in the natural\nlanguage domain on 3 diverse tasks spanning both\nclassiﬁcation and sequence modelling: sentiment\nanalysis, natural language inference, and machine\ntranslation. In experiments across 9 datasets and 4\nmodel types, we show SSMBA consistently outper-",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "model types, we show SSMBA consistently outper-\nforms baseline models and other data augmentation\nmethods on both in-domain and OOD data.\n2\nBackground and Related Work\n2.1\nData Augmentation in NLP\nThe problem of domain adaptation and OOD ro-\nbustness is well established in NLP (Blitzer et al.,\n2007; Daum´e III, 2007; Hendrycks et al., 2020).\nExisting work on improving generalization has fo-\ncused on data augmentation, where synthetically\ngenerated training examples are used to augment an",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "existing dataset. It is hypothesized that these exam-\nples induce robustness to local perturbations, which\nhas been shown to be effective in semi-supervised\nand self-supervised settings (Bachman et al., 2014;\nSzegedy et al., 2014; Sajjadi et al., 2016).\nExisting task-speciﬁc methods (Kaﬂe et al.,\n2017) and word-level methods (Zhang et al., 2015;\nXie et al., 2017; Wei and Zou, 2019) are based on\nhuman-designed heuristics. Back-translation from\nor through another language has been applied in",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "or through another language has been applied in\nthe context of machine translation (Rico Sennrich,\n2016), question answering (Yu et al., 2018), and\nconsistency training (Xie et al., 2019). More re-\ncent work has used word embeddings (Wang and\nYang, 2015) and LSTM language models (Fadaee\net al., 2017) to perform word replacement. Other\nmethods focus on ﬁne-tuning contextual language\nmodels (Kobayashi, 2018; Wu et al., 2019b; Kumar\net al., 2020) or large generative models (Anaby-",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "et al., 2020) or large generative models (Anaby-\nTavor et al., 2020; Yang et al., 2020; Kumar et al.,\n2020) to generate synthetic examples.\n2.2\nVRM and the Manifold Assumption\nVicinal Risk Minimization (VRM) (Chapelle et al.,\n2000) formalizes data augmentation as enlarging\nthe training set support by drawing samples from\na vicinity of existing training examples. Typically\nthe vicinity of a training example is deﬁned using\ndataset-dependent heuristics. For example, in com-",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "Figure 2: To sample from an MLM DAE, we apply the\nMLM corruption q to the original sentence then recon-\nstruct the corrupted sentence using our DAE r.\nputer vision, examples are generated using scale\naugmentation (Simonyan and Zisserman, 2015),\ncolor augmentation (Krizhevsky et al., 2012), and\ntranslation and rotation (Simard et al., 1998).\nThe manifold assumption states that high dimen-\nsional data concentrates around a low-dimensional\nmanifold (Chapelle et al., 2006). This assumption",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "manifold (Chapelle et al., 2006). This assumption\nallows us to deﬁne the vicinity of a training exam-\nple as its manifold neighborhood, the portion of\nthe neighborhood that lies on the data manifold.\nRecent methods have used the manifold assump-\ntion to improve robustness by moving examples\ntowards a decision boundary (Kanbak et al., 2018),\ngenerating adversarial examples (Szegedy et al.,\n2014; Miyato et al., 2017), interpolating between\npairs of examples (Zhang et al., 2018), or ﬁnding",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "pairs of examples (Zhang et al., 2018), or ﬁnding\nafﬁne transforms (Paschali et al., 2019).\n2.3\nSampling from Denoising Autoencoders\nA denoising autoencoder (DAE) is an autoen-\ncoder trained to reconstruct a clean input x from\na stochastically corrupted one x′ ∼q(x′|x) by\nlearning a conditional distribution Pθ(x|x′) (Vin-\ncent et al., 2008). We can sample from a DAE\nby successively corrupting and reconstructing an\ninput using the following pseudo-Gibbs Markov\nchain: x′\nt ∼q(x′|xt−1), xt ∼Pθ(x|x′\nt).\nAs",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "chain: x′\nt ∼q(x′|xt−1), xt ∼Pθ(x|x′\nt).\nAs\nthe number of training examples increases, the\nasymptotic distribution πn(x) of the generated sam-\nples approximate the true data-generating distribu-\ntion P(x) (Bengio et al., 2013). This corruption-\nreconstruction process allows for sampling directly\nalong the manifold that P(x) concentrates on.\n2.4\nMasked Language Models\nRecent advances in unsupervised representation\nlearning for natural language have relied on pre-",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "learning for natural language have relied on pre-\ntraining models on a masked language modeling\n(MLM) objective (Devlin et al., 2018; Liu et al.,\n2019). In the MLM objective, a percentage of the\ninput tokens are randomly corrupted and the model\nis asked to reconstruct the original token given its",
+      "source": "dpr.pdf",
+      "page": 2,
+      "char_count": 297,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "Figure 3: SSMBA generates synthetic examples by cor-\nrupting then reconstructing the original training inputs.\nTo form the augmented dataset, corresponding outputs\nare preserved from the original data or generated from\na supervised model f trained on the original data.\nleft and right context in the corrupted sentence. We\nuse MLMs as DAEs (Lewis et al., 2019) to sample\nfrom the underlying natural language distribution\nby corrupting and reconstructing inputs (Figure 2).\n3\nSSMBA: Self-Supervised Manifold",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "3\nSSMBA: Self-Supervised Manifold\nBased Augmentation\nAlgorithm 1 SSMBA\n1: Require: perturbation function q\nreconstruction function r\n2: Input: Dataset D = {(x1, y1) . . . (xn, yn)}\nnumber of augmented examples m\n3: function SSMBA(D, m)\n4:\ntrain a model f on D\n5:\nfor (xi, yi) ∈D do\n6:\nfor j ∈1 . . . m do\n7:\nsample perturbed x′\nij ∼q(x′|xi)\n8:\nsample reconstructed ˆxij ∼r(ˆx|x′\nij)\n9:\ngenerate ˆyij ←f(ˆxij) or preserve\nthe original yi\n10:\nend for\n11:\nend for\n12:\nlet Daug = {(ˆxij, ˆyij)}i=1...n,j=1...m\n13:",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "12:\nlet Daug = {(ˆxij, ˆyij)}i=1...n,j=1...m\n13:\naugment D′ ←D ∪Daug\n14:\nreturn D′\n15: end function\nWe now describe Self-Supervised Manifold Based\nData Augmentation.\nLet our original dataset\nD consist of pairs of input and output vectors\nD = {(x1, y1) . . . (xn, yn)}. We assume the in-\nput points concentrate around an underlying lower\ndimensional data manifold M. Let q be a corrup-\ntion function from which we can draw a sample\nx′ ∼q(x′|x) such that x′ no longer lies on M. Let",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "x′ ∼q(x′|x) such that x′ no longer lies on M. Let\nr be a reconstruction function from which we can\ndraw a sample ˆx ∼r(ˆx|x′) such that ˆx lies on M.\nTo generate an augmented dataset, we take\neach pair (xi, yi) ∈D and sample a perturbed\nx′\ni ∼q(x′|xi). We then sample a reconstructed\nˆxij ∼r(ˆx|x′\ni). A corresponding vector ˆyij can\nbe generated by preserving yi, or, since examples\nin the manifold neighborhood may cross decision\nboundaries on more sensitive tasks, by using a",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "boundaries on more sensitive tasks, by using a\nteacher model trained on the original data. This\noperation can be repeated to generate multiple aug-\nmented examples for each input example. These\nnew examples form a dataset that we can augment\nthe original training set with. We can then train an\naugmented model on the new augmented dataset.\nIn this paper we investigate SSMBA’s use on nat-\nural language tasks, using the MLM training cor-\nruption function as our corruption function q and",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "ruption function as our corruption function q and\na pre-trained BERT model as our reconstruction\nmodel r. Different from other data augmentation\nmethods, SSMBA does not rely on task-speciﬁc\nknowledge, requires no dataset-speciﬁc ﬁne-tuning,\nand is applicable to any supervised natural lan-\nguage task. SSMBA requires only a pair of func-\ntions q and r used to generate data.\n4\nDatasets\nTo empirically evaluate our proposed algorithm,\nwe select 9 datasets – 4 sentiment analysis datasets,",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "2 natural language inference (NLI) datasets, and\n3 machine translation (MT) datasets. Table 1 and\nAppendix A provide dataset summary statistics. All\ndatasets either contain metadata that can be used to\nsplit the samples into separate domains or similar\ndatasets that are treated as separate domains.\n4.1\nSentiment Analysis\nThe Amazon Review Dataset (Ni et al., 2019) con-\ntains product reviews from Amazon. Following\nHendrycks et al. 2020, we form two datasets: AR-",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "Hendrycks et al. 2020, we form two datasets: AR-\nFull contains reviews from the 10 largest cate-\ngories, and AR-Clothing contains reviews in the\nclothing category separated into subcategories by\nmetadata. Since the reviews in AR-Clothing come\nfrom the same top-level category, the amount of\ndomain shift is much less than that of AR-Full.\nModels predict a review’s 1 to 5 star rating.\nSST2 (Socher et al., 2013) contains movie re-\nview excerpts. Following Hendrycks et al. 2020 we",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "view excerpts. Following Hendrycks et al. 2020 we\npair this dataset with the IMDb dataset (Maas et al.,",
+      "source": "dpr.pdf",
+      "page": 3,
+      "char_count": 103,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "Dataset\nDomain\nn\nl\nTrain\nTest\nAR-Clothing\n*\n4\n35\n25k†\n2k\nAR-Full\n*\n10\n67\n25k†\n2k\nYelp\n*\n4\n138\n25k†\n2k\nMovies\nSST2\n-\n11\n66k\n1k\nIMDb\n-\n296\n46k\n2k\nMNLI\n*\n10\n36\n80k\n1k\nANLI\nR1\n-\n92\n17k\n1k\nR2\n-\n90\n46k\n1k\nR3\n-\n82\n100k\n1k\nIWSLT\n-\n1\n24\n160k\n7k\nOPUS\nMedical\n5\n15\n1.1m\n2k\nde-rm\nLaw\n-\n22\n100k\n2k\nBlogs\n-\n25\n-\n2k\nTable 1: Dataset summary statistics. n: number of do-\nmains. l: average tokenized input length. A * in the\ndomain column indicates that the statistics are identi-",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "cal across domains within that dataset. Training sets\nmarked with a † are sampled randomly from a larger\ndataset. Refer to Appendix A for more information.\n2011), which contains full length movie reviews.\nWe call this pair the Movies dataset. Models pre-\ndict a movie review’s binary sentiment.\nThe Yelp Review Dataset contains restaurant\nreviews with associated business metadata which\nwe preprocess following Hendrycks et al. 2020.\nModels predict a review’s 1 to 5 star rating.\n4.2\nNatural Language Inference",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "4.2\nNatural Language Inference\nMNLI (Williams et al., 2018) is a corpus of NLI\ndata from 10 distinct genres of written and spoken\nEnglish. We train on the 5 genres with training data\nand test on all 10 genres. Since the dataset does\nnot include labeled test data, we use the validation\nset as our test set and sample 2000 examples from\neach training set for validation.\nANLI (Nie et al., 2019) is a corpus of NLI data\ndesigned adversarially by humans such that state-",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "designed adversarially by humans such that state-\nof-the-art models fail to classify examples correctly.\nThe dataset consists of three different levels of dif-\nﬁculty which we treat as separate textual domains.\n4.3\nMachine Translation\nFollowing M¨uller et al. 2019, we consider two\ntranslation directions, German→English (de→en)\nand German→Romansh (de→rm). Romansh is a\nlow-resource language with an estimated 40,000\nnative speakers where OOD robustness is of practi-\ncal relevance (M¨uller et al., 2019).",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "cal relevance (M¨uller et al., 2019).\nIn the de→en direction, we use IWSLT14\nde→en (Cettolo et al., 2014) as a widely-used\nbenchmark to test in-domain performance. We\nalso use the OPUS (Tiedemann, 2012) dataset to\ntest OOD generalization. We train on highly spe-\nciﬁc in-domain data (medical texts) and disparate\nout-of-domain data (Koran text, Ubuntu localiza-\ntion ﬁles, movie subtitles, and legal text). Since\ndomains share very little similarities in language,",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "generalization to out-of-domain text is extremely\ndifﬁcult. In the de→rm direction, we use a train-\ning set consisting of the Allegra corpus (Scherrer\nand Cartoni, 2012) and Swiss press releases. We\nuse blog posts from Convivenza as a test domain.\n5\nExperimental Setup\n5.1\nModel Types\nFor sentiment analysis tasks, we investigate LSTMs\n(Hochreiter and Schmidhuber, 1997) and convolu-\ntional neural networks (CNNs). For NLI tasks, we\ninvestigate ﬁne-tuned RoBERTaBASE models (Liu",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "investigate ﬁne-tuned RoBERTaBASE models (Liu\net al., 2019), which are pretrained bidirectional\ntransformers (Vaswani et al., 2017). On both tasks,\nrepresentations from the encoder are fed into an\nfeed-forward neural network for classiﬁcation. For\nMT tasks, we train transformers (Vaswani et al.,\n2017). For all models, word embeddings are ini-\ntialized randomly and trained end-to-end with the\nmodel. We do not initialize with pre-trained word\nembeddings to maintain consistency across all mod-",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "els and tasks. Model hyperparameters are tuned\nto maximize performance on in-domain validation\ndata. Training details and hyperparameters for all\nmodels are provided in Appendix C.\n5.2\nSSMBA Settings\nFor all experiments we use the MLM corruption\nfunction as our corruption function q. We tune tune\nthe total percentage of tokens corrupted, leaving\nthe percentages of speciﬁc corruption operations\n(80% masked, 10% random, 10% unmasked) the\nsame. For sentiment analysis and NLI experiments",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "same. For sentiment analysis and NLI experiments\nwe use a pre-trained RoBERTaBASE model as our\nreconstruction function r, and for translation exper-\niments we use a pre-trained German BERT model\n(Chan et al., 2020). For each input example, we\ngenerate 5 augmented examples using unrestricted\nsampling. For translation experiments, target side\ntranslations are generated with beam search with\nwidth 5. SSMBA hyperparameters, including aug-\nmented example labelling method and corruption",
+      "source": "dpr.pdf",
+      "page": 4,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "percentage, are chosen based on in-domain val-\nidation performance. Hyperparameters for each\ndataset are provided in Appendix D.\n5.3\nBaselines\nOn sentiment analysis and NLI tasks, we compare\nagainst 3 data augmentation methods. Easy Data\nAugmentation (EDA) (Wei and Zou, 2019) is a\nheuristic method that randomly replaces synonyms\nand inserts, swaps, and deletes words. Conditional\nBert Contextual Augmentation (CBERT) (Wu et al.,\n2019b) ﬁnetunes a class-conditional BERT model",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "2019b) ﬁnetunes a class-conditional BERT model\nand uses it to generate sentences in a process simi-\nlar to our own. Unsupervised Data Augmentation\n(UDA) (Xie et al., 2020) translates data to and from\na pivot language to generate paraphrases. We adapt\nUDA for supervised classiﬁcation tasks by training\ndirectly on the backtranslated data.\nOn translation tasks, we compare only against\nmethods which do not require additional target side\nmonolingual data. Word dropout (Sennrich et al.,",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "monolingual data. Word dropout (Sennrich et al.,\n2016) randomly chooses words in the source sen-\ntence to set to zero embeddings. Reward Aug-\nmented Maximum Likelihood (RAML) (Norouzi\net al., 2016) samples noisy target sentences based\non an exponential of their Hamming distance from\nthe original sentence.\nSwitchOut (Wang et al.,\n2018) applies a noise function similar to RAML to\nboth the source and target side. We use publicly\navailable implementations for all methods.\n5.4\nEvaluation Method",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "5.4\nEvaluation Method\nWe train LSTM and CNN models with 10 random\nseeds, RoBERTa models with 5 random seeds, and\ntransformer models with 3 random seeds. Models\nare trained separately on each domain then evalu-\nated on all domains, and performance is averaged\nacross seeds and test domains. We report the aver-\nage in-domain (ID) and OOD performance across\nall train domains. On sentiment analysis and NLI\ntasks we report accuracy, and on translation we\nreport uncased tokenized BLEU (Papineni et al.,",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "report uncased tokenized BLEU (Papineni et al.,\n2002) for IWSLT and cased, detokenized BLEU\nwith SacreBLEU2 (Post, 2018) for all others. Sta-\ntistical testing details are in Appendix E.\n6\nResults\n6.1\nSentiment Analysis\nTable 2 present results on sentiment analysis.\nAcross all datasets, models trained with SSMBA\n2Signature: BLEU+c.mixed+#1+s.exp+tok.13a+v.1.4.3\noutperform baseline models and all other data aug-\nmentation methods on OOD data. On ID data,\nSSMBA outperforms baseline models and other",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "SSMBA outperforms baseline models and other\ndata augmentation methods on all datasets for CNN\nmodels, and 3/4 datasets for RNN models. On aver-\nage, SSMBA improves OOD performance by 1.1%\nfor RNN models and 0.7% for CNN models, and ID\nperformance by 0.8% for RNN models and 0.4%\nfor CNN model. Other methods achieve much\nsmaller OOD generalization gains and perform\nworse than baseline models on multiple datasets.\nOn the AR-Full dataset, RNNs trained with\nSSMBA demonstrate improvements in OOD ac-",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "SSMBA demonstrate improvements in OOD ac-\ncuracy of 1.1% over baseline models. On the AR-\nClothing dataset, which exhibits less domain shift\nthan AR-Full, RNNs trained with SSMBA exhibit\nslightly lower OOD improvement. CNN models ex-\nhibit about the same boost in OOD accuracy across\nboth Amazon review datasets.\nOn the Movies dataset where we observe a large\ndifference in average sentence length between the\ntwo domains, SSMBA still manages to present con-\nsiderable gains in OOD performance. Although",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "siderable gains in OOD performance. Although\nRNNs trained with SSMBA fail to improve ID per-\nformance, their OOD performance in this setting\nstill beats other data augmentation methods.\nOn the Yelp dataset, we observe large perfor-\nmance gains on both ID and OOD data for RNN\nmodels. The improvements on CNN models are\nmore modest, but notably our method is the only\none that improves OOD generalization.\n6.2\nNatural Language Inference\nTable 3 presents results on NLI tasks. Models",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "Table 3 presents results on NLI tasks. Models\ntrained with SSMBA outperform or match base-\nline models and data augmentation methods on\nboth ID and OOD data. Even with a more difﬁ-\ncult task and stronger baseline model, SSMBA still\nconfers large accuracy gains. On MNLI, SSMBA\nimproves OOD accuracy by 1.8%, while the best\nperforming baseline achieves only 0.3% improve-\nment. Our method also improves ID accuracy by\n1.4%. All other baseline methods hurt both ID and",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "1.4%. All other baseline methods hurt both ID and\nOOD accuracy, or confer negligible improvements.\nOn the intentionally difﬁcult ANLI, SSMBA\nmaintains baseline OOD accuracy while confer-\nring a large 6% improvement on ID data. Other\naugmentation methods improve ID accuracy by a\nmuch smaller margin while degrading OOD ac-\ncuracy. Surprisingly, pseudo-labelling augmented\nexamples in the R2 and R3 domains produced the",
+      "source": "dpr.pdf",
+      "page": 5,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "AR-Full\nAR-Clothing\nMovies\nYelp\nAverage\nModel\nAugmentation\nID\nOOD\nID\nOOD\nID\nOOD\nID\nOOD\nID\nOOD\nRNN\nNone\n69.46\n66.32\n69.25\n67.80\n90.74\n71.94\n62.51\n61.28\n70.16\n66.17\nEDA\n67.32\n64.47\n66.87\n65.21\n88.43\n68.3\n58.39\n57.19\n67.56\n63.55\nCBERT\n69.94\n66.77\n69.56\n68.10\n91.01\n72.11\n63.17\n61.75\n70.17\n66.57\nUDA\n69.92\n66.97\n69.98\n68.24\n90.05\n69.73\n63.40\n62.13\n70.64\n66.53\nSSMBA\n70.38∗†\n67.41∗† 70.19\n68.60∗† 89.61\n73.20\n63.85\n62.83∗† 70.96\n67.31\nCNN\nNone\n70.67\n67.64\n70.14\n68.52\n92.92\n72.11\n65.13\n64.46\n71.68\n67.63\nEDA\n68.52",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "92.92\n72.11\n65.13\n64.46\n71.68\n67.63\nEDA\n68.52\n66.03\n67.76\n66.17\n91.22\n74.20\n60.99\n59.88\n69.13\n65.65\nCBERT\n70.62\n67.70\n70.13\n68.23\n92.92\n71.56\n65.09\n64.19\n71.65\n67.49\nUDA\n70.80\n68.06\n70.29\n68.70\n92.63\n72.55\n65.22\n64.32\n71.77\n67.89\nSSMBA\n71.10∗\n68.18∗\n70.74\n69.04∗\n92.93\n74.67\n65.59\n64.81∗† 72.11\n68.33\nTable 2: Average in-domain (ID) and out-of-domain (OOD) accuracy (%) for models trained on sentiment anal-",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 407,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "ysis datasets. Average performance across datasets is weighted by number of domains contained in each dataset.\nAccuracies marked with a ∗and † are statistically signiﬁcantly higher than unaugmented models and the next best\nmodel respectively, both with p < 0.01.\nMNLI\nANLI\nAugmentation\nID\nOOD\nID\nOOD\nNone\n84.29\n80.61\n42.54\n43.80\nEDA\n83.44\n80.34\n45.59\n42.77\nCBERT\n84.24\n80.34\n46.68\n43.53\nUDA\n84.24\n80.99\n45.85\n42.89\nSSMBA\n85.71\n82.44∗† 48.46∗† 43.80\nTable 3: Average in-domain and out-of-domain accu-",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "racy (%) for RoBERTa models trained on NLI tasks.\nAccuracies marked with a ∗and † are statistically sig-\nniﬁcantly higher than unaugmented models and the\nnext best model respectively, both with p < 0.01.\nSystem\nBLEU\nConvS2S (Edunov et al., 2018)\n32.2\nTransformer (Wu et al., 2019a)\n34.4\nDynamicConv (Wu et al., 2019a)\n35.2\nTransformer (ours)\n34.70\n+ Word Dropout\n34.43\n+ RAML\n35.00\n+ SwitchOut\n35.28\n+ SSMBA\n36.10∗†\nTable 4: Results on IWSLT de→en for models trained\nwith different data augmentation methods.",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "with different data augmentation methods.\nScores\nmarked with a ∗and † are statistically signiﬁcantly\nhigher than baseline transformers and the next best\nmodel, both with p < 0.01.\nbest results, even when the labelling model had\npoor in-domain performance.\n6.3\nMachine Translation\nTable 4 presents results on IWSLT14 de→en. We\ncompare our results with convolutional models\nOPUS\nde→rm\nAugmentation\nID\nOOD\nID\nOOD\nNone\n56.99\n10.24\n51.53\n12.23\nWord Dropout\n56.26\n10.15\n50.23\n12.23\nRAML\n56.76\n10.10\n51.52\n12.49",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "10.15\n50.23\n12.23\nRAML\n56.76\n10.10\n51.52\n12.49\nSwitchOut\n55.50\n9.27\n51.34\n13.59\nSSMBA\n54.88\n10.65\n51.97\n14.67∗†\nTable 5: Average in-domain and out-of-domain BLEU\nfor models trained on OPUS (de→en) and de→rm data.\nScores marked with a ∗and † are statistically signiﬁ-\ncantly higher than baseline transformers and the next\nbest model, both with p < 0.01.\n(Edunov et al., 2018) and strong baseline trans-\nformer and dynamic convolution models (Wu et al.,\n2019a). SSMBA improves BLEU by almost 1.5",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "2019a). SSMBA improves BLEU by almost 1.5\npoints, outperforming all other baseline and com-\nparison models. Compared to SSMBA, other aug-\nmentation methods offer much smaller improve-\nments or even degrade performance.\nTable 5 presents results on OPUS and de→rm.\nOn OPUS, where the training domain contains\nhighly specialized language and differs signiﬁ-\ncantly both from other domains and the learned\nMLM manifold, SSMBA offers a small boost in\nOOD BLEU but degrades ID performance. All",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "OOD BLEU but degrades ID performance. All\nother augmentation methods degrade both ID and\nOOD performance. On de→rm, SSMBA improves\nOOD BLEU by a large margin of 2.4 points, and\nID BLEU by 0.4 points. Other augmentation meth-\nods offer much smaller OOD improvements while\ndegrading ID performance.",
+      "source": "dpr.pdf",
+      "page": 6,
+      "char_count": 296,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "100\n1,000\n10,000\n60\n62\n64\n66\n68\nTraining Set Size\nOOD Accuracy (%)\nNo Augmentation\nSSMBA\nFigure 4: OOD accuracy of models trained on succes-\nsively subsampled datasets. The full training set con-\ntains 25k examples. Error bars show standard deviation\nin OOD accuracy across models.\n7\nAnalysis and Discussion\nIn this section, we analyze the factors that inﬂuence\nSSMBA’s performance. Due to its relatively small\nsize (25k sentences), number of OOD domains (3),\nand amount of domain shift, we focus our analy-",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "and amount of domain shift, we focus our analy-\nsis on the Baby domain within the AR-Clothing\ndataset. Ablations are performed on a single do-\nmain rather than all domains, so error bars corre-\nspond to variance in models trained with different\nseeds and results are not comparable with those in\nTable 2. Unless otherwise stated, we train CNN\nmodels and augment with SSMBA, corrupting 45%\nof tokens, performing unrestricted sampling when\nreconstructing, and using self-supervised soft la-",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "belling, generating 5 synthetic examples for each\ntraining example.\n7.1\nTraining Set Size\nWe ﬁrst investigate how the size of the initial\ndataset affects SSMBA’s effectiveness. Since a\nsmaller dataset covers less of the training distri-\nbution, we might expect the data generated by\nSSMBA to explore less of the data manifold and\nreduce its effectiveness. We subsample 25% of the\noriginal dataset to form a new training set, then\nrepeat this process successively to form exponen-",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "repeat this process successively to form exponen-\ntially smaller and smaller datasets. The smallest\ndataset contains only 24 examples. For each dataset\nfraction, we train 10 models and average perfor-\nmance, tuning a set of SSMBA hyperparameters on\nthe same ID validation data. Figure 4 shows that\nSSMBA offers OOD performance gains across al-\nmost all dataset sizes, even in low resource settings\nwith less than 100 training examples.\nDistil\nBase\nLarge\nOOD Accuracy Boost (%)\n0.73\n0.78\n0.78",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "Base\nLarge\nOOD Accuracy Boost (%)\n0.73\n0.78\n0.78\nTable 6: Boost in OOD accuracy (%) of models trained\nwith SSMBA augmented data generated with different\nreconstruction functions.\n0\n0.2\n0.4\n0.6\n0.8\n1\n0\n0.2\n0.4\n0.6\n0.8\nCorruption Percentage\nBoost in OOD Accuracy (%)\nFigure 5:\nBoost in OOD accuracy (%) of models\ntrained with SSMBA augmentation applied with differ-\nent percentages of corrupted tokens.\n7.2\nReconstruction Model Capacity\nSince SSMBA relies on a reconstruction function",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "Since SSMBA relies on a reconstruction function\nthat approximates the underlying data manifold,\nwe might expect a larger and more expressive\nmodel to generate higher quality examples. We\ninvestigate three models of varying size: Distil-\nRoBERTa (Sanh et al., 2019) with 82M parame-\nters, RoBERTaBASE with 125M parameters, and\nRoBERTaLARGE with 355M parameters. For each\nreconstruction model, we generate a set of 10 aug-\nmented datasets and train a set of 10 models on",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "mented datasets and train a set of 10 models on\neach augmented dataset. We average performance\nacross models and datasests. Table 6 shows that\nSSMBA displays robustness to the choice of recon-\nstruction model, with all models conferring similar\nimprovements to OOD accuracy. Using the smaller\nDistilRoBERTa model only degrades performance\nby a small margin.\n7.3\nCorruption Amount\nHow sensitive is SSMBA to the particular amount\nof corruption applied? Empirically, tasks that were",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "more sensitive to input noise, like sentiment anal-\nysis, required less corruption than those that were\nmore robust, like NLI. To analyze the effect of tun-\ning the corruption amount, we generate 10 sets of\naugmented data with varying percentages of cor-\nruption, then train 10 models on each dataset, aver-\naging performance across all 100 models. Figure 5\nshows that for corruption percentages below 50%,",
+      "source": "dpr.pdf",
+      "page": 7,
+      "char_count": 406,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "top1\ntop5\ntop10\ntop20\ntop50\nunrestricted\n0\n0.5\n1\nBoost in OOD Accuracy (%)\nFigure 6:\nBoost in OOD accuracy (%) of models\ntrained with SSMBA augmentation using different sam-\npling methods. Error bars show standard deviation in\nOOD accuracy across models.\nour algorithm is relatively robust to the speciﬁc\namount of corruption applied. OOD performance\npeaks at 45% corruption, decreasing thereafter as\ncorruption increases. Very large amounts of cor-\nruption tend to degrade performance, although sur-",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "prisingly all augmented models still outperform\nunaugmented models, even when 95% of tokens\nare corrupted. In experiments on the more input\nsensitive NLI task, large amounts of noise degraded\nperformance below baselines.\n7.4\nSample Generation Methods\nNext we investigate methods for generating the\nreconstructed examples ˆx ∼r(ˆx|x′). Top-k sam-\npling draws samples from the MLM distribution\non the top-k most probable tokens, leading to aug-\nmented data that explores higher probability re-",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "mented data that explores higher probability re-\ngions of the manifold. We investigate top1, top5,\ntop10, top20, and top50 sampling. Unrestricted\nsampling draws samples from the full probabil-\nity distribution of tokens. This method explores a\nlarger area of the underlying data distribution but\ncan often lead to augmented data in low probability\nregions.\nFor each sample generation method, we generate\n5 sets of augmented data and train 10 models on\neach dataset. OOD accuracy is averaged across",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "each dataset. OOD accuracy is averaged across\nall models for a given sampling method. Figure 6\nshows that unrestricted sampling provides the great-\nest increase in OOD accuracy, with top-k sampling\nmethods all performing similarly. This suggests\nthat SSMBA works best when it is able to explore\nthe manifold without any restrictions.\n0\n1\n2\n4\n8\n16\n32\n66\n66.5\n67\n67.5\n68\n# Augmented Sentences\nOOD Accuracy (%)\nFigure 7: OOD accuracy (%) of models trained with\ndifferent amounts of SSMBA augmentation. 0 augmen-",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "tation corresponds to a baseline model. Error bars show\nstandard deviation in OOD accuracy across models.\n7.5\nAmount of Augmentation\nHow does OOD accuracy change as we generate\nmore sentences and explore more of the manifold\nneighborhood? To investigate we select various\naugmentation amounts and generate 5 datasets for\neach amount, training 10 models on each dataset\nand averaging OOD accuracy across all 50 models.\nFigure 7 shows that increasing the amount of aug-",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "Figure 7 shows that increasing the amount of aug-\nmentation increases the amount by which SSMBA\nimproves OOD accuracy, as well as decreasing the\nvariance in the OOD accuracy of trained models.\n7.6\nLabel Generation\nWe investigate 3 methods to generate a label ˆyij\nfor a synthetic example ˆxij. Label preservation\npreserves the original label yi. Since the manifold\nneighborhood of an example may cross a decision\nboundary, we also investigate using a supervised",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "boundary, we also investigate using a supervised\nmodel f trained on the original set of unaugmented\ndata for hard labelling of a one-hot class label ˆyij\nand soft labelling of a class distribution ˆyij.\nWe train a CNN model to varying levels of con-\nvergence and validation accuracy, then label a set of\n5 augmented datasets with each labelling method.\nWhen training with soft labels, we optimize the\nKL-divergence between the output distribution and\nsoft label distribution. For each dataset we train 10",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "models and average performance across all models\nand datasets. Results are shown in Figure 8.\nUnsurprisingly, soft and hard labelling with a\nlow accuracy model degrades performance. As\nour supervision classiﬁer improves, so does the\nperformance of models trained with soft and hard\nlabelled data. Once we pass a certain accuracy\nthreshold, models trained with soft labels begin",
+      "source": "dpr.pdf",
+      "page": 8,
+      "char_count": 377,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "0.73\n0.74\n0.75\n0.76\n0.77\n−3\n−2\n−1\n0\n1\nLabelling Model ID Validation Accuracy\nBoost in OOD Accuracy (%)\nPreserve Label\nSoft Label\nHard Label\nFigure 8:\nBoost in OOD accuracy (%) of models\ntrained with augmented data labelled with different su-\npervision models and label generation methods.\noutperforming all other models. This threshold\nvaries depending on the difﬁculty of the dataset and\ntask. In ANLI experiments, labelling augmented\nexamples even with a poor performing model still",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "examples even with a poor performing model still\nimproved downstream accuracy.\n8\nConclusion\nIn this paper, we introduce SSMBA, a method\nfor generating synthetic data in settings where\nthe underlying data manifold is difﬁcult to char-\nacterize. In contrast to other data augmentation\nmethods, SSMBA is applicable to any supervised\ntask, requires no task-speciﬁc knowledge, and\ndoes not rely on dataset-speciﬁc ﬁne-tuning. We\ndemonstrate SSMBA’s effectiveness on three NLP",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "demonstrate SSMBA’s effectiveness on three NLP\ntasks spanning classiﬁcation and sequence mod-\neling: sentiment analysis, natural language infer-\nence, and machine translation. We achieve gains\nof 0.8% accuracy on OOD Amazon reviews, 1.8%\naccuracy on OOD MNLI, and 1.4 BLEU on in-\ndomain IWSLT14 de→en. Our analysis shows that\nSSMBA is robust to the initial dataset size, recon-\nstruction model choice, and corruption amount, of-\nfering OOD robustness improvements in most set-",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "fering OOD robustness improvements in most set-\ntings. Future work will explore applying SSMBA\nto the target side manifold in structured prediction\ntasks, as well as other natural language tasks and\nsettings where data augmentation is difﬁcult.\nAcknowledgements\nResources used in preparing this research were\nprovided, in part, by the Province of Ontario,\nthe Government of Canada through CIFAR, and\ncompanies sponsoring the Vector Institute www.\nvectorinstitute.ai/#partners. This work was",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "vectorinstitute.ai/#partners. This work was\npartly supported by Samsung Advanced Institute of\nTechnology (Next Generation Deep Learning: from\npattern recognition to AI) and Samsung Research\n(Improving Deep Learning using Latent Structure).\nWe thank Julian McAuley, Vishaal Prasad, Taylor\nKillian, Victoria Cheng, and Aparna Balagopalan\nfor helpful comments and discussion.\nReferences\nAteret Anaby-Tavor, Boaz Carmeli, Esther Goldbraich,\nAmir Kantor, George Kour, Segev Shlomov, Naama",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "Amir Kantor, George Kour, Segev Shlomov, Naama\nTepper, and Naama Zwerdling. 2020. Do not have\nenough data? deep learning to the rescue! In Pro-\nceedings of the 2020 AAAI.\nPhilip Bachman, Ouais Alsharif, and Doina Precup.\n2014. Learning with pseudo-ensembles. In NIPS.\nYoshua Bengio, Li Yao, Guillaume Alain, and Pas-\ncal Vincent. 2013.\nGeneralized denoising auto-\nencoders as generative models. In Proceedings of\nthe 26th International Conference on Neural Infor-\nmation Processing Systems - Volume 1, NIPS’13,",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "mation Processing Systems - Volume 1, NIPS’13,\npage 899–907, Red Hook, NY, USA. Curran Asso-\nciates Inc.\nJohn Blitzer, Mark Dredze, and Fernando Pereira. 2007.\nBiographies, Bollywood, boom-boxes and blenders:\nDomain adaptation for sentiment classiﬁcation. In\nProceedings of the 45th Annual Meeting of the As-\nsociation of Computational Linguistics, pages 440–\n447, Prague, Czech Republic. Association for Com-\nputational Linguistics.\nMauro Cettolo, Jan Niehues, Sebastian St¨uker, Luisa",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "Bentivogli, and Marcello Federico. 2014. Report on\nthe 11th iwslt evaluation campaign, iwslt 2014. In\nProceedings of the 11th International Workshop on\nSpoken Language Translation.\nBranden Chan, Timo M¨oller, Malte Pietsch, Tanay\nSoni, and Chin Man Yeung. 2020. Open sourcing\ngerman bert.\nOlivier Chapelle, Bernhard Sch¨olkopf, and Alexander\nZien. 2006.\nSemi-Supervised Learning (Adaptive\nComputation and Machine Learning).\nThe MIT\nPress.\nOlivier Chapelle, Jason Weston, L´eon Bottou, and",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "Olivier Chapelle, Jason Weston, L´eon Bottou, and\nVladimir Vapnik. 2000. Vicinal risk minimization.\nIn NIPS.\nHal Daum´e III. 2007. Frustratingly easy domain adap-\ntation. In Proceedings of the 45th Annual Meeting of\nthe Association of Computational Linguistics, pages\n256–263, Prague, Czech Republic. Association for\nComputational Linguistics.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2018.\nBERT: pre-training of\ndeep bidirectional transformers for language under-",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "standing. CoRR, abs/1810.04805.",
+      "source": "dpr.pdf",
+      "page": 9,
+      "char_count": 31,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "Sergey Edunov, Myle Ott, Michael Auli, David Grang-\nier, and Marc’Aurelio Ranzato. 2018.\nClassical\nstructured prediction losses for sequence to se-\nquence learning. In Proceedings of the 2018 Con-\nference of the North American Chapter of the Asso-\nciation for Computational Linguistics: Human Lan-\nguage Technologies, Volume 1 (Long Papers), pages\n355–364, New Orleans, Louisiana. Association for\nComputational Linguistics.\nMarzieh Fadaee, Arianna Bisazza, and Christof Monz.\n2017.",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "2017.\nData augmentation for low-resource neural\nmachine translation. In Proceedings of the 55th An-\nnual Meeting of the Association for Computational\nLinguistics (Volume 2: Short Papers), pages 567–\n573, Vancouver, Canada. Association for Computa-\ntional Linguistics.\nDan Hendrycks, Xiaoyuan Liu, Eric Wallace, Adam\nDziedzic, Rishabh Krishnan, and Dawn Song. 2020.\nPretrained transformers improve out-of-distribution\nrobustness. In Association for Computational Lin-\nguistics.",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "guistics.\nSepp Hochreiter and J¨urgen Schmidhuber. 1997.\nLong short-term memory.\nNeural computation,\n9(8):1735–1780.\nKushal Kaﬂe, Mohammed Yousefhussien, and Christo-\npher Kanan. 2017.\nData augmentation for visual\nquestion answering. In Proceedings of the 10th In-\nternational Conference on Natural Language Gen-\neration, pages 198–202, Santiago de Compostela,\nSpain. Association for Computational Linguistics.\nCan Kanbak, Moosavi-Dezfooli Seyed-Mohsen, and\nPascal Frossard. 2018.\nGeometric robustness of",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "Pascal Frossard. 2018.\nGeometric robustness of\ndeep networks: Analysis and improvement. pages\n4441–4449.\nYoon Kim. 2014. Convolutional neural networks for\nsentence classiﬁcation. In Proceedings of the 2014\nConference on Empirical Methods in Natural Lan-\nguage Processing (EMNLP).\nDiederik P. Kingma and Jimmy Ba. 2014.\nAdam:\nA method for stochastic optimization.\nCite\narxiv:1412.6980Comment: Published as a confer-\nence paper at the 3rd International Conference for\nLearning Representations, San Diego, 2015.",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Learning Representations, San Diego, 2015.\nSosuke Kobayashi. 2018.\nContextual augmentation:\nData augmentation by words with paradigmatic re-\nlations. In Proceedings of the 2018 Conference of\nthe North American Chapter of the Association for\nComputational Linguistics: Human Language Tech-\nnologies, Volume 2 (Short Papers), pages 452–457,\nNew Orleans, Louisiana. Association for Computa-\ntional Linguistics.\nPhilipp Koehn. 2004.\nStatistical signiﬁcance tests\nfor machine translation evaluation.\nIn Proceed-",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "for machine translation evaluation.\nIn Proceed-\nings of the 2004 Conference on Empirical Meth-\nods in Natural Language Processing, pages 388–\n395, Barcelona, Spain. Association for Computa-\ntional Linguistics.\nAlex Krizhevsky, Ilya Sutskever, and Geoffrey E Hin-\nton. 2012.\nImagenet classiﬁcation with deep con-\nvolutional neural networks. In F. Pereira, C. J. C.\nBurges, L. Bottou, and K. Q. Weinberger, editors,\nAdvances in Neural Information Processing Systems\n25, pages 1097–1105. Curran Associates, Inc.",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "25, pages 1097–1105. Curran Associates, Inc.\nVarun Kumar,\nAshutosh Choudhary,\nand Eunah\nCho.\n2020.\nData\nAugmentation\nusing\nPre-\ntrained Transformer Models. arXiv e-prints, page\narXiv:2003.02245.\nMike\nLewis,\nYinhan\nLiu,\nNaman\nGoyal,\nMar-\njan Ghazvininejad, Abdelrahman Mohamed, Omer\nLevy, Veselin Stoyanov, and Luke Zettlemoyer.\n2019.\nBart: Denoising sequence-to-sequence pre-\ntraining for natural language generation,\ntrans-\nlation,\nand\ncomprehension.\narXiv\npreprint\narXiv:1910.13461.",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "comprehension.\narXiv\npreprint\narXiv:1910.13461.\nYinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Man-\ndar Joshi, Danqi Chen, Omer Levy, Mike Lewis,\nLuke Zettlemoyer, and Veselin Stoyanov. 2019.\nRoberta: A robustly optimized bert pretraining ap-\nproach. arXiv preprint arXiv:1907.11692.\nAndrew L. Maas, Raymond E. Daly, Peter T. Pham,\nDan Huang, Andrew Y. Ng, and Christopher Potts.\n2011. Learning word vectors for sentiment analy-\nsis. In Proceedings of the 49th Annual Meeting of",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "sis. In Proceedings of the 49th Annual Meeting of\nthe Association for Computational Linguistics: Hu-\nman Language Technologies, pages 142–150, Port-\nland, Oregon, USA. Association for Computational\nLinguistics.\nTakeru Miyato, Shin-ichi Maeda, Masanori Koyama,\nand Shin Ishii. 2017. Virtual Adversarial Training:\nA Regularization Method for Supervised and Semi-\nSupervised Learning.\nMathias M¨uller, Annette Rios Gonzales, and Rico Sen-\nnrich. 2019. Domain robustness in neural machine",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "nrich. 2019. Domain robustness in neural machine\ntranslation. ArXiv, abs/1911.03109.\nJianmo Ni, Jiacheng Li, and Julian McAuley. 2019.\nJustifying recommendations using distantly-labeled\nreviews and ﬁned-grained aspects. In Proceedings\nof EMNLP.\nYixin Nie, Adina Williams, Emily Dinan, Mohit\nBansal, Jason Weston, and Douwe Kiela. 2019. Ad-\nversarial NLI: A New Benchmark for Natural Lan-\nguage Understanding.\nMohammad Norouzi, Samy Bengio, Zhifeng Chen,\nNavdeep Jaitly, Mike Schuster, Yonghui Wu, and",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "Navdeep Jaitly, Mike Schuster, Yonghui Wu, and\nDale Schuurmans. 2016. Reward augmented max-\nimum likelihood for neural structured prediction. In\nD. D. Lee, M. Sugiyama, U. V. Luxburg, I. Guyon,\nand R. Garnett, editors, Advances in Neural Informa-\ntion Processing Systems 29, pages 1723–1731. Cur-\nran Associates, Inc.\nMyle Ott, Sergey Edunov, Alexei Baevski, Angela\nFan, Sam Gross, Nathan Ng, David Grangier, and\nMichael Auli. 2019.\nfairseq: A fast, extensible",
+      "source": "dpr.pdf",
+      "page": 10,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "toolkit for sequence modeling.\nIn Proceedings of\nNAACL-HLT 2019: Demonstrations.\nKishore Papineni, Salim Roukos, Todd Ward, and Wei-\nJing Zhu. 2002. Bleu: A method for automatic eval-\nuation of machine translation. In Proceedings of the\n40th Annual Meeting on Association for Computa-\ntional Linguistics, ACL ’02, page 311–318, USA.\nAssociation for Computational Linguistics.\nMagdalini Paschali, Walter Simson, Abhijit Guha Roy,\nMuhammad Ferjad Naeem, R¨udiger G¨obl, Christian",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "Muhammad Ferjad Naeem, R¨udiger G¨obl, Christian\nWachinger, and Nassir Navab. 2019. Data augmen-\ntation with manifold exploring geometric transfor-\nmations for increased performance and robustness.\narXiv.\nLuis Perez and Jason Wang. 2017. The Effectiveness\nof Data Augmentation in Image Classiﬁcation using\nDeep Learning.\nMatt Post. 2018. A call for clarity in reporting BLEU\nscores. In Proceedings of the Third Conference on\nMachine Translation: Research Papers, pages 186–",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Machine Translation: Research Papers, pages 186–\n191, Belgium, Brussels. Association for Computa-\ntional Linguistics.\nJoaquin Quionero-Candela, Masashi Sugiyama, Anton\nSchwaighofer, and Neil D. Lawrence. 2009. Dataset\nShift in Machine Learning.\nAlexandra Birch Rico Sennrich, Barry Haddow. 2016.\nImproving neural machine translation models with\nmonolingual data. In Proc. of ACL.\nMehdi Sajjadi, Mehran Javanmardi, and Tolga Tas-\ndizen. 2016. Regularization with stochastic transfor-",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "mations and perturbations for deep semi-supervised\nlearning. In NIPS.\nVictor Sanh, Lysandre Debut, Julien Chaumond, and\nThomas Wolf. 2019. Distilbert, a distilled version of\nbert: smaller, faster, cheaper and lighter. In NeurIPS\nEMC2 Workshop.\nYves Scherrer and Bruno Cartoni. 2012. The trilingual\nALLEGRA corpus: Presentation and possible use\nfor lexicon induction. In Proceedings of the Eighth\nInternational Conference on Language Resources\nand Evaluation (LREC-2012), pages 2890–2896, Is-",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "and Evaluation (LREC-2012), pages 2890–2896, Is-\ntanbul, Turkey. European Languages Resources As-\nsociation (ELRA).\nRico Sennrich, Barry Haddow, and Alexandra Birch.\n2016.\nEdinburgh neural machine translation sys-\ntems for WMT 16. In Proceedings of the First Con-\nference on Machine Translation: Volume 2, Shared\nTask Papers, pages 371–376, Berlin, Germany. As-\nsociation for Computational Linguistics.\nPatrice Y. Simard, Yann A. LeCun, John S. Denker, and\nBernard Victorri. 1998. Transformation Invariance",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Bernard Victorri. 1998. Transformation Invariance\nin Pattern Recognition — Tangent Distance and Tan-\ngent Propagation, pages 239–274. Springer Berlin\nHeidelberg, Berlin, Heidelberg.\nKaren Simonyan and Andrew Zisserman. 2015. Very\ndeep convolutional networks for large-scale image\nrecognition.\nIn Proceedings of the 2015 Interna-\ntional Conference on Learning Representations.\nRichard Socher, Alex Perelygin, Jean Wu, Jason\nChuang, Christopher D. Manning, Andrew Ng, and\nChristopher Potts. 2013.",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "Christopher Potts. 2013.\nRecursive deep models\nfor semantic compositionality over a sentiment tree-\nbank.\nIn Proceedings of the 2013 Conference on\nEmpirical Methods in Natural Language Processing,\npages 1631–1642, Seattle, Washington, USA. Asso-\nciation for Computational Linguistics.\nChristian Szegedy, Wojciech Zaremba, Ilya Sutskever,\nJoan Bruna, Dumitru Erhan, Ian Goodfellow, and\nRob Fergus. 2014. Intriguing properties of neural\nnetworks. In International Conference on Learning\nRepresentations.",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "Representations.\nJ¨org Tiedemann. 2012. Parallel data, tools and inter-\nfaces in opus. In Proceedings of the Eight Interna-\ntional Conference on Language Resources and Eval-\nuation (LREC’12), Istanbul, Turkey. European Lan-\nguage Resources Association (ELRA).\nA. Torralba and A. A. Efros. 2011. Unbiased look at\ndataset bias. In CVPR 2011, pages 1521–1528.\nAshish Vaswani, Noam Shazeer, Niki Parmar, Jakob\nUszkoreit, Llion Jones, Aidan N. Gomez, Lukasz\nKaiser, and Illia Polosukhin. 2017. Attention is all",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "you need. In Proceedings of the 2017 Conference on\nNeural Information Processing Systems.\nPascal Vincent, Hugo Larochelle, Yoshua Bengio, and\nPierre-Antoine Manzagol. 2008.\nExtracting and\ncomposing robust features with denoising autoen-\ncoders.\nIn Proceedings of the 25th International\nConference on Machine Learning.\nWilliam Yang Wang and Diyi Yang. 2015. That’s so an-\nnoying!!!: A lexical and frame-semantic embedding\nbased data augmentation approach to automatic cat-",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "egorization of annoying behaviors using #petpeeve\ntweets. In Proceedings of the 2015 Conference on\nEmpirical Methods in Natural Language Processing,\npages 2557–2563, Lisbon, Portugal. Association for\nComputational Linguistics.\nXinyi Wang, Hieu Pham, Zihang Dai, and Graham\nNeubig. 2018.\nSwitchOut: an efﬁcient data aug-\nmentation algorithm for neural machine translation.\nIn Proceedings of the 2018 Conference on Empiri-\ncal Methods in Natural Language Processing, pages",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "cal Methods in Natural Language Processing, pages\n856–861, Brussels, Belgium. Association for Com-\nputational Linguistics.\nJason Wei and Kai Zou. 2019. EDA: Easy data aug-\nmentation techniques for boosting performance on\ntext classiﬁcation tasks.\nIn Proceedings of the\n2019 Conference on Empirical Methods in Natu-\nral Language Processing and the 9th International\nJoint Conference on Natural Language Processing\n(EMNLP-IJCNLP), pages 6383–6389, Hong Kong,\nChina. Association for Computational Linguistics.",
+      "source": "dpr.pdf",
+      "page": 11,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "Adina Williams, Nikita Nangia, and Samuel Bowman.\n2018. A broad-coverage challenge corpus for sen-\ntence understanding through inference. In Proceed-\nings of the 2018 Conference of the North American\nChapter of the Association for Computational Lin-\nguistics: Human Language Technologies, Volume\n1 (Long Papers), pages 1112–1122. Association for\nComputational Linguistics.\nFelix Wu, Angela Fan, Alexei Baevski, Yann Dauphin,\nand Michael Auli. 2019a. Pay less attention with",
+      "source": "dpr.pdf",
+      "page": 12,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "and Michael Auli. 2019a. Pay less attention with\nlightweight and dynamic convolutions. In Interna-\ntional Conference on Learning Representations.\nXing Wu, Shangwen Lv, Liangjun Zang, Jizhong Han,\nand Songlin Hu. 2019b. Conditional bert contextual\naugmentation. In International Conference on Com-\nputational Science, pages 84–95. Springer.\nQizhe Xie, Zihang Dai, Eduard Hovy, Minh-Thang Lu-\nong, and Quoc V Le. 2019. Unsupervised data aug-\nmentation for consistency training. arXiv preprint\narXiv:1904.12848.",
+      "source": "dpr.pdf",
+      "page": 12,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "arXiv:1904.12848.\nQizhe Xie, Zihang Dai, Eduard Hovy, Minh-Thang Lu-\nong, and Quoc V. Le. 2020. Unsupervised data aug-\nmentation for consistency training.\nZiang Xie, Sida I. Wang, Jiwei Li, Daniel Levy, Aiming\nNie, Dan Jurafksy, and Andrew Y. Ng. 2017. Data\nnoising as smoothing in neural network language\nmodels. In Proceedings of the 2017 International\nConference on Learning Representations.\nYiben Yang, Chaitanya Malaviya, Jared Fernandez,\nSwabha Swayamdipta, Ronan Le Bras, Ji-Ping",
+      "source": "dpr.pdf",
+      "page": 12,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "Swabha Swayamdipta, Ronan Le Bras, Ji-Ping\nWang, Chandra Bhagavatula, Yejin Choi, and Doug\nDowney. 2020.\nG-DAUG: Generative Data Aug-\nmentation for Commonsense Reasoning.\narXiv e-\nprints, page arXiv:2004.11546.\nYelp. Yelp open dataset. https://www.yelp.com/\ndataset.\nAdams Wei Yu, David Dohan, Quoc Le, Thang Luong,\nRui Zhao, and Kai Chen. 2018. Fast and accurate\nreading comprehension by combining self-attention\nand convolution.\nIn International Conference on\nLearning Representations.",
+      "source": "dpr.pdf",
+      "page": 12,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "Learning Representations.\nHongyi Zhang, Moustapha Cisse, Yann N. Dauphin,\nand David Lopez-Paz. 2018. mixup: Beyond em-\npirical risk minimization. International Conference\non Learning Representations.\nXiang Zhang, Junbo Zhao, and Yann LeCun. 2015.\nCharacter-level convolutional networks for text clas-\nsiﬁcation. In C. Cortes, N. D. Lawrence, D. D. Lee,\nM. Sugiyama, and R. Garnett, editors, Advances in\nNeural Information Processing Systems 28, pages\n649–657. Curran Associates, Inc.",
+      "source": "dpr.pdf",
+      "page": 12,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "A\nDatasets\nFull dataset statistics and details are provided\nin table 7.\nAll data splits for all tasks\ncan be downloaded at https://nyu.box.com/s/\nhenvmy17tkyr6npl7e1ltw8j46baxsml.\nB\nData Preprocessing\nWe use the same preprocessing steps across all sen-\ntiment analysis and NLI experiments. All data is\nﬁrst tokenized using a GPT-2 style tokenizer and\nBPE vocabulary provided by fairseq (Ott et al.,\n2019). This BPE vocabulary consists of 50263\ntypes. Corresponding labels are encoded using",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "types. Corresponding labels are encoded using\na label dictionary consisting of as many types as\nthere are classes. Input text and labels are then\nbinarized for model training. Although all models\nshare the same vocabulary, we randomly initial-\nize each model’s embeddings and train the entire\nmodel end-to-end. For machine translation exper-\niments, we follow M¨uller et al. 2019 and learn a\n16k BPE on OPUS and a 32k BPE on de→rm. On\nIWSLT14 we learn a 10k BPE. We use a separate",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "IWSLT14 we learn a 10k BPE. We use a separate\nvocabulary for the source and target side.\nC\nModel Architecture and Training\nHyperparameters\nAll models are written and trained within the\nfairseq framework (Ott et al., 2019) with T4\nGPUs. LSTM and CNN models were trained on a\nsingle GPU, RoBERTa models were trained with 4\nGPUs, and tranfsormer models were trained with\n2 GPUs. On average, when trained on augmented\ndata, LSTM and CNN models took an hour to train\nto convergence, RoBERTa models took 12 hours to",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "to convergence, RoBERTa models took 12 hours to\ntrain to convergence, and transformer models took\n24 hours to train to convergence. Models trained on\nunaugmented data took roughly 20% of the time of\nmodels trained on augmented data to reach conver-\ngence. For each model we investigate, we present\nﬁrst the model architecture and then the training\nhyperparameters.\nC.1\nLSTM\nOur LSTM models are a single layer of 512 nodes.\nInput embeddings are 512 dimensions. The output",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "Input embeddings are 512 dimensions. The output\nembedding from the last time step is fed into a MLP\nclassiﬁer with a single hidden layer of 512 dimen-\nsions. Models contain 28M parameters. Dropout\nof 0.3 is applied to the input and output of our en-\ncoder, and dropout of 0.1 is applied to the MLP\nclassiﬁer.\nWe train with Adam optimizer (Kingma and Ba,\n2014) with β = (0.9, 0.98) and ϵ = 1e−6. Our\nlearning rate is set to 1e−4 and is ﬁrst warmed up\nfor 2 epochs before it is decayed using an inverse",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "square root scheduler.\nC.2\nCNN\nOur CNN models are based on the architecture in\n(Kim, 2014). As in our LSTM models, our input\nembeddings are 512 dimensional, which we treat\nas our channel dimension. We apply three convo-\nlutions of kernel size 3, 4, and 5, with 256 output\nchannels. Models contain 27M parameters. Con-\nvolutional outputs are max-pooled over time then\nconcatenated to a 768-dimensional encoded repre-\nsentation. Again, we feed this representation into",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "a MLP classiﬁer with a single hidden layer of 512\ndimensions. We apply dropout of 0.2 to our inputs\nand MLP classiﬁer.\nWe train with Adam optimizer (Kingma and Ba,\n2014) with β = (0.9, 0.98) and ϵ = 1e−6. Our\nlearning rate is set to 1e−3 and is ﬁrst warmed up\nfor 2 epochs before it is decayed using an inverse\nsquare root scheduler.\nC.3\nRoBERTa\nOur\nRoBERTa\nmodels\nuse\na\npre-trained\nRoBERTaBASE model provided by fairseq. As\nin other models, classiﬁcation token embeddings",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "in other models, classiﬁcation token embeddings\nare fed into an MLP classiﬁer with a single hidden\nlayer of 512 dimensions. Models contain 125M\nparameters.\nWe follow the MNLI ﬁne-tuning\nprocedures in fairseq, training with learning\nrate 1e−5 with Adam optimizer (Kingma and\nBa, 2014) with β = (0.9, 0.98) and ϵ = 1e−6.\nWe warmup the learning rate for 2 epochs before\ndecaying with an inverse square root scheduler.\nC.4\nTransformer\nTransformer models are trained with label-",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "Transformer models are trained with label-\nsmoothed cross-entropy and label smoothing 0.1.\nDue to the dataset sizes, we use a slightly smaller\ntransformer architecture with embedding dimen-\nsion 512, feed forward embedding dimension 1024,\n4 encoder heads, and 6 encoder and decoder layers.\nModels contain 52M parameters. We also apply\ndropout of 0.3 and weight decay of 0.0001. All\nother hyperparameters follow the base architecture\nin Vaswani et al. 2017.\nAs in other models, we train with Adam opti-",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "As in other models, we train with Adam opti-\nmizer (Kingma and Ba, 2014) with β = (0.9, 0.98)\nand ϵ = 1e−6. Our learning rate is set to 5e−4",
+      "source": "dpr.pdf",
+      "page": 13,
+      "char_count": 140,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "and is ﬁrst warmed up for 4000 updates before it is\ndecayed using an inverse square root scheduler.\nD\nSSMBA Hyperparameters\nSSMBA hyperparameters for each dataset and do-\nmain are provided in table 8. Hyperparameters are\nchosen based on in-domain validation performance.\nA detailed analysis of hyperparameter tuning is\nprovided in section 7.\nE\nStatistical Testing\nFor the statistical tests on sentiment analysis and\nNLI tasks, we use a Wilcoxon ranked-sum test.\nSpeciﬁcally, we compare averages of model per-",
+      "source": "dpr.pdf",
+      "page": 14,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "Speciﬁcally, we compare averages of model per-\nformances on pairs of training and test domains.\nFor example, in a dataset with 3 domains, D1, D2,\nand D3, we have 3 in-domain train-test pairs (D1-\nD1, D2-D2, D3-D3), and 6 out-of-domain train-\ntest pairs (D1-D2, D1-D3, D2-D1, D2-D3, D3-D1,\nD3-D2). We calculate the average performance for\neach model on each pair, then compare the matched\nin-domain and out-of-domain pairs. Since the num-\nber of samples we can compare depends on the",
+      "source": "dpr.pdf",
+      "page": 14,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "ber of samples we can compare depends on the\ntotal number of domains in the dataset, a larger\nnumber of datasets gives us a better sense of our\nstatistical signiﬁcance.\nFor the statistical tests on machine translation\ntasks, we use a paired bootstrap resampling ap-\nproach (Koehn, 2004). Since the test works only\non a single system’s output, we run the test on every\npairing of seeds and test domains for the two com-\nparison models. We report the signiﬁcance level",
+      "source": "dpr.pdf",
+      "page": 14,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "parison models. We report the signiﬁcance level\nonly if all tests result in a small enough probability.",
+      "source": "dpr.pdf",
+      "page": 14,
+      "char_count": 103,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "Dataset\nDomain\nReference\nc\nl\nTrain\nValid\nTest\nAR-Clothing\nMen\nNi et al. 2019\n5\n31\n25k†\n2k\n2k\nWomen\nNi et al. 2019\n5\n40\n25k†\n2k\n2k\nBaby\nNi et al. 2019\n5\n29\n25k†\n2k\n2k\nShoes\nNi et al. 2019\n5\n41\n25k†\n2k\n2k\nAR-Full\nBooks\nNi et al. 2019\n5\n101\n25k†\n2k\n2k\nClothing, Shoes & Jewelry\nNi et al. 2019\n5\n39\n25k†\n2k\n2k\nHome and Kitchen\nNi et al. 2019\n5\n53\n25k†\n2k\n2k\nKindle Store\nNi et al. 2019\n5\n104\n25k†\n2k\n2k\nMovies & TV\nNi et al. 2019\n5\n83\n25k†\n2k\n2k\nPet Supplies\nNi et al. 2019\n5\n57\n25k†\n2k\n2k\nSports & Outdoors",
+      "source": "dpr.pdf",
+      "page": 15,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "Ni et al. 2019\n5\n57\n25k†\n2k\n2k\nSports & Outdoors\nNi et al. 2019\n5\n55\n25k†\n2k\n2k\nElectronics\nNi et al. 2019\n5\n73\n25k†\n2k\n2k\nTools & Home Improvement\nNi et al. 2019\n5\n57\n25k†\n2k\n2k\nToys & Games\nNi et al. 2019\n5\n50\n25k†\n2k\n2k\nYelp\nAmerican\nYelp\n5\n138\n25k†\n2k\n2k\nChinese\nYelp\n5\n135\n25k†\n2k\n2k\nItalian\nYelp\n5\n139\n25k†\n2k\n2k\nJapanese\nYelp\n5\n138\n25k†\n2k\n2k\nMNLI\nSlate\nWilliams et al. 2018\n3\n35\n75k\n2k\n2k\nFiction\nWilliams et al. 2018\n3\n25\n73k\n2k\n2k\nTelephone\nWilliams et al. 2018\n3\n37\n81k\n2k\n2k\nTravel",
+      "source": "dpr.pdf",
+      "page": 15,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "Williams et al. 2018\n3\n37\n81k\n2k\n2k\nTravel\nWilliams et al. 2018\n3\n42\n75k\n2k\n2k\nGovernment\nWilliams et al. 2018\n3\n39\n75k\n2k\n2k\nVerbatim\nWilliams et al. 2018\n3\n43\n-\n1k\n1k\nFace-to-Face\nWilliams et al. 2018\n3\n29\n-\n1k\n1k\nOUP\nWilliams et al. 2018\n3\n41\n-\n1k\n1k\n9/11\nWilliams et al. 2018\n3\n36\n-\n1k\n1k\nLetters\nWilliams et al. 2018\n3\n34\n-\n1k\n1k\nMovies\nSST2\nSocher et al. 2013\n2\n11\n66k\n1k\n1k\nIMDb\nMaas et al. 2011\n2\n296\n46k\n2k\n2k\nANLI\nR1\nNie et al. 2019\n3\n92\n17k\n1k\n1k\nR2\nNie et al. 2019\n3\n90\n46k\n1k\n1k\nR3\nNie et al. 2019",
+      "source": "dpr.pdf",
+      "page": 15,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "Nie et al. 2019\n3\n90\n46k\n1k\n1k\nR3\nNie et al. 2019\n3\n82\n100k\n1k\n1k\nIWSLT\nIWSLT\nCettolo et al. 2014\n-\n24\n160k\n7k\n7k\nOPUS\nMedical\nTiedemann 2012\n-\n13\n1.1m\n2k\n2k\nIT\nTiedemann 2012\n-\n14\n-\n2k\n2k\nKoran\nTiedemann 2012\n-\n23\n-\n2k\n2k\nLaw\nTiedemann 2012\n-\n31\n-\n2k\n2k\nSubtitles\nTiedemann 2012\n-\n10\n-\n2k\n2k\nde→rm\nLaw\nScherrer and Cartoni 2012\n-\n22\n101k\n2k\n2k\nBlogs\nM¨uller et al. 2019\n-\n24\n-\n2k\n2k\nTable 7: Summary statistics for datasets. For detailed information, see references. n: number of domains. c:",
+      "source": "dpr.pdf",
+      "page": 15,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "number of target classes. l: average training example length, or average test example length, for datasets without\ntraining sets. Training sets marked with a † are sampled randomly from a larger dataset.",
+      "source": "dpr.pdf",
+      "page": 15,
+      "char_count": 203,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "Dataset\nDomain\nModel\nCorruption %\nSampling Method\nLabelling Method\n# Generated\nAR-Clothing\n*\nRNN\n40%\nUnrestricted Sampling\nPreserve Label\n5\n*\nCNN\n40%\nUnrestricted Sampling\nSoft Label\n5\nAR-Full\n*\nRNN\n50%\nUnrestricted Sampling\nPreserve Label\n5\n*\nCNN\n40%\nUnrestricted Sampling\nSoft Label\n5\nYelp\n*\nRNN\n60%\nUnrestricted Sampling\nPreserve Label\n5\n*\nCNN\n40%\nUnrestricted Sampling\nSoft Label\n5\nMovies\nSST2\nRNN\n10%\nUnrestricted Sampling\nSoft Label\n5\nIMDb\nRNN\n20%\nUnrestricted Sampling\nPreserve Label\n5\nSST2\nCNN\n60%",
+      "source": "dpr.pdf",
+      "page": 16,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "Preserve Label\n5\nSST2\nCNN\n60%\nUnrestricted Sampling\nHard Label\n5\nIMDb\nCNN\n30%\nUnrestricted Sampling\nSoft Label\n5\nMNLI\n*\nRoBERTa\n10%\nUnrestricted Sampling\nSoft Label\n5\nANLI\nR1\nRoBERTa\n5%\nUnrestricted Sampling\nPreserve Label\n5\nR2\nRoBERTa\n5%\nUnrestricted Sampling\nHard Label\n5\nR3\nRoBERTa\n10%\nUnrestricted Sampling\nHard Label\n5\nIWSLT\nIWSLT\nTransformer\n10%\nUnrestricted Sampling\nBeam 5\n5\nOPUS\nMedical\nTransformer\n15%\nUnrestricted Sampling\nBeam 5\n5\nde→rm\nLaw\nTransformer\n15%\nUnrestricted Sampling\nBeam 5\n5",
+      "source": "dpr.pdf",
+      "page": 16,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "Transformer\n15%\nUnrestricted Sampling\nBeam 5\n5\nTable 8: SSMBA hyperparameters used to generate augmented data for each dataset and domain. Hyperparameters\nwere selected by in-domain validation performance. A * in the domain indicates that hyperparameters are the same\nfor all domains in that dataset.",
+      "source": "dpr.pdf",
+      "page": 16,
+      "char_count": 300,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

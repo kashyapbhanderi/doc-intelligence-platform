@@ -1,0 +1,1164 @@
+{
+  "source": "prefix_tuning.pdf",
+  "full_path": "data\\raw\\prefix_tuning.pdf",
+  "total_pages": 15,
+  "text_chunks": 144,
+  "vision_chunks": 0,
+  "total_chunks": 144,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "The Power of Scale for Parameter-Efﬁcient Prompt Tuning\nBrian Lester∗Rami Al-Rfou Noah Constant\nGoogle Research\n{brianlester,rmyeid,nconstant}@google.com\nAbstract\nIn this work, we explore “prompt tuning,”\na simple yet effective mechanism for learn-\ning “soft prompts” to condition frozen lan-\nguage models to perform speciﬁc downstream\ntasks. Unlike the discrete text prompts used by\nGPT-3, soft prompts are learned through back-\npropagation and can be tuned to incorporate",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "propagation and can be tuned to incorporate\nsignals from any number of labeled examples.\nOur end-to-end learned approach outperforms\nGPT-3’s few-shot learning by a large margin.\nMore remarkably, through ablations on model\nsize using T5, we show that prompt tuning be-\ncomes more competitive with scale: as mod-\nels exceed billions of parameters, our method\n“closes the gap” and matches the strong per-\nformance of model tuning (where all model\nweights are tuned). This ﬁnding is especially",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "weights are tuned). This ﬁnding is especially\nrelevant because large models are costly to\nshare and serve and the ability to reuse one\nfrozen model for multiple downstream tasks\ncan ease this burden. Our method can be seen\nas a simpliﬁcation of the recently proposed\n“preﬁx tuning” of Li and Liang (2021) and we\nprovide a comparison to this and other similar\napproaches. Finally, we show that condition-\ning a frozen model with soft prompts confers\nbeneﬁts in robustness to domain transfer and",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "beneﬁts in robustness to domain transfer and\nenables efﬁcient “prompt ensembling.”\n1\nIntroduction\nWith the wide success of pre-trained large lan-\nguage models, a range of techniques has arisen to\nadapt these general-purpose models to downstream\ntasks. ELMo (Peters et al., 2018) proposed freezing\nthe pre-trained model and learning a task-speciﬁc\nweighting of its per-layer representations. How-\never, since GPT (Radford et al., 2018) and BERT\n(Devlin et al., 2019), the dominant adaptation tech-",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "nique has been model tuning (or “ﬁne-tuning”),\nwhere all model parameters are tuned during adap-\ntation, as proposed by Howard and Ruder (2018).\n∗Work done as a Google AI Resident.\n108\n109\n1010\n1011\nModel Parameters\n50\n60\n70\n80\n90\n100\nSuperGLUE Score\nModel Tuning\nModel Tuning (Multi-task)\nPrompt Design\nPrompt Tuning\nFigure 1: Standard model tuning of T5 achieves strong\nperformance, but requires storing separate copies of the\nmodel for each end task. Our prompt tuning of T5",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "model for each end task. Our prompt tuning of T5\nmatches the quality of model tuning as size increases,\nwhile enabling the reuse of a single frozen model for\nall tasks. Our approach signiﬁcantly outperforms few-\nshot prompt design using GPT-3. We show mean and\nstandard deviation across 3 runs for tuning methods.\nMore recently, Brown et al. (2020) showed that\nprompt design (or “priming”) is surprisingly effec-\ntive at modulating a frozen GPT-3 model’s behavior",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "through text prompts. Prompts are typically com-\nposed of a task description and/or several canonical\nexamples. This return to “freezing” pre-trained\nmodels is appealing, especially as model size con-\ntinues to increase. Rather than requiring a separate\ncopy of the model for each downstream task, a\nsingle generalist model can simultaneously serve\nmany different tasks.\nUnfortunately, prompt-based adaptation has sev-\neral key drawbacks. Task description is error-prone",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "and requires human involvement, and the effective-\nness of a prompt is limited by how much condition-\ning text can ﬁt into the model’s input. As a result,\ndownstream task quality still lags far behind that\nof tuned models. For instance, GPT-3 175B few-\nshot performance on SuperGLUE is 17.5 points be-\narXiv:2104.08691v2  [cs.CL]  2 Sep 2021",
+      "source": "prefix_tuning.pdf",
+      "page": 1,
+      "char_count": 341,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "Pre-trained \nModel\n(11B params)\nTask A Model\n(11B params)\nTask B Model\n(11B params)\nTask C Model\n(11B params)\na1\na2\nb1\nc1\nc2\nTask A \nBatch\nTask B \nBatch\nTask C \nBatch\nPre-trained \nModel\n(11B params)\nModel Tuning\nPrompt Tuning\nA\nB\nC\nMixed-task \nBatch\n(20K params each)\na1\nc1\nb1\na2\nc2\nA\nC\nB\nA\nC\nTask Prompts\nFigure 2:\nModel tuning requires making a task-\nspeciﬁc copy of the entire pre-trained model for each\ndownstream task and inference must be performed in\nseparate batches. Prompt tuning only requires stor-",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "ing a small task-speciﬁc prompt for each task, and\nenables mixed-task inference using the original pre-\ntrained model. With a T5 “XXL” model, each copy\nof the tuned model requires 11 billion parameters. By\ncontrast, our tuned prompts would only require 20,480\nparameters per task—a reduction of over ﬁve orders of\nmagnitude—assuming a prompt length of 5 tokens.\nlow ﬁne-tuned T5-XXL (Raffel et al., 2020) (71.8\nvs. 89.3) despite using 16 times more parameters.\nSeveral efforts to automate prompt design have",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "Several efforts to automate prompt design have\nbeen recently proposed. Shin et al. (2020) propose\na search algorithm over the discrete space of words,\nguided by the downstream application training data.\nWhile this technique outperforms manual prompt\ndesign, there is still a gap relative to model tuning.\nLi and Liang (2021) propose “preﬁx tuning”\nand show strong results on generative tasks. This\nmethod freezes the model parameters and back-\npropagates the error during tuning to preﬁx ac-",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "propagates the error during tuning to preﬁx ac-\ntivations prepended to each layer in the encoder\nstack, including the input layer. Hambardzumyan\net al. (2021) simplify this recipe by restricting the\ntrainable parameters to the input and output sub-\nnetworks of a masked language model, and show\nreasonable results on classiﬁcations tasks.\nIn this paper, we propose prompt tuning as a\nfurther simpliﬁcation for adapting language models.\nWe freeze the entire pre-trained model and only al-",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "low an additional k tunable tokens per downstream\ntask to be prepended to the input text. This “soft\nprompt” is trained end-to-end and can condense\nthe signal from a full labeled dataset, allowing our\nmethod to outperform few-shot prompts and close\nthe quality gap with model tuning (Figure 1). At\nthe same time, since a single pre-trained model is\nrecycled for all downstream tasks, we retain the ef-\nﬁcient serving beneﬁts of frozen models (Figure 2).\nWhile we developed our method concurrently",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "While we developed our method concurrently\nwith Li and Liang (2021) and Hambardzumyan\net al. (2021), we are the ﬁrst to show that prompt\ntuning alone (with no intermediate-layer preﬁxes or\ntask-speciﬁc output layers) is sufﬁcient to be com-\npetitive with model tuning. Through detailed ex-\nperiments in sections 2–3, we demonstrate that lan-\nguage model capacity is a key ingredient for these\napproaches to succeed. As Figure 1 shows, prompt\ntuning becomes more competitive with scale.",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "tuning becomes more competitive with scale.\nWe compare with similar approaches in Sec-\ntion 4. Explicitly separating task-speciﬁc param-\neters from the “generalist” parameters needed for\ngeneral language-understanding has a range of ad-\nditional beneﬁts. We show in Section 5 that by\ncapturing the task deﬁnition in the prompt while\nkeeping the generalist parameters ﬁxed, we are able\nto achieve better resilience to domain shifts. In Sec-\ntion 6, we show that “prompt ensembling”, learn-",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "tion 6, we show that “prompt ensembling”, learn-\ning multiple prompts for the same task, can boost\nquality and is more efﬁcient than classic model en-\nsembling. Finally, in Section 7, we investigate the\ninterpretability of our learned soft prompts. In sum,\nour key contributions are:\n1. Proposing prompt tuning and showing its com-\npetitiveness with model tuning in the regime\nof large language models.\n2. Ablating many design choices, and showing\nquality and robustness improve with scale.",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "quality and robustness improve with scale.\n3. Showing prompt tuning outperforms model\ntuning on domain shift problems.\n4. Proposing “prompt ensembling” and showing\nits effectiveness.\n2\nPrompt Tuning\nFollowing the “text-to-text” approach of T5 (Raffel\net al., 2020), we cast all tasks as text generation.\nInstead of modeling classiﬁcation as the probabil-\nity of an output class given some input, Pr(y|X),\nwhere X is a series of tokens and y is a single class\nlabel, we now model it as conditional generation,",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "label, we now model it as conditional generation,\nwhere Y is a sequence of tokens that represent a\nclass label. T5 models classiﬁcation as Prθ(Y |X),\nparameterized by the weights, θ, of the transform-\ners (Vaswani et al., 2017) that make up its encoder\nand decoder.\nPrompting is the approach of adding extra in-\nformation for the model to condition on during its\ngeneration of Y . Normally, prompting is done\nby prepending a series of tokens, P, to the in-\nput X, such that the model maximizes the likeli-",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "put X, such that the model maximizes the likeli-\nhood of the correct Y , Prθ(Y |[P; X]), while keep-",
+      "source": "prefix_tuning.pdf",
+      "page": 2,
+      "char_count": 100,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "ing the model parameters, θ, ﬁxed.\nIn GPT-3,\nthe representations of the prompt tokens, P =\n{p1, p2, . . . , pn}, are part of the model’s embed-\nding table, parameterized by the frozen θ. Find-\ning an optimal prompt thus requires the selection\nof prompt tokens, through either manual search\nor non-differentiable search methods (Jiang et al.,\n2020; Shin et al., 2020). Prompt tuning removes\nthe restriction that the prompt P be parameterized\nby θ; instead the prompt has its own dedicated pa-",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "rameters, θP , that can be updated. While prompt\ndesign involves selecting prompt tokens from a\nﬁxed vocabulary of frozen embeddings, prompt\ntuning can be thought of as using a ﬁxed prompt\nof special tokens, where only the embeddings of\nthese prompt tokens can be updated. Our new con-\nditional generation is now Prθ;θP (Y |[P; X]) and\ncan be trained by maximizing the likelihood of Y\nvia backpropagation, while only applying gradient\nupdates to θP .\nGiven a series of n tokens, {x1, x2, . . . , xn}, the",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "ﬁrst thing T5 does is embed the tokens, forming\na matrix Xe ∈Rn×e where e is the dimension of\nthe embedding space. Our soft-prompts are repre-\nsented as a parameter Pe ∈Rp×e, where p is the\nlength of the prompt. Our prompt is then concate-\nnated to the embedded input forming a single ma-\ntrix [Pe; Xe] ∈R(p+n)×e which then ﬂows though\nthe encoder-decoder as normal. Our models are\ntrained to maximize the probability of Y , but only\nthe prompt parameters Pe are updated.\n2.1\nDesign Decisions",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "2.1\nDesign Decisions\nThere are many possible ways to initialize the\nprompt representations. The simplest is to train\nfrom scratch, using random initialization. A more\nsophisticated option is to initialize each prompt\ntoken to an embedding drawn from the model’s\nvocabulary. Conceptually, our soft-prompt mod-\nulates the frozen network’s behavior in the same\nway as text preceding the input, so it follows that\na word-like representation might serve as a good",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "a word-like representation might serve as a good\ninitialization spot. For classiﬁcation tasks, a third\noption is to initialize the prompt with embeddings\nthat enumerate the output classes, similar to the\n“verbalizers” of Schick and Schütze (2021). Since\nwe want the model to produce these tokens in the\noutput, initializing the prompt with the embeddings\nof the valid target tokens should prime the model\nto restrict its output to the legal output classes.\nAnother design consideration is the length of the",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "Another design consideration is the length of the\nprompt. The parameter cost of our method is EP,\nwhere E is the token embedding dimension and P\nis the prompt length. The shorter the prompt, the\nfewer new parameters must be tuned, so we aim to\nﬁnd a minimal length that still performs well.\n2.2\nUnlearning Span Corruption\nUnlike autoregressive language models like GPT-3,\nthe T5 models we experiment with use an encoder-\ndecoder architecture and pre-train on a span cor-",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "decoder architecture and pre-train on a span cor-\nruption objective. Speciﬁcally, T5 is tasked with\n“reconstructing” masked spans in the input text,\nwhich are marked with unique sentinel tokens. The\ntarget output text consists of all the masked con-\ntent, separated by sentinels, plus a ﬁnal sentinel.\nFor instance, from the text “Thank you for inviting\nme to your party last week” we might construct\na pre-training example where the input is “Thank\nyou ⟨X⟩me to your party ⟨Y⟩week” and the target",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "you ⟨X⟩me to your party ⟨Y⟩week” and the target\noutput is “⟨X⟩for inviting ⟨Y⟩last ⟨Z⟩”.\nWhile Raffel et al. (2020) ﬁnd this architecture\nand pre-training objective more effective than tradi-\ntional language modeling, we hypothesize that this\nsetup is not a good ﬁt for producing a frozen model\nthat can be readily controlled through prompt tun-\ning. In particular, a T5 model pre-trained exclu-\nsively on span corruption, such as T5.1.1, has never\nseen truly natural input text (free of sentinel to-",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "kens), nor has it ever been asked to predict truly\nnatural targets. In fact, due to the details of T5’s\nspan corruption preprocessing, every pre-training\ntarget will begin with a sentinel. While this “unnat-\nural” tendency to output sentinels is easy to over-\ncome through ﬁne-tuning, we suspect that it would\nbe much harder to override through a prompt alone,\nas the decoder priors cannot be adjusted.\nGiven these concerns, we experiment with T5\nmodels in three settings. (1) “Span Corruption”:",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "models in three settings. (1) “Span Corruption”:\nWe use pre-trained T5 off-the-shelf as our frozen\nmodel, and test its ability to output the expected\ntext for downstream tasks. (2) “Span Corruption\n+ Sentinel”: We use the same model, but prepend\nall downstream targets with a sentinel, so as to\nmore closely resemble the targets seen in pre-\ntraining. (3) “LM Adaptation”: We continue T5’s\nself-supervised training for a small number of ad-\nditional steps, but using the “LM” objective dis-",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "ditional steps, but using the “LM” objective dis-\ncussed by Raffel et al. (2020); given a natural text\npreﬁx as input, the model must produce the natural\ntext continuation as output. Crucially, this adapta-\ntion happens only once, producing a single frozen",
+      "source": "prefix_tuning.pdf",
+      "page": 3,
+      "char_count": 256,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "model that we can reuse for prompt tuning across\nany number of downstream tasks.\nThrough LM adaptation, we hope to “quickly”\ntransform T5 into a model more similar to GPT-3,\nwhich always outputs realistic text, and is known to\nrespond well to prompts as a “few-shot learner”. It\nis not obvious how successful this late-stage trans-\nformation will be compared to pre-training from\nscratch, and it has not been investigated previously\nto our knowledge. As such, we experiment with",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "to our knowledge. As such, we experiment with\nvarious lengths of adaptation up to 100K steps.\n3\nResults\nOur frozen models are built on top of pre-trained\nT5 checkpoints of all sizes (Small, Base, Large, XL,\nXXL). We leverage the public T5.1.1 checkpoints,\nwhich include improvements over the original T5.1\nOur “default” conﬁguration, plotted with a green\n‘×’ (\n) throughout, uses an LM-adapted version\nof T5 trained for an additional 100K steps, ini-\ntializes using class labels (see Section 3.2), and",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "uses a prompt length of 100 tokens. While this\nis longer than the default 10-token preﬁx used by\nLi and Liang (2021), our method still uses fewer\ntask-speciﬁc parameters, as we only tune the input\nlayer, as opposed to overwriting activations in all\nnetwork layers. See Figure 4 for a detailed com-\nparison. We will also see shortly that even much\nshorter prompts are viable as model size increases.\nWe measure performance on the SuperGLUE\nbenchmark (Wang et al., 2019a), a collection of",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "benchmark (Wang et al., 2019a), a collection of\neight challenging English language understanding\ntasks.2 We report metrics on the development set\nassociated with each dataset.\nEach of our prompts train on a single Super-\nGLUE task; there was no multi-task setup or mix-\ning of training data across tasks. We translate each\nSuperGLUE dataset into a text-to-text format fol-\nlowing Raffel et al. (2020), except that we omit the\ntask names prepended to inputs indicating which\nSuperGLUE task an example belongs to.",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "SuperGLUE task an example belongs to.\nWe train our prompts for 30,000 steps using T5’s\nstandard cross-entropy loss, with a constant learn-\n1These improvements are (1) the removal of all supervised\ndata from pre-training, (2) adjustments to hyperparameters\ndmodel and dff, and (3) the use of GeGLU (Shazeer, 2020)\nover ReLU (Nair and Hinton, 2010) activations.\n2The tasks are BoolQ (Clark et al., 2019), CB (De Marn-\neff et al., 2019), COPA (Roemmele et al., 2011), MultiRC",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "(Khashabi et al., 2018), ReCoRD (Zhang et al., 2018), RTE\n(Dagan et al., 2005; Bar-Haim et al., 2006; Giampiccolo et al.,\n2007; Bentivogli et al., 2009), WiC (Pilehvar and Camacho-\nCollados, 2018), and WSC (Levesque et al., 2012).\ning rate of 0.3 and a batch size of 32. Checkpoints\nare selected via early stopping on the development\nset, where the stopping metric is the default met-\nric for the dataset, or the average of metrics for\ndatasets evaluated with multiple metrics. All ex-",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "datasets evaluated with multiple metrics. All ex-\nperiments were run in JAX (Bradbury et al., 2018)\nusing the Adafactor optimizer (Shazeer and Stern,\n2018) with weight decay 1e−5, β2 decay 0.8, and\nparameter scaling off. The models were imple-\nmented in Flax (Heek et al., 2020). More details\nare available in Appendix A.\n3.1\nClosing the Gap\nTo compare our method with standard model tun-\ning, we tune the public T5.1.1 checkpoints on\nSuperGLUE using the default hyperparameters",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "SuperGLUE using the default hyperparameters\nspeciﬁed in the T5 library (learning rate 0.001,\nand Adafactor optimizer with pre-training param-\neter states restored). We consider two baselines.\n(1) “Model Tuning”: For an apples-to-apples com-\nparison, we tune on each task separately, as in our\nprompt tuning setup.3 (2) “Model Tuning (Multi-\ntask)”: We use T5’s multi-task tuning setup to\nachieve a more competitive baseline.4 In this case,\na single model is tuned on all tasks jointly, with a",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "text preﬁx indicating the task name.\nIn Figure 1 (p. 1), we see that prompt tuning\nbecomes more competitive with model tuning as\nscale increases. At the XXL size (11 billion param-\neters), prompt tuning matches even the stronger\nmulti-task model tuning baseline, despite having\nover 20,000 times fewer task-speciﬁc parameters.\nTo compare with prompt design, we include\nGPT-3 few-shot performance on the SuperGLUE\ndev split, as reported by Brown et al. (2020).5\nFigure 1 shows that prompt tuning beats GPT-3",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "Figure 1 shows that prompt tuning beats GPT-3\nprompt design by a large margin, with prompt-\ntuned T5-Small matching GPT-3 XL (over 16\ntimes larger), and prompt-tuned T5-Large beating\nGPT-3 175B (over 220 times larger).\n3To improve this baseline, we performed a sweep over the\nbatch size hyperparameter and selected 216 tokens per batch.\n4The T5 SuperGLUE submission used a more complex\nsetup, ﬁrst mixing multi-task supervised data into pre-training,\nand then performing single-task ﬁne-tuning. Since we use",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "T5.1.1 throughout, this setup is unavailable, as the pre-training\nphase is fully self-supervised. We follow Raffel et al. (2020)\nin using 220 tokens per batch and including DPR data in\nthe multi-task mixture, which is known to boost WSC task\nperformance (Kocijan et al., 2019).\n5We also experimented with using GPT-3’s manual text\nprompts directly with our LM-adapted T5 checkpoints. How-\never performance was far below GPT-3 for comparable model\nsizes. This may be due to differences in pre-training data and",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "model architecture, as well as T5’s shorter sequence length.",
+      "source": "prefix_tuning.pdf",
+      "page": 4,
+      "char_count": 60,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "108\n109\n1010\nModel Parameters\n50\n60\n70\n80\n90\n100\nSuperGLUE Score\n1\n5\n20\n100\n150\n(a) Prompt length\n108\n109\n1010\nModel Parameters\n50\n60\n70\n80\n90\n100\nSuperGLUE Score\nRandom Uniform\nSampled Vocab\nClass Label\n(b) Prompt initialization\n108\n109\n1010\nModel Parameters\n10\n20\n30\n40\n50\n60\n70\n80\n90\n100\nSuperGLUE Score\nSpan Corruption\nSpan Corruption\n+ Sentinel\nLM Adaptation\n(100K)\n(c) Pre-training method\n108\n109\n1010\nModel Parameters\n10\n20\n30\n40\n50\n60\n70\n80\n90\n100\nSuperGLUE Score\n0K\n10K\n50K\n100K\n(d) LM adaptation steps",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "0K\n10K\n50K\n100K\n(d) LM adaptation steps\nFigure 3: Ablations of various hyperparameters on prompt tuning performance (mean and stddev across 3 runs). In\nour “default” (\n) conﬁguration, quality improves stably with model size. Across all ablations, the largest (XXL)\nmodel is the most robust to hyperparameter choice. (a) Prompt length: Increasing to 20+ tokens generally confers\na large boost, but XXL performs well even with single-token prompts. (b) Prompt initialization: Random uniform",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "initialization lags behind more “advanced” initializations using sampled vocabulary or class label embeddings, but\nthe difference vanishes at XXL size. (c) Pre-training objective: LM adaptation outperforms span corruption, even\nwhen a sentinel is added to downstream task targets, but XXL works well with any method. (d) LM adaptation:\nLonger adaptation generally gives larger gains, but XXL is robust to even short adaptation.\n3.2\nAblation Study\nPrompt Length\nWe train prompts for each",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "Prompt Length\nWe train prompts for each\nmodel size while varying the prompt length in\n{1, 5, 20, 100, 150} and ﬁxing other settings to our\ndefault conﬁguration. Figure 3(a) shows that for\nmost model sizes, increasing prompt length beyond\na single token is critical to achieve good perfor-\nmance. Notably, the XXL model still gives strong\nresults with a single-token prompt, suggesting that\nthe larger the model, the less conditioning signal\nis needed to achieve a target behavior. Across all",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "models, increasing beyond 20 tokens only yields\nmarginal gains.6\nPrompt Initialization\nWe ablate the effect of\nprompt initialization by training models at all sizes\nwhile ﬁxing other hyperparameters to their default\nvalues. For random initialization, we sample uni-\n6Going past 100 tokens appears mildly detrimental for\nlarger models. A similar pattern of diminishing performance\npast a certain preﬁx length is observed by Li and Liang (2021).\nformly from the range [−0.5, 0.5]. When initial-",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "formly from the range [−0.5, 0.5]. When initial-\nizing from sampled vocabulary, we restrict to the\n5,000 most “common” tokens in T5’s Sentence-\nPiece vocabulary (Kudo and Richardson, 2018),\nwhich is ordered by likelihood in the pre-training\ncorpus. For “class label” initialization, we take\nthe embeddings for the string representations of\neach class in the downstream task and use them to\ninitialize one of the tokens in the prompt. When\na class label is multi-token, we average the token",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "embeddings. At longer prompt lengths, we often\nrun out of class labels before we have initialized all\nof the prompt tokens. In this case we fall back to\nour sampled vocab strategy to ﬁll in the prompt.7\nFigure 3(b) shows our ablation of initialization\nstrategy across model sizes, where we ﬁnd that\n7T5’s handling of the ReCoRD and WSC tasks requires\nthe model to generate short, free-form text. In these cases, we\ninitialize the prompts with words related to the task: common-",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "sense, reasoning, reading, and comprehension for ReCoRD\nand commonsense, pronoun, and resolution for WSC.",
+      "source": "prefix_tuning.pdf",
+      "page": 5,
+      "char_count": 105,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "the class based initialization performs best. At\nsmaller model sizes, there are large gaps between\nthe different initializations, but once the model is\nscaled to XXL size, those differences disappear.\nWith “class label” initialization, we observe that\nthe class labels typically persist in the learned\nprompts, such that the nearest token embeddings\n(in cosine distance) match the tokens used for ini-\ntialization. Beyond this, we did not ﬁnd our learned\nprompts to be interpretable, similar to those of Shin",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "et al. (2020). See Section 7 for details.\nPre-training Objective\nIn Figures 3(c) and 3(d),\nwe see pre-training objective has a clear effect on\nprompt tuning quality. As hypothesized in Sec-\ntion 2.2, T5’s default “span corruption” objective\nis not well-suited for training frozen models to be\nlater conditioned by prompts. Intuitively, models\npre-trained to read and write sentinel tokens are\nhard to apply directly to tasks of reading and writ-\ning text without sentinels. As seen in Figure 3(c),",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "even the “workaround” of adding a sentinel to the\ndownstream targets has little beneﬁt. While LM\nadaptation adds value across all model sizes, we\nnote our largest XXL model is the most forgiving\nand gives strong results even with span corruption.\nGiven the beneﬁt of LM adaptation, we also\nexplore how long of an adaptation is helpful. Fig-\nure 3(d) shows that longer adaptation provides ad-\nditional gains, up to 100K steps. This suggests\nthat the “transition” from span corruption to a lan-",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "guage modeling objective is not a trivial change,\nand making an effective switch takes an investment\nof training resources (10% of the steps of the orig-\ninal T5 pre-training). At the same time, as in our\nother ablations, we observe that the XXL model\nis robust to even non-ideal conﬁgurations. At this\nsize, the gains from adaptation are quite modest.\nIn the non-optimal “span corruption” setting, we\nobserve instability across model sizes, with the\nSmall model outperforming the larger Base, Large,",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "Small model outperforming the larger Base, Large,\nand XL models. On inspection, we ﬁnd that for\nmany tasks, these mid-sized models never learn to\noutput a legal class label and thus score 0%. The\ntwo most common error modes are copying sub-\nspans from the input and predicting an empty string.\nFurthermore, this poor performance is not due to\nrandom variance in prompt tuning, as we observe\nlow variance across 3 runs for each size. These\nresults indicate that using models pre-trained with",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "the “span corruption” objective can be unreliable,\nwith only 2 out of 5 models working well, whereas\n108\n109\n1010\nModel Parameters\n103\n105\n107\n109\nTask Parameters\nModel Tuning\nPrefix Tuning (Train)\nPrefix Tuning (Infer)\nWARP\nPrompt Tuning\nPrompt Design\n0.001%\n0.01%\n0.1%\n1%\n10%\n100%\nTask Parameters (%)\nFigure 4: Parameter usage of various adaptation tech-\nniques, ﬁxing architecture to T5.1.1 and prompt/preﬁx\nlength to 1–100 tokens (bands show mean and stddev).",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "Model Tuning: All parameters are task-speciﬁc. Pre-\nﬁx Tuning: Activations are tuned in the preﬁx of each\nlayer, requiring 0.1–1% task-speciﬁc parameters for in-\nference, but more are used for training. WARP: Task\nparameters are reduced to under 0.1% by only tuning\ninput and output layers. Prompt Tuning: Only prompt\nembeddings are tuned, reaching under 0.01% for most\nmodel sizes.\nPrompt Design: Only a sequence of\nprompt IDs (500–2000 tokens) is required.\nthe LM adapated versions work reliably across all",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "the LM adapated versions work reliably across all\nmodel sizes.\nWe have released T5 1.1 checkpoints adapted\nusing the LM objective for 100K steps for all model\nsizes.8\n4\nComparison to Similar Approaches\nIn this section, we review recent work on learn-\ning continuous prompts, and draw comparisons\nwith our method. One important axis of compari-\nson is the number of task-speciﬁc parameters each\nmethod requires, as shown in Figure 4. Among\nmethods with learnable parameters, prompt tuning",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "methods with learnable parameters, prompt tuning\nis the most parameter efﬁcient, requiring less than\n0.01% task-speciﬁc parameters for models over a\nbillion parameters.9\nLi and Liang (2021) propose “preﬁx tuning”:\nlearning a sequence of preﬁxes that are prepended\n8https://github.com/google-research/\ntext-to-text-transfer-transformer/\nblob/main/released_checkpoints.md#\nlm-adapted-t511lm100k\n9To compare with prompt design, we count each token\nID in the prompt as a parameter, and assume a prompt of",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "between 500–2000 tokens to match the GPT-3 setting. While\nthis technique is by far the most parameter efﬁcient, it comes\nat the cost of task quality.",
+      "source": "prefix_tuning.pdf",
+      "page": 6,
+      "char_count": 149,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "at every transformer layer. This is akin to learning\ntransformer activations that are ﬁxed across exam-\nples at every network layer. In contrast, prompt\ntuning uses a single prompt representation that\nis prepended to the embedded input. Beyond re-\nquiring fewer parameters, our approach allows the\ntransformer to update the intermediate-layer task\nrepresentations, as contextualized by an input ex-\nample. Their work builds on GPT-2 (Radford et al.,\n2019) and BART (Lewis et al., 2020), while ours fo-",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "cuses on T5 and examines changes in performance\nand robustness to design choices as model size in-\ncreases. When using BART, preﬁx tuning includes\npreﬁxes on both the encoder and decoder network,\nwhile prompt tuning only requires prompts on the\nencoder. Li and Liang (2021) also rely on a repa-\nrameterization of the preﬁx to stabilize learning,\nwhich adds a large number of parameters during\ntraining, whereas our conﬁguration does not re-\nquire this reparameterization and is robust across",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "SuperGLUE tasks and model sizes.\nHambardzumyan et al. (2021) propose “WARP”,\nwhere prompt parameters are added to the input\nlayer. This method works with masked language\nmodels, relying on a [MASK] token and a learn-\nable output layer to project the mask to class logits.\nThis formulation restricts the model to producing a\nsingle output, limiting it to classiﬁcation. Prompt\ntuning does not require any changes to the input or\na task-speciﬁc head. The performance of prompt",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "a task-speciﬁc head. The performance of prompt\ntuning is also considerably closer to the strong per-\nformance of model tuning.\nLiu et al. (2021) propose “P-tuning” where learn-\nable continuous prompts are interleaved throughout\nthe embedded input, using patterns based on human\ndesign. Our approach removes this complication\nby simply prepending the prompt to the input. To\nachieve strong SuperGLUE results, P-tuning has to\nbe used in conjunction with model tuning, that is,",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "models jointly update both the prompt and the main\nmodel parameters, whereas our approach keeps the\noriginal language model frozen.10\nQin and Eisner (2021) use “soft words” to learn\nprompts to extract knowledge from pre-trained\nLMs. Prompts are positioned in relation to the\ninput based on hand-designed prompt prototypes,\nand a learned ∆ℓ\ni parameter is included for each\nlayer, so parameter cost scales with model depth.\n10As another difference, P-tuning requires the addition of",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "“anchor” tokens in the input (e.g. a question mark following\nthe hypothesis in the RTE task) to achieve strong performance,\nwhile prompt tuning leaves inputs untouched.\nDataset\nDomain\nModel\nPrompt\n∆\nSQuAD\nWiki\n94.9 ±0.2\n94.8 ±0.1\n−0.1\nTextbookQA\nBook\n54.3 ±3.7\n66.8 ±2.9\n+12.5\nBioASQ\nBio\n77.9 ±0.4\n79.1 ±0.3\n+1.2\nRACE\nExam\n59.8 ±0.6\n60.7 ±0.5\n+0.9\nRE\nWiki\n88.4 ±0.1\n88.8 ±0.2\n+0.4\nDuoRC\nMovie\n68.9 ±0.7\n67.7 ±1.1\n−1.2\nDROP\nWiki\n68.9 ±1.7\n67.1 ±1.9\n−1.8\nTable 1: F1 mean and stddev for models trained on",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "Table 1: F1 mean and stddev for models trained on\nSQuAD and evaluated on out-of-domain datasets from\nthe MRQA 2019 shared task. Prompt tuning tends to\ngive stronger zero-shot performance than model tun-\ning, especially on datasets with large domain shifts like\nTextbookQA.\nLogeswaran et al. (2020) use a learnable\nprepended token to adapt transformer models to var-\nious tasks, but focus on small synthetic datasets de-\nsigned to accommodate a compositional task repre-",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "signed to accommodate a compositional task repre-\nsentation, as opposed to larger real-world datasets.\nTheir base models are small transformers trained\nfrom scratch jointly with the task representations,\nwhereas we keep the base model frozen and inves-\ntigate scaling laws using larger transformers.\nMore generally, work on task prompts is closely\naligned with work on “adapters” (Rebufﬁet al.,\n2017; Houlsby et al., 2019), small bottleneck lay-\ners inserted between frozen pre-trained network",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "ers inserted between frozen pre-trained network\nlayers. Adapters offer another means of reduc-\ning task-speciﬁc parameters, with Houlsby et al.\n(2019) achieving GLUE performance close to full\nmodel tuning when freezing BERT-Large and only\nadding 2–4% additional parameters. Pfeiffer et al.\n(2020) use multiple adapters in a multilingual con-\ntext to explicitly separate language understanding\nfrom task speciﬁcation, similar to our approach. A\ncore difference between adapters and prompt tun-",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "core difference between adapters and prompt tun-\ning is how the approaches change model behavior.\nAdapters modify the actual function that acts on the\ninput representation, parameterized by the neural\nnetwork, by allowing the rewriting of activations at\nany given layer. Prompt tuning modiﬁes behavior\nby leaving the function ﬁxed and adding new in-\nput representations that can affect how subsequent\ninput is processed.\n5\nResilience to Domain Shift\nBy freezing the core language model parameters,",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "By freezing the core language model parameters,\nprompt tuning prevents the model from modify-\ning its general understanding of language. Instead,\nprompt representations indirectly modulate the rep-\nresentation of the input. This reduces the model’s\nability to overﬁt to a dataset by memorizing spe-",
+      "source": "prefix_tuning.pdf",
+      "page": 7,
+      "char_count": 298,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "Train\nEval\nTuning\nAccuracy\nF1\nQQP\nMRPC\nModel\n73.1 ±0.9\n81.2 ±2.1\nPrompt\n76.3 ±0.1\n84.3 ±0.3\nMRPC\nQQP\nModel\n74.9 ±1.3\n70.9 ±1.2\nPrompt\n75.4 ±0.8\n69.7 ±0.3\nTable 2: Mean and stddev of zero-shot domain transfer\nbetween two paraphrase detection tasks.\nciﬁc lexical cues and spurious correlations. This re-\nstriction suggests that prompt tuning may improve\nrobustness to domain shifts, where the distribution\nof inputs differs between training and evaluation.\nWe investigate zero-shot domain transfer on two",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "We investigate zero-shot domain transfer on two\ntasks: question answering (QA) and paraphrase de-\ntection. For question answering, we use the MRQA\n2019 shared task on generalization (Fisch et al.,\n2019). This task collects extractive QA datasets\nin a uniﬁed format and tests how models trained\non “in-domain” datasets perform when evaluated\non “out-of-domain” datasets. For our experiments,\nwe train on SQuAD (Rajpurkar et al., 2016) and\nevaluate on each of the out-of-domain datasets.11",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "evaluate on each of the out-of-domain datasets.11\nTable 1 shows that prompt tuning outperforms\nmodel tuning on the majority of out-of-domain\ndatasets, with a remarkable 12.5 point F1 gap be-\ntween the two approaches on TextbookQA. We ob-\nserve larger gains from prompt tuning in cases of\nlarger domain shifts (e.g. to Biomedical in BioASQ\nor to Textbooks in TextbookQA). Of the datasets\nwhere model tuning is better, we see that DROP\nshares a domain (Wikipedia) with SQuAD and is",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "shares a domain (Wikipedia) with SQuAD and is\nthus one of the smallest domain transfers.\nAs a second test of robustness to domain shift,\nwe explore transfer between two paraphrase detec-\ntion tasks from GLUE (Wang et al., 2019b). The\nﬁrst task is QQP (Iyer et al., 2017), which asks\nif two questions from the community Q&A site\nQuora are “duplicates”. The second task is MRPC\n(Dolan and Brockett, 2005), which asks if two sen-\ntences drawn from news articles are paraphrases.",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "tences drawn from news articles are paraphrases.\nWe test transfer in both directions (QQP ⇔MRPC).\nAs before, we train on the “in-domain” task, select\ncheckpoints using in-domain validation, and evalu-\nate zero-shot on the “out-of-domain” task.\nTable 2 shows that training a lightweight prompt\non the QQP data and evaluating on MRPC gives\nmuch better performance than tuning the entire\n11We select checkpoints based on SQuAD validation F1.\nThe out-of-domain datasets are TextbookQA (Kembhavi et al.,",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "2017), RACE (Lai et al., 2017), BioASQ (http://bioasq.\norg/), RE (Levy et al., 2017), DuoRC (Saha et al., 2018),\nand DROP (Dua et al., 2019).\nDataset\nMetric\nAverage\nBest\nEnsemble\nBoolQ\nacc.\n91.1\n91.3\n91.7\nCB\nacc./F1\n99.3 / 99.0\n100.00 / 100.00\n100.0 / 100.0\nCOPA\nacc.\n98.8\n100.0\n100.0\nMultiRC\nEM/F1a\n65.7 / 88.7\n66.3 / 89.0\n67.1 / 89.4\nReCoRD\nEM/F1\n92.7 / 93.4\n92.9 / 93.5\n93.2 / 93.9\nRTE\nacc.\n92.6\n93.5\n93.5\nWiC\nacc.\n76.2\n76.6\n77.4\nWSC\nacc.\n95.8\n96.2\n96.2\nSuperGLUE (dev)\n90.5\n91.0\n91.3",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "95.8\n96.2\n96.2\nSuperGLUE (dev)\n90.5\n91.0\n91.3\nTable 3: Performance of a ﬁve-prompt ensemble built\nfrom a single frozen T5-XXL model exceeds both the\naverage and the best among the ﬁve prompts.\nmodel (+3.2 accuracy and +3.1 F1). The results\nare much closer in the other direction, with prompt\ntuning showing a small improvement in accuracy\nand a small drop in F1. These results support the\nview that model tuning may be over-parameterized\nand more prone to overﬁt the training task, to the",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "detriment of similar tasks in different domains.\n6\nPrompt Ensembling\nEnsembles of neural models trained from different\ninitializations on the same data are widely observed\nto improve task performance (Hansen and Salamon,\n1990) and are useful for estimating model uncer-\ntainty (Lakshminarayanan et al., 2017). However,\nas model size increases, ensembling can become\nimpractical. Beyond the space required to store N\nmodels (e.g. 42 GiB for each copy of T5-XXL),",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "models (e.g. 42 GiB for each copy of T5-XXL),\nthere is a substantial inference cost to running N\ndistinct models, whether in parallel or in series.\nPrompt tuning provides a more efﬁcient way to\nensemble multiple adaptations of a pre-trained lan-\nguage model. By training N prompts on the same\ntask, we create N separate “models” for a task,\nwhile still sharing the core language modeling pa-\nrameters throughout. Beyond drastically reducing\nstorage costs, the prompt ensemble makes infer-",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "storage costs, the prompt ensemble makes infer-\nence more efﬁcient. To process one example, rather\nthan computing forward passes of N different mod-\nels, we can execute a single forward pass with a\nbatch size of N, replicating the example across\nthe batch and varying the prompt. These savings\nmirror those seen for multi-tasking in Figure 2.\nTo demonstrate the viability of prompt ensem-\nbling, we train ﬁve prompts for each SuperGLUE\ntask, using a single frozen T5-XXL model with",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "task, using a single frozen T5-XXL model with\nour default hyperparameters. We use simple major-\nity voting to compute predictions from the ensem-\nble. Table 3 shows that across all tasks, the ensem-\nble beats the single-prompt average and beats, or",
+      "source": "prefix_tuning.pdf",
+      "page": 8,
+      "char_count": 248,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "matches, the best individual prompt.\n7\nInterpretability\nAn ideally interpretable prompt would consist of\nnatural language that clearly describes the task at\nhand, explicitly asks the model for some result or\naction, and makes it easy to understand why the\nprompt elicited such behavior from the model.\nAs prompt tuning works in the continuous em-\nbedding space rather than the discrete token space,\ninterpreting prompts becomes more difﬁcult. To\ntest the interpretability of our learned soft prompts,",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "we compute the nearest neighbors to each prompt\ntoken from the frozen model’s vocabulary. We use\ncosine distance between the vocabulary embedding\nvector and the prompt token representation as the\nsimilarity metric.\nWe observe that for a given learned prompt to-\nken, the top-5 nearest neighbors form tight seman-\ntic clusters. For example, we see lexically similar\nclusters such as { Technology / technology / Tech-\nnologies / technological / technologies }, as well",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "as more diverse but still strongly related clusters\nsuch as { entirely / completely / totally / altogether\n/ 100% }. The nature of these clusters suggests that\nthe prompts are in fact learning “word-like” repre-\nsentations. We found that random vectors drawn\nfrom the embedding space do not show this sort of\nsemantic clustering.\nWhen initializing the prompts using the “class-\nlabel” strategy, we often ﬁnd that the class labels\npersist through training. Speciﬁcally, if a prompt",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "token is initialized to a given label, that label is\noften among the learned token’s nearest neighbors\nafter tuning. When initializing with the “Random\nUniform” or “Sampled Vocab” methods, the class\nlabels can also be found in the nearest neighbors\nof the prompts; however they tend to appear as\nneighbors to multiple prompt tokens. This suggests\nthat the model is learning to store the expected\noutput classes in the prompts as reference, and\ninitializing the prompt to outputs classes makes",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "initializing the prompt to outputs classes makes\nthis easier and more centralized.\nWhen examining longer prompts (e.g. size 100),\nwe often ﬁnd several prompt tokens with the same\nnearest neighbors. This suggests there is either\nexcess capacity in the prompt, or that the lack of\nsequential structure in the prompt representation\nmakes it difﬁcult for the model to localize informa-\ntion to a speciﬁc position.\nWhile the learned prompts taken as sequences\nshow little interpretability, we do observe a high",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "frequency of words like science, technology and\nengineering as the nearest neighbors for prompts\ntrained on the BoolQ dataset and approximately\n20% of the questions are in the “Nature/Science”\ncategory. While more investigation is needed, this\nsuggests that one role of the prompt may be to\nprime the model to interpret inputs in a speciﬁc\ndomain or context (e.g. “scientiﬁc”).\n8\nConclusion\nIn this paper, we showed that prompt tuning is\na competitive technique for adapting frozen pre-",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "a competitive technique for adapting frozen pre-\ntrained language models to downstream tasks. On\nthe popular SuperGLUE benchmark, its task perfor-\nmance rivals that of traditional model tuning, with\nthe gap vanishing as model size increases. On zero-\nshot domain transfer, we found that prompt tuning\nleads to improved generalization. This plausibly in-\ndicates that freezing general-purpose language un-\nderstanding parameters and restricting downstream\nlearning to a lightweight parameter footprint can",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "learning to a lightweight parameter footprint can\nhelp to avoid overﬁtting to a speciﬁc domain.\nBeyond task quality metrics, we discussed the\nappeal of moving to frozen pre-trained models in\nterms of storage and serving costs. This move\nenables both efﬁcient multi-task serving, as well\nas efﬁcient high-performing prompt ensembling.\nLooking forward, we believe that factoring out\ntask-deﬁning parameters as distinct from general\nlanguage-modeling parameters is an exciting step",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "language-modeling parameters is an exciting step\nthat opens up many avenues for new research.\nAcknowledgements\nWe thank Lucas Dixon, Waleed Ammar, Slav\nPetrov and Sebastian Ruder for comments on an\nearlier draft, and the following people for helpful\ndiscussion: Colin Raffel, Adam Roberts, and Noam\nShazeer. We thank Linting Xue for help with the\nLM adaptation training.\nReferences\nRoy Bar-Haim, Ido Dagan, Bill Dolan, Lisa Ferro,\nDanilo Giampiccolo, Bernardo Magnini, and Idan",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "Danilo Giampiccolo, Bernardo Magnini, and Idan\nSzpektor. 2006. The second PASCAL recognising\ntextual entailment challenge. In Proceedings of the\nsecond PASCAL challenges workshop on recognis-\ning textual entailment, volume 6, pages 6–4. Venice.\nLuisa Bentivogli, Peter Clark, Ido Dagan, and Danilo\nGiampiccolo. 2009. The ﬁfth PASCAL recognizing\ntextual entailment challenge. In TAC.",
+      "source": "prefix_tuning.pdf",
+      "page": 9,
+      "char_count": 382,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "James\nBradbury,\nRoy\nFrostig,\nPeter\nHawkins,\nMatthew James Johnson,\nChris Leary,\nDougal\nMaclaurin, George Necula, Adam Paszke, Jake\nVanderPlas, Skye Wanderman-Milne, and Qiao\nZhang. 2018. JAX: composable transformations of\nPython+NumPy programs.\nTom Brown, Benjamin Mann, Nick Ryder, Melanie\nSubbiah,\nJared\nD\nKaplan,\nPrafulla\nDhariwal,\nArvind Neelakantan, Pranav Shyam, Girish Sastry,\nAmanda Askell, Sandhini Agarwal, Ariel Herbert-\nVoss, Gretchen Krueger, Tom Henighan, Rewon",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Voss, Gretchen Krueger, Tom Henighan, Rewon\nChild, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu,\nClemens Winter, Chris Hesse, Mark Chen, Eric\nSigler, Mateusz Litwin, Scott Gray, Benjamin Chess,\nJack Clark, Christopher Berner, Sam McCandlish,\nAlec Radford, Ilya Sutskever, and Dario Amodei.\n2020. Language models are few-shot learners. In\nAdvances in Neural Information Processing Systems,\nvolume 33, pages 1877–1901. Curran Associates,\nInc.\nChristopher Clark, Kenton Lee, Ming-Wei Chang,",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "Christopher Clark, Kenton Lee, Ming-Wei Chang,\nTom Kwiatkowski, Michael Collins, and Kristina\nToutanova. 2019. BoolQ: Exploring the surprising\ndifﬁculty of natural yes/no questions. In Proceed-\nings of the 2019 Conference of the North American\nChapter of the Association for Computational Lin-\nguistics: Human Language Technologies, Volume 1\n(Long and Short Papers), pages 2924–2936, Min-\nneapolis, Minnesota. Association for Computational\nLinguistics.\nIdo Dagan, Oren Glickman, and Bernardo Magnini.",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "Ido Dagan, Oren Glickman, and Bernardo Magnini.\n2005. The PASCAL recognising textual entailment\nchallenge. In Machine Learning Challenges Work-\nshop, pages 177–190. Springer.\nMarie-Catherine De Marneff, Mandy Simons, and Ju-\ndith Tonhauser. 2019. The CommitmentBank: In-\nvestigating projection in naturally occurring dis-\ncourse. Proceedings of Sinn und Bedeutung 23.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2019.\nBERT: Pre-training of",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Kristina Toutanova. 2019.\nBERT: Pre-training of\ndeep bidirectional transformers for language under-\nstanding.\nIn Proceedings of the 2019 Conference\nof the North American Chapter of the Association\nfor Computational Linguistics: Human Language\nTechnologies, Volume 1 (Long and Short Papers),\npages 4171–4186, Minneapolis, Minnesota. Associ-\nation for Computational Linguistics.\nWilliam B Dolan and Chris Brockett. 2005. Automati-\ncally constructing a corpus of sentential paraphrases.",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "In Proceedings of the Third International Workshop\non Paraphrasing (IWP2005).\nDheeru Dua, Yizhong Wang, Pradeep Dasigi, Gabriel\nStanovsky, Sameer Singh, and Matt Gardner. 2019.\nDROP: A reading comprehension benchmark requir-\ning discrete reasoning over paragraphs. In Proceed-\nings of the 2019 Conference of the North American\nChapter of the Association for Computational Lin-\nguistics: Human Language Technologies, Volume 1\n(Long and Short Papers), pages 2368–2378, Min-",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "(Long and Short Papers), pages 2368–2378, Min-\nneapolis, Minnesota. Association for Computational\nLinguistics.\nAdam Fisch, Alon Talmor, Robin Jia, Minjoon Seo, Eu-\nnsol Choi, and Danqi Chen. 2019.\nMRQA 2019\nshared task: Evaluating generalization in reading\ncomprehension.\nIn Proceedings of 2nd Machine\nReading for Reading Comprehension (MRQA) Work-\nshop at EMNLP.\nDanilo Giampiccolo, Bernardo Magnini, Ido Dagan,\nand Bill Dolan. 2007.\nThe third PASCAL recog-\nnizing textual entailment challenge. In Proceedings",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "of the ACL-PASCAL workshop on textual entailment\nand paraphrasing, pages 1–9. Association for Com-\nputational Linguistics.\nKaren Hambardzumyan,\nHrant Khachatrian,\nand\nJonathan May. 2021. WARP: Word-level Adversar-\nial ReProgramming. In Proceedings of the 59th An-\nnual Meeting of the Association for Computational\nLinguistics and the 11th International Joint Confer-\nence on Natural Language Processing (Volume 1:\nLong Papers), pages 4921–4933, Online. Associa-\ntion for Computational Linguistics.",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "tion for Computational Linguistics.\nL. K. Hansen and P. Salamon. 1990. Neural network\nensembles. IEEE Transactions on Pattern Analysis\nand Machine Intelligence, 12(10):993–1001.\nJonathan Heek, Anselm Levskaya, Avital Oliver, Mar-\nvin Ritter, Bertrand Rondepierre, Andreas Steiner,\nand Marc van Zee. 2020. Flax: A neural network\nlibrary and ecosystem for JAX.\nNeil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski,\nBruna Morrone, Quentin De Laroussilhe, Andrea\nGesmundo, Mona Attariyan, and Sylvain Gelly.",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Gesmundo, Mona Attariyan, and Sylvain Gelly.\n2019. Parameter-efﬁcient transfer learning for NLP.\nIn Proceedings of the 36th International Conference\non Machine Learning, volume 97 of Proceedings\nof Machine Learning Research, pages 2790–2799.\nPMLR.\nJeremy Howard and Sebastian Ruder. 2018. Universal\nlanguage model ﬁne-tuning for text classiﬁcation. In\nProceedings of the 56th Annual Meeting of the As-\nsociation for Computational Linguistics (Volume 1:\nLong Papers), pages 328–339, Melbourne, Australia.",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "Association for Computational Linguistics.\nShankar Iyer, Nikhil Dandekar, and Kornel Csernai.\n2017. First Quora dataset release: Question pairs.\nZhengbao Jiang, Frank F. Xu, Jun Araki, and Graham\nNeubig. 2020.\nHow can we know what language\nmodels know? Transactions of the Association for\nComputational Linguistics, 8:423–438.\nA. Kembhavi, M. Seo, D. Schwenk, J. Choi, A. Farhadi,\nand H. Hajishirzi. 2017.\nAre you smarter than a\nsixth grader? textbook question answering for multi-",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "modal machine comprehension. In 2017 IEEE Con-\nference on Computer Vision and Pattern Recognition\n(CVPR), pages 5376–5384.",
+      "source": "prefix_tuning.pdf",
+      "page": 10,
+      "char_count": 122,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "Daniel Khashabi, Snigdha Chaturvedi, Michael Roth,\nShyam Upadhyay, and Dan Roth. 2018. Looking be-\nyond the surface: A challenge set for reading com-\nprehension over multiple sentences. In Proceedings\nof North American Chapter of the Association for\nComputational Linguistics (NAACL).\nVid Kocijan, Ana-Maria Cretu, Oana-Maria Camburu,\nYordan Yordanov, and Thomas Lukasiewicz. 2019.\nA surprisingly robust trick for the Winograd schema\nchallenge. In Proceedings of the 57th Annual Meet-",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "ing of the Association for Computational Linguistics,\npages 4837–4842, Florence, Italy. Association for\nComputational Linguistics.\nTaku Kudo and John Richardson. 2018. SentencePiece:\nA simple and language independent subword tok-\nenizer and detokenizer for neural text processing. In\nProceedings of the 2018 Conference on Empirical\nMethods in Natural Language Processing: System\nDemonstrations, pages 66–71, Brussels, Belgium.\nAssociation for Computational Linguistics.",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "Association for Computational Linguistics.\nGuokun Lai, Qizhe Xie, Hanxiao Liu, Yiming Yang,\nand Eduard Hovy. 2017. RACE: Large-scale ReAd-\ning comprehension dataset from examinations. In\nProceedings of the 2017 Conference on Empirical\nMethods in Natural Language Processing, pages\n785–794, Copenhagen, Denmark. Association for\nComputational Linguistics.\nBalaji Lakshminarayanan,\nAlexander Pritzel,\nand\nCharles Blundell. 2017. Simple and scalable predic-\ntive uncertainty estimation using deep ensembles. In",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "Advances in Neural Information Processing Systems,\nvolume 30. Curran Associates, Inc.\nHector Levesque, Ernest Davis, and Leora Morgen-\nstern. 2012. The Winograd schema challenge. In\nThirteenth International Conference on the Princi-\nples of Knowledge Representation and Reasoning.\nOmer Levy, Minjoon Seo, Eunsol Choi, and Luke\nZettlemoyer. 2017. Zero-shot relation extraction via\nreading comprehension. In Proceedings of the 21st\nConference on Computational Natural Language",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "Conference on Computational Natural Language\nLearning (CoNLL 2017), pages 333–342, Vancou-\nver, Canada. Association for Computational Linguis-\ntics.\nMike\nLewis,\nYinhan\nLiu,\nNaman\nGoyal,\nMar-\njan Ghazvininejad, Abdelrahman Mohamed, Omer\nLevy, Veselin Stoyanov, and Luke Zettlemoyer.\n2020. BART: Denoising sequence-to-sequence pre-\ntraining for natural language generation, translation,\nand comprehension. In Proceedings of the 58th An-\nnual Meeting of the Association for Computational",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "nual Meeting of the Association for Computational\nLinguistics, pages 7871–7880, Online. Association\nfor Computational Linguistics.\nXiang Lisa Li and Percy Liang. 2021. Preﬁx-tuning:\nOptimizing continuous prompts for generation. In\nProceedings of the 59th Annual Meeting of the\nAssociation for Computational Linguistics and the\n11th International Joint Conference on Natural Lan-\nguage Processing (Volume 1: Long Papers), pages\n4582–4597, Online. Association for Computational\nLinguistics.",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "Linguistics.\nXiao Liu, Yanan Zheng, Zhengxiao Du, Ming Ding,\nYujie Qian, Zhilin Yang, and Jie Tang. 2021. GPT\nunderstands, too. CoRR, abs/2103.10385.\nLajanugen Logeswaran, Ann Lee, Myle Ott, Honglak\nLee, Marc’Aurelio Ranzato, and Arthur Szlam.\n2020. Few-shot sequence learning with transform-\ners. CoRR, abs/2012.09543.\nVinod Nair and Geoffrey E. Hinton. 2010. Rectiﬁed\nlinear units improve restricted Boltzmann machines.\nIn Proceedings of the 27th International Conference",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "on International Conference on Machine Learning,\nICML’10, page 807–814, Madison, WI, USA. Om-\nnipress.\nMatthew Peters, Mark Neumann, Mohit Iyyer, Matt\nGardner, Christopher Clark, Kenton Lee, and Luke\nZettlemoyer. 2018. Deep contextualized word rep-\nresentations.\nIn Proceedings of the 2018 Confer-\nence of the North American Chapter of the Associ-\nation for Computational Linguistics: Human Lan-\nguage Technologies, Volume 1 (Long Papers), pages\n2227–2237, New Orleans, Louisiana. Association",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "2227–2237, New Orleans, Louisiana. Association\nfor Computational Linguistics.\nJonas Pfeiffer, Ivan Vuli´c, Iryna Gurevych, and Se-\nbastian Ruder. 2020. MAD-X: An Adapter-Based\nFramework for Multi-Task Cross-Lingual Transfer.\nIn Proceedings of the 2020 Conference on Empirical\nMethods in Natural Language Processing (EMNLP),\npages 7654–7673, Online. Association for Computa-\ntional Linguistics.\nMohammad\nTaher\nPilehvar\nand\nJose\nCamacho-\nCollados. 2018.\nWiC: 10,000 example pairs for",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "Collados. 2018.\nWiC: 10,000 example pairs for\nevaluating context-sensitive representations. CoRR,\nabs/1808.09121.\nGuanghui Qin and Jason Eisner. 2021. Learning how\nto ask: Querying LMs with mixtures of soft prompts.\nIn Proceedings of the 2021 Conference of the North\nAmerican Chapter of the Association for Computa-\ntional Linguistics: Human Language Technologies,\npages 5203–5212, Online. Association for Compu-\ntational Linguistics.\nAlec Radford, Karthik Narasimhan, Tim Salimans, and\nIlya Sutskever. 2018.",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "Ilya Sutskever. 2018.\nImproving language under-\nstanding by generative pre-training.\nAlec Radford, Jeff Wu, Rewon Child, David Luan,\nDario Amodei, and Ilya Sutskever. 2019. Language\nmodels are unsupervised multitask learners. OpenAI\nBlog.\nColin Raffel, Noam Shazeer, Adam Roberts, Kather-\nine Lee, Sharan Narang, Michael Matena, Yanqi\nZhou, Wei Li, and Peter J. Liu. 2020.\nExploring\nthe limits of transfer learning with a uniﬁed text-to-\ntext transformer. Journal of Machine Learning Re-\nsearch, 21(140):1–67.",
+      "source": "prefix_tuning.pdf",
+      "page": 11,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and\nPercy Liang. 2016. SQuAD: 100,000+ questions for\nmachine comprehension of text. In Proceedings of\nthe 2016 Conference on Empirical Methods in Natu-\nral Language Processing, pages 2383–2392, Austin,\nTexas. Association for Computational Linguistics.\nSylvestre-Alvise Rebufﬁ, Hakan Bilen, and Andrea\nVedaldi. 2017.\nLearning multiple visual domains\nwith residual adapters. In Advances in Neural Infor-\nmation Processing Systems, volume 30. Curran As-",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "mation Processing Systems, volume 30. Curran As-\nsociates, Inc.\nMelissa Roemmele, Cosmin Adrian Bejan, and An-\ndrew S Gordon. 2011. Choice of plausible alterna-\ntives: An evaluation of commonsense causal reason-\ning. In 2011 AAAI Spring Symposium Series.\nAmrita Saha, Rahul Aralikatte, Mitesh M. Khapra, and\nKarthik Sankaranarayanan. 2018. DuoRC: Towards\ncomplex language understanding with paraphrased\nreading comprehension. In Proceedings of the 56th\nAnnual Meeting of the Association for Computa-",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "Annual Meeting of the Association for Computa-\ntional Linguistics (Volume 1: Long Papers), pages\n1683–1693, Melbourne, Australia. Association for\nComputational Linguistics.\nTimo Schick and Hinrich Schütze. 2021. Exploiting\ncloze-questions for few-shot text classiﬁcation and\nnatural language inference. In Proceedings of the\n16th Conference of the European Chapter of the As-\nsociation for Computational Linguistics: Main Vol-\nume, pages 255–269, Online. Association for Com-\nputational Linguistics.",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "putational Linguistics.\nNoam Shazeer. 2020.\nGLU variants improve trans-\nformer. CoRR, abs/2002.05202.\nNoam Shazeer and Mitchell Stern. 2018. Adafactor:\nAdaptive learning rates with sublinear memory cost.\nIn Proceedings of the 35th International Conference\non Machine Learning, volume 80 of Proceedings\nof Machine Learning Research, pages 4596–4604.\nPMLR.\nTaylor Shin, Yasaman Razeghi, Robert L. Logan IV,\nEric Wallace, and Sameer Singh. 2020. AutoPrompt:\nEliciting Knowledge from Language Models with",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "Eliciting Knowledge from Language Models with\nAutomatically Generated Prompts.\nIn Proceed-\nings of the 2020 Conference on Empirical Methods\nin Natural Language Processing (EMNLP), pages\n4222–4235, Online. Association for Computational\nLinguistics.\nAshish Vaswani, Noam Shazeer, Niki Parmar, Jakob\nUszkoreit, Llion Jones, Aidan N Gomez, Łukasz\nKaiser, and Illia Polosukhin. 2017. Attention is all\nyou need. In Advances in Neural Information Pro-\ncessing Systems, volume 30, pages 5998–6008.\nAlex Wang,",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "Alex Wang,\nYada Pruksachatkun,\nNikita Nangia,\nAmanpreet Singh, Julian Michael, Felix Hill, Omer\nLevy, and Samuel Bowman. 2019a. SuperGLUE: A\nstickier benchmark for general-purpose language un-\nderstanding systems. In Advances in Neural Infor-\nmation Processing Systems, volume 32. Curran As-\nsociates, Inc.\nAlex Wang, Amanpreet Singh, Julian Michael, Felix\nHill, Omer Levy, and Samuel R. Bowman. 2019b.\nGLUE: A multi-task benchmark and analysis plat-\nform for natural language understanding. In the Pro-",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "ceedings of ICLR.\nMichael L. Waskom. 2021.\nseaborn: statistical data\nvisualization.\nJournal of Open Source Software,\n6(60):3021.\nSheng Zhang, Xiaodong Liu, Jingjing Liu, Jianfeng\nGao, Kevin Duh, and Benjamin Van Durme. 2018.\nReCoRD: Bridging the gap between human and ma-\nchine commonsense reading comprehension. CoRR,\nabs/1810.12885.",
+      "source": "prefix_tuning.pdf",
+      "page": 12,
+      "char_count": 334,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "A\nReproducibility\nA.1\nExperimental Settings\nWe evaluate each GLUE and SuperGLUE dataset\nusing the metric speciﬁed in the benchmark. We\nreuse the evaluation code from the publicly avail-\nable T5 open-source release to compute metrics.12\nFor the SQuAD and MRQA datasets, we evaluate\nusing F1, one of the metrics used by the SQuAD\nbenchmark, where partial answer spans are consid-\nered. Again, we use the T5 open-source release for\nmetric calculation.13 All of our models use T5 1.1",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "as the base frozen model, additional details and pre-\ntrained checkpoints can be found on GitHub.1415\nAll prompts for T5 Small and Base models were\ntrained on 4 TPU v2 chips, while prompts for larger\nmodels were trained on 16 TPU v3 chips.\nParameter counts for each prompt can be found\nin Table 4. Average runtimes until convergence can\nbe found in Table 5.\nA.2\nHyperparameter Search\nThis work used 77 hyperparameter search trials\n(40 for prompt tuning and 37 for single-task model",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "tuning), and 3 training runs (with validation evalu-\nation) for each baseline conﬁguration and ablation\nsetting, for a total of 195 runs for our main result\nand ablations. There were an additional 18 runs for\nthe domain shift experiments and 24 extra runs to\ncreate the ensemble. Hyperparameter bounds can\nbe found in Table 6. Hyperparameter tuning was\ndone via manual tuning and settings were selected\nbased on the SuperGLUE score. All experiments in\nthis work, outside of the hyperparameter being ab-",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "lated, use our default conﬁguration of 100K steps\nof LM Adapation, a prompt length of 100, and\n“class-label” initialization.\nAll graphs of our experimental results plot the\nmean and standard deviation over 3 runs as com-\nputed by Seaborn (Waskom, 2021). Some settings\nhave such low variance that the standard deviation\n12https://github.com/google-research/\ntext-to-text-transfer-transformer/blob/\nmaster/t5/evaluation/metrics.py\n13https://github.com/google-research/\ntext-to-text-transfer-transformer/blob/",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "text-to-text-transfer-transformer/blob/\nmaster/t5/evaluation/metrics.py#L151\n14https://github.com/google-research/\ntext-to-text-transfer-transformer/blob/\nmaster/released_checkpoints.md#t511\n15https://github.com/google-research/\ntext-to-text-transfer-transformer/\nblob/main/released_checkpoints.md#\nlm-adapted-t511lm100k\nis hidden behind the line itself, such as “Model Tun-\ning (Multi-task)” in Figure 1 and the Base, Large,\nand XL prompts trained on the “Span Corruption”",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "and XL prompts trained on the “Span Corruption”\npretraining objective in Figure 3(b). Figure 4 also\nshows mean and standard deviation for the num-\nber of parameters each method uses as the prompt\nlength varies from 1–100.\nThe “Preﬁx Tuning\n(Train)” curves appears to have no standard de-\nviation because the parameter count is so strongly\ndominated by the cost of the reparameterization\nparameters that the standard deviation bands are\noccluded. For our experiments on domain transfer,",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "occluded. For our experiments on domain transfer,\nwe report mean and standard deviation over 3 runs.\nA.3\nDatasets\nAll datasets used are in English. For the GLUE16,17\nand SuperGLUE18 datasets, we used the training,\nvalidation, and test splits that ship with TensorFlow\nDatasets. We used version 1.0.0 for GLUE and\n1.0.2 for SuperGLUE datasets. For SQuAD19\nwe used v1.1:3.0.0 from Tensorﬂow Datasets\nand follow the provided training, validation, and\ntest splits. For the out-of-domain datasets we used",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "the development splits distributed as part of the\nMRQA shared task.20 Dataset sizes can be found\nin Table 7. The label distributions for each dataset\ncan be found in Table 8 (BoolQ), Table 9 (CB),\nTable 10 (COPA), Table 11 (MultiRC), Table 14\n(RTE), Table 12 (WiC), Table 13 (WSC), Table 15\n(MRPC) and Table 16 (QQP).\nThe question answering datasets are extractive\ndatasets with a variety of answers, so there isn’t a\nlabel distribution to report. Similarly, the ReCoRD",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "dataset is a multiple choice dataset where the model\nmust predict the masked out entity from a list of\npossible entities. Due to this formulation there isn’t\na meaningful label distribution.\nWe followed the open-source T5 preprocess-\ning procedure21 for each dataset, except that we\nomit the dataset preﬁx denoting which SuperGLUE\ndataset an example belongs to. For the SQuAD and\n16https://www.tensorflow.org/datasets/\ncatalog/glue#gluemrpc\n17https://www.tensorflow.org/datasets/\ncatalog/glue#glueqqp",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "catalog/glue#glueqqp\n18https://www.tensorflow.org/datasets/\ncatalog/super_glue\n19https://www.tensorflow.org/datasets/\ncatalog/squad#squadv11_default_config\n20https://github.com/mrqa/\nMRQA-Shared-Task-2019#out-of-domain\n21https://github.com/google-research/\ntext-to-text-transfer-transformer/blob/\nmaster/t5/data/preprocessors.py",
+      "source": "prefix_tuning.pdf",
+      "page": 13,
+      "char_count": 328,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "T5 Size\nPrompt Length\nTrainable Parameters\nTotal Parameters\nPercent Trainable\nSmall\n1\n512\n76,961,664\n0.00067%\n5\n2,560\n76,963,712\n0.00333%\n20\n10,420\n76,971,572\n0.01330%\n50\n25,600\n76,986,752\n0.03325%\n100\n51,200\n77,012,352\n0.06648%\n150\n76,800\n77,037,952\n0.09969%\nBase\n1\n768\n247,578,624\n0.00031%\n5\n3,840\n247,581,696\n0.00155%\n20\n15,360\n247,593,216\n0.00620%\n50\n38,400\n247,616,256\n0.01551%\n100\n76,800\n247,654,656\n0.03101%\n150\n115,200\n247,693,056\n0.04651%\nLarge\n1\n1,024\n783,151,104\n0.00013%\n5\n5,120\n783,155,200\n0.00065%",
+      "source": "prefix_tuning.pdf",
+      "page": 14,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "783,151,104\n0.00013%\n5\n5,120\n783,155,200\n0.00065%\n20\n20,480\n783,170,560\n0.00262%\n50\n51,200\n783,201,280\n0.00654%\n100\n102,400\n783,252,480\n0.01907%\n150\n153,600\n783,303,680\n0.01961%\nXL\n1\n2,048\n2,849,759,232\n0.00007%\n5\n10,240\n2,849,767,424\n0.00036%\n20\n40,960\n2,849,798,144\n0.00143%\n50\n102,400\n2,849,859,584\n0.00359%\n100\n204,800\n2,849,961,984\n0.00718%\n150\n307,200\n2,850,064,384\n0.01078%\nXXL\n1\n4,096\n11,135,336,448\n0.00004%\n5\n20,480\n11,135,352,832\n0.00018%\n20\n81,920\n11,135,414,272\n0.00074%\n50\n204,800\n11,137,380,352",
+      "source": "prefix_tuning.pdf",
+      "page": 14,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "11,135,414,272\n0.00074%\n50\n204,800\n11,137,380,352\n0.00184%\n100\n409,600\n11,135,741,952\n0.00368%\n150\n614,400\n11,135,946,752\n0.00552%\nTable 4: Number of parameters used for various prompt lengths and T5 model sizes. Trainable parameters is\nthe number of parameters in the prompt itself, while total parameters includes the prompt plus the original T5\nparameters. The T5 parameters are frozen and shared across all tasks, and include the SentencePiece lookup table",
+      "source": "prefix_tuning.pdf",
+      "page": 14,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "parameters. The ﬁnal column is the percentage of total parameters that are trainable.\nMRQA datasets we used the T5 SQuAD prepro-\ncessing code22. By following the T5 preprocessing\nand text-to-text format, we recast the WSC dataset\nas a text generation task. Instead of predicting\nwhether a supplied referent is correct for a high-\nlighted span, our model predicts the correct referent\ndirectly. As such, we can only learn from training\nexamples where the referent is correct, so WSC",
+      "source": "prefix_tuning.pdf",
+      "page": 14,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "examples where the referent is correct, so WSC\ntraining data where the supplied referent is incor-\nrect are omitted.\nNo new data was collected for this work.\n22https://github.com/google-research/\ntext-to-text-transfer-transformer/blob/\nmaster/t5/data/preprocessors.py#L264\nPrompt Length\nT5 Size\nTime\n1\nLarge\n3:17 ±02:10\nXL\n3:37 ±02:11\nXXL\n21:23 ±01:54\n20\nXL\n49:08 ±18:53\nXXL\n53:03 ±16:25\n50\nSmall\n09:05 ±05:07\nBase\n55:01 ±27:48\nLarge\n1:14:16 ±13:12\nXL\n2:30:10 ±25:40\nXXL\n3:13:13 ±23:08\n100\nSmall\n16:25 ±01:15",
+      "source": "prefix_tuning.pdf",
+      "page": 14,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "XXL\n3:13:13 ±23:08\n100\nSmall\n16:25 ±01:15\nBase\n29:57 ±00:18\nLarge\n1:23:36 ±10:21\nXL\n3:35:00 ±54:42\nXXL\n3:51:15 ±45:53\nTable 5: Mean and standard deviation of the runtime\nuntil convergence for the BoolQ dataset and various\nprompt lengths and model sizes. Convergence is de-\nﬁned as reaching a performance within 1% of the mean\nvalue for that model conﬁguration. A few conﬁgura-\ntions have been omitted because their runtimes were\nartiﬁcially extended due to preemption.",
+      "source": "prefix_tuning.pdf",
+      "page": 14,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "Hyperparameter\nSearch Space\nLearning Rate\n0.001–0.5\nParameter Scaling\n{True, False}\nBatch Size\n{32, 64, 126, 256, 512}\nNumber of Steps\n{10,000, 20,000, 30,000}\nWarmup Steps\n{off, 2,000, 3,000}\nDecay Factor\n{off, 0.1, 0.5}\nSteps per Decay\n{off, 4,000, 6,000, 8,000}\nTable 6: Search space for each hyperparameter consid-\nered. Parameter Scaling refers to the Adafactor setting\nwhere an update is scaled by the norm of the parameter\nit will be applied to. Warmup Steps is the number of",
+      "source": "prefix_tuning.pdf",
+      "page": 15,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "steps before a linearly increasing learning rate reaches\nthe Learning Rate value, starting from zero. Decay Fac-\ntor is the reduction in Learning Rate size that occurs\nevery “Steps per Decay” steps.\nDataset\nTraining\nValidation\nTesting\nBoolQ\n9,427\n3,270\n3,245\nCB\n250\n56\n250\nCOPA\n400\n100\n500\nMultiRC\n27,243\n4,848\n9,693\nReCoRD\n100,730\n10,000\n10,000\nRTE\n2,490\n277\n3,000\nWiC\n5,428\n638\n1,400\nWSC\n259∗\n104\n146\nMRPC\n3,668\n408\n1,725\nQQP\n363,849\n40,430\n390,965\nSQuAD\n87,599\n10,570\n-\nTextbookQA\n-\n1,504\n-\nRACE\n-\n1,503\n-",
+      "source": "prefix_tuning.pdf",
+      "page": 15,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "10,570\n-\nTextbookQA\n-\n1,504\n-\nRACE\n-\n1,503\n-\nBioASQ\n-\n1,501\n-\nRE\n-\n674\n-\nDuoRC\n-\n2,948\n-\nDROP\n-\n1,503\n-\nTable 7: Sizes for training, validation, and testing splits\nof each dataset used.\n∗Following T5, our casting of\nWSC as a text generation problems means we can only\ntrain on examples where the supplied referent is correct.\nThis means our training dataset is smaller than the nor-\nmal WSC training dataset, which has 554 examples.\nSplit\nFalse\nTrue\nTraining\n37.7\n62.3\nValidation\n37.8\n62.2",
+      "source": "prefix_tuning.pdf",
+      "page": 15,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "True\nTraining\n37.7\n62.3\nValidation\n37.8\n62.2\nTable 8: Label distribution for the BoolQ dataset.\nSplit\ncontradiction\nentailment\nneutral\nTraining\n47.6\n46.0\n6.4\nValidation\n50.0\n41.1\n8.9\nTable 9: Label distribution for the CB dataset.\nSplit\nchoice1\nchoice2\nTraining\n48.8\n51.2\nValidation\n55.0\n45.0\nTable 10: Label distribution for the COPA dataset.\nSplit\nFalse\nTrue\nTraining\n55.9\n44.1\nValidation\n57.2\n42.8\nTable 11: Label distribution for the MultiRC dataset.\nSplit\nFalse\nTrue\nTraining\n50.0\n50.0\nValidation\n50.0\n50.0",
+      "source": "prefix_tuning.pdf",
+      "page": 15,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "True\nTraining\n50.0\n50.0\nValidation\n50.0\n50.0\nTable 12: Label distribution for the WiC dataset.\nSplit\nFalse\nTrue\nTraining\n0.0\n100.0\nValidation\n63.5\n36.5\nTable 13: Label distribution for the WSC dataset. Fol-\nlowing T5, we cast the WSC dataset to a free-form text\ngeneration task where the model generates the referent\nto the highlighted span instead predicting if the sup-\nplied entity is the correct referent of the highlighted\nspan. Thus, we only use training data where the sup-",
+      "source": "prefix_tuning.pdf",
+      "page": 15,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "plied referent is correct making our training label dis-\ntribution focused entirely on True.\nSplit\nentailment\nnot_entailment\nTraining\n51.2\n49.8\nValidation\n52.7\n47.3\nTable 14: Label distribution for the RTE dataset.\nSplit\nequivalent\nnot_equivalent\nTraining\n67.4\n32.6\nValidation\n68.4\n31.6\nTable 15: Label distribution for the MRPC dataset.\nSplit\nduplicate\nnot_duplicate\nTraining\n36.9\n63.1\nValidation\n36.8\n63.2\nTable 16: Label distribution for the QQP dataset.",
+      "source": "prefix_tuning.pdf",
+      "page": 15,
+      "char_count": 457,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

@@ -1,0 +1,572 @@
+{
+  "source": "finetuned_lm.pdf",
+  "full_path": "data\\raw\\finetuned_lm.pdf",
+  "total_pages": 8,
+  "text_chunks": 70,
+  "vision_chunks": 0,
+  "total_chunks": 70,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "P-Tuning v2: Prompt Tuning Can Be\nComparable to Fine-tuning Universally Across Scales and Tasks\nXiao Liu1,2∗, Kaixuan Ji1∗, Yicheng Fu1∗, Weng Lam Tam1, Zhengxiao Du1,2,\nZhilin Yang1,3†, Jie Tang1,2†\n1Tsinghua University, KEG\n2Beijing Academy of Artiﬁcial Intelligence (BAAI)\n3Shanghai Qi Zhi Institute\n{liuxiao21,jkx19,fyc19}@mails.tsinghua.edu.cn\nAbstract\nPrompt tuning, which only tunes continuous\nprompts with a frozen language model, sub-\nstantially reduces per-task storage and mem-\nory usage at training.",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "ory usage at training.\nHowever, in the con-\ntext of NLU, prior work reveals that prompt\ntuning does not perform well for normal-sized\npretrained models.\nWe also ﬁnd that exist-\ning methods of prompt tuning cannot handle\nhard sequence labeling tasks, indicating a lack\nof universality.\nWe present a novel empiri-\ncal ﬁnding that properly optimized prompt tun-\ning can be universally effective across a wide\nrange of model scales and NLU tasks.\nIt\nmatches the performance of ﬁnetuning while",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "It\nmatches the performance of ﬁnetuning while\nhaving only 0.1%-3% tuned parameters. Our\nmethod P-Tuning v2 is an implementation of\nDeep Prompt Tuning (Li and Liang, 2021; Qin\nand Eisner, 2021) optimized and adapted for\nNLU. Given the universality and simplicity of\nP-Tuning v2, we believe it can serve as an al-\nternative to ﬁnetuning and a strong baseline for\nfuture research.1\n1\nIntroduction\nPretrained language models (Radford et al., 2019;\nDevlin et al., 2018; Yang et al., 2019; Raffel et al.,",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "2019) improve performance on a wide range of\nnatural language understanding (NLU) tasks. A\nwidely-used method, ﬁne-tuning, updates the en-\ntire set of model parameters for a target task.\nWhile ﬁne-tuning obtains good performance, it is\nmemory-consuming during training because gradi-\nents and optimizer states for all parameters must be\nstored. Moreover, keeping a copy of model param-\neters for each task during inference is inconvenient\nsince pre-trained models are usually large.",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "since pre-trained models are usually large.\nPrompting, on the other hand, freezes all param-\neters of a pre-trained model and uses a natural lan-\n† corresponding to: Zhilin Yang (zhiliny@tsinghua.edu.cn)\nand Jie Tang (jietang@tsinghua.edu.cn)\n∗indicates equal contribution.\n1Our code and data are released at https://github.\ncom/THUDM/P-tuning-v2.\n50\n60\n70\n80\n90\n330M\n2B\n10B\nFine-tuning\nPrompt Tuning & P-tuning\nP-tuning v2\nLester et al.\nFigure 1: Average scores on RTE, BoolQ and CB of",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "Figure 1: Average scores on RTE, BoolQ and CB of\nSuperGLUE dev. With 0.1% task-speciﬁc parameters,\nP-tuning v2 can match ﬁne-tuning across wide scales\nof pre-trained models, while Lester et al. (2021) & P-\ntuning can make it conditionally at 10B scale.\nguage prompt to query a language model (Brown\net al., 2020). For example, for sentiment analy-\nsis, we can concatenate a sample (e.g., \"Amazing\nmovie!\") with a prompt “This movie is [MASK]”\nand ask the pre-trained language model to predict",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "and ask the pre-trained language model to predict\nthe probabilities of masked token being “good” and\n“bad” to decide the sample’s label. Prompting re-\nquires no training at all and stores one single copy\nof model parameters. However, discrete prompt-\ning (Shin et al., 2020; Gao et al., 2020) can lead to\nsuboptimal performance in many cases compared\nto ﬁne-tuning.\nPrompt tuning2 is an idea of tuning only the\ncontinuous prompts. Speciﬁcally, Liu et al. (2021);\nLester et al. (2021) proposed to add trainable",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "Lester et al. (2021) proposed to add trainable\ncontinuous embeddings (also called continuous\nprompts) to the original sequence of input word\nembeddings. Only the continuous prompts are up-\ndated during training. While prompt tuning im-\nproves over prompting on many tasks (Liu et al.,\n2021; Lester et al., 2021; Zhong et al., 2021), it still\nunderperforms ﬁne-tuning when the model size is\nnot large, speciﬁcally less than 10 billion parame-\nters (Lester et al., 2021). Moreover, as shown in",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "ters (Lester et al., 2021). Moreover, as shown in\nour experiments, prompt tuning performs poorly\ncompared to ﬁne-tuning on several hard sequence\nlabeling tasks such as extractive question answer-\n2We use “prompt tuning” to refer to a class of methods rather\nthan a particular method.\narXiv:2110.07602v3  [cs.CL]  20 Mar 2022",
+      "source": "finetuned_lm.pdf",
+      "page": 1,
+      "char_count": 324,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "ing (Cf. Section 4.2).\nOur main contribution in this paper is a novel\nempirical ﬁnding that properly optimized prompt\ntuning can be comparable to ﬁne-tuning universally\nacross various model scales and NLU tasks. In con-\ntrast to observations in prior work, our discovery\nreveals the universality and potential of prompt\ntuning for NLU.\nTechnically, our approach P-tuning v2 is not con-\nceptually novel. It can be viewed as an optimized\nand adapted implementation of Deep Prompt Tun-",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "and adapted implementation of Deep Prompt Tun-\ning (Li and Liang, 2021; Qin and Eisner, 2021)\ndesigned for generation and knowledge probing.\nThe most signiﬁcant improvement originates from\nappling continuous prompts for every layer of the\npretrained model, instead of the mere input layer.\nDeep prompt tuning increases the capacity of con-\ntinuous prompts and closes the gap to ﬁne-tuning\nacross various settings, especially for small models\nand hard tasks. Moreover, we present a series of",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "and hard tasks. Moreover, we present a series of\ncritical details of optimization and implementation\nto ensure ﬁnetuning-comparable performance.\nExperimental results show that P-tuning v2\nmatches the performance of ﬁne-tuning at differ-\nent model scales ranging from 300M to 10B pa-\nrameters and on various hard sequence tagging\ntasks such as extractive question answering and\nnamed entity recognition. P-tuning v2 has 0.1%\nto 3% trainable parameters per task compared to",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "to 3% trainable parameters per task compared to\nﬁne-tuning, which substantially reduces training\ntime memory cost and per-task storage cost.\n2\nPreliminaries\nNLU Tasks. In this work, we categorize NLU chal-\nlenges into two families: simple classiﬁcation tasks\nand hard sequence labeling tasks.3 Simple clas-\nsiﬁcation tasks involve classiﬁcation over a label\nspace. Most datasets from GLUE (Wang et al.,\n2018) and SuperGLUE (Wang et al., 2019) are in\nthis category. Hard sequence labeling tasks involve",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "classiﬁcation over a sequence of tokens, such as\nnamed entity recognition and extractive question\nanswering.\nPrompt Tuning.\nLet V be the vocabulary of\na language model M and let e be the em-\nbedding layer of M.\nIn the case of discrete\nprompting (Schick and Schütze, 2020), prompt\ntokens {\"It\", \"is\", \"[MASK]\"} ⊂\nV can be\n3Note that the notions of “simple” and “hard” are speciﬁc to\nprompt tuning, because we ﬁnd sequence labeling tasks are\nmore challenging for prompt tuning.\nused to classify a movie review.",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "used to classify a movie review.\nFor exam-\nple, given the input text x =\"Amazing movie!\",\nthe input embedding sequence is formulated as\n[e(x), e(\"It\"), e(\"is\"), e(\"[MASK]\")].\nLester et al. (2021) and Liu et al. (2021) in-\ntroduce trainable continuous prompts as a sub-\nstitution to natural language prompts for NLU\nwith the parameters of pretrained language mod-\nels frozen. Given the trainable continuous embed-\ndings [h0, ..., hi], the input embedding sequence",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "dings [h0, ..., hi], the input embedding sequence\nis written as [e(x), h0, ..., hi, e(\"[MASK]\")], as il-\nlustrated in Figure 2.\nPrompt tuning has been\nproved to be comparable to ﬁne-tuning on 10-\nbillion-parameter models on simple classiﬁcation\ntasks (Lester et al., 2021; Kim et al., 2021; Liu\net al., 2021).\n3\nP-Tuning v2\n3.1\nLack of Universality\nLester et al. (2021); Liu et al. (2021) have been\nproved quite effective in many NLP applica-\ntions (Wang et al., 2021a,b; Chen et al., 2021;",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "tions (Wang et al., 2021a,b; Chen et al., 2021;\nZheng et al., 2021; Min et al., 2021), but still fall\nshort at replacing ﬁne-tuning due to lack of univer-\nsality, as discussed below.\nLack of universality across scales. Lester et al.\n(2021) shows that prompt tuning can be comparable\nto ﬁne-tuning when the model scales to over 10 bil-\nlion parameters. However, for medium-sized mod-\nels (from 100M to 1B) that are widely used, prompt\ntuning performs much worse than ﬁne-tuning.",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "tuning performs much worse than ﬁne-tuning.\nLack of universality across tasks. Though Lester\net al. (2021); Liu et al. (2021) have shown superior-\nity on some of the NLU benchmarks, the effective-\nness of prompt tuning on hard sequence tagging\ntasks is not veriﬁed. Sequence tagging predicts a se-\nquence of labels for each input token, which can be\nharder and incompatible with verbalizers (Schick\nand Schütze, 2020). In our experiments (Cf. Sec-\ntion 4.2 and Table 3), we show that Lester et al.",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "tion 4.2 and Table 3), we show that Lester et al.\n(2021); Liu et al. (2021) perform poorly on typical\nsequence tagging tasks compared to ﬁne-tuning.\nConsidering these challenges, we propose P-\ntuning v2, which adapts deep prompt tuning (Li\nand Liang, 2021; Qin and Eisner, 2021) as a uni-\nversal solution across scales and NLU tasks.\n3.2\nDeep Prompt Tuning\nIn (Lester et al., 2021) and (Liu et al., 2021), con-\ntinuous prompts are only inserted into the input",
+      "source": "finetuned_lm.pdf",
+      "page": 2,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "Transformers\nTransformers\nPrompt Encoder (Optional)\n(a) Lester et al. & P-tuning (Frozen, 10-billion-scale, simple tasks) \nVerbalizer (with LM head)\n[MASK]\ne([MASK])\nh0\nhi\n…\n(b) P-tuning v2 (Frozen, most scales, most tasks)\nAmazing\nmovie\n!\ne(Amazing) e(moive)\ne(!)\n[CLS]\ne([CLS])\n…\nAmazing\nmovie\n!\ne(Amazing) e(moive)\ne(!)\n[CLS]\nClass Label (with linear head)\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\n…\nLayer1 Prompts\nLayer2 Prompts\nLayerN Prompts\n…\nReparameterization (Optional)\n…\n…\ne([CLS])\nOptimization\nOptimization",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "…\n…\ne([CLS])\nOptimization\nOptimization\nFigure 2: From Lester et al. (2021) & P-tuning to P-tuning v2. Orange blocks (i.e., h0, ..., hi) refer to trainable\nprompt embeddings; blue blocks are embeddings stored or computed by frozen pre-trained language models.\nembedding sequence (Cf. Figure 2 (a)). This leads\nto two challenges. First, the number of tunable\nparameters is limited due to the constraints of se-\nquence length. Second, the input embeddings have\nrelatively indirect impact on model predictions.",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "relatively indirect impact on model predictions.\nTo address these challenges, P-tuning v2 em-\nploys the idea of deep prompt tuning (Li and Liang,\n2021; Qin and Eisner, 2021). As illustrated in Fig-\nure 2, prompts in different layers are added as pre-\nﬁx tokens. On one hand, P-tuning v2 have more\ntunable task-speciﬁc parameters (from 0.01% to\n0.1%-3%) to allow more per-task capacity while be-\ning parameter-efﬁcient; on the other hand, prompts\nadded to deeper layers have more direct impact on",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "added to deeper layers have more direct impact on\nmodel predictions (see analysis in Appendix B).\n3.3\nOptimization and Implementation\nThere are a few useful details of optimization and\nimplementation for achieving the best performance.\nReparameterization. Prior works usually lever-\nage a reparameterization encoder such as an MLP\n(Li and Liang, 2021; Liu et al., 2021) to trans-\nform trainable embeddings. However, for NLU,\nwe discover that its usefulness depends on tasks",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "we discover that its usefulness depends on tasks\nand datasets. For some datasets (e.g., RTE and\nCoNLL04), MLP brings a consistent improvement;\nfor the others, MLP leads to minimal or even\nnegative effects on the results (e.g., BoolQ and\nCoNLL12). See Appendix B for more analysis.\nPrompt Length. The prompt length plays a crit-\nical role in P-Tuning v2. We ﬁnd that different\nNLU tasks usually achieve their best performance\nwith different prompt lengths (Cf. Appendix B).",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "with different prompt lengths (Cf. Appendix B).\nGenerally, simple classiﬁcation tasks prefer shorter\nprompts (less than 20); hard sequence labeling\ntasks prefer longer ones (around 100).\nMulti-task Learning. Multi-task learning jointly\noptimizes multiple tasks with shared continuous\nprompts before ﬁne-tuning for individual tasks.\nMethod\nTask\nRe-\nparam.\nDeep\nPT\nMulti-\ntask\nNo\nverb.\nP-tuning\n(Liu et al., 2021)\nKP\nNLU\nLSTM\n-\n-\n-\nPROMPTTUNING\n(Lester et al., 2021)\nNLU\n-\n-\n✓\n-\nPreﬁx Tuning\n(Li and Liang, 2021)",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "NLU\n-\n-\n✓\n-\nPreﬁx Tuning\n(Li and Liang, 2021)\nNLG\nMLP\n✓\n-\n-\nSOFT PROMPTS\n(Qin and Eisner, 2021) KP\n-\n✓\n-\n-\nP-tuning v2\n(Ours)\nNLU\nSeqTag (depends)\n✓\n✓\n✓\nTable 1: Conceptual comparison between P-tuning v2\nand existing Prompt Tuning approaches (KP: Knowl-\nedge Probe; SeqTag: Sequence Tagging; Re-param.:\nReparameterization; No verb.: No verbalizer).\nMulti-task is optional for P-Tuning v2 but can be\nused for further boost performance by providing a\nbetter initialization (Gu et al., 2021).",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "better initialization (Gu et al., 2021).\nClassiﬁcation Head. Using a language modeling\nhead to predict verbalizers (Schick and Schütze,\n2020) has been central for prompt tuning (Liu et al.,\n2021), but we ﬁnd it unnecessary in a full-data\nsetting and incompatible with sequence labeling.\nP-tuning v2 instead applies a randomly-initialized\nclassiﬁcation head on top of the tokens as in BERT\n(Devlin et al., 2018) (Cf. Figure 2).\nTo clarify P-tuning v2’s major contribution, we",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "To clarify P-tuning v2’s major contribution, we\npresent a conceptual comparison to existing prompt\ntuning approaches in Table 1.\n4\nExperiments\nWe conduct extensive experiments over different\ncommonly-used pre-trained models and NLU tasks\nto verify the effectiveness of P-tuning v2. In this\nwork, all methods except for ﬁne-tuning are con-\nducted with frozen language model backbones,\nwhich accords with (Lester et al., 2021)’s setting\nbut differs from (Liu et al., 2021)’s tuned setting.",
+      "source": "finetuned_lm.pdf",
+      "page": 3,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "#Size\nBoolQ\nCB\nCOPA\nMultiRC (F1a)\nFT\nPT\nPT-2\nFT\nPT\nPT-2\nFT\nPT\nPT-2\nFT\nPT\nPT-2\nBERTlarge\n335M\n77.7\n67.2\n75.8\n94.6\n80.4\n94.6\n69.0\n55.0\n73.0\n70.5\n59.6\n70.6\nRoBERTalarge\n355M\n86.9\n62.3\n84.8\n98.2\n71.4\n100\n94.0\n63.0\n93.0\n85.7\n59.9\n82.5\nGLMxlarge\n2B\n88.3\n79.7\n87.0\n96.4\n76.4\n96.4\n93.0\n92.0\n91.0\n84.1\n77.5\n84.4\nGLMxxlarge\n10B\n88.7\n88.8\n88.8\n98.7\n98.2\n96.4\n98.0\n98.0\n98.0\n88.1\n86.1\n88.1\n#Size\nReCoRD (F1)\nRTE\nWiC\nWSC\nFT\nPT\nPT-2\nFT\nPT\nPT-2\nFT\nPT\nPT-2\nFT\nPT\nPT-2\nBERTlarge\n335M\n70.6\n44.2\n72.8\n70.4\n53.5\n78.3\n74.9\n63.0\n75.1",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "335M\n70.6\n44.2\n72.8\n70.4\n53.5\n78.3\n74.9\n63.0\n75.1\n68.3\n64.4\n68.3\nRoBERTalarge\n355M\n89.0\n46.3\n89.3\n86.6\n58.8\n89.5\n75.6\n56.9\n73.4\n63.5\n64.4\n63.5\nGLMxlarge\n2B\n91.8\n82.7\n91.9\n90.3\n85.6\n90.3\n74.1\n71.0\n72.0\n95.2\n87.5\n92.3\nGLMxxlarge\n10B\n94.4\n87.8\n92.5\n93.1\n89.9\n93.1\n75.7\n71.8\n74.0\n95.2\n94.2\n93.3\nTable 2: Results on SuperGLUE development set. P-tuning v2 surpasses P-tuning & Lester et al. (2021) on models\nsmaller than 10B, matching the performance of ﬁne-tuning across different model scales. (FT: ﬁne-tuning; PT:",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "Lester et al. (2021) & P-tuning; PT-2: P-tuning v2; bold: the best; underline: the second best).\n#Size\nCoNLL03\nOntoNotes 5.0\nCoNLL04\nFT\nPT\nPT-2\nMPT-2\nFT\nPT\nPT-2\nMPT-2\nFT\nPT\nPT-2\nMPT-2\nBERTlarge\n335M\n92.8\n81.9\n90.2\n91.0\n89.2\n74.6\n86.4\n86.3\n85.6\n73.6\n84.5\n86.6\nRoBERTalarge\n355M\n92.6\n86.1\n92.8\n92.8\n89.8\n80.8\n89.8\n89.8\n88.8\n76.2\n88.4\n90.6\nDeBERTaxlarge\n750M\n93.1\n90.2\n93.1\n93.1\n90.4\n85.1\n90.4\n90.5\n89.1\n82.4\n86.5\n90.1\n#Size\nSQuAD 1.1 dev (EM / F1)\nSQuAD 2.0 dev (EM / F1)\nFT\nPT\nPT-2\nMPT-2\nFT\nPT\nPT-2\nMPT-2",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "FT\nPT\nPT-2\nMPT-2\nFT\nPT\nPT-2\nMPT-2\nBERTlarge\n335M 84.2 91.1\n1.0\n8.5\n77.8 86.0 82.3 89.6\n78.7 81.9 50.2 50.2 69.7 73.5 72.7 75.9\nRoBERTalarge\n355M 88.9 94.6\n1.2\n12.0 88.5 94.4 88.0 94.1\n86.5 89.4 50.2 50.2 82.1 85.5 83.4 86.7\nDeBERTaxlarge 750M 90.1 95.5\n2.4\n19.0 90.4 95.7 89.6 95.4\n88.3 91.1 50.2 50.2 88.4 91.1 88.1 90.8\n#Size\nCoNLL12\nCoNLL05 WSJ\nCoNLL05 Brown\nFT\nPT\nPT-2\nMPT-2\nFT\nPT\nPT-2\nMPT-2\nFT\nPT\nPT-2\nMPT-2\nBERTlarge\n335M\n84.9\n64.5.\n83.2\n85.1\n88.5\n76.0\n86.3\n88.5\n82.7\n70.0\n80.7\n83.1\nRoBERTalarge\n355M\n86.5",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "88.5\n82.7\n70.0\n80.7\n83.1\nRoBERTalarge\n355M\n86.5\n67.2\n84.6\n86.2\n90.2\n76.8\n89.2\n90.0\n85.6\n70.7\n84.3\n85.7\nDeBERTaxlarge\n750M\n86.5\n74.1\n85.7\n87.1\n91.2\n82.3\n90.6\n91.2\n86.9\n77.7\n86.3\n87.0\nTable 3: Results on Named Entity Recognition (NER), Question Answering (Extractive QA), and Semantic Role\nLabeling (SRL). All metrics in NER and SRL are micro-f1 score. (FT: ﬁne-tuning; PT: P-tuning & Lester et al.\n(2021); PT-2: P-tuning v2; MPT-2: Multi-task P-tuning v2; bold: the best; underline: the second best).",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "Ratios of task-speciﬁc parameters (e.g., 0.1%) are\nderived from comparing continuous prompts’ pa-\nrameters with transformers’ parameters. Another\nthing to notice is that our experiments are all con-\nducted in the fully-supervised setting rather than\nfew-shot setting.\nNLU Tasks. First, we include datasets from Su-\nperGLUE (Wang et al., 2019) to test P-tuning v2’s\ngeneral NLU ability. Additionally, we introduce a\nsuite of sequence labeling tasks, including named\nentity recognition (Sang and De Meulder, 2003;",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "entity recognition (Sang and De Meulder, 2003;\nWeischedel et al., 2013; Carreras and Màrquez,\n2004), extractive Question Answering (Rajpurkar\net al., 2016), and semantic role labeling (Carreras\nand Màrquez, 2005; Pradhan et al., 2012)).\nPre-trained Models. We include BERT-large (De-\nvlin et al., 2018), RoBERTa-large (Liu et al.,\n2019), DeBERTa-xlarge (He et al., 2020), GLM-\nxlarge/xxlarge (Du et al., 2021) for evaluation.\nThey are all bidirectional models designed for NLU",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "tasks, covering a wide range of sizes from about\n300M to 10B.\nMultitask Learning. For the multi-task setting,\nwe combine the training sets of the datasets in each\ntask type (e.g., combing all training sets of seman-\ntic role labeling). We use separate linear classi-\nﬁers for each dataset while sharing the continuous\nprompts (Cf. Appendix A).",
+      "source": "finetuned_lm.pdf",
+      "page": 4,
+      "char_count": 343,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "SST-2\nRTE\nBoolQ\nCB\nCLS & linear head\n96.3\n88.4\n84.8\n96.4\nVerbalizer & LM head\n95.8\n86.6\n84.6\n94.6\nTable 4: Comparison between [CLS] label with linear\nhead and verbalizer with LM head on RoBERTa-large.\n4.1\nP-tuning v2: Across Scales\nTable 2 presents P-tuning v2’s performances across\nmodel scales. In SuperGLUE, performances of\nLester et al. (2021) and P-tuning at smaller scales\ncan be quite poor. On the contrary, P-tuning v2\nmatches the ﬁne-tuning performance in all the tasks",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "at a smaller scale. P-tuning v2 even signiﬁcantly\noutperforms ﬁne-tuning on RTE.\nIn terms of larger scales (2B to 10B) with\nGLM (Du et al., 2021), the gap between Lester\net al. (2021); Liu et al. (2021) and ﬁne-tuning is\ngradually narrowed down. On 10B scale, we have\na similar observation as Lester et al. (2021) re-\nports, that prompt tuning becomes competitive to\nﬁne-tuning. That said, P-tuning v2 is always com-\nparable to ﬁne-tuning at all scales but with only",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "parable to ﬁne-tuning at all scales but with only\n0.1% task-speciﬁc parameters needed comparing\nto ﬁne-tuning.\n4.2\nP-tuning v2: Across Tasks\nFrom Table 3, we observe that P-tuning v2 can be\ngenerally comparable to ﬁne-tuning on all tasks. P-\ntuning and Lester et al. (2021) show much poorer\nperformance, especially on QA, which might be the\nmost challenging of the three tasks. We also notice\nthat there are some abnormal results of Lester et al.\n(2021) and P-tuning on SQuAD 2.0. This is prob-",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "(2021) and P-tuning on SQuAD 2.0. This is prob-\nably because SQuAD 2.0 contains unanswerable\nquestions, which causes optimization challenges\nfor single-layer prompt tuning. Multi-task learn-\ning generally brings signiﬁcant improvements to\nP-Tuning v2 over most tasks except for QA.\n4.3\nAblation Study\nVerbalizer with LM head v.s. [CLS] label with\nlinear head. Verbalizer with LM head has been a\ncentral component in previous prompt tuning ap-\nproaches. However, for P-tuning v2 in a supervised",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "setting, it is affordable to tune a linear head with\nabout several thousand parameters. We present our\ncomparison in Table 4, where we keep other hyper-\nparameters and only change [CLS] label with linear\nhead to verbalizer with LM head. Here, for simplic-\nity, we use “true” and “false” for SST-2, RTE and\n(a) RTE\n(b) BoolQ\nFigure 3: Ablation study on prompt depth using BERT-\nlarge. “[x-y]\" refers to the layer-interval we add contin-\nuous prompts (e.g., “21-24” means we are add prompts",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "to transformer layers from 21 to 24). Same amount of\ncontinuous prompts added to deeper transformer layers\n(i.e., more close to the output layer) can yield a better\nperformance than those added to beginning layers.\nBoolQ; “true”, “false” and “neutral” for CB. Re-\nsults indicate that there is no signiﬁcant difference\nbetween performances of verbalizer and [CLS].\nPrompt depth.\nThe main difference between\nLester et al. (2021); (Liu et al., 2021) and P-tuning\nv2 is the multi-layer continuous prompts. To ver-",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "v2 is the multi-layer continuous prompts. To ver-\nify its exact inﬂuence, given a certain number of k\nlayers to add prompts, we select them in both as-\ncending and descending order to add prompts; for\nthe rest layers, we left them untouched. As shown\nin Figure 3, with the same amount of parameters\n(i.e., num of transformer layers to add prompts),\nadding them in the descending order is always bet-\nter than in the ascending order. In the RTE case,\nonly adding prompts to layers 17-24 can yield a",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "only adding prompts to layers 17-24 can yield a\nvery close performance to all layers.\n5\nConclusions\nWe present P-tuning v2, a prompt tuning method.\nDespite its relatively limited technical novelty, it\ncontributes to a novel ﬁnding that prompt tuning\ncan be comparable to ﬁne-tuning universally across\nscales (from 330M to 10B parameters) and tasks.\nWith high accuracy and parameter efﬁciency, P-\nTuning v2 can be a potential alternative for ﬁne-\ntuning and a strong baseline for future work.\nACKNOWLEDGEMENT",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "ACKNOWLEDGEMENT\nWe would like to thank the anonymous reviewers\nfor their suggestions and comments. Jie Tang is\nsupported by the NSFC for Distinguished Young\nScholar (61825602) and NSFC (61836013). Kaix-\nuan Ji is supported by Tsinghua University Initia-\ntive Scientiﬁc Research Program and DCST Stu-\ndent Academic Training Program.",
+      "source": "finetuned_lm.pdf",
+      "page": 5,
+      "char_count": 331,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "References\nTom B Brown, Benjamin Mann, Nick Ryder, Melanie\nSubbiah, Jared Kaplan, Prafulla Dhariwal, Arvind\nNeelakantan, Pranav Shyam, Girish Sastry, Amanda\nAskell, et al. 2020. Language models are few-shot\nlearners. arXiv preprint arXiv:2005.14165.\nXavier Carreras and Lluís Màrquez. 2004. Introduc-\ntion to the CoNLL-2004 shared task: Semantic role\nlabeling.\nIn Proceedings of the Eighth Confer-\nence on Computational Natural Language Learning\n(CoNLL-2004) at HLT-NAACL 2004, pages 89–97,",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "(CoNLL-2004) at HLT-NAACL 2004, pages 89–97,\nBoston, Massachusetts, USA. Association for Com-\nputational Linguistics.\nXavier Carreras and Lluís Màrquez. 2005. Introduc-\ntion to the CoNLL-2005 shared task:\nSemantic\nrole labeling. In Proceedings of the Ninth Confer-\nence on Computational Natural Language Learning\n(CoNLL-2005), pages 152–164, Ann Arbor, Michi-\ngan. Association for Computational Linguistics.\nXiang Chen, Xin Xie, Ningyu Zhang, Jiahuan Yan,\nShumin Deng, Chuanqi Tan, Fei Huang, Luo Si, and",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "Shumin Deng, Chuanqi Tan, Fei Huang, Luo Si, and\nHuajun Chen. 2021. Adaprompt: Adaptive prompt-\nbased ﬁnetuning for relation extraction.\narXiv\npreprint arXiv:2104.07650.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2018. Bert: Pre-training of deep\nbidirectional transformers for language understand-\ning. arXiv preprint arXiv:1810.04805.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2018. Bert: Pre-training of deep\nbidirectional transformers for language understand-",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "ing. arXiv e-prints.\nZhengxiao Du, Yujie Qian, Xiao Liu, Ming Ding,\nJiezhong Qiu, Zhilin Yang, and Jie Tang. 2021. All\nnlp tasks are generation tasks: A general pretraining\nframework. arXiv preprint arXiv:2103.10360.\nTianyu Gao, Adam Fisch, and Danqi Chen. 2020.\nMaking pre-trained language models better few-shot\nlearners. arXiv preprint arXiv:2012.15723.\nYuxian Gu, Xu Han, Zhiyuan Liu, and Minlie Huang.\n2021. Ppt: Pre-trained prompt tuning for few-shot\nlearning. arXiv preprint arXiv:2109.04332.",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "learning. arXiv preprint arXiv:2109.04332.\nPengcheng He, Xiaodong Liu, Jianfeng Gao, and\nWeizhu Chen. 2020. Deberta: Decoding-enhanced\nbert with disentangled attention.\nBoseop Kim,\nHyoungSeok Kim,\nSang-Woo Lee,\nGichang Lee, Donghyun Kwak, Dong Hyeon Jeon,\nSunghyun Park, Sungju Kim, Seonhoon Kim, Dong-\npil Seo, et al. 2021. What changes can large-scale\nlanguage models bring? intensive study on hyper-\nclova: Billions-scale korean generative pretrained\ntransformers. arXiv preprint arXiv:2109.04650.",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "transformers. arXiv preprint arXiv:2109.04650.\nBrian Lester, Rami Al-Rfou, and Noah Constant. 2021.\nThe power of scale for parameter-efﬁcient prompt\ntuning. arXiv preprint arXiv:2104.08691.\nXiang Lisa Li and Percy Liang. 2021.\nPreﬁx-\ntuning: Optimizing continuous prompts for genera-\ntion. arXiv preprint arXiv:2101.00190.\nXiao Liu, Yanan Zheng, Zhengxiao Du, Ming Ding,\nYujie Qian, Zhilin Yang, and Jie Tang. 2021. Gpt\nunderstands, too. arXiv:2103.10385.\nYinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Man-",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "dar Joshi, Danqi Chen, Omer Levy, Mike Lewis,\nLuke Zettlemoyer, and Veselin Stoyanov. 2019.\nRoBERTa: A Robustly Optimized BERT Pretrain-\ning Approach. arXiv e-prints.\nSewon Min, Mike Lewis, Hannaneh Hajishirzi, and\nLuke Zettlemoyer. 2021. Noisy channel language\nmodel prompting for few-shot text classiﬁcation.\narXiv preprint arXiv:2108.04106.\nSameer Pradhan, Alessandro Moschitti, Nianwen Xue,\nOlga Uryupina, and Yuchen Zhang. 2012. CoNLL-\n2012 shared task:\nModeling multilingual unre-",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "2012 shared task:\nModeling multilingual unre-\nstricted coreference in OntoNotes. In Joint Confer-\nence on EMNLP and CoNLL - Shared Task, pages\n1–40, Jeju Island, Korea. Association for Computa-\ntional Linguistics.\nGuanghui Qin and Jason Eisner. 2021. Learning how\nto ask: Querying lms with mixtures of soft prompts.\narXiv preprint arXiv:2104.06599.\nAlec Radford, Jeffrey Wu, Rewon Child, David Luan,\nDario Amodei, and Ilya Sutskever. 2019. Language\nmodels are unsupervised multitask learners. OpenAI",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "blog, 1(8):9.\nColin Raffel, Noam Shazeer, Adam Roberts, Katherine\nLee, Sharan Narang, Michael Matena, Yanqi Zhou,\nWei Li, and Peter J Liu. 2019. Exploring the limits\nof transfer learning with a uniﬁed text-to-text trans-\nformer. arXiv preprint arXiv:1910.10683.\nPranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and\nPercy Liang. 2016. Squad: 100,000+ questions for\nmachine comprehension of text.\nErik F Sang and Fien De Meulder. 2003.\nIntro-\nduction to the conll-2003 shared task: Language-",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "duction to the conll-2003 shared task: Language-\nindependent named entity recognition.\narXiv\npreprint cs/0306050.\nTimo Schick and Hinrich Schütze. 2020.\nIt’s\nnot just size that matters:\nSmall language mod-\nels are also few-shot learners.\narXiv preprint\narXiv:2009.07118.\nTaylor Shin, Yasaman Razeghi, Robert L Logan IV,\nEric Wallace, and Sameer Singh. 2020. Autoprompt:\nEliciting knowledge from language models with\nautomatically generated prompts.\narXiv preprint\narXiv:2010.15980.\nAlex Wang,",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "arXiv preprint\narXiv:2010.15980.\nAlex Wang,\nYada Pruksachatkun,\nNikita Nangia,\nAmanpreet Singh, Julian Michael, Felix Hill, Omer\nLevy, and Samuel R. Bowman. 2019. SuperGLUE:",
+      "source": "finetuned_lm.pdf",
+      "page": 6,
+      "char_count": 173,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "A Stickier Benchmark for General-Purpose Lan-\nguage Understanding Systems.\nIn NeurIPS 2019,\npages 3261–3275.\nAlex Wang,\nYada Pruksachatkun,\nNikita Nangia,\nAmanpreet Singh, Julian Michael, Felix Hill, Omer\nLevy, and Samuel R. Bowman. 2019. Superglue: A\nstickier benchmark for general-purpose language un-\nderstanding systems. arXiv e-prints.\nAlex Wang, Amanpreet Singh, Julian Michael, Felix\nHill, Omer Levy, and Samuel R. Bowman. 2018.\nGlue: A multi-task benchmark and analysis platform",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "for natural language understanding. arXiv e-prints.\nHongru Wang, Mingyu Cui, Zimo Zhou, Gabriel\nPui Cheong Fung, and Kam-Fai Wong. 2021a. Topi-\ncreﬁne: Joint topic prediction and dialogue response\ngeneration for multi-turn end-to-end dialogue sys-\ntem. arXiv preprint arXiv:2109.05187.\nShuo Wang, Zhaopeng Tu, Zhixing Tan, Wenxuan\nWang, Maosong Sun, and Yang Liu. 2021b. Lan-\nguage models are good translators. arXiv preprint\narXiv:2106.13627.\nRalph Weischedel, Martha Palmer, Mitchell Marcus,",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "Ralph Weischedel, Martha Palmer, Mitchell Marcus,\nEduard Hovy, Sameer Pradhan, Lance Ramshaw, Ni-\nanwen Xue, Ann Taylor, Jeff Kaufman, Michelle\nFranchini, et al. 2013.\nOntonotes release 5.0\nldc2013t19. Linguistic Data Consortium, Philadel-\nphia, PA, 23.\nLu Xu, Zhanming Jie, Wei Lu, and Lidong Bing. 2021.\nBetter feature integration for named entity recogni-\ntion. arXiv preprint arXiv:2104.05316.\nZhilin Yang, Zihang Dai, Yiming Yang, Jaime Car-\nbonell, Ruslan Salakhutdinov, and Quoc V Le.\n2019.",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "2019.\nXlnet: Generalized autoregressive pretrain-\ning for language understanding.\narXiv preprint\narXiv:1906.08237.\nYanan Zheng, Jing Zhou, Yujie Qian, Ming Ding,\nJian Li, Ruslan Salakhutdinov, Jie Tang, Sebas-\ntian Ruder, and Zhilin Yang. 2021.\nFewnlu:\nBenchmarking state-of-the-art methods for few-shot\nnatural language understanding.\narXiv preprint\narXiv:2109.12742.\nZexuan Zhong, Dan Friedman, and Danqi Chen. 2021.\nFactual probing is [mask]: Learning vs. learning to\nrecall. arXiv preprint arXiv:2104.05240.",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "recall. arXiv preprint arXiv:2104.05240.\nA\nProblem Formulation on Sequence\nTagging\nName entity recognition (NER). NER aims to\npredict all spans of words that represent some\ngiven classes of entity with a sentence.\nWe\nadopted CoNLL03 (Sang and De Meulder, 2003),\nOntoNotes 5.0 (Weischedel et al., 2013) and\nCoNLL04 (Carreras and Màrquez, 2004).\nFor\nCoNLL03 and CoNLL04, we trained our model on\nthe standard train-develop-test split. For OntoNotes\n5.0, we use the same train, develop, test split as (Xu",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "et al., 2021). All the datasets are labeled in IOB2\nformat. We use sequence tagging to solve NER\ntasks by assigning labels marking the beginning\nand inside some classes of entity. The language\nmodels generate a representation for each token,\nand we use a linear classiﬁer to predict the labels.\nWe use the ofﬁcial scripts to evaluate the results.\nFor the multi-task setting, we combine the training\nset of the three datasets for pre-training. We use\ndifferent linear classiﬁers for each dataset while",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "sharing the continuous prompts.\n(Extractive) Question Answering (QA). Extrac-\ntive QA is designed to extract the answer from the\ncontext given the context and a question. We use\nSQuAD (Rajpurkar et al., 2016) 1.1 and 2.0, in\nwhich each answer is within a continuous span of\nthe context. Following tradition, we formulate the\nproblem as sequence tagging by assigning one of\nthe two labels: ‘start’ or ‘end’ to each token and at\nlast selecting the span of the most conﬁdent start-",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "end pair as the extracted answer. If the probability\nof the most conﬁdent pair is lower than a threshold,\nthe model will assume the question unanswerable.\nFor the multi-task setting, our training set for pre-\ntraining combines the training sets of SQuAD 1.1\nand 2.0. When pre-training, we assume that all the\nquestions, regardless of their origin, are possibly\nunanswerable.\nSemantic Role Labeling (SRL). SRL assigns la-\nbels to words or phrases in a sentence that indicate",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "their semantic roles in the sentence. We evaluate\nP-tuning v2 on CoNLL05 (Carreras and Màrquez,\n2005) and CoNLL12 (Pradhan et al., 2012). Since a\nsentence can have multiple verbs, we add the target\nverb token to the end of each sentence to help recog-\nnize which verb is used for prediction. We classify\neach word with a linear classiﬁer based on the cor-\nresponding semantic role representation. For multi-\ntask setting, the pre-train training set is a combina-",
+      "source": "finetuned_lm.pdf",
+      "page": 7,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "(a) NLI: RTE\n(b) NER: CoNLL04\n(c) MQA: BoolQ\n(d) SRL: CoNLL12\nFigure 4: Ablation study on prompt length and reparamerization using RoBERTa-large. The conclusion can be\nvery different given certain NLU task and dataset. (MQA: Multiple-choice QA)\ntion of the training set of CoNLL05 (Carreras and\nMàrquez, 2005), CoNLL12 (Pradhan et al., 2012)\nand propbank-release (a common extend data used\nfor training SRL). The multi-task training strategy\nis similar to NER.\nB\nMore Ablation Study",
+      "source": "finetuned_lm.pdf",
+      "page": 8,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "is similar to NER.\nB\nMore Ablation Study\nDue to the page limit, we present hyper-parameters\nand architecture designs ablations regarding repa-\nrameterization and prompt length in this section.\nEmbedding v.s. MLP reparameterization. In\nboth preﬁx-tuning (Li and Liang, 2021) and P-\ntuning (Liu et al., 2021), authors discover the repa-\nrameterization to be useful in improving training\nspeed, robustness and performance. However, we\nconduct experiments to show that the reparameteri-",
+      "source": "finetuned_lm.pdf",
+      "page": 8,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "zation effect is inconsistent across different NLU\ntasks and datasets.\nAs shown in Figure 4, in RTE and CoNLL04,\nMLP reparameterization generally indicates better\nperformance than embedding for almost all prompt\nlengths. However, in BoolQ, MLP and embed-\nding’s results are competitive; in CoNLL12, the\nembedding consistently outperforms MLP.\nPrompt Length. Prompt length is yet another in-\nﬂuential hyper-parameter for P-tuning v2, and its\noptimal value varies from task to task. From Fig-",
+      "source": "finetuned_lm.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "optimal value varies from task to task. From Fig-\nure 4, we observe that for simple NLU tasks, usu-\nally, a shorter prompt is enough for the best perfor-\nmance; for hard sequence tasks, usually, a longer\nprompt than 100 would be helpful.\nWe also discover that reparameterization has a\nclose bond with optimal prompt length. For exam-\nple, in RTE, CoNLL04, and BoolQ, MLP reparam-\neterization achieves its optimal result earlier than\nembedding. This conclusion may contribute some",
+      "source": "finetuned_lm.pdf",
+      "page": 8,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "embedding. This conclusion may contribute some\nthoughts on P-tuning’s optimization properties.",
+      "source": "finetuned_lm.pdf",
+      "page": 8,
+      "char_count": 94,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

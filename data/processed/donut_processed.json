@@ -1,0 +1,1444 @@
+{
+  "source": "donut.pdf",
+  "full_path": "data\\raw\\donut.pdf",
+  "total_pages": 29,
+  "text_chunks": 179,
+  "vision_chunks": 0,
+  "total_chunks": 179,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "OCR-free Document Understanding Transformer\nGeewook Kim1∗, Teakgyu Hong4†, Moonbin Yim2†, Jeongyeon Nam1,\nJinyoung Park5†, Jinyeong Yim6†, Wonseok Hwang7†, Sangdoo Yun3,\nDongyoon Han3, and Seunghyun Park1\n1NAVER CLOVA\n2NAVER Search\n3NAVER AI Lab\n4Upstage\n5Tmax\n6Google\n7LBox\nAbstract. Understanding document images (e.g., invoices) is a core but\nchallenging task since it requires complex functions such as reading text\nand a holistic understanding of the document. Current Visual Document",
+      "source": "donut.pdf",
+      "page": 1,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "Understanding (VDU) methods outsource the task of reading text to off-\nthe-shelf Optical Character Recognition (OCR) engines and focus on the\nunderstanding task with the OCR outputs. Although such OCR-based\napproaches have shown promising performance, they suffer from 1) high\ncomputational costs for using OCR; 2) inflexibility of OCR models on\nlanguages or types of documents; 3) OCR error propagation to the sub-\nsequent process. To address these issues, in this paper, we introduce a",
+      "source": "donut.pdf",
+      "page": 1,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "novel OCR-free VDU model named Donut, which stands for Document\nunderstanding transformer. As the first step in OCR-free VDU research,\nwe propose a simple architecture (i.e., Transformer) with a pre-training\nobjective (i.e., cross-entropy loss). Donut is conceptually simple yet ef-\nfective. Through extensive experiments and analyses, we show a simple\nOCR-free VDU model, Donut, achieves state-of-the-art performances on\nvarious VDU tasks in terms of both speed and accuracy. In addition, we",
+      "source": "donut.pdf",
+      "page": 1,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "offer a synthetic data generator that helps the model pre-training to be\nflexible in various languages and domains. The code, trained model, and\nsynthetic data are available at https://github.com/clovaai/donut.\nKeywords: Visual Document Understanding, Document Information\nExtraction, Optical Character Recognition, End-to-End Transformer\n1\nIntroduction\nDocument images, such as commercial invoices, receipts, and business cards,\nare easy to find in modern working environments. To extract useful informa-",
+      "source": "donut.pdf",
+      "page": 1,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "tion from such document images, Visual Document Understanding (VDU) has\nnot been only an essential task for industry, but also a challenging topic for re-\nsearchers, with applications including document classification [27,1], information\nextraction [22,42], and visual question answering [44,57].\n∗Corresponding author: gwkim.rsrch@gmail.com\n† This work was done while the authors were at NAVER CLOVA.\narXiv:2111.15664v5  [cs.LG]  6 Oct 2022",
+      "source": "donut.pdf",
+      "page": 1,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "2\nG. Kim et al.\nDocument Image\n{ \"items\": [ \n    {\n      \"name\": \"3002-Kyoto Choco Mochi\",\n      \"count\": 2,\n      \"priceInfo\": {\n        \"unitPrice\": 14000,\n        \"price\": 28000\n      }\n    }, ...\n  ],\n  \"total\": [ { \n      \"menuqty_cnt\": 4, \n      \"total_price\": 50000\n    } \n  ]\n}\n{ \"words\": [ \n       {\n            \"bbox\":[[0.11,0.21],...,[0.19,0.22]],\n            \"text\": \"3002-Kyoto\"\n        }, {\n            \"bbox\":[[0.21,0.22],...,[0.45,0.23]],\n            \"text\": \"Choco\"\n        }, {",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "\"text\": \"Choco\"\n        }, {\n            \"bbox\":[[0.46,0.22],...,[0.52,0.23]],\n            \"text\": \"Mochi\"\n        }, …, {\n            \"bbox\":[[0.66,0.31],...,[0.72,0.32]],\n            \"text\": \"50.000\"\n        }\n    ]\n}\nStructured Information\n(a)\n(b)\n(c)\n(d)\nFig. 1. The schema of the conventional document information extraction\n(IE) pipeline. (a) The goal is to extract the structured information from a given semi-",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "structured document image. In the pipeline, (b) text detection is conducted to obtain\ntext locations and (c) each box is passed to the recognizer to comprehend characters.\n(d) Finally, the recognized texts and its locations are passed to the following module\nto be processed for the desired structured form of the information\nImage\nOCR\nDownstream \nModel\nOutput\nAS-IS (OCR + BERT, Layout LM, …)\nImage\nE2E Model\nOutput\nDonut 🍩(Proposed)\n1.2\n0.9\nTime (sec/img)\n91\n82\nAccuracy (%)\n0.8\n143\n179\n+a\nMemory (M)",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "91\n82\nAccuracy (%)\n0.8\n143\n179\n+a\nMemory (M)\n(a) Pipeline Overview.\n(b) System Benchmarks.\nFig. 2. The pipeline overview and benchmarks. The proposed end-to-end model,\nDonut, outperforms the recent OCR-dependent VDU models in memory, time cost\nand accuracy. Performances on visual document IE [45] are shown in (b). More results\non various VDU tasks are available at Section 3 showing the same trend\nCurrent VDU methods [22,24,65,64,18] solve the task in a two-stage manner:",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "1) reading the texts in the document image; 2) holistic understanding of the doc-\nument. They usually rely on deep-learning-based Optical Character Recognition\n(OCR) [4,3] for the text reading task and focus on modeling the understanding\npart. For example, as shown in Figure 1, a conventional pipeline for extracting\nstructured information from documents (a.k.a. document parsing) consists of\nthree separate modules for text detection, text recognition, and parsing [22,24].",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "However, the OCR-dependent approach has critical problems. First of all, us-\ning OCR as a pre-processing method is expensive. We can utilize pre-trained off-\nthe-shelf OCR engines; however, the computational cost for inference would be\nexpensive for high-quality OCR results. Moreover, the off-the-shelf OCR meth-\nods rarely have flexibility dealing with different languages or domain changes,\nwhich may lead to poor generalization ability. If we train an OCR model, it also",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "requires extensive training costs and large-scale datasets [4,3,39,46]. Another\nproblem is, OCR errors would propagate to the VDU system and negatively\ninfluence subsequent processes [54,23]. This problem becomes more severe in",
+      "source": "donut.pdf",
+      "page": 2,
+      "char_count": 227,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "OCR-free Document Understanding Transformer\n3\nlanguages with complex character sets, such as Korean or Chinese, where the\nquality of OCR is relatively low [50]. To deal with this, post-OCR correction\nmodule [51,50,10] is usually adopted. However, it is not a practical solution for\nreal application environments since it increases the entire system size and main-\ntenance cost.\nWe go beyond the traditional framework by modeling a direct mapping from",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "a raw input image to the desired output without OCR. We introduce a new\nOCR-free VDU model to address the problems induced by the OCR-dependency.\nOur model is based on Transformer-only architecture, referred to as Document\nunderstanding transformer (Donut), following the huge success in vision and\nlanguage [8,9,29]. We present a minimal baseline including a simple architecture\nand pre-training method. Despite its simplicity, Donut shows comparable or",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "better overall performance than previous methods as shown in Figure 2.\nWe take pre-train-and-fine-tune scheme [8,65] on Donut training. In the\npre-training phase, Donut learns how to read the texts by predicting the next\nwords by conditioning jointly on the image and previous text contexts. Donut\nis pre-trained with document images and their text annotations. Since our pre-\ntraining objective is simple (i.e., reading the texts), we can realize domain and",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "language flexibility straightforwardly pre-training with synthetic data. During\nfine-tuning stage, Donut learns how to understand the whole document accord-\ning to the downstream task. We demonstrate Donut has a strong understanding\nability through extensive evaluation on various VDU tasks and datasets. The\nexperiments show a simple OCR-free VDU model can achieve state-of-the-art\nperformance in terms of both speed and accuracy.\nThe contributions are summarized as follows:",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "The contributions are summarized as follows:\n1. We propose a novel OCR-free approach for VDU. To the best of our knowl-\nedge, this is the first method based on an OCR-free Transformer trained in\nend-to-end manner.\n2. We introduce a simple pre-training scheme that enables the utilization of\nsynthetic data. By using our generator SynthDoG, we show Donut can\neasily be extended to a multi-lingual setting, which is not applicable for the\nconventional approaches that need to retrain an off-the-shelf OCR engine.",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "3. We conduct extensive experiments and analyses on both public benchmarks\nand private industrial datasets, showing that the proposed method achieves\nnot only state-of-the-art performances on benchmarks but also has many\npractical advantages (e.g., cost-effective) in real-world applications.\n4. The codebase, pre-trained model, and synthetic data are available at GitHub.1\n2\nMethod\n2.1\nPreliminary: background\nThere have been various visual document understanding (VDU) methods to un-",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "derstand and extract essential information from the semi-structured documents\nsuch as receipts [20,25,18], invoices [49], and form documents [14,6,43].\n1https://github.com/clovaai/donut.",
+      "source": "donut.pdf",
+      "page": 3,
+      "char_count": 186,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "4\nG. Kim et al.\n<vqa><question>what is the price \nof choco mochi?</question><answer>\nConverted JSON\ntransformer \nencoder\nInput Image and Prompt\ntransformer \ndecoder\nDonut 🍩\n<classification>\n<parsing>\n<class>receipt</class>\n</classification>\n14,000</answer></vqa>\n<item><name>3002-Kyoto Choco \nMochi</name>・・・ </parsing>\n{ \"items\": [{\"name\": \"3002-Kyoto Choco Mochi\",\n      \"count\": 2,\n      \"unitprice\": 14000, …}], … }\nOutput Sequence\n{ \"class\":\"receipt\" }\n{ \"question\": \"what is the price of choco mochi?\",",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "\"answer\": \"14,000\" }\nFig. 3. The pipeline of Donut. The encoder maps a given document image into\nembeddings. With the encoded embeddings, the decoder generates a sequence of tokens\nthat can be converted into a target type of information in a structured form\nEarlier VDU attempts have been done with OCR-independent visual back-\nbones [27,1,15,12,31], but the performances are limited. Later, with the remark-\nable advances of OCR [4,3] and BERT [8], various OCR-dependent VDU models",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "have been proposed by combining them [22,24,23]. More recently, in order to get\na more general VDU, most state-of-the-arts [64,18] use both powerful OCR en-\ngines and large-scale real document image data (e.g., IIT-CDIP [32]) for a model\npre-training. Although they showed remarkable advances in recent years, extra\neffort is required to ensure the performance of an entire VDU model by using\nthe off-the-shelf OCR engine.\n2.2\nDocument Understanding Transformer",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "2.2\nDocument Understanding Transformer\nDonut is an end-to-end (i.e., self-contained) VDU model for general understand-\ning of document images. The architecture of Donut is quite simple, which con-\nsists of a Transformer [58,9]-based visual encoder and textual decoder modules.\nNote that Donut does not rely on any modules related to OCR functionality\nbut uses a visual encoder for extracting features from a given document im-\nage. The following textual decoder maps the derived features into a sequence",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "of subword tokens to construct a desired structured format (e.g., JSON). Each\nmodel component is Transformer-based, and thus the model is trained easily in\nan end-to-end manner. The overall process of Donut is illustrated in Figure 3.\nEncoder. The visual encoder converts the input document image x∈RH×W ×C\ninto a set of embeddings {zi|zi∈Rd, 1≤i≤n}, where n is feature map size or the\nnumber of image patches and d is the dimension of the latent vectors of the",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "encoder. Note that CNN-based models [17] or Transformer-based models [9,40]\ncan be used as the encoder network. In this study, we use Swin Transformer [40]\nbecause it shows the best performance in our preliminary study in document\nparsing. Swin Transformer first splits the input image x into non-overlapping\npatches. Swin Transformer blocks, consist of a shifted window-based multi-head\nself-attention module and a two-layer MLP, are applied to the patches. Then,",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "patch merging layers are applied to the patch tokens at each stage. The output\nof the final Swin Transformer block {z} is fed into the following textual decoder.",
+      "source": "donut.pdf",
+      "page": 4,
+      "char_count": 161,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "OCR-free Document Understanding Transformer\n5\nDecoder. Given the {z}, the textual decoder generates a token sequence (yi)m\ni=1,\nwhere yi∈Rv is an one-hot vector for the i-th token, v is the size of token vo-\ncabulary, and m is a hyperparameter, respectively. We use BART [33] as the\ndecoder architecture. Specifically, we initialize the decoder model weights with\nthose from the publicly available2 pre-trained multi-lingual BART model[38].",
+      "source": "donut.pdf",
+      "page": 5,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "Model Input. Following the original Transformer [58], we use a teacher-forcing\nscheme [62], which is a model training strategy that uses the ground truth as\ninput instead of model output from a previous time step. In the test phase,\ninspired by GPT-3 [5], the model generates a token sequence given a prompt.\nWe add new special tokens for the prompt for each downstream task in our\nexperiments. The prompts that we use for our applications are shown with the",
+      "source": "donut.pdf",
+      "page": 5,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "desired output sequences in Figure 3. Illustrative explanations for the teacher-\nforcing strategy and the decoder output format are available in Appendix A.4.\nOutput Conversion. The output token sequence is converted to a desired\nstructured format. We adopt a JSON format due to its high representation\ncapacity. As shown in Figure 3, a token sequence is one-to-one invertible to a\nJSON data. We simply add two special tokens [START ∗] and [END ∗], where ∗",
+      "source": "donut.pdf",
+      "page": 5,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "indicates each field to extract. If the output token sequence is wrongly structured,\nwe simply treat the field is lost. For example, if there is only [START name] exists\nbut no [END name], we assume the model fails to extract “name” field. This\nalgorithm can easily be implemented with simple regular expressions [11].\n2.3\nPre-training\nTask. The model is trained to read all texts in the image in reading order (from\ntop-left to bottom-right, basically). The objective is to minimize cross-entropy",
+      "source": "donut.pdf",
+      "page": 5,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "loss of next token prediction by jointly conditioning on the image and previous\ncontexts. This task can be interpreted as a pseudo-OCR task. The model is\ntrained as a visual language model over the visual corpora, i.e., document images.\nVisual Corpora. We use IIT-CDIP [32], which is a set of 11M scanned english\ndocument images. A commercial CLOVA OCR API is applied to get the pseudo\ntext labels. As aforementioned, however, this kind of dataset is not always avail-",
+      "source": "donut.pdf",
+      "page": 5,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "able, especially for languages other than English. To alleviate the dependencies,\nwe build a scalable Synthetic Document Generator, referred to as SynthDoG.\nUsing the SynthDog and Chinese, Japanese, Korean and English Wikipedia, we\ngenerated 0.5M samples per language.\nSynthetic Document Generator. The pipeline of image rendering basically\nfollows Yim et al. [67]. As shown in Figure 4, the generated sample consists of\n2https://huggingface.co/hyunwoongko/asian-bart-ecjk.",
+      "source": "donut.pdf",
+      "page": 5,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "6\nG. Kim et al.\nFig. 4. Generated English, Chinese, Japanese, and Korean samples with\nSynthDoG. Heuristic random patterns are applied to mimic the real documents\nseveral components; background, document, text, and layout. Background image\nis sampled from ImageNet [7], and a texture of document is sampled from the\ncollected paper photos. Words and phrases are sampled from Wikipedia. Layout\nis generated by a simple rule-based algorithm that randomly stacks grids. In",
+      "source": "donut.pdf",
+      "page": 6,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "addition, several image rendering techniques [13,41,67] are applied to mimic\nreal documents. The generated examples are shown in Figure 4. More details of\nSynthDoG are available in the code1 and Appendix A.2.\n2.4\nFine-tuning\nAfter the model learns how to read, in the application stage (i.e., fine-tuning), we\nteach the model how to understand the document image. As shown in Figure 3,\nwe interpret all downstream tasks as a JSON prediction problem.",
+      "source": "donut.pdf",
+      "page": 6,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "The decoder is trained to generate a token sequence that can be converted\ninto a JSON that represents the desired output information. For example, in the\ndocument classification task, the decoder is trained to generate a token sequence\n[START class][memo][END class] which is 1-to-1 invertible to a JSON {“class”:\n“memo”}. We introduce some special tokens (e.g., [memo] is used for representing\nthe class “memo”), if such replacement is available in the target task.\n3\nExperiments and Analyses",
+      "source": "donut.pdf",
+      "page": 6,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "3\nExperiments and Analyses\nIn this section, we present Donut fine-tuning results on three VDU applications\non six different datasets including both public benchmarks and private industrial\nservice datasets. The samples are shown in Figure 5.\n3.1\nDownstream Tasks and Datasets\nDocument Classification. To see whether the model can distinguish across\ndifferent types of documents, we test a classification task. Unlike other models\nthat predict the class label via a softmax on the encoded embedding, Donut",
+      "source": "donut.pdf",
+      "page": 6,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "generate a JSON that contains class information to maintain the uniformity of\nthe task-solving method. We report overall classification accuracy on a test set.\nRVL-CDIP. The RVL-CDIP dataset [16] consists of 400K images in 16 classes,\nwith 25K images per class. The classes include letter, memo, email, and so on.\nThere are 320K training, 40K validation, and 40K test images.",
+      "source": "donut.pdf",
+      "page": 6,
+      "char_count": 375,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "OCR-free Document Understanding Transformer\n7\nform\nhandwritten\n(a)\n(b)\n(c)\nQ: What is the Extension Number as per the voucher? \nA: (910) 741-0673\nFig. 5. Samples of the downstream datasets. (a) Document Classification. (b)\nDocument Information Extraction. (c) Document Visual Question Answering\nDocument Information Extraction. To see the model fully understands\nthe complex layouts and contexts in documents, we test document information",
+      "source": "donut.pdf",
+      "page": 7,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "extraction (IE) tasks on various real document images including both public\nbenchmarks and real industrial datasets. In this task, the model aims to map\neach document to a structured form of information that is consistent with the\ntarget ontology or database schema. See Figure 1 for an illustrative example. The\nmodel should not only read the characters well, but also understand the layouts\nand semantics to infer the groups and nested hierarchies among the texts.",
+      "source": "donut.pdf",
+      "page": 7,
+      "char_count": 466,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "We evaluate the models with two metrics; field-level F1 score [22,65,18] and\nTree Edit Distance (TED) based accuracy [68,70,23]. The F1 checks whether the\nextracted field information is in the ground truth. Even if a single character is\nmissed, the score assumes the field extraction is failed. Although F1 is simple\nand easy to understand, there are some limitations. First, it does not take into\naccount partial overlaps. Second, it can not measure the predicted structure (e.g.,",
+      "source": "donut.pdf",
+      "page": 7,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "groups and nested hierarchy). To assess overall accuracy, we also use another\nmetric based on TED [68], that can be used for any documents represented as\ntrees. It is calculated as, max(0, 1−TED(pr, gt)/TED(ϕ, gt)), where gt, pr, and ϕ\nstands for ground truth, predicted, and empty trees respectively. Similar metrics\nare used in recent works on document IE [70,23]\nWe use two public benchmark datasets as well as two private industrial",
+      "source": "donut.pdf",
+      "page": 7,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "datasets which are from our active real-world service products. Each dataset\nis explained in the followings.\nCORD. The Consolidated Receipt Dataset (CORD)3[45] is a public benchmark\nthat consists of 0.8K train, 0.1K valid, 0.1K test receipt images. The letters\nof receipts is in Latin alphabet. The number of unique fields is 30 containing\nmenu name, count, total price, and so on. There are complex structures (i.e.,\n3https://huggingface.co/datasets/naver-clova-ix/cord-v1.",
+      "source": "donut.pdf",
+      "page": 7,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "8\nG. Kim et al.\nnested groups and hierarchies such as items>item>{name, count, price}) in the\ninformation. See Figure 1 for more details.\nTicket. This is a public benchmark dataset [12] that consists of 1.5K train and\n0.4K test Chinese train ticket images. We split 10% of the train set as a validation\nset. There are 8 fields which are ticket number, starting station, train number,\nand so on. The structure of information is simple and all keys are guaranteed to",
+      "source": "donut.pdf",
+      "page": 8,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "appear only once and the location of each field is fixed.\nBusiness Card (In-Service Data). This dataset is from our active products that\nare currently deployed. The dataset consists of 20K train, 0.3K valid, 0.3K test\nJapanese business cards. The number of fields is 11, including name, company,\naddress, and so on. The structure of information is similar to the Ticket dataset.\nReceipt (In-Service Data). This dataset is also from one of our real products.",
+      "source": "donut.pdf",
+      "page": 8,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "The dataset consists of 40K train, 1K valid, 1K test Korean receipt images.\nThe number of unique field is 81, which includes store information, payment\ninformation, price information, and so on. Each sample has complex structures\ncompared to the aforementioned datasets. Due to industrial policies, not all\nsamples can publicly be available. Some real-like high-quality samples are shown\nin Figure 5 and in the supplementary material.\nDocument Visual Question Answering. To validate the further capacity of",
+      "source": "donut.pdf",
+      "page": 8,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "the model, we conduct a document visual question answering task (DocVQA). In\nthis task, a document image and question pair is given and the model predicts the\nanswer for the question by capturing both visual and textual information within\nthe image. We make the decoder generate the answer by setting the question as\na starting prompt to keep the uniformity of the method (See Figure 3).\nDocVQA. The dataset is from Document Visual Question Answering competi-",
+      "source": "donut.pdf",
+      "page": 8,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "tion4 and consists of 50K questions defined on more than 12K documents [44].\nThere are 40K train, 5K valid, and 5K test questions. The evaluation metric is\nANLS (Average Normalized Levenshtein Similarity) which is an edit-distance-\nbased metric. The score on the test set is measured via the evaluation site.\n3.2\nSetups\nWe use Swin-B [40] as a visual encoder of Donut with slight modification.\nWe set the layer numbers and window size as {2, 2, 14, 2} and 10. In further",
+      "source": "donut.pdf",
+      "page": 8,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "consideration of the speed-accuracy trade-off, we use the first four layers of BART\nas a decoder. As explained in Section 2.3, we train the multi-lingual Donut using\nthe 2M synthetic and 11M IIT-CDIP scanned document images. We pre-train the\nmodel for 200K steps with 64 A100 GPUs and a mini-batch size of 196. We use\nAdam [30] optimizer, the learning rate is scheduled and the initial rate is selected\n4https://rrc.cvc.uab.es/?ch=17.",
+      "source": "donut.pdf",
+      "page": 8,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "OCR-free Document Understanding Transformer\n9\nTable 1. Classification results on the RVL-CDIP dataset. Donut achieves\nstate-of-the-are performance with reasonable speed and model size efficiency. Donut\nis a general purpose backbone but does not rely on OCR while other recent backbones\n(e.g., LayoutLM) do. †# parameters for OCR should be considered for non-E2E models\nOCR #Params Time (ms) Accuracy (%)\nBERT\n✓\n110M + α†\n1392\n89.81\nRoBERTa\n✓\n125M + α†\n1392\n90.06\nLayoutLM\n✓\n113M + α†\n1396\n91.78",
+      "source": "donut.pdf",
+      "page": 9,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "1392\n90.06\nLayoutLM\n✓\n113M + α†\n1396\n91.78\nLayoutLM (w/ image)\n✓\n160M + α†\n1426\n94.42\nLayoutLMv2\n✓\n200M + α†\n1489\n95.25\nDonut (Proposed)\n143M\n752\n95.30\nfrom 1e-5 to 1e-4. The input resolution is set to 2560×1920 and a max length\nin the decoder is set to 1536. All fine-tuning results are achieved by starting\nfrom the pre-trained multi-lingual model. Some hyperparameters are adjusted\nat fine-tuning and in ablation studies. We use 960×1280 for Train Tickets and",
+      "source": "donut.pdf",
+      "page": 9,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "Business Card parsing tasks. We fine-tune the model while monitoring the edit\ndistance over token sequences. The speed of Donut is measured on a P40 GPU,\nwhich is much slower than A100. For the OCR based baselines, states-of-the-art\nOCR engines are used, including MS OCR API used in [64] and CLOVA OCR\nAPI5 used in [24,23]. An analysis on OCR engines is available in Section 3.4.\nMore details of OCR and training setups are available in Appendix A.1 and A.5.\n3.3\nExperimental Results",
+      "source": "donut.pdf",
+      "page": 9,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "3.3\nExperimental Results\nDocument Classification. The results are shown in Table 1. Without re-\nlying on any other resource (e.g., off-the-shelf OCR engine), Donut shows a\nstate-of-the-art performance among the general-purpose VDU models such as\nLayoutLM [65] and LayoutLMv2 [64]. In particular, Donut surpasses the Lay-\noutLMv2 accuracy reported in [64], while using fewer parameters with the 2x\nfaster speed. Note that the OCR-based models must consider additional model",
+      "source": "donut.pdf",
+      "page": 9,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "parameters and speed for the entire OCR framework, which is not small in gen-\neral. For example, a recent advanced OCR-based model [4,3] requires more than\n80M parameters. Also, training and maintaining the OCR-based systems are\ncostly [23], leading to needs for the Donut-like end-to-end approach.\nDocument Information Extraction. Table 2 shows the results on the four\ndifferent document IE tasks. The first group uses a conventional BIO-tagging-",
+      "source": "donut.pdf",
+      "page": 9,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "based IE approach [22]. We follows the conventions in IE [65,18]. OCR extracts\ntexts and bounding boxes from the image, and then the serialization module sorts\nall texts with geometry information within the bounding box. The BIO-tagging-\nbased named entity recognition task performs token-level tag classification upon\n5https://clova.ai/ocr.",
+      "source": "donut.pdf",
+      "page": 9,
+      "char_count": 341,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "10\nG. Kim et al.\nTable 2. Performances on various document IE tasks. The field-level F1 scores\nand tree-edit-distance-based accuracies are reported. Donut shows the best accuracies\nfor all domains with significantly faster inference speed. †Parameters for vocabulary\nare omitted for fair comparisons among multi-lingual models. ‡# parameters for OCR\nshould be considered. ∗Official multi-lingual extension models are used\nCORD [45]\nTicket [12]\nBusiness Card\nReceipt\nOCR #Params Time (s) F1\nAcc. Time (s) F1",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "Receipt\nOCR #Params Time (s) F1\nAcc. Time (s) F1\nAcc. Time (s) F1\nAcc. Time (s) F1\nAcc.\nBERT∗[22]\n✓\n86†\nM + α‡\n1.6\n73.0 65.5\n1.7\n74.3 82.4\n1.5\n40.8 72.1\n2.5\n70.3 54.1\nBROS [18]\n✓\n86†\nM + α‡\n1.7\n74.7 70.0\nLayoutLM [65]\n✓\n89†\nM + α‡\n1.7\n78.4 81.3\nLayoutLMv2∗[64,66]\n✓\n179†\nM + α‡\n1.7\n78.9 82.4\n1.8\n87.2 90.1\n1.6\n52.2 83.0\n2.6\n72.9 78.0\nDonut\n143†\nM\n1.2\n84.1 90.9\n0.6\n94.1 98.7\n1.4\n57.8 84.4\n1.9\n78.6 88.6\nSPADE∗[25]\n✓\n93†\nM + α‡\n4.0\n74.0 75.8\n4.5\n14.9 29.4\n4.3\n32.3 51.3\n7.3\n64.1 53.2\nWYVERN∗[21]\n✓\n106†\nM + α‡",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "32.3 51.3\n7.3\n64.1 53.2\nWYVERN∗[21]\n✓\n106†\nM + α‡\n1.2\n43.3 46.9\n1.5\n41.8 54.8\n1.7\n29.9 51.5\n3.4\n71.5 82.9\nthe ordered texts to generate a structured form. We test three general-purpose\nVDU backbones, BERT [8], BROS [18], LayoutLM [65], and LayoutLMv2 [64,66].\nWe also test two recently proposed IE models, SPADE [24] and WYVERN [23].\nSPADE is a graph-based IE method that predicts relations between bounding\nboxes. WYVERN is an Transformer encoder-decoder model that directly gen-",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "erates entities with structure given OCR outputs. WYVERN is different from\nDonut in that it takes the OCR output as its inputs.\nFor all domains, including public and private in-service datasets, Donut shows\nthe best scores among the comparing models. By measuring both F1 and TED-\nbased accuracy, we observe not only Donut can extract key information but\nalso predict complex structures among the field information. We observe that\na large input resolution gives robust accuracies but makes the model slower.",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "For example, the performance on the CORD with 1280×960 was 0.7 sec./image\nand 91.1 accuracy. But, the large resolution showed better performances on the\nlow-resource situation. The detailed analyses are in Section 3.4. Unlike other\nbaselines, Donut shows stable performance regardless of the size of datasets and\ncomplexity of the tasks (See Figure 5). This is a significant impact as the target\ntasks are already actively used in industries.\nDocument Visual Question Answering. Table 3 shows the results on the",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "DocVQA dataset. The first group is the general-purposed VDU backbones whose\nscores are from the LayoutLMv2 paper [64]. We measure the running time with\nMS OCR API used in [64]. The model in the third group is a DocVQA-specific-\npurposed fine-tuning model of LayoutLMv2, whose inference results are available\nin the official leader-board.6\nAs can be seen, Donut achieves competitive scores with the baselines that\nare dependent on external OCR engines. Especially, Donut shows that it is robust",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "to the handwritten documents, which is known to be challenging to process. In\nthe conventional approach, adding a post-processing module that corrects OCR\n6https://rrc.cvc.uab.es/?ch=17&com=evaluation&task=1.",
+      "source": "donut.pdf",
+      "page": 10,
+      "char_count": 208,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "OCR-free Document Understanding Transformer\n11\nTable 3. Average Normalized Levenshtein Similarity (ANLS) scores on\nDocVQA. Donut shows a promising result without OCR. ∗Donut shows a high\nANLS score on the handwritten documents which are known to be challenging due to\nthe difficulty of handwriting OCR (See Figure 6). †Token embeddings for English is\ncounted for a fair comparison. ‡# parameters for OCR should be considered\nFine-tuning set\nOCR #Params† Time (ms) ANLS\ntest set\nANLS∗\nhandwritten\nBERT [64]",
+      "source": "donut.pdf",
+      "page": 11,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "test set\nANLS∗\nhandwritten\nBERT [64]\ntrain set\n✓\n110M + α‡\n1517\n63.5\nn/a\nLayoutLM[65]\ntrain set\n✓\n113M + α‡\n1519\n69.8\nn/a\nLayoutLMv2[64]\ntrain set\n✓\n200M + α‡\n1610\n78.1\nn/a\nDonut\ntrain set\n176M\n782\n67.5\n72.1\nLayoutLMv2-Large-QG[64] train + dev + QG\n✓\n390M + α‡\n1698\n86.7\n67.3\nQ: What is the name of the passenger? \nAnswer: DR. William J. Darby\nDonut: DR. William J. Darby\nLayoutLMv2-Large-QG: DR. William J. Jarry\nQ: What is the Publication No.? \nAnswer: 540",
+      "source": "donut.pdf",
+      "page": 11,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "Q: What is the Publication No.? \nAnswer: 540\nDonut: 943  (another number in the image is extracted)\nLayoutLMv2-Large-QG: 540\nQ: What is the phone number given?\nAnswer: 336-723-6100\nDonut: 336-723-6100\nLayoutLMv2-Large-QG: 336-723- 4100\nFig. 6. Examples of Donut and LayoutLMv2 outputs on DocVQA. The OCR-\nerrors make a performance upper-bound of the OCR-dependent baselines, e.g., Lay-\noutLMv2 (left and middle examples). Due to the input resolution constraint of the",
+      "source": "donut.pdf",
+      "page": 11,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "end-to-end pipeline, Donut miss some tiny texts in large-scale images (right example)\nbut this could be mitigated by scaling the input image size (See Section 3.4)\nerrors is an option to strengthen the pipeline [51,50,10] or adopting an encoder-\ndecoder architecture on the OCR outputs can mitigate the problems of OCR\nerrors [23]. However, this kind of approaches tend to increase the entire system\nsize and maintenance cost. Donut shows a completely different direction. Some",
+      "source": "donut.pdf",
+      "page": 11,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "inference results are shown in Figure 6. The samples show the current strengths\nof Donut as well as the left challenges in the Donut-like end-to-end approach.\nFurther analysis and ablation is available in Section 3.4.\n3.4\nFurther Studies\nIn this section, we study several elements of understanding Donut. We show some\nstriking characteristics of Donut through the experiments and visualization.\nOn Pre-training Strategy. We test several pre-training tasks for VDUs. Fig-",
+      "source": "donut.pdf",
+      "page": 11,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "ure 7(a) shows that the Donut pre-training task (i.e., text reading) is the most",
+      "source": "donut.pdf",
+      "page": 11,
+      "char_count": 80,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "12\nG. Kim et al.\nNo pretraining\nClassification\nCaptioning\nRead (SynthDoG)\nRead (CDIP)\nRead (Both)\nResNet-152EffNetv2\nViT-B\nSwin-B 18Swin-B 14\n \n640x640960x960\n1280x960\n2560×1920\n30\n50\n70\n90\nAccuracy\n0\n20\n40\n60\n80\nDocVQA score\n(a) Pretrain Strategy                                          (b) Backbone                                         (c) Resolution\nCORD (Accuracy)\nDocVQA Score (ANLS)\nFig. 7. Analysis on (a) pre-training strategies, (b) image backbones, and (c)",
+      "source": "donut.pdf",
+      "page": 12,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "input resolutions. Performances on CORD [45] and DocVQA [44] are shown\nsimple yet effective approach. Other tasks that impose a general knowledge of\nimages and texts on models, e.g., image captioning, show little gains in the\nfine-tuning tasks. For the text reading tasks, we verify three options, SynthDoG\nonly, IIT-CDIP only, and both. Note that synthetic images were enough for the\ndocument IE task in our analysis. However, in the DocVQA task, it was impor-",
+      "source": "donut.pdf",
+      "page": 12,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "tant to see the real images. This is probably because the image distributions of\nIIT-CDIP and DocVQA are similar [44].\nOn Encoder Backbone. Here, we study popular image classification back-\nbones that show superior performance in traditional vision tasks to measure\ntheir performance in VDU tasks. The Figure 7(b) shows the comparison results.\nWe use all the backbones pre-trained on ImageNet [7]. EfficientNetV2 [55] and\nSwin Transformer [40] outperform others on both datasets. We argue that this is",
+      "source": "donut.pdf",
+      "page": 12,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "due to the high expressiveness of the backbones, which were shown by the strik-\ning scores on several downstream tasks as well. We choose Swin Transformer\ndue to the high scalability of the Transformer-based architecture and higher\nperformance over the EfficientNetV2’s.\nOn Input Resolution. The Figure 7(c) shows the performance of Donut grows\nrapidly as we set a larger input size. This gets clearer in the DocVQA where the\nimages are larger with many tiny texts. But, increasing the size for a precise",
+      "source": "donut.pdf",
+      "page": 12,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "result incurs bigger computational costs. Using an efficient attention mecha-\nnism [60] may avoid the matter in architectural design, but we use the original\nTransformer [58] as we aim to present a simpler architecture in this work.\nOn Text Localization. To see how the model behaves, we visualize the corss\nattention maps of the decoder given an unseen document image. As can be seen\nin Figure 8, the model shows meaningful results that can be used as an auxiliary",
+      "source": "donut.pdf",
+      "page": 12,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "indicator. The model attends to a desired location in the given image.\nOn OCR System. We test four widely-used public OCR engines (See Fig-\nure 9). The results show that the performances (i.e., speed and accuracy) of the\nconventional OCR-based methods heavily rely on the off-the-shelf OCR engine.\nMore details of the OCR engines are available in Appendix A.1.",
+      "source": "donut.pdf",
+      "page": 12,
+      "char_count": 360,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "OCR-free Document Understanding Transformer\n13\nK\nCho\nco\nMo\nchi\nyo\nto\n300\n2-\nFig. 8. Visualization of cross-attention maps in the decoder and its applica-\ntion to text localization. Donut is trained without any supervision for the localiza-\ntion. The Donut decoder attends proper text regions to process the image\nLayoutLMv2\nBERT\nDonut\n40\n50\n60\n70\n80\n90\nAccuracy\n1280   2560\nEasyOCR\nPaddleOCR\nMSAzure\nClovaOCR\nLayoutLMv2\nBERT\nDonut\n0.5\n1.0\n1.5\ntime(s/image)\n1280   2560\nEasyOCR\nPaddleOCR\nMSAzure\nClovaOCR\n80\n160",
+      "source": "donut.pdf",
+      "page": 13,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "EasyOCR\nPaddleOCR\nMSAzure\nClovaOCR\n80\n160\n400\n800\nnumber of samples\n50\n60\n70\n80\n90\nAccuracy\nDonut, 2560\nDonut, 1280\nLayoutLMv2\nBERT\nFig. 9. Comparison of BERT, LayoutLMv2 and Donut on CORD. The perfor-\nmances (i.e., speed and accuracy) of the OCR-based models extremely varies depending\non what OCR engine is used (left and center). Donut shows robust performances even\nin a low resourced situation showing the higher score only with 80 samples (right)",
+      "source": "donut.pdf",
+      "page": 13,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "On Low Resourced Situation. We evaluate the models by limiting the size\nof training set of CORD [45]. The performance curves are shown in the right\nFigure 9. Donut shows a robust performances. We also observe that a larger\ninput resolution, 2560×1920, shows more robust scores on the extremely low-\nresourced situation, e.g., 80 samples. As can be seen, Donut outperformed the\nLayoutLMv2 accuracy only with 10% of the data, which is only 80 samples.\n4\nRelated Work\n4.1\nOptical Character Recognition",
+      "source": "donut.pdf",
+      "page": 13,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "4\nRelated Work\n4.1\nOptical Character Recognition\nRecent trends of OCR study are to utilize deep learning models in its two sub-\nsteps: 1) text areas are predicted by a detector; 2) a text recognizer then rec-\nognizes all characters in the cropped image instances. Both are trained with a\nlarge-scale datasets including the synthetic images [26,13] and real images [28,47].\nEarly detection methods used CNNs to predict local segments and apply",
+      "source": "donut.pdf",
+      "page": 13,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "heuristics to merge them [19,69]. Later, region proposal and bounding box regres-\nsion based methods were proposed [36]. Recently, focusing on the homogeneity\nand locality of texts, component-level approaches were proposed [56,4].\nMany modern text recognizer share a similar approach [37,53,52,59] that can\nbe interpreted into a combination of several common deep modules [3]. Given the\ncropped text instance image, most recent text recognition models apply CNNs",
+      "source": "donut.pdf",
+      "page": 13,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "to encode the image into a feature space. A decoder is then applied to extract\ncharacters from the features.",
+      "source": "donut.pdf",
+      "page": 13,
+      "char_count": 108,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "14\nG. Kim et al.\n4.2\nVisual Document Understanding\nClassification of the document type is a core step towards automated document\nprocessing. Early methods treated the problem as a general image classification,\nso various CNNs were tested [27,1,15]. Recently, with BERT [8], the methods\nbased on a combination of CV and NLP were widely proposed [65,34]. As a\ncommon approach, most methods rely on an OCR engine to extract texts; then",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 432,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "the OCR-ed texts are serialized into a token sequence; finally they are fed into\na language model (e.g., BERT) with some visual features if available. Although\nthe idea is simple, the methods showed remarkable performance improvements\nand became a main trend in recent years [64,35,2].\nDocument IE covers a wide range of real applications [22,42], for example,\ngiven a bunch of raw receipt images, a document parser can automate a major",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "part of receipt digitization, which has been required numerous human-labors\nin the traditional pipeline. Most recent models [25,23] take the output of OCR\nas their input. The OCR results are then converted to the final parse through\nseveral processes, which are often complex. Despite the needs in the industry,\nonly a few works have been attempted on end-to-end parsing. Recently, some\nworks are proposed to simplify the complex parsing processes [25,23]. But they",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "still rely on a separate OCR to extract text information.\nVisual QA on documents seeks to answer questions asked on document im-\nages. This task requires reasoning over visual elements of the image and general\nknowledge to infer the correct answer [44]. Currently, most state-of-the-arts fol-\nlow a simple pipeline consisting of applying OCR followed by BERT-like trans-\nformers [65,64]. However, the methods work in an extractive manner by their",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "nature. Hence, there are some concerns for the question whose answer does not\nappear in the given image [57]. To tackle the concerns, generation-based methods\nhave also been proposed [48].\n5\nConclusions\nIn this work, we propose a novel end-to-end framework for visual document un-\nderstanding. The proposed method, Donut, directly maps an input document\nimage into a desired structured output. Unlike conventional methods, Donut\ndoes not depend on OCR and can easily be trained in an end-to-end fashion. We",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "also propose a synthetic document image generator, SynthDoG, to alleviate the\ndependency on large-scale real document images and we show that Donut can\nbe easily extended to a multi-lingual setting. We gradually trained the model\nfrom how to read to how to understand through the proposed training pipeline.\nOur extensive experiments and analysis on both external public benchmarks\nand private internal service datasets show higher performance and better cost-",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "effectiveness of the proposed method. This is a significant impact as the target\ntasks are already practically used in industries. Enhancing the pre-training ob-\njective could be a future work direction. We believe our work can easily be\nextended to other domains/tasks regarding document understanding.",
+      "source": "donut.pdf",
+      "page": 14,
+      "char_count": 303,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "OCR-free Document Understanding Transformer\n15\nReferences\n1. Afzal,\nM.Z.,\nCapobianco,\nS.,\nMalik,\nM.I.,\nMarinai,\nS.,\nBreuel,\nT.M.,\nDengel,\nA.,\nLiwicki,\nM.:\nDeepdocclassifier:\nDocument\nclassification\nwith\ndeep convolutional neural network. In: 2015 13th International Conference\non\nDocument\nAnalysis\nand\nRecognition\n(ICDAR).\npp.\n1111–1115\n(2015).\nhttps://doi.org/10.1109/ICDAR.2015.7333933 1, 4, 14\n2. Appalaraju, S., Jasani, B., Kota, B.U., Xie, Y., Manmatha, R.: Docformer: End-to-",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "end transformer for document understanding. In: Proceedings of the IEEE/CVF\nInternational Conference on Computer Vision (ICCV). pp. 993–1003 (October\n2021) 14\n3. Baek, J., Kim, G., Lee, J., Park, S., Han, D., Yun, S., Oh, S.J., Lee, H.: What is\nwrong with scene text recognition model comparisons? dataset and model analysis.\nIn: Proceedings of the IEEE/CVF International Conference on Computer Vision\n(ICCV) (October 2019) 2, 4, 9, 13, 22",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 439,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "(ICCV) (October 2019) 2, 4, 9, 13, 22\n4. Baek, Y., Lee, B., Han, D., Yun, S., Lee, H.: Character region awareness for text\ndetection. In: 2019 IEEE/CVF Conference on Computer Vision and Pattern Recog-\nnition (CVPR). pp. 9357–9366 (2019). https://doi.org/10.1109/CVPR.2019.00959\n2, 4, 9, 13, 22\n5. Brown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan, J.D., Dhariwal, P., Nee-\nlakantan, A., Shyam, P., Sastry, G., Askell, A., Agarwal, S., Herbert-Voss, A.,",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "Krueger, G., Henighan, T., Child, R., Ramesh, A., Ziegler, D., Wu, J., Winter, C.,\nHesse, C., Chen, M., Sigler, E., Litwin, M., Gray, S., Chess, B., Clark, J., Berner,\nC., McCandlish, S., Radford, A., Sutskever, I., Amodei, D.: Language models are\nfew-shot learners. In: Larochelle, H., Ranzato, M., Hadsell, R., Balcan, M.F., Lin,\nH. (eds.) Advances in Neural Information Processing Systems. vol. 33, pp. 1877–\n1901. Curran Associates, Inc. (2020), https://proceedings.neurips.cc/paper/",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "2020/file/1457c0d6bfcb4967418bfb8ac142f64a-Paper.pdf 5\n6. Davis, B., Morse, B., Cohen, S., Price, B., Tensmeyer, C.: Deep visual template-free\nform parsing. In: 2019 International Conference on Document Analysis and Recog-\nnition (ICDAR). pp. 134–141 (2019). https://doi.org/10.1109/ICDAR.2019.00030\n3\n7. Deng, J., Dong, W., Socher, R., Li, L.J., Li, K., Fei-Fei, L.: Imagenet: A large-\nscale hierarchical image database. In: 2009 IEEE conference on computer vision",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "and pattern recognition. pp. 248–255. Ieee (2009) 6, 12, 23\n8. Devlin, J., Chang, M.W., Lee, K., Toutanova, K.: BERT: Pre-training of deep\nbidirectional transformers for language understanding. In: Proceedings of the 2019\nConference of the North American Chapter of the Association for Computational\nLinguistics: Human Language Technologies, Volume 1 (Long and Short Papers).\npp. 4171–4186. Association for Computational Linguistics, Minneapolis, Minnesota",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "(Jun 2019). https://doi.org/10.18653/v1/N19-1423, https://aclanthology.org/\nN19-1423 3, 4, 10, 14, 27, 29\n9. Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner,\nT., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., Houlsby,\nN.: An image is worth 16x16 words: Transformers for image recognition at scale.\nIn: 9th International Conference on Learning Representations, ICLR 2021, Virtual\nEvent, Austria, May 3-7, 2021. OpenReview.net (2021), https://openreview.net/",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "forum?id=YicbFdNTTy 3, 4\n10. Duong, Q., H¨am¨al¨ainen, M., Hengchen, S.: An unsupervised method for OCR\npost-correction and spelling normalisation for Finnish. In: Proceedings of the",
+      "source": "donut.pdf",
+      "page": 15,
+      "char_count": 182,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "16\nG. Kim et al.\n23rd Nordic Conference on Computational Linguistics (NoDaLiDa). pp. 240–248.\nLink¨oping University Electronic Press, Sweden, Reykjavik, Iceland (Online) (May\n31–2 Jun 2021), https://aclanthology.org/2021.nodalida-main.24 3, 11\n11. Friedl,\nJ.E.F.:\nMastering\nRegular\nExpressions.\nO’Reilly,\nBeijing,\n3\nedn.\n(2006),\nhttps://www.safaribooksonline.com/library/view/\nmastering-regular-expressions/0596528124/ 5\n12. Guo, H., Qin, X., Liu, J., Han, J., Liu, J., Ding, E.: Eaten: Entity-aware at-",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "tention for single shot visual text extraction. In: 2019 International Confer-\nence on Document Analysis and Recognition (ICDAR). pp. 254–259 (2019).\nhttps://doi.org/10.1109/ICDAR.2019.00049 4, 8, 10, 22, 24, 25, 26\n13. Gupta, A., Vedaldi, A., Zisserman, A.: Synthetic data for text localisation in nat-\nural images. In: Proceedings of the IEEE Conference on Computer Vision and\nPattern Recognition (CVPR) (June 2016) 6, 13\n14. Hammami, M., H´eroux, P., Adam, S., d’Andecy, V.P.: One-shot field spotting",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "on colored forms using subgraph isomorphism. In: 2015 13th International Con-\nference on Document Analysis and Recognition (ICDAR). pp. 586–590 (2015).\nhttps://doi.org/10.1109/ICDAR.2015.7333829 3\n15. Harley, A.W., Ufkes, A., Derpanis, K.G.: Evaluation of deep convolutional nets\nfor document image classification and retrieval. In: 2015 13th International Con-\nference on Document Analysis and Recognition (ICDAR). pp. 991–995 (2015).\nhttps://doi.org/10.1109/ICDAR.2015.7333910 4, 14",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "https://doi.org/10.1109/ICDAR.2015.7333910 4, 14\n16. Harley, A.W., Ufkes, A., Derpanis, K.G.: Evaluation of deep convolutional nets\nfor document image classification and retrieval. In: 2015 13th International Con-\nference on Document Analysis and Recognition (ICDAR). pp. 991–995 (2015).\nhttps://doi.org/10.1109/ICDAR.2015.7333910 6\n17. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition.\nIn: 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "pp. 770–778 (2016). https://doi.org/10.1109/CVPR.2016.90 4\n18. Hong, T., Kim, D., Ji, M., Hwang, W., Nam, D., Park, S.: Bros: A pre-trained\nlanguage model focusing on text and layout for better key information extrac-\ntion from documents. Proceedings of the AAAI Conference on Artificial Intelli-\ngence 36(10), 10767–10775 (Jun 2022). https://doi.org/10.1609/aaai.v36i10.21322,\nhttps://ojs.aaai.org/index.php/AAAI/article/view/21322 2, 3, 4, 7, 9, 10, 22,\n27",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "27\n19. Huang, W., Qiao, Y., Tang, X.: Robust scene text detection with convolution\nneural network induced mser trees. In: Fleet, D., Pajdla, T., Schiele, B., Tuytelaars,\nT. (eds.) Computer Vision – ECCV 2014. pp. 497–511. Springer International\nPublishing, Cham (2014) 13\n20. Huang, Z., Chen, K., He, J., Bai, X., Karatzas, D., Lu, S., Jawahar, C.V.: Ic-\ndar2019 competition on scanned receipt ocr and information extraction. In: 2019\nInternational Conference on Document Analysis and Recognition (ICDAR). pp.",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "1516–1520 (2019). https://doi.org/10.1109/ICDAR.2019.00244 3\n21. Hwang, A., Frey, W.R., McKeown, K.: Towards augmenting lexical resources for\nslang and African American English. In: Proceedings of the 7th Workshop on\nNLP for Similar Languages, Varieties and Dialects. pp. 160–172. International\nCommittee on Computational Linguistics (ICCL), Barcelona, Spain (Online) (Dec\n2020), https://aclanthology.org/2020.vardial-1.15 10",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 425,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "22. Hwang, W., Kim, S., Yim, J., Seo, M., Park, S., Park, S., Lee, J., Lee, B., Lee, H.:\nPost-ocr parsing: building simple and robust parser via bio tagging. In: Workshop\non Document Intelligence at NeurIPS 2019 (2019) 1, 2, 4, 7, 9, 10, 14, 28, 29",
+      "source": "donut.pdf",
+      "page": 16,
+      "char_count": 248,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "OCR-free Document Understanding Transformer\n17\n23. Hwang, W., Lee, H., Yim, J., Kim, G., Seo, M.: Cost-effective end-to-end infor-\nmation extraction for semi-structured document images. In: Proceedings of the\n2021 Conference on Empirical Methods in Natural Language Processing. pp. 3375–\n3383. Association for Computational Linguistics, Online and Punta Cana, Do-\nminican Republic (Nov 2021). https://doi.org/10.18653/v1/2021.emnlp-main.271,",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 441,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "https://aclanthology.org/2021.emnlp-main.271 2, 4, 7, 9, 10, 11, 14, 27\n24. Hwang,\nW.,\nYim,\nJ.,\nPark,\nS.,\nYang,\nS.,\nSeo,\nM.:\nSpatial\ndepen-\ndency\nparsing\nfor\nsemi-structured\ndocument\ninformation\nextraction.\nIn:\nFindings\nof\nthe\nAssociation\nfor\nComputational\nLinguistics:\nACL-IJCNLP\n2021. pp. 330–343. Association for Computational Linguistics, Online (Aug\n2021). https://doi.org/10.18653/v1/2021.findings-acl.28, https://aclanthology.\norg/2021.findings-acl.28 2, 4, 9, 10\n25. Hwang,\nW.,\nYim,\nJ.,\nPark,\nS.,\nYang,",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "25. Hwang,\nW.,\nYim,\nJ.,\nPark,\nS.,\nYang,\nS.,\nSeo,\nM.:\nSpatial\ndepen-\ndency\nparsing\nfor\nsemi-structured\ndocument\ninformation\nextraction.\nIn:\nFindings\nof\nthe\nAssociation\nfor\nComputational\nLinguistics:\nACL-IJCNLP\n2021. pp. 330–343. Association for Computational Linguistics, Online (Aug\n2021). https://doi.org/10.18653/v1/2021.findings-acl.28, https://aclanthology.\norg/2021.findings-acl.28 3, 10, 14, 27\n26. Jaderberg, M., Simonyan, K., Vedaldi, A., Zisserman, A.: Synthetic data and ar-",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "tificial neural networks for natural scene text recognition. In: Workshop on Deep\nLearning, NIPS (2014) 13\n27. Kang, L., Kumar, J., Ye, P., Li, Y., Doermann, D.S.: Convolutional neural networks\nfor document image classification. 2014 22nd International Conference on Pattern\nRecognition pp. 3168–3172 (2014) 1, 4, 14\n28. Karatzas, D., Gomez-Bigorda, L., Nicolaou, A., Ghosh, S., Bagdanov, A., Iwamura,\nM., Matas, J., Neumann, L., Chandrasekhar, V.R., Lu, S., Shafait, F., Uchida,",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "S., Valveny, E.: Icdar 2015 competition on robust reading. In: 2015 13th Interna-\ntional Conference on Document Analysis and Recognition (ICDAR). pp. 1156–1160\n(2015). https://doi.org/10.1109/ICDAR.2015.7333942 13\n29. Kim, W., Son, B., Kim, I.: Vilt: Vision-and-language transformer without con-\nvolution or region supervision. In: Meila, M., Zhang, T. (eds.) Proceedings of\nthe 38th International Conference on Machine Learning. Proceedings of Ma-",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "chine Learning Research, vol. 139, pp. 5583–5594. PMLR (18–24 Jul 2021),\nhttp://proceedings.mlr.press/v139/kim21k.html 3\n30. Kingma, D.P., Ba, J.: Adam: A method for stochastic optimization. In: Bengio,\nY., LeCun, Y. (eds.) 3rd International Conference on Learning Representations,\nICLR 2015, San Diego, CA, USA, May 7-9, 2015, Conference Track Proceedings\n(2015), http://arxiv.org/abs/1412.6980 8, 25\n31. Klaiman, S., Lehne, M.: Docreader: Bounding-box free training of a document",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "information extraction model. In: Document Analysis and Recognition – IC-\nDAR 2021: 16th International Conference, Lausanne, Switzerland, September\n5–10, 2021, Proceedings, Part I. p. 451–465. Springer-Verlag, Berlin, Heidel-\nberg (2021). https://doi.org/10.1007/978-3-030-86549-8 29, https://doi.org/10.\n1007/978-3-030-86549-8_29 4\n32. Lewis, D., Agam, G., Argamon, S., Frieder, O., Grossman, D., Heard, J.: Building\na test collection for complex document information processing. In: Proceedings of",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "the 29th Annual International ACM SIGIR Conference on Research and Develop-\nment in Information Retrieval. p. 665–666. SIGIR ’06, Association for Computing\nMachinery, New York, NY, USA (2006). https://doi.org/10.1145/1148170.1148307,\nhttps://doi.org/10.1145/1148170.1148307 4, 5",
+      "source": "donut.pdf",
+      "page": 17,
+      "char_count": 278,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "18\nG. Kim et al.\n33. Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoy-\nanov, V., Zettlemoyer, L.: BART: Denoising sequence-to-sequence pre-training\nfor natural language generation, translation, and comprehension. In: Proceed-\nings of the 58th Annual Meeting of the Association for Computational Lin-\nguistics. pp. 7871–7880. Association for Computational Linguistics, Online (Jul\n2020). https://doi.org/10.18653/v1/2020.acl-main.703, https://aclanthology.\norg/2020.acl-main.703 5",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "org/2020.acl-main.703 5\n34. Li, C., Bi, B., Yan, M., Wang, W., Huang, S., Huang, F., Si, L.: Struc-\nturalLM: Structural pre-training for form understanding. In: Proceedings of the\n59th Annual Meeting of the Association for Computational Linguistics and\nthe 11th International Joint Conference on Natural Language Processing (Vol-\nume 1: Long Papers). pp. 6309–6318. Association for Computational Linguis-\ntics, Online (Aug 2021). https://doi.org/10.18653/v1/2021.acl-long.493, https:",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "//aclanthology.org/2021.acl-long.493 14\n35. Li, P., Gu, J., Kuen, J., Morariu, V.I., Zhao, H., Jain, R., Manjunatha, V., Liu,\nH.: Selfdoc: Self-supervised document representation learning. In: 2021 IEEE/CVF\nConference on Computer Vision and Pattern Recognition (CVPR). pp. 5648–5656\n(2021). https://doi.org/10.1109/CVPR46437.2021.00560 14\n36. Liao, M., Shi, B., Bai, X., Wang, X., Liu, W.: Textboxes: A fast text detector with\na single deep neural network. Proceedings of the AAAI Conference on Artificial",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "Intelligence 31(1) (Feb 2017). https://doi.org/10.1609/aaai.v31i1.11196, https:\n//ojs.aaai.org/index.php/AAAI/article/view/11196 13\n37. Liu, W., Chen, C., Wong, K.Y.K., Su, Z., Han, J.: Star-net: A spatial attention\nresidue network for scene text recognition. In: Richard C. Wilson, E.R.H., Smith,\nW.A.P. (eds.) Proceedings of the British Machine Vision Conference (BMVC).\npp. 43.1–43.13. BMVA Press (September 2016). https://doi.org/10.5244/C.30.43,\nhttps://dx.doi.org/10.5244/C.30.43 13",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "https://dx.doi.org/10.5244/C.30.43 13\n38. Liu, Y., Gu, J., Goyal, N., Li, X., Edunov, S., Ghazvininejad, M., Lewis, M.,\nZettlemoyer, L.: Multilingual denoising pre-training for neural machine translation.\nTransactions of the Association for Computational Linguistics 8, 726–742 (2020),\nhttps://aclanthology.org/2020.tacl-1.47 5\n39. Liu, Y., Chen, H., Shen, C., He, T., Jin, L., Wang, L.: Abcnet: Real-time scene text\nspotting with adaptive bezier-curve network. In: Proceedings of the IEEE/CVF",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "Conference on Computer Vision and Pattern Recognition (CVPR) (June 2020) 2\n40. Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., Guo, B.: Swin trans-\nformer: Hierarchical vision transformer using shifted windows. In: Proceedings of\nthe IEEE/CVF International Conference on Computer Vision (ICCV). pp. 10012–\n10022 (October 2021) 4, 8, 12\n41. Long, S., Yao, C.: Unrealtext: Synthesizing realistic scene text images from the\nunreal world. arXiv preprint arXiv:2003.10608 (2020) 6",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "42. Majumder, B.P., Potti, N., Tata, S., Wendt, J.B., Zhao, Q., Najork, M.: Rep-\nresentation learning for information extraction from form-like documents. In:\nProceedings of the 58th Annual Meeting of the Association for Computational\nLinguistics. pp. 6495–6504. Association for Computational Linguistics, Online\n(Jul 2020). https://doi.org/10.18653/v1/2020.acl-main.580, https://www.aclweb.\norg/anthology/2020.acl-main.580 1, 14",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 429,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "org/anthology/2020.acl-main.580 1, 14\n43. Majumder, B.P., Potti, N., Tata, S., Wendt, J.B., Zhao, Q., Najork, M.: Repre-\nsentation learning for information extraction from form-like documents. In: Pro-\nceedings of the 58th Annual Meeting of the Association for Computational Lin-\nguistics. pp. 6495–6504. Association for Computational Linguistics, Online (Jul",
+      "source": "donut.pdf",
+      "page": 18,
+      "char_count": 359,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "OCR-free Document Understanding Transformer\n19\n2020). https://doi.org/10.18653/v1/2020.acl-main.580, https://aclanthology.\norg/2020.acl-main.580 3\n44. Mathew, M., Karatzas, D., Jawahar, C.: Docvqa: A dataset for vqa on document\nimages. In: Proceedings of the IEEE/CVF Winter Conference on Applications of\nComputer Vision. pp. 2200–2209 (2021) 1, 8, 12, 14\n45. Park, S., Shin, S., Lee, B., Lee, J., Surh, J., Seo, M., Lee, H.: Cord: A consolidated",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "receipt dataset for post-ocr parsing. In: Workshop on Document Intelligence at\nNeurIPS 2019 (2019) 2, 7, 10, 12, 13, 22, 24, 26\n46. Peng, D., Wang, X., Liu, Y., Zhang, J., Huang, M., Lai, S., Zhu, S., Li, J., Lin,\nD., Shen, C., Jin, L.: SPTS: Single-Point Text Spotting. CoRR abs/2112.07917\n(2021), https://arxiv.org/abs/2112.07917 2\n47. Phan, T.Q., Shivakumara, P., Tian, S., Tan, C.L.: Recognizing text with per-\nspective distortion in natural scenes. In: Proceedings of the IEEE International",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "Conference on Computer Vision (ICCV) (December 2013) 13\n48. Powalski, R., Borchmann,  L., Jurkiewicz, D., Dwojak, T., Pietruszka, M., Pa lka,\nG.: Going full-tilt boogie on document understanding with text-image-layout trans-\nformer. In: Llad´os, J., Lopresti, D., Uchida, S. (eds.) Document Analysis and\nRecognition – ICDAR 2021. pp. 732–747. Springer International Publishing, Cham\n(2021) 14\n49. Riba, P., Dutta, A., Goldmann, L., Forn´es, A., Ramos, O., Llad´os, J.: Table de-",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 121,
+      "text": "tection in invoice documents by graph neural networks. In: 2019 International\nConference on Document Analysis and Recognition (ICDAR). pp. 122–127 (2019).\nhttps://doi.org/10.1109/ICDAR.2019.00028 3\n50. Rijhwani,\nS.,\nAnastasopoulos,\nA.,\nNeubig,\nG.:\nOCR\nPost\nCorrection\nfor\nEndangered\nLanguage\nTexts.\nIn:\nProceedings\nof\nthe\n2020\nConference\non\nEmpirical\nMethods\nin\nNatural\nLanguage\nProcessing\n(EMNLP).\npp.\n5931–5942.\nAssociation\nfor\nComputational\nLinguistics,\nOnline\n(Nov\n2020).",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 122,
+      "text": "for\nComputational\nLinguistics,\nOnline\n(Nov\n2020).\nhttps://doi.org/10.18653/v1/2020.emnlp-main.478, https://aclanthology.org/\n2020.emnlp-main.478 3, 11\n51. Schaefer, R., Neudecker, C.: A two-step approach for automatic OCR post-\ncorrection. In: Proceedings of the The 4th Joint SIGHUM Workshop on Com-\nputational Linguistics for Cultural Heritage, Social Sciences, Humanities and Lit-\nerature. pp. 52–57. International Committee on Computational Linguistics, Online",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 123,
+      "text": "(Dec 2020), https://aclanthology.org/2020.latechclfl-1.6 3, 11\n52. Shi, B., Bai, X., Yao, C.: An end-to-end trainable neural network for image-based\nsequence recognition and its application to scene text recognition. IEEE Transac-\ntions on Pattern Analysis and Machine Intelligence 39, 2298–2304 (2017) 13\n53. Shi, B., Wang, X., Lyu, P., Yao, C., Bai, X.: Robust scene text recog-\nnition\nwith\nautomatic\nrectification.\nIn:\n2016\nIEEE\nConference\non\nCom-\nputer\nVision\nand\nPattern\nRecognition\n(CVPR).\npp.\n4168–4176",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 124,
+      "text": "and\nPattern\nRecognition\n(CVPR).\npp.\n4168–4176\n(2016).\nhttps://doi.org/10.1109/CVPR.2016.452 13\n54. Taghva, K., Beckley, R., Coombs, J.: The effects of ocr error on the extraction of\nprivate information. In: Bunke, H., Spitz, A.L. (eds.) Document Analysis Systems\nVII. pp. 348–357. Springer Berlin Heidelberg, Berlin, Heidelberg (2006) 2\n55. Tan, M., Le, Q.: Efficientnetv2: Smaller models and faster training. In: Meila, M.,\nZhang, T. (eds.) Proceedings of the 38th International Conference on Machine",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 125,
+      "text": "Learning. Proceedings of Machine Learning Research, vol. 139, pp. 10096–10106.\nPMLR (18–24 Jul 2021), https://proceedings.mlr.press/v139/tan21a.html 12\n56. Tian, Z., Huang, W., He, T., He, P., Qiao, Y.: Detecting text in natural image with\nconnectionist text proposal network. In: Leibe, B., Matas, J., Sebe, N., Welling,",
+      "source": "donut.pdf",
+      "page": 19,
+      "char_count": 321,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 126,
+      "text": "20\nG. Kim et al.\nM. (eds.) Computer Vision – ECCV 2016. pp. 56–72. Springer International Pub-\nlishing, Cham (2016) 13\n57. Tito, R., Mathew, M., Jawahar, C.V., Valveny, E., Karatzas, D.: Icdar 2021 compe-\ntition on document visual question answering. In: Llad´os, J., Lopresti, D., Uchida,\nS. (eds.) Document Analysis and Recognition – ICDAR 2021. pp. 635–649. Springer\nInternational Publishing, Cham (2021) 1, 14\n58. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N.,",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 127,
+      "text": "Kaiser, L.u., Polosukhin, I.: Attention is all you need. In: Guyon, I., Luxburg,\nU.V., Bengio, S., Wallach, H., Fergus, R., Vishwanathan, S., Garnett, R.\n(eds.) Advances in Neural Information Processing Systems. vol. 30. Curran\nAssociates, Inc. (2017), https://proceedings.neurips.cc/paper/2017/file/\n3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf 4, 5, 12, 24, 27\n59. Wang, J., Hu, X.: Gated recurrent convolution neural network for ocr. In: Guyon,",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 128,
+      "text": "I., Luxburg, U.V., Bengio, S., Wallach, H., Fergus, R., Vishwanathan, S., Gar-\nnett, R. (eds.) Advances in Neural Information Processing Systems. vol. 30.\nCurran Associates, Inc. (2017), https://proceedings.neurips.cc/paper/2017/\nfile/c24cd76e1ce41366a4bbe8a49b02a028-Paper.pdf 13\n60. Wang, S., Li, B., Khabsa, M., Fang, H., Ma, H.: Linformer: Self-attention with\nlinear complexity. arXiv preprint arXiv:2006.04768 (2020) 12, 27\n61. Wightman,\nR.:\nPytorch\nimage\nmodels.\nhttps://github.com/rwightman/",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 129,
+      "text": "image\nmodels.\nhttps://github.com/rwightman/\npytorch-image-models (2019). https://doi.org/10.5281/zenodo.4414861 25\n62. Williams, R.J., Zipser, D.: A learning algorithm for continually running fully re-\ncurrent neural networks. Neural computation 1(2), 270–280 (1989) 5\n63. Wolf, T., Debut, L., Sanh, V., Chaumond, J., Delangue, C., Moi, A., Cistac,\nP., Rault, T., Louf, R., Funtowicz, M., Davison, J., Shleifer, S., von Platen,\nP., Ma, C., Jernite, Y., Plu, J., Xu, C., Le Scao, T., Gugger, S., Drame, M.,",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 130,
+      "text": "Lhoest, Q., Rush, A.: Transformers: State-of-the-art natural language processing.\nIn: Proceedings of the 2020 Conference on Empirical Methods in Natural Language\nProcessing: System Demonstrations. pp. 38–45. Association for Computational\nLinguistics, Online (Oct 2020). https://doi.org/10.18653/v1/2020.emnlp-demos.6,\nhttps://aclanthology.org/2020.emnlp-demos.6 25\n64. Xu, Y., Xu, Y., Lv, T., Cui, L., Wei, F., Wang, G., Lu, Y., Florencio,\nD., Zhang, C., Che, W., Zhang, M., Zhou, L.: LayoutLMv2: Multi-modal",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 131,
+      "text": "pre-training for visually-rich document understanding. In: Proceedings of the\n59th Annual Meeting of the Association for Computational Linguistics and\nthe 11th International Joint Conference on Natural Language Processing (Vol-\nume 1: Long Papers). pp. 2579–2591. Association for Computational Linguis-\ntics, Online (Aug 2021). https://doi.org/10.18653/v1/2021.acl-long.201, https:\n//aclanthology.org/2021.acl-long.201 2, 4, 9, 10, 11, 14, 22, 27, 28",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 132,
+      "text": "65. Xu, Y., Li, M., Cui, L., Huang, S., Wei, F., Zhou, M.: Layoutlm: Pre-training of\ntext and layout for document image understanding. In: Proceedings of the 26th\nACM SIGKDD International Conference on Knowledge Discovery & Data Min-\ning. p. 1192–1200. KDD ’20, Association for Computing Machinery, New York,\nNY, USA (2020). https://doi.org/10.1145/3394486.3403172, https://doi.org/\n10.1145/3394486.3403172 2, 3, 7, 9, 10, 11, 14, 22, 28",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 133,
+      "text": "66. Xu, Y., Lv, T., Cui, L., Wang, G., Lu, Y., Florencio, D., Zhang, C., Wei, F.:\nLayoutxlm: Multimodal pre-training for multilingual visually-rich document un-\nderstanding. arXiv preprint arXiv:2104.08836 (2021) 10, 27\n67. Yim, M., Kim, Y., Cho, H.C., Park, S.: Synthtiger: Synthetic text image generator\ntowards better text recognition models. In: Llad´os, J., Lopresti, D., Uchida, S.",
+      "source": "donut.pdf",
+      "page": 20,
+      "char_count": 387,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 134,
+      "text": "OCR-free Document Understanding Transformer\n21\n(eds.) Document Analysis and Recognition – ICDAR 2021. pp. 109–124. Springer\nInternational Publishing, Cham (2021) 5, 6, 23\n68. Zhang, K., Shasha, D.: Simple fast algorithms for the editing distance be-\ntween trees and related problems. SIAM J. Comput. 18, 1245–1262 (12 1989).\nhttps://doi.org/10.1137/0218082 7\n69. Zhang, Z., Zhang, C., Shen, W., Yao, C., Liu, W., Bai, X.: Multi-oriented\ntext detection with fully convolutional networks. In: 2016 IEEE Conference",
+      "source": "donut.pdf",
+      "page": 21,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 135,
+      "text": "on Computer Vision and Pattern Recognition (CVPR). pp. 4159–4167 (2016).\nhttps://doi.org/10.1109/CVPR.2016.451 13\n70. Zhong, X., ShafieiBavani, E., Jimeno Yepes, A.: Image-based table recognition:\nData, model, and evaluation. In: Vedaldi, A., Bischof, H., Brox, T., Frahm, J.M.\n(eds.) Computer Vision – ECCV 2020. pp. 564–580. Springer International Pub-\nlishing, Cham (2020) 7",
+      "source": "donut.pdf",
+      "page": 21,
+      "char_count": 377,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 136,
+      "text": "22\nG. Kim et al.\nA\nAppendix\nA.1\nDetails of OCR Engines (MS, CLOVA, Easy, Paddle)\nCurrent state-of-the-art visual document understanding (VDU) backbones, such\nas BROS [18], LayoutLM [65] and LayoutLMv2 [64], are dependent on off-the-\nshelf OCR engines. These backbones take the output of OCR as their (one of)\ninput features. For the OCR-dependent methods, in our experiments, we use\nstate-of-the-art OCR engines that are publicly available, including 2 OCR API",
+      "source": "donut.pdf",
+      "page": 22,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 137,
+      "text": "products (i.e., MS OCR7 and CLOVA OCR8) and 2 open-source OCR models\n(i.e., Easy OCR9 and Paddle OCR10). In the main paper, Paddle OCR is used\nfor the Chinese train ticket dataset [12] and CLOVA OCR is used for the rest\ndatasets in the document information extraction (IE) tasks. MS OCR is used\nto measure the running time of the LayoutLM family in document classification\nand visual question answering (VQA) tasks, following the previous work of Xu\net al. [64]. Each OCR engine is explained in the following.",
+      "source": "donut.pdf",
+      "page": 22,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 138,
+      "text": "MS OCR MS OCR7 is the latest OCR API product from Microsoft and used in\nseveral recent VDU methods, e.g., LayoutLMv2 [64]. This engine supports 164\nlanguages for printed text and 9 languages for handwritten text (until 2022/03).\nCLOVA OCR CLOVA OCR8 is an API product from NAVER CLOVA and\nis specialized in document IE tasks. This engine supports English, Japanese and\nKorean (until 2022/03). In the ablation experiments on the CORD dataset [45]",
+      "source": "donut.pdf",
+      "page": 22,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 139,
+      "text": "(Figure 9 in the main paper), the CLOVA OCR achieved the best accuracy.\nEasy OCR Easy OCR9 is a ready-to-use OCR engine that is publicly available\nat GitHub. This engine supports more than 80 languages (until 2022/03). Un-\nlike the aforementioned two OCR products (i.e., MS OCR and CLOVA OCR),\nthis engine is publicly opened and downloadable.9 The entire model architec-\nture is based on the modern deep-learning-based OCR modules [4,3] with some",
+      "source": "donut.pdf",
+      "page": 22,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 140,
+      "text": "modifications to make the model lighter and faster. The total number of model\nparameters is 27M which is small compared to the state-of-the-art models [4,3].\nPaddle OCR Paddle OCR10 is an open-source OCR engine available at GitHub.\nWe used a lightweight (i.e., mobile) version of the model which is specially de-\nsigned for a fast and light OCR of English and Chinese texts. The model is served\non a CPU environment and the size of the model is extremely small, which is\napproximately 10M.",
+      "source": "donut.pdf",
+      "page": 22,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 141,
+      "text": "approximately 10M.\n7https://docs.microsoft.com/en-us/azure/cognitive-services/\ncomputer-vision/overview-ocr.\n8https://clova.ai/ocr/en.\n9https://github.com/JaidedAI/EasyOCR.\n10https://github.com/PaddlePaddle/PaddleOCR.",
+      "source": "donut.pdf",
+      "page": 22,
+      "char_count": 217,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 142,
+      "text": "OCR-free Document Understanding Transformer\n23\nFig. A. Examples of SynthDoG. English, Chinese, Japanese and Korean samples\nare shown (from top to bottom). Although the idea is simple, these synthetic samples\nplay an important role in the pre-training of Donut. Please, see Figure 7 in the main\npaper for details\nA.2\nDetails of Synthetic Document Generator (SynthDoG)\nIn this section, we explain the components of the proposed Synthetic Document",
+      "source": "donut.pdf",
+      "page": 23,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 143,
+      "text": "Generator (SynthDoG) in detail. The entire pipeline basically follows Yim et\nal. [67]. Our source code is available at https://github.com/clovaai/donut.\nMore samples are shown in Figure A.\nBackground Background images are sampled from ImageNet [7]. Gaussian blur\nis randomly applied to the background image to represent out-of-focus effects.\nDocument Paper textures are sampled from the photos that we collected. The\ntexture is applied to an white background. In order to make the texture realistic,",
+      "source": "donut.pdf",
+      "page": 23,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 144,
+      "text": "random elastic distortion and Gaussian noise are applied. To represent various\nview angles in photographs, a random perspective transformation is applied to\nthe image.",
+      "source": "donut.pdf",
+      "page": 23,
+      "char_count": 167,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 145,
+      "text": "24\nG. Kim et al.\nText Layout and Pattern To mimic the layouts in real-world documents, a\nheuristic rule-based pattern generator is applied to the document image region\nto generate text regions. The main idea is to set multiple squared regions to rep-\nresent text paragraphs. Each squared text region is then interpreted as multiple\nlines of text. The size of texts and text region margins are chosen randomly.\nText Content and Style We prepare the multi-lingual text corpora from",
+      "source": "donut.pdf",
+      "page": 24,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 146,
+      "text": "Wikipedia.11 We use Noto fonts12 since it supports various languages. SynthDoG\nsamples texts and fonts from these resources and the sampled texts are rendered\nin the regions that are generated by the layout pattern generator. The text colors\nare randomly assigned.\nPost-processing Finally, some post-processing techniques are applied to the\noutput image. In this process, the color, brightness, and contrast of the image\nare adjusted. In addition, shadow effect, motion blur, Gaussian blur, and JPEG",
+      "source": "donut.pdf",
+      "page": 24,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 147,
+      "text": "compression are applied to the image.\nA.3\nDetails of Document Information Extraction\nInformation Extraction (IE) on documents is an arduous task since it requires (a)\nreading texts, (b) understanding the meaning of the texts, and (c) predicting the\nrelations and structures among the extracted information. Some previous works\nhave only focused on extracting several pre-defined key information [12]. In that\ncase, only (a) and (b) are required for IE models. We go beyond the previous",
+      "source": "donut.pdf",
+      "page": 24,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 148,
+      "text": "works by considering (c) also. Although the task is complex, its interface (i.e., the\nformat of input and output) is simple. In this section, for explanation purposes,\nwe show some sample images (which are the raw input of the IE pipeline) with\nthe output of Donut.\nIn the main paper, we test four datasets including two public benchmarks\n(i.e., CORD [45] and Ticket [12]) and two private industrial datasets (i.e., Busi-\nness Card and Receipt). Figure B shows examples of Ticket with the outputs",
+      "source": "donut.pdf",
+      "page": 24,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 149,
+      "text": "of Donut. Figure C shows examples of CORD with the outputs of Donut. Due\nto strict industrial policies on the private industrial datasets, we instead show\nsome real-like high-quality samples of Business Card and Receipt in Figure D.\nA.4\nDetails of Model Training Scheme and Output Format\nIn the model architecture and training objective, we basically followed the orig-\ninal Transformer [58], which uses a Transformer encoder-decoder architecture",
+      "source": "donut.pdf",
+      "page": 24,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 150,
+      "text": "and a teacher-forcing training scheme. The teacher-forcing scheme is a model\ntraining strategy that uses the ground truth as input instead of model output\nfrom a previous time step. Figure E shows a details of the model training scheme\nand decoder output format.\n11https://dumps.wikimedia.org.\n12https://fonts.google.com/noto.",
+      "source": "donut.pdf",
+      "page": 24,
+      "char_count": 326,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 151,
+      "text": "OCR-free Document Understanding Transformer\n25\n(a) Input Image\n(b) Prediction\n(c) Ground Truth\n{\n    \"date\":\"2017年11月15日\",\n    \"destination_station\": \"福田站\",\n    \"name\": \"珂\",\n    \"seat_category\": \"二等座\",\n    \"starting_station\": \"广州南站\",\n    \"ticket_num\": \"C068987\",\n    \"ticket_rates\": ¥82.0元\",\n    \"train_num\": \"G79”\n}\n{\n    \"date\": \"2017年12月05日\",\n    \"destination_station\": \"广州东站\",\n    \"name\": \"延辉\",\n    \"seat_category\": \"一等座\",\n    \"starting_station\": \"深圳站\",\n    \"ticket_num\": \"E019154\",",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 152,
+      "text": "\"ticket_num\": \"E019154\",\n    \"ticket_rates\": \"¥99.5元\",\n    \"train_num\": \"C7128\"\n}\n{\n    \"date\": \"2018年02月13日\",\n    \"destination_station\": \"扎兰平站\",\n    \"name\": \"海鹏\",\n    \"seat_category\": \"新空调硬卧\",\n    \"starting_station\": \"北京站\",\n    \"ticket_num\": ”J033534\",\n    \"ticket_rates\": \"¥367.0元\",\n    \"train_num\": \"K1301”\n}\n{\n    \"date\": \"2018年02月13日\",\n    \"destination_station\": \"扎兰屯站\",\n    \"name\": \"海鹏\",\n    \"seat_category\": \"新空调硬卧\",\n    \"starting_station\": \"北京站\",\n    \"ticket_num\": ”J033534\",",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 153,
+      "text": "\"ticket_num\": ”J033534\",\n    \"ticket_rates\": \"¥367.0元\",\n    \"train_num\": \"K1301”\n}\nTED Acc. 97.7\nTED Acc. 97.5\n{\n    \"date\": \"2017年12月05日\",\n    \"destination_station\": \"广州东站\",\n    \"name\": \"延褥\",\n    \"seat_category\": \"一等座\",\n    \"starting_station\": \"深圳站\",\n    \"ticket_num\": \"E019154\",\n    \"ticket_rates\": \"¥99.5元\",\n    \"train_num\": \"C7128\"\n}\nTED Acc. 100\n{\n    \"date\":\"2017年11月15日\",\n    \"destination_station\": \"福田站\",\n    \"name\": \"珂\",\n    \"seat_category\": \"二等座\",\n    \"starting_station\": \"广州南站\",",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 154,
+      "text": "\"starting_station\": \"广州南站\",\n    \"ticket_num\": \"C068987\",\n    \"ticket_rates\": ¥82.0元\",\n    \"train_num\": \"G79”\n}\nFig. B. Examples of Ticket [12] with Donut predictions. There is no hierarchy in\nthe structure of information (i.e., depth = 1) and the location of each key information\nis almost fixed. Failed predictions are marked and bolded (red)\nA.5\nImplementation and Training Hyperparameters\nThe codebase and settings are available at GitHub.13 We implement the en-",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 155,
+      "text": "tire model pipeline with Huggingface’s transformers14 [63] and an open-source\nlibrary TIMM (PyTorch image models)15 [61].\nFor all model training, we use a half-precision (fp16) training. We train Donut\nusing Adam optimizer [30] by decreasing the learning rate as the training pro-\ngresses. The initial learning rate of pre-training is set to 1e-4 and that of fine-\ntuning is selected from 1e-5 to 1e-4. We pre-train the model for 200K steps with",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 156,
+      "text": "64 NVIDIA A100 GPUs and a mini-batch size of 196, which takes about 2-3\nGPU days. We also apply a gradient clipping technique where a maximum gra-\ndient norm is selected from 0.05 to 1.0. The input resolution of Donut is set\nto 2560×1920 at the pre-training phase. In downstream tasks, the input reso-\nlutions are controlled. In some downstream document IE experiments, such as,\n13https://github.com/clovaai/donut.\n14https://github.com/huggingface/transformers.",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 157,
+      "text": "14https://github.com/huggingface/transformers.\n15https://github.com/rwightman/pytorch-image-models.",
+      "source": "donut.pdf",
+      "page": 25,
+      "char_count": 99,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 158,
+      "text": "26\nG. Kim et al.\n{\n    \"menu\": [\n        {\n            \"cnt\": [\"1\"],\n            \"nm\": [\"cashew nuts chkn\"],\n            \"price\": [\"64,500\"]\n        }, \n         …\n        {\n            \"cnt\": [\"4\"],\n            \"nm\": [\"steamed rice\"],\n            \"price\": [\"47,600\"]\n        }\n    ],\n    \"sub_total\": [\n        {\n            \"service_price\": [\"17,908\"],\n            \"subtotal_price\": [\"325,600\"],\n            \"tax_price\": [\"34,351\"]\n        }\n    ],\n    \"total\": [\n        {",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 159,
+      "text": "}\n    ],\n    \"total\": [\n        {\n            \"total_price\": [\"377,859\"]\n        } ]\n}\nTED Acc. 100\n(a) Input Image\n(b) Prediction\n(c) Ground Truth\n{\n    \"menu\": [\n        {\n            \"cnt\": [\"2\"],\n            \"nm\": [\"TWIST DONUT\"],\n            \"price\": [\"18,000\"]\n        },\n         …\n        {\n            \"cnt\": [\"1\"],\n            \"nm\": [\"FRANKFRUT SAUSAGE ROLL\"],\n            \"price\": [\"12,000\"]\n        }\n    ],\n    \"total\": [\n        {\n            \"cashprice\": [\"104.000\"],",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 160,
+      "text": "{\n            \"cashprice\": [\"104.000\"],\n            \"changeprice\": [\"56.000\"],\n            \"total_price\": [\"54.000\"]\n        } ]\n}\nTED Acc. 99.0\n{\n    \"menu\": [\n        {\n            \"cnt\": [\"2\"],\n            \"nm\": [\"TWIST DONUT\"],\n            \"price\": [\"18,000\"]\n        },\n         …\n        {\n            \"cnt\": [\"1\"],\n            \"nm\": [\"FRANKFRUT SAUSAGE ROLL\"],\n            \"price\": [\"12,000\"]\n        }\n    ],\n    \"total\": [\n        {\n            \"cashprice\": [\"104.000\"],",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 161,
+      "text": "{\n            \"cashprice\": [\"104.000\"],\n            \"changeprice\": [\"50.000\"],\n            \"total_price\": [\"54.000\"]\n        } ]\n}\n{\n    \"menu\": [\n        {\n            \"nm\": [\"TRAD KY TOAST CARTE\"],\n            \"price\": [\"28.182\"]\n        }\n    ],\n    \"sub_total\": [\n        {\n            \"subtotal_price\": [\"28.182\"],\n            \"tax_price\": [\"2.818\"]\n        }\n    ],\n    \"total\": [\n        {\n            \"cashprice\": [\"31.000\"],\n            \"menuqty_cnt\": [\"1.00\"],",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 162,
+      "text": "\"menuqty_cnt\": [\"1.00\"],\n            \"total_price\": [\"31.000\"]\n        } ]\n}\n{\n    \"menu\": [\n        {\n            \"nm\": [\"TRAD KY TOAST CARTE\"],\n            \"price\": [\"28.182\"]\n        }\n    ],\n    \"sub_total\": [\n        {\n            \"subtotal_price\": [\"28.182\"],\n            \"tax_price\": [\"2.818\"]\n        }\n    ],\n    \"total\": [\n        {\n            \"cashprice\": [\"31.000\"],\n            \"total_price\": [\"31.000\"]\n        } ]\n}\nTED Acc. 89.6\n{\n    \"menu\": [\n        {\n            \"cnt\": [\"1\"],",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 163,
+      "text": "\"menu\": [\n        {\n            \"cnt\": [\"1\"],\n            \"nm\": [\"cashew nuts chkn\"],\n            \"price\": [\"64,500\"]\n        }, \n         …\n        {\n            \"cnt\": [\"4\"],\n            \"nm\": [\"steamed rice\"],\n            \"price\": [\"47,600\"]\n        }\n    ],\n    \"sub_total\": [\n        {\n            \"service_price\": [\"17,908\"],\n            \"subtotal_price\": [\"325,600\"],\n            \"tax_price\": [\"34,351\"]\n        }\n    ],\n    \"total\": [\n        {\n            \"total_price\": [\"377,859\"]\n        } ]\n}",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 164,
+      "text": "} ]\n}\nFig. C. Examples of CORD [45] with Donut predictions. There is a hierarchy\nin the structure of information (i.e., depth = 2). Donut not only reads some important\nkey information from the image, but also predicts the relationship among the extracted\ninformation (e.g., the name, price, and quantity of each menu item are grouped)\nCORD [45], Ticket [12] and Business Card, smaller size of input resolution,\ne.g., 1280×960, is tested. With the 1280×960 setting, the model training cost",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 165,
+      "text": "of Donut was small. For example, the model fine-tuning on CORD or Ticket\ntook approximately 0.5 hours with one A100 GPU. However, when we set the",
+      "source": "donut.pdf",
+      "page": 26,
+      "char_count": 145,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 166,
+      "text": "OCR-free Document Understanding Transformer\n27\nFig. D. Examples of Business Card (top) and Receipt (bottom). Due to strict\nindustrial policies on the private industrial datasets from our active products, real-like\nhigh-quality samples are shown instead\n2560×1920 setting for larger datasets, e.g., RVL-CDIP or DocVQA, the cost\nincreased rapidly. With 64 A100 GPUs, DocVQA requires one GPU day and\nRVL-CDIP requires two GPU days approximately. This is not surprising in that",
+      "source": "donut.pdf",
+      "page": 27,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 167,
+      "text": "increasing the input size for a precise result incurs higher computational costs\nin general. Using an efficient attention mechanism [60] may avoid the prob-\nlem in architectural design, but we use the original Transformer [58] as we aim\nto present a simpler architecture in this work. Our preliminary experiments in\nsmaller resources are available in Appendix A.6.\nFor the implementation of document IE baselines, we use the transformers\nlibrary for BERT [8], BROS [18], LayoutLMv2 [64,66] and WYVERN [23]. For",
+      "source": "donut.pdf",
+      "page": 27,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 168,
+      "text": "the SPADE [25] baseline, the official implementation16 is used. The models are\ntrained using NVIDIA P40, V100, or A100 GPUs. The major hyperparameters,\nsuch as initial learning rate and number of epochs, are adjusted by monitoring\nthe scores on the validation set. The architectural details of the OCR-dependent\nVDU backbone baselines (e.g., LayoutLM and LayoutLMv2) are available in\nAppendix A.7.\nA.6\nPreliminary Experiments in Smaller Resources",
+      "source": "donut.pdf",
+      "page": 27,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 169,
+      "text": "A.6\nPreliminary Experiments in Smaller Resources\nIn our preliminary experiments, we pre-trained Donut with smaller resources\n(denoted as DonutProto), i.e., smaller data (SynthDoG 1.2M) and fewer GPUs\n16https://github.com/clovaai/spade.",
+      "source": "donut.pdf",
+      "page": 27,
+      "char_count": 235,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 170,
+      "text": "28\nG. Kim et al.\n*URXQG\u0003\n7UXWK\n,QSXW\u00037RNHQV\n'HFRGHU\u00032XWSXW\u0003\n\u000b'LVWULEXWLRQV\f\n'HFRGHU\n«\n«\n«\n7UDLQLQJ\n,QIHUHQFH\n7RNHQ\u0003FODVVLILFDWLRQ\u0003DW\u0003HDFK\u0003VWHS\u0011\n\u001fSDUVLQJ!\n\u001fLWHP!\n\u001fQDPH!\n\u0016\u0013\u0013\u0015\n\u001fLWHP!\n\u001fQDPH!\n\u0016\u0013\u0013\u0015\n0LQLPL]H\u0003&URVV\u0003(QWURS\\\n3UHGLFWHG\n«\n«\n\u001fSDUVLQJ!\n\u001fLWHP!\n\u001fQDPH!\n«\n\u001fLWHP!\n\u001fQDPH!\n\u001b\u0013\u0013\u0015\n'HFRGHU\n\u001b\u0013\u0013\u0015\n3UHGLFWHG\u0003WRNHQ\u0003VHTXHQFH\u0003LV\u0003FRQYHUWHG\u0003LQWR\u0003D\u0003-621\u0003IRUPDW\u0011\n^³,WHP´\u0003\u001d\u0003^\n\u0003\u0003\u0003\u0003\u0003\u0003³QDPH´\u0003\u001d\u0003³\u001b\u0013\u0013\u0015\u0010.\\RWR\u0003&KRFR\u00030RFKL´\u000f\n\u0003\u0003\u0003\u0003\u0003\u0003³SULFH´\u0003\u001d\u0003³\u0014\u0017\u0011\u0013\u0013\u0013´\u000f\n\u0003\u0003\u0003\u0003\u0003\u0003³FRXQW´\u0003\u001d\u0003³\u0015´\u0003``\n\u001fSDUVLQJ!\u001fLWHP!\u001fQDPH!\u001b\u0013\u0013\u0015\u0010.\\RWR\u0003&KRFR\u00030RFKL\u001f\u0012QDPH!",
+      "source": "donut.pdf",
+      "page": 28,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 171,
+      "text": "SULFH!\u0014\u0017\u0011\u0013\u0013\u0013\u001f\u0012SULFH!\u001fFRXQW!\u0015\u001f\u0012FRXQW!\u001f\u0012LWHP!\u001fHQG!\nFig. E. Donut training scheme with teacher forcing and decoder output\nformat examples. The model is trained to minimize cross-entropy loss of the token\nclassifications simultaneously. At inference, the predicted token from the last step is\nfed to the next\n(8 V100 GPUs for 5 days). The input size was 2048×1536. In this setting,\nDonutProto also achieved comparable results on RVL-CDIP and CORD. The",
+      "source": "donut.pdf",
+      "page": 28,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 172,
+      "text": "accuracy on RVL-CDIP was 94.5 and CORD was 85.4. After the preliminaries,\nwe have scaled the model training with more data.\nA.7\nDetails of OCR-dependent Baseline Models\nIn this section, we provide a gentle introduction to the general-purpose VDU\nbackbones, such as LayoutLM [65] and LayoutLMv2 [64]. To be specific, we\nexplain how the conventional backbones perform downstream VDU tasks; docu-\nment classification, IE, and VQA. Common to all tasks, the output of the OCR",
+      "source": "donut.pdf",
+      "page": 28,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 173,
+      "text": "engine is used as input features of the backbone. That is, the extracted texts\nare sorted and converted to a sequence of text tokens. The sequence is passed to\nthe Transformer encoder to get contextualized output vectors. The vectors are\nused to get the desired output. The difference in each task depends on a slight\nmodification on the input sequence or on the utilization of the output vectors.\nDocument Classification At the start of the input sequence, a special token",
+      "source": "donut.pdf",
+      "page": 28,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 174,
+      "text": "[CLS] is appended. The sequence is passed to the backbone to get the output\nvectors. With a linear mapping and softmax operation, the output vector of the\nspecial token [CLS] is used to get a class-label prediction.\nDocument IE With a linear mapping and softmax operation, the output vector\nsequence is converted to a BIO-tag sequence [22].",
+      "source": "donut.pdf",
+      "page": 28,
+      "char_count": 340,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 175,
+      "text": "OCR-free Document Understanding Transformer\n29\nIE on 1-depth structured documents When there is no hierarchical structure in\nthe document (See Figure B), the tag set is defined as {“Bk”, “Ik”, “O” | k ∈\npre-defined keys}. “Bk” and “Ik” are tags that represent the beginning (B) and\nthe inside (I) token of the key k respectively. The “O” tag indicates that the\ntoken belongs to no key information.\nIE on n-depth structured documents When there are hierarchies in the structure",
+      "source": "donut.pdf",
+      "page": 29,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 176,
+      "text": "(See Figure C), the BIO-tags are defined for each hierarchy level. In this section,\nwe explain a case where the depth of structure is n = 2. The tag set is defined\nas {“Bg.Bk”, “Bg.Ik”, “Ig.Bk”, “Ig.Ik”, “O” | g ∈pre-defined parent keys, k ∈\npre-defined child keys}. For instance, the Figure C shows an example where a\nparent key is “menu” and related child keys are {“cnt”, “nm”, “price”}. “Bg”\nrepresents that one group (i.e., a parent key such as “menu”) starts, and “Ig”",
+      "source": "donut.pdf",
+      "page": 29,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 177,
+      "text": "represents that the group is continuing. Separately from the BI tags of the parent\nkey (i.e., “Bg” and “Ig”), the BI tags of each child key (i.e., “Bk” and “Ik”) work\nthe same as in the case of n = 1. This BIO-tagging method is also known as\nGroup BIO-tagging and the details are also available in Hwang et al. [22].\nDocument VQA With a linear mapping and softmax operation, the output\nvector sequence is converted to a span-tag sequence. For the input token se-",
+      "source": "donut.pdf",
+      "page": 29,
+      "char_count": 462,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 178,
+      "text": "quence, the model finds the beginning and the end of the answer span. Details\ncan also be found in the Section 4.2 of Devlin et al. [8].",
+      "source": "donut.pdf",
+      "page": 29,
+      "char_count": 136,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

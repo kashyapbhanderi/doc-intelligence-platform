@@ -1,0 +1,828 @@
+{
+  "source": "rag_survey.pdf",
+  "full_path": "data\\raw\\rag_survey.pdf",
+  "total_pages": 9,
+  "text_chunks": 102,
+  "vision_chunks": 0,
+  "total_chunks": 102,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Ultron: An Ultimate Retriever on Corpus with a Model-based Indexer\nYujia Zhou,1 Jing Yao, 3 Zhicheng Dou, 1 Ledell Wu, 2 Peitian Zhang, 1 Ji-Rong Wen 1\n1 Gaoling School of Artiﬁcial Intelligence, Renmin University of China, Beijing, China\n2 Beijing Academy of Artiﬁcial Intelligence, Beijing, China\n3 Microsoft Research Asia, Beijing, China\nzhouyujia@ruc.edu.cn, jingyao@microsoft.com, dou@ruc.edu.cn\nAbstract\nDocument retrieval has been extensively studied within the",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "index-retrieve framework for decades, which has withstood\nthe test of time. Unfortunately, such a pipelined framework\nlimits the optimization of the ﬁnal retrieval quality, because\nindexing and retrieving are separated stages that can not be\njointly optimized in an end-to-end manner. In order to unify\nthese two stages, we explore a model-based indexer for docu-\nment retrieval. Concretely, we propose Ultron, which encodes\nthe knowledge of all documents into the model and aims to di-",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "rectly retrieve relevant documents end-to-end. For the model-\nbased indexer, how to represent docids and how to train the\nmodel are two main issues to be explored. Existing solutions\nsuffer from semantically deﬁcient docids and limited super-\nvised data. To tackle these two problems, ﬁrst, we devise\ntwo types of docids that are richer in semantics and easier\nfor model inference. In addition, we propose a three-stage\ntraining workﬂow to capture more knowledge contained in",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "the corpus and associations between queries and docids. Ex-\nperiments on two public datasets demonstrate the superiority\nof Ultron over advanced baselines for document retrieval.\nIntroduction\nSearch engines are helpful to meet users’ daily information\nneeds. Given an issued query, search engines ﬁrst retrieve\ncandidate documents from a large document collection and\nthen re-rank these candidate documents to return a ranking\nlist (Robertson and Zaragoza 2009; Zhan et al. 2020; Mitra",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "and Craswell 2018). In this process, the performance of the\nretrieval stage is critical to the ﬁnal search quality. For docu-\nment retrieval, the inverted index has served as the backbone\nof term-based sparse retrieval over the past decades. With an\ninverted index built on the corpus, sparse retrieval methods\nsuch as BM25 (Robertson and Zaragoza 2009) can measure\nterm frequency and other lexical features to retrieve relevant\ndocuments, which encounters the challenge of vocabulary",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "mismatch. In recent years, many dense retrieval methods are\nproposed to tackle this problem (Gao et al. 2021; Zhan et al.\n2020). They ﬁrst encode the semantic information contained\nin queries and documents into dense vectors, and then re-\ntrieve relevant documents over the vectorized index.\nPrevious methods, including both sparse and dense re-\ntrieval models, are extensively studied within the index-\nretrieve framework that has been proven to be valuable",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "for document retrieval. Unfortunately, such a pipeline-based\nframework requires a large pre-computed index built on the\nwhole corpus to support subsequent document retrieval. This\nnot only results in huge memory overhead, but also limits\noptimizing the separated indexing and retrieval stages in an\nend-to-end way. To address these limitations, several stud-\nies (Tay et al. 2022; Bevilacqua et al. 2022; Zhou et al.\n2022) have preliminarily tried to build an end-to-end re-",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "trieval model that directly returns relevant documents with-\nout separated indexes. Semantic information of documents\nin the corpus is encoded into a large model, which can be\nregarded as a differentiable indexer and can be optimized\nend-to-end. Inspired by this framework, we intend to delve\ndeeper into the challenges and explore better usability of this\nmodel-centric paradigm for document retrieval tasks.\nWithin such a model-centric retrieval framework, there",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "are two main technical difﬁculties: (1) how to represent do-\ncids so that the model can learn the semantics of docu-\nments and retrieve the correct docids more easily; (2) how to\ntrain the model so as to capture the semantic knowledge of\neach docid and to learn the mapping relations from queries\nto relevant docids. Some early studies, such as DSI (Tay\net al. 2022), tried a variety of inspiring document identi-\nﬁers, such as atomic docids, semantic cluster docids, etc.",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "However, these heuristic docids lack sufﬁcient document se-\nmantic knowledge, which plays a critical role in document\nretrieval. In addition, existing models are only trained with\nlimited supervised data. This limits the model to learn sufﬁ-\ncient knowledge over each docid for retrieval and might lead\nto model over-ﬁtting. In this paper, we follow the model-\ncentric paradigm for document retrieval and attempt to deal\nwith the above two main challenges.",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "with the above two main challenges.\nTo enrich the semantic information of docids, we repre-\nsent each docid as a sequence of tokens that can summarize\nthe underlying semantics of the document. Motivated by tra-\nditional term-based index and vectorized index, we devise\ntwo types of docids corresponding to the sparse and dense\nretrieval respectively. The ﬁrst is Keyword-based identi-\nﬁers, which identify documents using a sequence of key-\nwords. In this paper, we use the URL and title of webpages,",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "which are natural keywords that somewhat guarantee both\nthe uniqueness and semantics of the identiﬁer. The second\nis Semantic-based identiﬁers, which represent a document\nwith a series of latent semantic tokens. Inspired by the effec-\ntiveness of product quantization (PQ) technology (Ge et al.\narXiv:2208.09257v1  [cs.IR]  19 Aug 2022",
+      "source": "rag_survey.pdf",
+      "page": 1,
+      "char_count": 335,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "2014; J´egou, Douze, and Schmid 2011a; Zhan et al. 2021a)\nin retrieval, we use the PQ code of a document as a type of\nsemantic-based identiﬁer.\nFor model training, the training target of retrieval is to\nlearn the mapping relations from queries to relevant docids.\nTo cope with the problem of limited click data, we devise\na three-stage training workﬂow, which adds two stages of\npre-training to enrich the knowledge of docids stored in the\nmodel-based indexer. (1) General Pre-training. This stage",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "aims to capture the document’s semantic information by\nmapping passages and key terms of the document to the cor-\nresponding docid. (2) Search-oriented Pre-training. To en-\nhance the performance on search tasks, the model needs to\nbe more capable of mapping short query-like texts to corre-\nsponding docids. To get sufﬁcient data, we generate a lot of\npseduo queries for model pre-training, thereby adapting the\nmodel to search scenarios. (3) Supervised Fine-tuning. The",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "ﬁnal stage is to ﬁnetune the model on supervised relevance\ndata, so as to learn more robust associations between queries\nand relevant docids.\nSpeciﬁcally, we propose the model Ultron: an ultimate\nretriever on corpus with a model-based indexer, which is\nbuilt on a generative language model with transformer-\nbased encoder-decoder. It regards document retrieval as a\nsequence-to-sequence task from an issued query to docids.\nIn the pre-processing stage, we generate two types of se-",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "mantic identiﬁers for each document in the corpus. During\ntraining, we apply the three-stage training to encode the se-\nmantic knowledge of documents into the model parameters.\nAt the inference time, given a query, Ultron generates a do-\ncid ranking list directly based upon the generation proba-\nbilities via constrained beam search. Experimental results\non MS MARCO and NQ datasets indicate that our Ultron\nmodel not only outperforms advanced baselines of sparse or",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "dense retrieval, but also achieves signiﬁcant improvements\nover existing end-to-end retrieval methods.\nThe contributions of this work can be summarized as: (1)\nAlong with the blueprint of model-based IR (Metzler et al.\n2021), we propose Ultron, a sequence-to-sequence model\nthat directly generates docids for a query. It demonstrates\nthe feasibility of model-based indexer on the document re-\ntrieval task. (2) To enhance the semantics of docid, we de-\nvise keyword-based and semantic-based docids, which show",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "richer semantic attributes than existing methods. (3) To al-\nleviate the problem of limited supervised data, we propose\na three-stage training workﬂow to encode more knowledge\nover docids into the model for better document retrieval.\nRelated Work\nSparse Retrieval with Inverted Indexes.\nThanks to efﬁ-\nciency and effectiveness, sparse retrieval with an inverted\nindex is widely used in practice. BM25 (Robertson and\nZaragoza 2009) employs the tf-idf signal to measure term",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "weights and compute relevance scores. Graph-based ap-\nproaches (Blanco and Lioma 2012; Rousseau and Vazir-\ngiannis 2013) build document graphs and follow the idea\nof PageRank to calculate term weights. With representation\nlearning (Mikolov et al. 2013; Pennington, Socher, and Man-\nning 2014), one line of research (Zheng and Callan 2015;\nGuo et al. 2016; Dehghani et al. 2017) automatically learns\nterm weights from word embeddings rich in semantic and\nco-occurrence information. DeepCT (Dai and Callan 2019)",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "and HDCT (Dai and Callan 2020) leverage contextualized\ntext representation to predict term importance. A challenge\nof sparse retrieval is the mismatch between query and doc-\nument words. One kind of methods (Nogueira et al. 2019;\nNogueira, Lin, and Epistemic 2019) expands possible terms\nfor queries or documents. A second approach utilizes word\nvectors to measure soft similarity between terms.\nDense Retrieval with Vectorized Indexes.\nThese meth-\nods rely on deep learning to capture the semantic relevance",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "between queries and documents, going beyond lexical over-\nlap to relieve the mismatch problem (Gao et al. 2021). They\nﬁrst embed queries and documents into vectors. Then, rel-\nevant documents are retrieved based on the vector similar-\nity (Zhan et al. 2020; Ni et al. 2022; Karpukhin et al. 2020),\nwhere ANNS and PQ (J´egou, Douze, and Schmid 2011b) are\nused to improve the efﬁciency. With advanced PLMs (De-\nvlin et al. 2019; Raffel et al. 2020), higher-quality represen-",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "tations are obtained, leading to better results. Besides, nega-\ntive sampling strategies have been proposed for better opti-\nmization (Zhan et al. 2021b; Xiong et al. 2021; Gao et al.\n2021; Guu et al. 2020). Considering the retrieval perfor-\nmance may be bounded by the product between single vec-\ntors, lightweight interaction layers are introduced to capture\nﬁne-grained matching, such as the multi-vector model (Luan\net al. 2021) and ColBERT (Khattab and Zaharia 2020).",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "In this paper, we replace the traditional indexes with a\nmodel-based indexer, which can be optimized end-to-end\nduring the model training.\nEnd-to-End Retrieval.\nDifferent from pipelined retrieval\nmethods relying on a separated index, end-to-end models\nwithout explicit indexes have been applied to retrieval tasks.\nGENRE (Cao et al. 2021) retrieves entities by generating\ntheir names through a seq-to-seq model. A blueprint for\nmodel-based IR is proposed in (Metzler et al. 2021), which",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "aims to embed the knowledge of all documents into a model.\nUnder this framework, some studies explored the document\nretrieval task. Tay et al. (2022) devise DSI to directly out-\nput docids for document retrieval. Bevilacqua et al. (2022)\nregard all n-grams in the passage as identiﬁers and gener-\nate relevant words to retrieve documents. Chen et al. (2022)\npropose GERE to retrieve evidence by returning sentence\nidentiﬁers. We observe that existing works suffer from se-",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "mantically deﬁcient docids and limited supervised data. In\nthis paper, we continue to explore a more effective retriever\nwithin this model-centric paradigm.\nMethodology\nIn this paper, we explore the model-centric paradigm for\ndocument retrieval, and attempt to deal with two main tech-\nnical difﬁculties: (1) how to represent docids so that the\nmodel can easily learn the semantics of them for decoding;\n(2) how to train the model so as to capture knowledge of",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "docids for retrieval. To this end, we propose Ultron, an end-\nto-end retriever with two elaborate docids and a three-stage\ntraining strategy. We will introduce Ultron in the next parts.",
+      "source": "rag_survey.pdf",
+      "page": 2,
+      "char_count": 185,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "Decoder\nEncoder\nEncoder\nQuery\nDocuments\nConstrained \nbeam search\nDense Retrieval\nMatching\nQuery\nDoc2\nUltron\nVectorized \nindex\nRanking list\nRanking list\nSparse Retrieval\nQuery\nDocuments\n𝑤1 𝑤2 𝑤3\n𝐷1\n𝐷2\n𝐷3\n𝐷4\n2\n1\n1\n1\n0\n1\n1\n1\n2\n0\n1\n0\nRanking list\nMatching\nInverted \nindex\nEncoder\nDocids\nDoc4\nDoc6\nTokenizer\nFigure 1: The comparison between Sparse Retrieval, Dense Retrieval, and Ultron. Traditional retrieval methods follow the",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 423,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "index-retrieve framework, while the Ultron only uses an end-to-end model to accomplish document retrieval. The docids are\ngenerated from the query with a seq-to-seq model, and the ranking list is obtained through the constrained beam search.\nBackbone of the Model\nInspired by advanced generative PLMs (Brown et al. 2020;\nRaffel et al. 2020), we complete the document retrieval\ntask in a generative manner through a seq-to-seq model. As\nshown in Figure 1, Ultron is implemented under an encoder-",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "decoder framework, which encodes the input query and de-\ncodes relevant docids through constrained beam search to\ngenerate a ranking list. Compared with the traditional sparse\nand dense retrieval, Ultron turns the matching task into\na generation task, which breaks away from the indexing-\nmatching workﬂow. Such a shift eliminates traditional in-\ndexes and enables the model to be optimized end-to-end.\nSequence-to-sequence Model. Since the seq-to-seq\nstructure works well for many generation tasks, we take",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "advantage of the T5 (Raffel et al. 2020) pre-trained lan-\nguage model as our backbone, which is a Transformer-\nbased (Vaswani et al. 2017) encoder-decoder structure. For\nUltron, we deﬁne the basic task as a “text-to-docid” format,\nwhich means the model takes in some text and generates rel-\nevant docids (represented as a sequence of tokens). Based on\nthe query q, the model tries to predict relevant docids with\nthe highest auto-regressive scores, denoted as:\nscore(d|q) = pθ(y|q) =\nN\nY\ni=1\npθ(yi|y<i, q),\n(1)",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "score(d|q) = pθ(y|q) =\nN\nY\ni=1\npθ(yi|y<i, q),\n(1)\nwhere y is the string docid of the document d with N to-\nkens, and θ is model parameters. Unlike traditional seq-to-\nseq tasks, free-form generation might result in an output\nstring that does not hit any valid docids. We resolve this\nproblem in the following part.\nConstrained Beam Search. Beam search is a typical de-\ncoding algorithm that improves greedy search. However,\nsince we need to ensure that the generated docids exist in",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "the corpus, vanilla beam search cannot meet our needs. Mo-\ntivated by (Cao et al. 2021), we apply constrained beam\nsearch to guide the decoder to search in a limited token space\nat each step, so as to generate valid docids. Speciﬁcally, we\ndeﬁne the constraints based on a preﬁx tree built on all do-\ncid strings. Each node in the tree denotes a speciﬁc preﬁx\nsequence, and its child nodes constitute all valid subsequent\nwww.answers.com/how_did_brian_pillman_die\nHow did flien brian pillman die?\nBest Answer",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "How did flien brian pillman die?\nBest Answer\nHow did flien Brian pillman die? Brian Pillman died of a\nheart attack in his sleep, attributed to a congenital\nheart defect he had from birth, combined with years of\nsteroid, alcohol and drug abuse. He lived How did Brian\nPillman died? suck his winki too ha When did Brian\nPillman die? Brian Pillman died on October 5, 1997 at\nthe age of 35. Contribution Does Vickey Vendetta have\nthe Pill Man Song? this song is average with da help of",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "\"\"Ice Berg\"\" of Dunk Ryders Trick Daddy Artist straight\nshitts on Vickey Vendetta Did Brian Adams die? Well he\ndied just last month When did Brian Piccolo die? Brian\nPiccolo died on June 16, 1970 at the age of 53\nContributions How did Brian mcfadden die?\nHelpful\nNot Helpful\nUser 8y ago\nEncoder\nTokenizer\nURL\nTitle\nBody\nhow, did, f, lien, bri, an, \np, ill, man, die, www, \nanswers, com\nConvert to ID\nProduct Quantization\nDense vector\n149, 410, 89, …\n92, 111, 32, …\nKeyword-based Identifiers",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "92, 111, 32, …\nKeyword-based Identifiers\nSemantic-based Identifiers\nFigure 2: Two types of semantic document identiﬁers.\ntokens. By decoding along the preﬁx tree, the model can en-\nsure that the generated docids exist in the corpus. Finally,\naccording to the auto-regressive scores during beam search,\nthe model generates the top-k docids as the ranking result.\nDesign of Document Identiﬁers\nA natural attribute of document identiﬁers (docid) is to\ndistinguish different documents. Intuitively, previous works",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "have tried to identify documents with a random integer,\ncalled atomic identiﬁers (Tay et al. 2022; Zhou et al. 2022).\nHowever, they lead to gigantic embedding parameters and\nlack semantics. To alleviate this problem, we represent each\ndocid as a sequence of shareable tokens satisfying two char-\nacteristics: uniquely referring to a document and reﬂecting\nthe semantic information of the document. Following the\nideas of sparse retrieval and dense retrieval, as shown in Fig-",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "ure 2, we attempt to represent docids from two perspectives:\nkeyword-based identiﬁers and semantic-based identiﬁers.\nKeyword-based Identiﬁers. Using keywords to repre-\nsent the document content is a classic way of sparse retrieval.\nMotivated by this, we propose to uniquely identify a docu-\nment with some meaningful keywords. Intuitively, the URL\nof a document contains certain semantic information and can\nuniquely correspond to this document. This inspires us to",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "use URLs as docids and generate relevant document URLs\ndirectly for a given query. To facilitate model prediction, we\narrange each part of the URL (split by ‘/’) in reverse order,",
+      "source": "rag_survey.pdf",
+      "page": 3,
+      "char_count": 179,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "Ultron\nUltron\nUltron\n(a) General Pre-train\n(b) Search-oriented Pre-train\n(c) Supervised Fine-tune\nTerms\nPassages\nPseudo Queries\nGround-Truth Query\nQuery Generation\nKnowledge Extraction\nCorpus\ndoc2\nGround-Truth label\nHow did flien Brian pillman die?\nBrian Pillman died of a heart attack\nin\nhis\nsleep,\nattributed\nto\na\ncongenital heart defect he had from\nbirth,\ncombined\nwith\nyears\nof\nsteroid, alcohol and drug abuse. He\nlived How did Brian Pillman died?\nsuck his winki too ha When did",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "suck his winki too ha When did\nBrian Pillman die? Brian Pillman\ndied on October 5, 1997 at the age\nof 35. Contribution Does Vickey\nVendetta have the Pill Man Song?\nthis song is average with …\nUser 8y ago\nTraining Workflow: \ndoc2\nDoes Brian pillman \ndie of a heart attack?\nTraining\nHow did Brian \nPillman die?\nRepresent Docid (PQ)\nCross-entropy loss\n92, 111, 32, …\nGenerated Docid\nGenerated Docid\nGenerated Docid\nFigure 3: The three-stage training workﬂow of the Ultron model.",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "so as to predict the semantic-rich part ﬁrst, and then predict\nthe domain name. However, not all URLs provide sufﬁcient\nsemantic information. To deal with such situations, we in-\ncorporate the document title to represent docids, deﬁned as:\ndocidURL =\n\u001a\nreversed URL,\nif title length ≤L,\ntitle + domain,\notherwise.\nHere L is set to 2 in our experiments. Finally, we can get a\nsequence of tokens by T5 tokenizer to represent the docid.\nSemantic-based Identiﬁers. Dense retrieval maps docu-",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "ments into latent semantic space as dense vectors. In extreme\ncases, each dense vector can be used as a unique identiﬁer\nto distinguish documents. However, the space of dense vec-\ntors is too large to decode. This promotes us to look for a\nway to preserve dense vector semantics in a smaller space.\nAs a classic vector compression method, Product Quantiza-\ntion (J´egou, Douze, and Schmid 2011a; Ge et al. 2014; Zhan\net al. 2021a) just meets our needs for designing docids. For",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "all D-dimensional vectors, it ﬁrst divides the D-dimensional\nspace into m groups, and then performs K-means clustering\non each group to obtain k cluster centers. Finally, each vec-\ntor can be represented as a set of m cluster ids. Thus, for the\ndocument d, its semantic-based identiﬁer can be deﬁned as:\ndocidPQ = PQ (Encoder (d)) ,\n(2)\nwhere Encoder(·) is implemented by a pre-trained T5 en-\ncoder (Ni et al. 2022). For cluster ids of all groups, we regard",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "them as m×k new tokens and add them into the vocabulary.\nTraining Workﬂow\nThe training of Ultron can be regarded as the process of\nbuilding a model-based indexer over the corpus. Through\nthis process, we expect the model to encode rich semantics\nover docids and learn the mapping relations from queries to\nrelevant docids. However, insufﬁcient supervised click data\nmakes it hard for the model to learn associations between\nqueries and docids. This motivates us to construct more self-",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "supervised query-docid pairs to adapt the model to search\nscenarios. As shown in Figure 3, the training of Ultron is di-\nvided into three stages: general pre-training, search-oriented\npre-training and supervised ﬁne-tuning. The details of the\nthree stages are introduced in the following parts.\nGeneral Pre-training. The semantic information con-\ntained in the document is the basic knowledge of the do-\ncid, which is generally useful in IR tasks. To learn such",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "knowledge, we conduct general pre-training by extracting\nself-supervised signals from the corpus. Speciﬁcally, term\nsequences are extracted from the document content to con-\nstruct the mapping relations from text to docid. We conduct\ntwo simple but effective strategies to achieve this.\nFirst, inspired by previous studies that use passage-level\nevidence for document ranking (Callan 1994), we seg-\nment the document into passages by ﬁxed-size windows,\nand construct passage-to-docid samples for model train-",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "ing. Formally, given a document containing n terms, i.e.\n{t1, t2, ..., tn}, we can extract a batch of training pairs with\nlength of size s, such as:\npassage : {ti, ti+1, ..., ti+s} −→docid,\n(3)\nwhere i is any starting position and is set at intervals of s.\nSecond, the importance of each word in a document\nfor its semantic representation is different (Robertson and\nZaragoza 2009). Thus, we can select some important words\nbased on tf-idf weights as a term set to reﬂect the key se-",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "mantics of the document. We have:\nterms : {ti, ..., tj, ..., tk} −→docid,\n(4)\nwhere ti, tj, tk are terms selected from the document.\nSearch-oriented\nPre-training.\nAfter\ngeneral\npre-\ntraining, the model already understands the basic semantics\nof each docid, but we observe that this is not enough for\nthe model to perform well on document retrieval. In other\nwords, in addition to the semantic knowledge of documents,\nthe model needs to further learn the associations between",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "queries and docids. To adapt the model to search scenarios,\nwe further conduct search-oriented pre-training, which",
+      "source": "rag_survey.pdf",
+      "page": 4,
+      "char_count": 114,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "generates pseudo queries based on the corpus and learns the\nmapping relations from queries to docids.\nFollowing DocT5Query (Nogueira, Lin, and Epistemic\n2019), we ﬁrst train a query generator over supervised click\ndata based on a T5 model. Then, for a document, we take the\nﬁrst passage as the input, and the query generator outputs k\npredicted queries with beam search, i.e. Q = {q1, ..., qk}.\nFinally, by training over pseudo query-to-docid samples, our",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "model learns the mapping relations from query-like strings\nto docids, implementing the adaptation from general tasks to\nretrieval tasks. Formally, the training pairs are formed as:\npseudo query : qi −→docid, i ∈{1, ..., k}.\n(5)\nSupervised Fine-tuning. After general and search-\noriented pre-training, our model has certain knowledge and\nretrieval ability over docids. In order to adapt the model to\nspeciﬁc data distribution of the downstream dataset, we fur-",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "ther use supervised data to ﬁnetune the model. Speciﬁcally,\nthe supervised data is query-relevant docid pairs. By train-\ning the model on query-to-docid samples, it is aware of rich\nknowledge for document retrieval.\nSince the above training tasks are uniﬁed in a “text-to-\ndocid” format, we complete the three-stage training of Ul-\ntron based on the standard seq-to-seq objective, i.e., maxi-\nmizing the target sequence likelihood with teacher forcing.",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 452,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "Concretely, for the input sequence q, the generation objec-\ntive can be formalized as:\nL = arg max\nθ\nX\ni\nlog pθ(yi|y<i, q),\n(6)\nwhere pθ(yi|y<i, q) is the generation probability of token yi\nbased on the given input. The parameters are optimized by\nthe cross-entropy loss and the AdamW optimizer.\nExperimental Settings\nDatasets\nWe experiment with the following two public datasets for\ndocument retrieval.\nMS MARCO Document Ranking1 (Nguyen et al. 2016)",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "MS MARCO Document Ranking1 (Nguyen et al. 2016)\nis a large collection of queries and web-pages. Following the\nprevious work (Zhou et al. 2022), we construct a document\nsubset sampled from the labeled documents, and use their\ncorresponding queries for training. There are about 320k\ndocuments and 360k query-document pairs in this subset.\nNatural Question 320K2 (Kwiatkowski et al. 2019) is\na public dataset. Each piece of data contains a real ques-\ntion and a Wikipedia article to answer this question. We use",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "URLs to deduplicate documents in the corpus and the col-\nlection remains about 231k articles with 307k training pairs\nand 7.8k test queries. More details of data processing are\nintroduced in supplementary materials.\nBaselines\nFor comparison, we select three classes of baseline models.\n1https://microsoft.github.io/msmarco/Datasets\n2https://ai.google.com/research/NaturalQuestions/download\n(1) Sparse Retrieval. These methods score candidate\ndocuments based on the weight of appearing query terms.",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "BM25 (Robertson and Zaragoza 2009) uses the tf-idf fea-\nture to measure term weights, implemented under Lucene.\nDocT5Query (Nogueira, Lin, and Epistemic 2019) expands\na document with possible queries predicted by a ﬁnetuned\nT5 (Raffel et al. 2020) with this document as the input.\n(2) Dense Retrieval. We mainly focus on the dual en-\ncoder framework with large-scale PLMs as the backbone.\nTwo implementations with different underlying encoders,\ni.e. RepBERT (Zhan et al. 2020) and Sentence-T5 (Ni et al.",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "2022) are considered. DPR (Karpukhin et al. 2020) samples\nhard negatives for optimization.\n(3) End-to-end Retrieval. DSI (Tay et al. 2022) uses a\ntext-to-text model to map queries to relevant docids. We re-\nproduce DSI-Atomic and DSI-Semantic for comparison. Dy-\nnamicRetriver (Zhou et al. 2022) deploys a Docid decoder\nwith a trainable vector for each document. We reproduce the\nOverDense variant. Ultron-Atomic, Ultron-URL and Ultron-\nPQ are three variants of Ultron with atomic docids, URL",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "docids and PQ docids respectively.\nWe evaluate the performance of all models on the\ncommon evaluation metrics for document retrieval Recall\n(R@1/5/10), and Mean Reciprocal Rank (MRR@10).\nImplementation Details\nIn our experiments, BERT corresponds to the pre-trained\nbert-base-uncased one and T5 is t5-base, both from hugging-\nface transformers. As for RepBERT, Sentence-T5 and DPR,\nthe max length of input sequences is 512, and the batch size\nis 48. We follow the settings of DynamicRetriver (Zhou et al.",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "2022) and DSI (Tay et al. 2022) in their original papers. For\nUltron, the max length of URL docids is 100, the hyper-\nparameter of PQ is m = 24, k = 256, and the batch size\nis set as 128. During the three-stage training, we utilize 10\npieces of passage, 1 key term sequence, 10 pseudo queries\nand 1 annotated ﬁnetune query for each document, and the\nlearning rate is 1e-3. During inference, the beam size is 10.\nAll models are trained with the AdamW (Loshchilov and",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "Hutter 2019) optimizer. More implementation details and\nsource code are provided in supplementary materials.\nExperimental Results\nIn this section, we conduct extensive experiments to answer\nthe following research questions:\n• RQ1: How does Ultron perform on document retrieval\ncompared to existing static index-based methods?\n• RQ2: How does each stage of the three-stage training\nworkﬂow contribute to the ﬁnal retrieval results?\n• RQ3: Does Ultron have lower memory overhead and",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "• RQ3: Does Ultron have lower memory overhead and\nhigher inference speed than existing retrieval methods?\n• RQ4: What are the advantages of Ultron’s document iden-\ntiﬁers over the semantic cluster docids in DSI?\nOverall Performance (RQ1)\nWe present the overall results in Table 1, and draw several\nconclusions as follows to answer RQ1.",
+      "source": "rag_survey.pdf",
+      "page": 5,
+      "char_count": 335,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "Table 1: Overall results. “(-)” and “(↑)” indicates whether the params will increase as the corpus size increases. The best results\nare shown in bold and the best results of (-) models are underlined. “‡” and “†” denotes the result is signiﬁcantly better than all\nbaselines and (-) baselines in t-test with p<0.05.\nModel\nParams\nMS MARCO\nNatural Questions (NQ)\nR@1\nR@5\nR@10\nMRR@10\nR@1\nR@5\nR@10\nMRR@10\nSparse Retrieval\nBM25\n-\n0.1894\n0.4282\n0.5507\n0.2924\n0.1406\n0.3691\n0.4793\n0.2360\nDocT5Query\n-\n0.2327\n0.4938",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "0.3691\n0.4793\n0.2360\nDocT5Query\n-\n0.2327\n0.4938\n0.6361\n0.3481\n0.1907\n0.4388\n0.5583\n0.2955\nDense Retrieval\nRepBERT\n220M (-)\n0.2525\n0.5841\n0.6918\n0.3848\n0.2257\n0.5220\n0.6565\n0.3513\nSentence-T5\n220M (-)\n0.2727\n0.5891\n0.7215\n0.4069\n0.2251\n0.5200\n0.6512\n0.3495\nDPR\n220M (-)\n0.2908\n0.6275\n0.7313\n0.4341\n0.2278\n0.5344\n0.6858\n0.3592\nEnd-to-end Retrieval\nDSI-Semantic\n250M (-)\n0.2574\n0.4358\n0.5384\n0.3392\n0.1323\n0.3701\n0.4828\n0.2377\nDSI-Atomic\n495M (↑)\n0.3247\n0.6301\n0.6992\n0.4429\n0.2023\n0.4872\n0.6146\n0.3216",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "0.6301\n0.6992\n0.4429\n0.2023\n0.4872\n0.6146\n0.3216\nDynamicRetriever\n495M (↑)\n0.2904\n0.6422\n0.7315\n0.4253\n0.2263\n0.5353\n0.6876\n0.3608\nUltron-URL\n248M (-)\n0.2957†\n0.5643\n0.6782\n0.4002\n0.3378‡\n0.5420‡\n0.6705\n0.4251‡\nUltron-PQ\n257M (-)\n0.3155†\n0.6398†\n0.7314\n0.4535‡\n0.2564‡\n0.5309\n0.6575\n0.3712‡\nUltron-Atomic\n495M (↑)\n0.3281‡\n0.6490‡\n0.7413‡\n0.4686‡\n0.2543‡\n0.5482‡\n0.6953‡\n0.3859‡\n(1) In most scenarios, the end-to-end retrieval models out-\nperform static index-based retrieval methods, with paired",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "t-test at p<0.05 level. On MS MARCO, Ultron-PQ ex-\nceeds DPR by 8.5% on R@1 and 4.5% on MRR@10.\nUltron-Atomic achieves the best performance on both the\nMS MARCO and NQ datasets. We think the advantage of\nend-to-end retrievers lies in that their indexing and retrieval\nstages can be jointly optimized end-to-end to better ﬁt the ﬁ-\nnal retrieval target. Furthermore, our proposed Ultron model\nperforms the best among all end-to-end retrievers. This is\nthanks to our designed docids rich in semantics and the",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "three-stage training workﬂow that better captures the map-\nping relations from queries to docids to ﬁt search scenarios.\n(2) Comparing the three end-to-end retrievers with differ-\nent semantic docids, the results of Ultron-URL and Ultron-\nPQ are better than that of DSI-Semantic. For the NQ dataset,\nUltron-URL improves DSI-Semantic by 38.9% on R@10.\nThis indicates that our devised docids can embed richer se-\nmantic information to facilitate model training and decod-",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "ing. On MS MARCO dataset, Ultron-URL is inferior to\nUltron-PQ. Ultron-URL takes URLs as docids and tends to\ncapture the semantic knowledge related to these keywords.\nSome noises in URLs, such as numbers and symbols, may\naffect capturing semantics. Whereas the PQ docids are gen-\nerated from the representation of the entire document, thus\nbetter associated with the document knowledge.\n(3) End-to-end retrievers with atomic docids (including\nDSI-Atomic, DynamicRetriver and Ultron-Atomic) achieve",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "better results than those with semantic docids (Ultron-\nPQ/URL) on most metrics. This indicates that more parame-\nters make it easier to distinguish different documents. In ad-\ndition, Ultron-Atomic learns more information from pseudo\nquery-docid pairs, outperforming DSI-Atomic and Dynami-\ncRetriever. However, this kind of docids could lead to gi-\nTable 2: Ablation study of the three-stage training workﬂow.\nModel\nMS MARCO\nNatural Questions\nMRR@10 R@10\nMRR@10 R@10\nUltron-URL\n0.4002\n0.6782\n0.4251\n0.6705",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "Ultron-URL\n0.4002\n0.6782\n0.4251\n0.6705\nw/o general pretrain\n0.3856\n0.6321\n0.3587\n0.6608\nw/o search-oriented\n0.3341\n0.5211\n0.3071\n0.6147\nw/o ﬁnetune\n0.3477\n0.5693\n0.3504\n0.6405\nUltron-PQ\n0.4535\n0.7314\n0.3712\n0.6575\nw/o general pretrain\n0.4099\n0.6968\n0.3328\n0.6327\nw/o search-oriented\n0.3445\n0.5730\n0.2427\n0.5220\nw/o ﬁnetune\n0.4176\n0.7023\n0.3522\n0.6386\ngantic parameters and memory burden, especially when the\nnumber of documents increases. The semantic docids using",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "sharable tokens have the potential to alleviate these issues.\nIn summary, these results indicate that our end-to-end re-\ntriever Ultron with semantic-richer document identiﬁers\nis promising for document retrieval tasks.\nStudy of Training Workﬂow (RQ2)\nIn this paper, we design a three-stage training workﬂow for\nUltron. To verify the effects of each training stage on the\nﬁnal results (RQ2), we conduct an ablation study to remove\none training stage at one time and observe the impacts on",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "document retrieval. The results are shown in Table 2.\nWe ﬁnd that the removal of each training stage will dam-\nage the results on all evaluation metrics. Concretely, re-\nmoving the search-oriented pre-training causes the biggest\ndrop in overall results. This indicates that the pseudo query-\ndocid pairs signiﬁcantly enhance the model’s performance",
+      "source": "rag_survey.pdf",
+      "page": 6,
+      "char_count": 348,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "0\n10\n20\n30\n40\n50\n60\nEpoch\n0.0\n0.1\n0.2\n0.3\n0.4\nMRR@10\nGeneral Pre-train\nSearch-oriented\nFine-tuning\nUltron-PQ\nUltron-URL\nDocT5Query\nDPR\nFigure 4: Training curves on MS MARCO dataset.\nTable 3: Experiments about the memory cost and efﬁciency.\nModel\nMemory\nLatency\nR@1\nDocT5Query\n3.82MB\n5.63ms\n0.2327\nDPR\n980MB\n18.87ms\n0.2908\nUltron-Atomic\n0\n20.31ms\n0.3281\nUltron-URL\n51.0MB\n13.75ms\n0.2957\nUltron-PQ\n69.6MB\n8.90ms\n0.3155\non search tasks. Meanwhile, the general pre-training also",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "contributes to the ﬁnal results. This stage is dedicated to\ngaining the document knowledge of each docid. After re-\nmoving the supervised ﬁne-tuning, the performance on doc-\nument retrieval drops a lot. This result conﬁrms the necessity\nof the only supervised stage and its consequence of learning\nmore robust associations from queries to docids.\nTo illustrate the effects of each training stage in a ﬁner-\ngrained manner, we plot the training curve on MS MARCO",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "with MRR@10 against the training epochs, shown in Fig-\nure 4. With each stage, the model gradually captures knowl-\nedge to better complete the document retrieval task. Partic-\nularly, the general pre-training contributes more to Ultron-\nPQ. A possible reason is that Ultron-PQ adds some new to-\nkens to the vocabulary, thus general pre-training is necessary\nto understand the meaning of these tokens.\nStudy of Memory and Efﬁciency (RQ3)\nSince document retrieval is a critical step in practical search",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "applications, lower memory overhead and higher efﬁciency\nare necessary. We conduct experiments to compare the mem-\nory cost and inference latency of Ultron, DocT5Query, and\nDPR with brute-force search on MS MARCO.\nObserving the results in Table 3, Ultron has a signiﬁ-\ncant reduction of memory and inference latency compared\nto the DPR model, while achieving better results. Speciﬁ-\ncally, Ultron only needs to store the preﬁx tree, which spends\n90% less memory than the vectorized index of DPR. Most",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "importantly, Ultron is more efﬁcient than dual encoders as\nthe latency drops from 18.87ms to 8.90ms with regard to\n320K corpus size. Although the ANN approach can speed up\ndense retrieval, the latency of the dual encoder models will\nincrease with the expansion of the corpus. But for Ultron,\nrelevant docids are directly generated by the model through\nconstrained beam search, where the speed is only related to\nthe layer and width of the preﬁx tree.\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nSimilarity\n0\n100\n200\n300\n400\n500\n600",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "0.6\n0.8\n1.0\nSimilarity\n0\n100\n200\n300\n400\n500\n600\n700\n800\nCount\nDSI-Semantic\nUltron-PQ\nFigure 5: Distribution of similarity between documents.\nComparison of Different Docids (RQ4)\nDifferent docid representations will affect the inference dif-\nﬁculty of the end-to-end retriever. To observe the superior-\nity of our designed semantic docids, we compare the do-\ncids used in DSI-Semantic and Ultron-PQ, which are both\nencoded based on pre-calculated document embeddings.",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "Speciﬁcally, we randomly select 100 documents from the\nset of docids with the same preﬁxes (length = 2), and cal-\nculate the similarity between the embeddings of every two\ndocuments. We divide the bar at 0.025 intervals, and count\nthe number of document pairs that fall in each range.\nFrom Figure 5, it can be seen that the distribution of sim-\nilarity between documents generally obeys normal distribu-\ntion. The document embeddings of Ultron-PQ show higher",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "consistency, which indicates that our semantics-based iden-\ntiﬁers are more inclined to assign the same preﬁx to similar\ndocuments. We believe this is more conducive to the con-\nvergence of the model. Conversely, if similar documents are\nassigned different preﬁxes, the training and inference of the\nmodel will be more difﬁcult and confusing.\nLimitation and Future Work\nAlthough we have achieved certain results in the model-\ncentric paradigm, Ultron still faces several challenges to",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "overcome. First, extending the model to web scale puts for-\nward requirements for the design of the model-based indexer\nwith higher capacity. Second, how to add new coming doc-\numents to the model-based indexer remains unexplored. On\nthe basis of Ultron, there is plenty of room for future explo-\nration. (1) We can combine the advantages of different do-\ncids or devise better docids to reinforce the model capacity\nfor massive webpages. (2) A more reasonable model-based",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "index structure, or the fusion of traditional and model-based\nindexes can be explored to deal with new documents.\nConclusion\nIn this work, we explore a novel model-centric paradigm for\ndocument retrieval. The model Ultron breaks away from the\ntraditional index-based methods by encoding the knowledge\nof docids into an end-to-end model. Under the T5 backbone,\nwe devise two types of semantic document identiﬁers, and a\nthree-stage training strategy to optimize the model and adapt",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "it to search scenarios. Experiments on two public datasets in-\ndicate the superiority of the model-based indexer on retrieval\nperformance and efﬁciency over existing baselines.",
+      "source": "rag_survey.pdf",
+      "page": 7,
+      "char_count": 176,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "References\nBevilacqua, M.; Ottaviano, G.; Lewis, P.; Yih, W.; Riedel,\nS.; and Petroni, F. 2022. Autoregressive Search Engines:\nGenerating Substrings as Document Identiﬁers.\nCoRR,\nabs/2204.10628.\nBlanco, R.; and Lioma, C. 2012. Graph-based term weight-\ning for information retrieval. Inf. Retr., 15(1): 54–92.\nBrown, T. B.; Mann, B.; Ryder, N.; Subbiah, M.; Kaplan, J.;\nDhariwal, P.; Neelakantan, A.; Shyam, P.; Sastry, G.; Askell,\nA.; Agarwal, S.; Herbert-Voss, A.; Krueger, G.; Henighan,",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "T.; Child, R.; Ramesh, A.; Ziegler, D. M.; Wu, J.; Winter,\nC.; Hesse, C.; Chen, M.; Sigler, E.; Litwin, M.; Gray, S.;\nChess, B.; Clark, J.; Berner, C.; McCandlish, S.; Radford,\nA.; Sutskever, I.; and Amodei, D. 2020. Language Models\nare Few-Shot Learners. In Advances in Neural Information\nProcessing Systems 33: Annual Conference on Neural Infor-\nmation Processing Systems 2020, NeurIPS 2020, December\n6-12, 2020, virtual.\nCallan, J. P. 1994. Passage-Level Evidence in Document",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Retrieval. In SIGIR, 302–310. ACM/Springer.\nCao, N. D.; Izacard, G.; Riedel, S.; and Petroni, F. 2021.\nAutoregressive Entity Retrieval. In ICLR. OpenReview.net.\nChen, J.; Zhang, R.; Guo, J.; Fan, Y.; and Cheng, X. 2022.\nGERE: Generative Evidence Retrieval for Fact Veriﬁcation.\nCoRR, abs/2204.05511.\nDai, Z.; and Callan, J. 2019. Context-Aware Sentence/Pas-\nsage Term Importance Estimation For First Stage Retrieval.\nCoRR, abs/1910.10687.\nDai, Z.; and Callan, J. 2020.\nContext-Aware Document",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "Context-Aware Document\nTerm Weighting for Ad-Hoc Search. In WWW ’20: The Web\nConference 2020, Taipei, Taiwan, April 20-24, 2020, 1897–\n1907. ACM / IW3C2.\nDehghani, M.; Zamani, H.; Severyn, A.; Kamps, J.; and\nCroft, W. B. 2017. Neural Ranking Models with Weak Su-\npervision. In Proceedings of the 40th International ACM SI-\nGIR Conference on Research and Development in Informa-\ntion Retrieval, Shinjuku, Tokyo, Japan, August 7-11, 2017,\n65–74. ACM.\nDevlin, J.; Chang, M.; Lee, K.; and Toutanova, K. 2019.",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "BERT: Pre-training of Deep Bidirectional Transformers for\nLanguage Understanding. In Proceedings of the 2019 Con-\nference of the North American Chapter of the Association\nfor Computational Linguistics: Human Language Technolo-\ngies, NAACL-HLT 2019, Minneapolis, MN, USA, June 2-7,\n2019, Volume 1 (Long and Short Papers), 4171–4186. Asso-\nciation for Computational Linguistics.\nGao, L.; Dai, Z.; Chen, T.; Fan, Z.; Durme, B. V.; and Callan,\nJ. 2021. Complement Lexical Retrieval Model with Seman-",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "tic Residual Embeddings. In Advances in Information Re-\ntrieval - 43rd European Conference on IR Research, ECIR\n2021, Virtual Event, March 28 - April 1, 2021, Proceedings,\nPart I, volume 12656 of Lecture Notes in Computer Science,\n146–160. Springer.\nGe, T.; He, K.; Ke, Q.; and Sun, J. 2014. Optimized Prod-\nuct Quantization. IEEE Trans. Pattern Anal. Mach. Intell.,\n36(4): 744–755.\nGuo, J.; Fan, Y.; Ai, Q.; and Croft, W. B. 2016. A Deep\nRelevance Matching Model for Ad-hoc Retrieval. In Pro-",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "ceedings of the 25th ACM International Conference on In-\nformation and Knowledge Management, CIKM 2016, Indi-\nanapolis, IN, USA, October 24-28, 2016, 55–64. ACM.\nGuu, K.; Lee, K.; Tung, Z.; Pasupat, P.; and Chang, M.\n2020. REALM: Retrieval-Augmented Language Model Pre-\nTraining. CoRR, abs/2002.08909.\nJ´egou, H.; Douze, M.; and Schmid, C. 2011a. Product Quan-\ntization for Nearest Neighbor Search. IEEE Trans. Pattern\nAnal. Mach. Intell., 33(1): 117–128.",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "Anal. Mach. Intell., 33(1): 117–128.\nJ´egou, H.; Douze, M.; and Schmid, C. 2011b. Product Quan-\ntization for Nearest Neighbor Search. IEEE Trans. Pattern\nAnal. Mach. Intell., 33(1): 117–128.\nKarpukhin, V.; Oguz, B.; Min, S.; Lewis, P. S. H.; Wu, L.;\nEdunov, S.; Chen, D.; and Yih, W. 2020. Dense Passage Re-\ntrieval for Open-Domain Question Answering. In EMNLP\n(1), 6769–6781. Association for Computational Linguistics.\nKhattab, O.; and Zaharia, M. 2020. ColBERT: Efﬁcient and",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "Effective Passage Search via Contextualized Late Interac-\ntion over BERT. In Proceedings of the 43rd International\nACM SIGIR conference on research and development in In-\nformation Retrieval, SIGIR 2020, Virtual Event, China, July\n25-30, 2020, 39–48. ACM.\nKwiatkowski, T.; Palomaki, J.; Redﬁeld, O.; Collins, M.;\nParikh, A. P.; Alberti, C.; Epstein, D.; Polosukhin, I.; Devlin,\nJ.; Lee, K.; Toutanova, K.; Jones, L.; Kelcey, M.; Chang, M.;\nDai, A. M.; Uszkoreit, J.; Le, Q.; and Petrov, S. 2019. Nat-",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "ural Questions: a Benchmark for Question Answering Re-\nsearch. Trans. Assoc. Comput. Linguistics, 7: 452–466.\nLoshchilov, I.; and Hutter, F. 2019. Decoupled Weight De-\ncay Regularization.\nIn 7th International Conference on\nLearning Representations, ICLR 2019, New Orleans, LA,\nUSA, May 6-9, 2019. OpenReview.net.\nLuan, Y.; Eisenstein, J.; Toutanova, K.; and Collins, M.\n2021. Sparse, Dense, and Attentional Representations for\nText Retrieval. Trans. Assoc. Comput. Linguistics, 9: 329–\n345.",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "345.\nMetzler, D.; Tay, Y.; Bahri, D.; and Najork, M. 2021. Re-\nthinking search: making domain experts out of dilettantes.\nSIGIR Forum, 55(1): 13:1–13:27.\nMikolov, T.; Chen, K.; Corrado, G.; and Dean, J. 2013. Ef-\nﬁcient Estimation of Word Representations in Vector Space.\nIn 1st International Conference on Learning Representa-\ntions, ICLR 2013, Scottsdale, Arizona, USA, May 2-4, 2013,\nWorkshop Track Proceedings.\nMitra, B.; and Craswell, N. 2018. An Introduction to Neural",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Information Retrieval. Found. Trends Inf. Retr., 13(1): 1–\n126.\nNguyen, T.; Rosenberg, M.; Song, X.; Gao, J.; Tiwary, S.;\nMajumder, R.; and Deng, L. 2016. MS MARCO: A Human\nGenerated MAchine Reading COmprehension Dataset. In\nProceedings of the Workshop on Cognitive Computation: In-\ntegrating neural and symbolic approaches 2016 co-located\nwith the 30th Annual Conference on Neural Information",
+      "source": "rag_survey.pdf",
+      "page": 8,
+      "char_count": 393,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "Processing Systems (NIPS 2016), Barcelona, Spain, Decem-\nber 9, 2016, volume 1773 of CEUR Workshop Proceedings.\nCEUR-WS.org.\nNi, J.; ´Abrego, G. H.; Constant, N.; Ma, J.; Hall, K. B.; Cer,\nD.; and Yang, Y. 2022.\nSentence-T5: Scalable Sentence\nEncoders from Pre-trained Text-to-Text Models. In Mure-\nsan, S.; Nakov, P.; and Villavicencio, A., eds., Findings of\nthe Association for Computational Linguistics: ACL 2022,\nDublin, Ireland, May 22-27, 2022, 1864–1874. Association\nfor Computational Linguistics.",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "for Computational Linguistics.\nNogueira, R.; Lin, J.; and Epistemic, A. 2019.\nFrom\ndoc2query to docTTTTTquery. Online preprint, 6.\nNogueira, R.; Yang, W.; Lin, J.; and Cho, K. 2019.\nDocument Expansion by Query Prediction.\nCoRR,\nabs/1904.08375.\nPennington, J.; Socher, R.; and Manning, C. D. 2014. Glove:\nGlobal Vectors for Word Representation.\nIn Proceedings\nof the 2014 Conference on Empirical Methods in Natural\nLanguage Processing, EMNLP 2014, October 25-29, 2014,",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Doha, Qatar, A meeting of SIGDAT, a Special Interest Group\nof the ACL, 1532–1543. ACL.\nRaffel, C.; Shazeer, N.; Roberts, A.; Lee, K.; Narang, S.;\nMatena, M.; Zhou, Y.; Li, W.; and Liu, P. J. 2020. Exploring\nthe Limits of Transfer Learning with a Uniﬁed Text-to-Text\nTransformer. J. Mach. Learn. Res., 21: 140:1–140:67.\nRobertson, S. E.; and Zaragoza, H. 2009. The Probabilistic\nRelevance Framework: BM25 and Beyond. Found. Trends\nInf. Retr., 3(4): 333–389.\nRousseau, F.; and Vazirgiannis, M. 2013.\nGraph-of-word",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "Graph-of-word\nand TW-IDF: new approach to ad hoc IR. In 22nd ACM\nInternational Conference on Information and Knowledge\nManagement, CIKM’13, San Francisco, CA, USA, October\n27 - November 1, 2013, 59–68. ACM.\nTay, Y.; Tran, V. Q.; Dehghani, M.; Ni, J.; Bahri, D.; Mehta,\nH.; Qin, Z.; Hui, K.; Zhao, Z.; Gupta, J. P.; Schuster, T.;\nCohen, W. W.; and Metzler, D. 2022. Transformer Memory\nas a Differentiable Search Index. CoRR, abs/2202.06991.\nVaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones,",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "L.; Gomez, A. N.; Kaiser, L.; and Polosukhin, I. 2017. At-\ntention is All you Need. In Advances in Neural Information\nProcessing Systems 30: Annual Conference on Neural In-\nformation Processing Systems 2017, December 4-9, 2017,\nLong Beach, CA, USA, 5998–6008.\nXiong, L.; Xiong, C.; Li, Y.; Tang, K.; Liu, J.; Bennett, P. N.;\nAhmed, J.; and Overwijk, A. 2021. Approximate Nearest\nNeighbor Negative Contrastive Learning for Dense Text Re-\ntrieval. In 9th International Conference on Learning Rep-",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "resentations, ICLR 2021, Virtual Event, Austria, May 3-7,\n2021. OpenReview.net.\nZhan, J.; Mao, J.; Liu, Y.; Guo, J.; Zhang, M.; and Ma,\nS. 2021a. Jointly Optimizing Query Encoder and Product\nQuantization to Improve Retrieval Performance. In CIKM,\n2487–2496. ACM.\nZhan, J.; Mao, J.; Liu, Y.; Guo, J.; Zhang, M.; and Ma, S.\n2021b. Optimizing Dense Retrieval Model Training with\nHard Negatives. In SIGIR ’21: The 44th International ACM\nSIGIR Conference on Research and Development in Infor-",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "mation Retrieval, Virtual Event, Canada, July 11-15, 2021,\n1503–1512. ACM.\nZhan, J.; Mao, J.; Liu, Y.; Zhang, M.; and Ma, S. 2020. Rep-\nBERT: Contextualized Text Embeddings for First-Stage Re-\ntrieval. CoRR, abs/2006.15498.\nZheng, G.; and Callan, J. 2015. Learning to Reweight Terms\nwith Distributed Representations. In Proceedings of the 38th\nInternational ACM SIGIR Conference on Research and De-\nvelopment in Information Retrieval, Santiago, Chile, August\n9-13, 2015, 575–584. ACM.",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 484,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "9-13, 2015, 575–584. ACM.\nZhou, Y.; Yao, J.; Dou, Z.; Wu, L.; and Wen, J. 2022.\nDynamicRetriever: A Pre-training Model-based IR Sys-\ntem with Neither Sparse nor Dense Index.\nCoRR,\nabs/2203.00537.",
+      "source": "rag_survey.pdf",
+      "page": 9,
+      "char_count": 195,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

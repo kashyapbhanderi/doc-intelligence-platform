@@ -1,0 +1,932 @@
+{
+  "source": "prometheus.pdf",
+  "full_path": "data\\raw\\prometheus.pdf",
+  "total_pages": 17,
+  "text_chunks": 115,
+  "vision_chunks": 0,
+  "total_chunks": 115,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Noname manuscript No.\n(will be inserted by the editor)\nUncertain random geometric programming problems\nTapas Mondal* · Akshay Kumar Ojha · Sabyasachi\nPani\nReceived: date / Accepted: date\nAbstract In this paper, we introduce a deterministic formulation for the geometric programming prob-\nlem, wherein the coefficients are represented as independent linear-normal uncertain random variables.\nTo address the challenges posed by this combination of uncertainty and randomness, we introduce the",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "concept of an uncertain random variable and present a novel framework known as the linear-normal un-\ncertain random variable. Our main focus in this work is the development of three distinct transformation\ntechniques: the optimistic value criteria, pessimistic value criteria, and expected value criteria. These ap-\nproaches allow us to convert a linear-normal uncertain random variable into a more manageable random",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 416,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "variable. This transition facilitates the transformation from an uncertain random geometric program-\nming problem to a stochastic geometric programming problem. Furthermore, we provide insights into an\nequivalent deterministic representation of the transformed geometric programming problem, enhancing\nthe clarity and practicality of the optimization process. To demonstrate the effectiveness of our proposed\napproach, we present a numerical example.",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 450,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "approach, we present a numerical example.\nKeywords Stochastic programming · Uncertainty modelling · Linear-normal uncertain random\nvariable · Geometric programming\nMathematics Subject Classification (2010) 90C15 · 90C30 · 90C46 · 90C47 · 49K45\n1 Introduction\nGeometric programming (GP) is a highly efficient approach for addressing nonlinear optimization prob-\nlems when the objective and constraint functions are in posynomial form. In 1967, Duffin et al. [13] first",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "introduced the fundamental theories of the GP problem. In most cases, the GP method is employed\nfor objective and constraint functions, which are in posynomial form. When all parameters in the GP\nproblem are positive, except for the exponents, it is referred to as the posynomial problem. The GP\napproach transforms the original problem into a dual problem, making it more readily solvable.\nIn modern days, the GP problem is used in engineering design problems like circuit design [12, 21],",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "inventory modeling [40,49,59], production planning [8,11,22,23,25,28], risk management [51], chemical\nprocessing [44,50,57], information theory [10], and structural design [20].\nThe classical GP problem is considered under the assumption that parameters are well-defined and\nfixed. Many researchers [2,4,13,14,16,26,27,41,46–48] have devised effective and functional algorithms\ndesigned for this traditional GP problem, where parameters are exact and specific. In reality, though,",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "Tapas Mondal* (Corresponding author)\nSchool of Basic Sciences, Indian Institute of Technology Bhubaneswar\nTel.: +918345939869\nE-mail: tm19@iitbbs.ac.in\nAkshay Kumar Ojha\nSchool of Basic Sciences, Indian Institute of Technology Bhubaneswar\nE-mail: akojha@iitbbs.ac.in\nSabyasachi Pani\nSchool of Basic Sciences, Indian Institute of Technology Bhubaneswar\nE-mail: spani@iitbbs.ac.in\narXiv:2310.01848v1  [math.OC]  3 Oct 2023",
+      "source": "prometheus.pdf",
+      "page": 1,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "2\nTapas Mondal* et al.\nthe values associated with GP parameters often lack certainty and precision. Consequently, various\napproaches have been crafted to address the challenge of GP in scenarios where parameter values are\nuncertain and less precise. Avriel and Wilde [3], for instance, introduced a new dimension with the\nstochastic GP problem, wherein they explored a GP scenario featuring objective and constraint function",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 424,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "coefficients as nonnegative random variables. Dupaˇcov´a [15] developed a metal cutting model in GP form\nand presented stochastic sensivity analysis. In 2016, Liu et al. [32] solved the stochastic GP problem\nwith joint probabilistic constraints. Also, Liu et al. [33] came up with a new way to solve the joint\nrectangular chance-constrained GP problem with random parameters that are elliptically distributed",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 408,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "and independent from each other. In 2021, Shiraz et al. [52] solved the stochastic GP problem with joint\nchance constraints based on copula theory. In this article, the coefficients of each term in the objective\nand constraint functions of the GP problem are taken as dependent random variables. Furthermore, the\nGP problem has been developed when the parameters are taken as interval types. Liu [35] developed\na technique for determining the possible range of objective values in posynomial GP problems when",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "coefficients and exponents have varying intervals. Additionally, Mahapatra and Mandal [39] tackled the\nGP problem using interval-valued coefficients within a parametric framework.\nOver the past few decades, the GP problem has been developed in fuzzy environments. In 1993, Cao [5]\nextended the GP problem to an imprecise environment, along with interval and fuzzy coefficients. Later\non, the same author [6] proposed the GP problem with T-fuzzy coefficients. Mandal and Roy [40] solved",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "the GP problem with L-R fuzzy coefficients. Yang and Cao [60] made significant contributions to the\nfuzzy relational GP under monomial. Liu [34] developed the GP problem with fuzzy parameters. Shiraz\net al. [54] used possibility, necessity, and credibility approaches to solve the fuzzy chance-constrained GP\nproblem. Under the rough-set theory, Shiraz and Fukuyama [55] developed the GP problem.\nRecently, Liu [31] pioneered uncertainty theory, a new and developing field of mathematics. To solve",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "the GP problem, several researchers developed an uncertainty-based framework based on uncertainty the-\nory. Shiraz et al. [53] first considered the GP problem in an uncertain environment. Based on uncertainty\ntheory, the authors developed the deterministic form of an uncertain GP problem under normal, linear,\nand zigzag uncertainty distributions. In 2022, Mondal et al. [43] developed a procedure for solving the",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "GP problem with uncertainty. The authors derived the equivalent deterministic form of the GP problem\nunder triangular and trapezoidal uncertainty distributions. In addition, the same authors [42] proposed\ntriangular and trapezoidal two-fold uncertainty distributions and developed three reduction methods to\nreduce two-fold uncertainty distributions into single-fold uncertainty distributions. Chassien and Go-",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 410,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "erigk [7] introduced a robust GP problem with polyhedral and interval uncertainty. In 2023, Fontem [17]\ndemonstrated how to set bounds for a worst-case chance-constrained GP problem with random exponent\nparameters.\nIt is observed that the GP problem is taken into account under uncertainty distributions whenever\nthe parameters of uncertainty distributions are taken in deterministic form. However, in reality, the",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 414,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "parameters of an uncertainty distribution are not always deterministic. So the obvious question is: how\ncan we deal with an uncertain variable when its parameters are random variables instead of constant\nvalues? If the parameters of an uncertain variable are random variables instead of constant values, then\nit is called an uncertain random variable. In 2013, Liu [37] proposed an uncertain random variable\nthat is a mixture of uncertainty and randomness. Further, the same author [38] applied the concept",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "of uncertain random variables to an optimization problem called uncertain random programming. In\n2021, Liu et al. [36] developed portfolio optimization for uncertain random returns. In addition, Chen et\nal. [9] and Li et al. [29] solved portfolio optimization with uncertain random parameters. Zhou et al. [62]\nintroduced multi-objective optimization in uncertain random environments. Wang et al. [58] developed",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 411,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "an inventory model with uncertain random demand. Ke et al. [24] solved a decentralized decision-making\nproduction control problem with uncertain random parameters. In 2018, Qin [45] introduced uncertain\ngoal programming. Gao et al. [19] proposed the concept of an uncertain random variable in a complex\nform. Ahmadzade et al. [1] and Gao et al. [18] introduced the convergence concept of distribution for an\nuncertain random variable.",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "uncertain random variable.\nIn most of the optimization problems with uncertain random parameters, the authors considered some\nof the parameters to be uncertain variables and some to be random variables. From the literature survey,\nit is observed that there has been a lot of research on the crisp and fuzzy GP problem. In addition, an\noptimization problem is developed when some of parameters are uncertain variables and some of random",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 435,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "variables. To the best of our knowledge, no previous work on the GP problem with uncertain random\ncoefficients has been done. As a result, we attempt to investigate the GP problem with uncertain random\ncoefficients. The following are the main contributions we made to this study:",
+      "source": "prometheus.pdf",
+      "page": 2,
+      "char_count": 279,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "Uncertain random geometric programming problems\n3\nI. We introduce a novel deterministic formulation for the GP problem, where coefficients are uniquely\nrepresented as independent linear-normal uncertain random variables.\nII. To tackle uncertainty and randomness, we introduce the concept of an uncertain random variable\nand propose a novel framework called the linear-normal uncertain random variable.\nIII. We develop three distinct transformation methods, each with its own unique approach: the optimistic",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "value criteria, pessimistic value criteria, and expected value criteria. These methods are instrumental\nin converting complex linear-normal uncertain random variables into more manageable, tractable\nrandom variables.\nIV. The transformation methods enable us to convert a linear-normal uncertain random variable into a\nmore tractable random variable, facilitating the transition from an uncertain random GP problem to\na stochastic GP problem.\nV.",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 444,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "a stochastic GP problem.\nV.\nWe provide insights into an equivalent deterministic representation of the transformed GP problem,\nadding clarity and practicality to the optimization process.\nVI. To demonstrate the effectiveness and real-world applicability of our proposed approach, we present a\ncomprehensive numerical example, offering tangible evidence of its efficacy in addressing GP problems.\nIn essence, our research presents a paradigm shift in addressing GP problems, introducing innovative",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "concepts and methods that enhance understanding, clarity, and practicality in optimization processes.\nThe rest of the paper is organized as follows: A linear-normal uncertain random variable is proposed\nin Section 2. Transformation methods are developed in Section 3. The GP problem with linear-normal\nuncertain variable coefficients is considered, and the deterministic formulation is developed in Section 4.",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 409,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "In Section 5, a numerical example is given. Finally, a conclusion on this work is incorporated in Section\n6.\n2 Linear-normal uncertain random variable\nIn this section, we introduce the concept of a linear-normal uncertain random variable. To begin, let us\ndelve into some foundational ideas from both probability theory and uncertainty theory.\n2.1 Probability theory\nProbability theory is a field of mathematics focused on exploring the characteristics of unpredictable",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "events. Within probability theory, the concept of a random variable plays an important role. To grasp\nthe essence of a random variable, it is essential to familiarize ourselves with the notions of probability\nmeasure and probability space.\nDefinition 1\n[30] Consider the σ−algebra Lp defined over a nonempty set Ω. To establish the concept\nof a random variable, we must initially introduce the probability measure and probability space. The",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 440,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "probability measure, denoted as Pr : Lp →[0, 1], adheres to the following axioms:\nI. (Normality Axiom) Pr{Ω} = 1.\nII. (Nonnegativity Axiom) Pr{A} ≥0 for any event A ∈Lp.\nIII. (Additivity Axiom) Pr\n\b ∞\nS\ni=1\nAi\n\t\n=\n∞\nP\ni=1\nPr{Ai} for every countable sequence of events {Ai}∞\ni=1.\nFurthermore, the trio denoted as (Ω, Lp, Pr) constitutes the probability space. The notion of a random\nvariable proves highly valuable in the context of probability description. Here, we provide the definition\nof a random variable.",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "of a random variable.\nDefinition 2\n[30] A measurable function, denoted as ω : (Ω, Lp, Pr) →R, is referred to as a random\nvariable. In this context, (Ω, Lp, Pr) represents the probability space, and R is the set of real numbers.\nIn simpler terms, for any Borel set B, the set ω ∈B is considered an event.\nOn the other hand, one can distinctly define a random variable through its associated probability\ndistribution, which holds essential information about the random variable. In many instances, having",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "knowledge of the probability distribution is more than enough, obviating the need to know the random\nvariable directly. Below is the mathematical definition of probability distribution.\nDefinition 3\n[30] If Φp stands as the probability distribution associated to a random variable denoted\nas ω, then Φp is formally defined as\nΦp(x) = Pr{ω ≤x}, ∀x ∈R.",
+      "source": "prometheus.pdf",
+      "page": 3,
+      "char_count": 350,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "4\nTapas Mondal* et al.\nAdditionally, the following theorem supports the requirement that is both necessary and sufficient\nfor a probability distribution function.\nTheorem 1 [30] A function Φp : R →[0, 1] qualifies as a probability distribution if and only if it satisfies\nthe conditions of being monotonically increasing, right-continuous, and having the limits\nlim\nx→−∞Φp(x) = 0\nand\nlim\nx→+∞Φp(x) = 1.\nNormal random variables play an important role in order to define the linear-normal uncertain random",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "variable. Here is the definition of the normal random variable.\nDefinition 4\n[30] Let Φp be the probability distribution corresponding to a random variable ω. The\nrandom variable ω is said to be normal if and only if Φp is defined as\nΦp(x) = 1\n2\n\u0014\n1 + erf\n\u0012x −µ\nσ\n√\n2\n\u0013\u0015\n, x ∈R,\nwhere µ, σ are real numbers with σ > 0, and erf(z) =\n2\n√π\nzR\n0\ne−t2dt. If ω is a normal random variable with\nthe parameters µ and σ, then we write it as ω ∼N(µ, σ).",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 443,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "Remark 1 If µ = 0 and σ = 1, then the random variable ω ∼N(0, 1) is known as a standard normal\nrandom variable. Its distribution function is\nΦ(x) = 1\n2\n\u0014\n1 + erf\n\u0012 x\n√\n2\n\u0013\u0015\n, x ∈R.\n2.2 Uncertainty theory\nUncertainty theory is an emerging mathematical discipline that employs uncertain variables to depict the\nattributes of uncertainties and represent degrees of belief. In order to introduce the concept of uncertain\nvariables, it is essential to grasp the notions of uncertain measure and uncertainty space.",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "Definition 5 [31] Consider the σ−algebra Lu defined over a nonempty set Γ. To introduce the concept\nof an uncertain variable, we must initially define the uncertain measure and the concept of an uncertainty\nspace. The uncertain measure is represented as the set function M : Lu →[0, 1], which satisfies to the\nfollowing axioms:\nI. (Normality Axiom) M{Γ} = 1.\nII. (Duality Axiom) M{A} + M{Ac} = 1 for any event A ∈Lu.\nIII. (Subadditivity Axiom) M\n\b ∞\nS\ni=1\nAi\n\t\n≤\n∞\nP\ni=1",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "\b ∞\nS\ni=1\nAi\n\t\n≤\n∞\nP\ni=1\nM{Ai} for every countable sequence of events {Ai}∞\ni=1.\nFurthermore, the trio denoted as (Γ, Lu, M) constitutes the uncertainty space. The concept of the\nuncertain variable is highly valuable in the context of describing uncertainties. Below is the formal\ndefinition of the uncertain variable.\nDefinition 6\n[31] A measurable function denoted as ξ : (Γ, Lu, M) →R is referred to as an uncertain",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 418,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "variable. In this context, (Γ, Lu, M) represents the uncertainty space, and R corresponds to the set of\nreal numbers. Put simply, for any Borel set B, the set ξ ∈B is considered an event.\nAlternatively, an uncertain variable is identified through its associated uncertainty distribution, which\ncarries uncertain information regarding the uncertain variable. In many instances, having knowledge of\nthe uncertainty distribution is more than sufficient, obviating the need to know the uncertain variable",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "directly. Here is the mathematical definition of uncertainty distribution.\nDefinition 7\n[31] If Φu represents the uncertainty distribution corresponding to an uncertain variable\nξ, then Φu is defined as\nΦu(x) = M{ξ ≤x}, ∀x ∈R.\nIn addition, the requisite and complete condition for an uncertainty distribution function is provided\nin the following theorem.\nTheorem 2\n[31] A function Φu : R →[0, 1] qualifies as an uncertainty distribution if and only if it",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "displays monotonic increasing behavior, excluding the cases where Φu(x) = 0 or Φu(x) = 1.",
+      "source": "prometheus.pdf",
+      "page": 4,
+      "char_count": 89,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "Uncertain random geometric programming problems\n5\nDescribing uncertain information geometrically in a two-dimensional space using the uncertainty\ndistribution is straightforward. Real-world decision-making systems often employ various uncertain vari-\nables, such as normal, linear, zigzag, log-normal, triangular, and trapezoidal. Linear uncertain variables\nare particularly significant in defining linear-normal uncertain random variables. Here is the definition\nof a linear uncertain variable.",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "of a linear uncertain variable.\nDefinition 8 [31] Let Φu represents the uncertainty distribution corresponding to an uncertain variable\nξ. The uncertain variable ξ is classified as linear if and only if Φu is of the following form:\nΦu(x) =\n\n\n\n0,\nx ≤a;\nx−a\nb−a , a ≤x ≤b;\n1,\nx ≥b;\nwhere a and b are real numbers with a < b. When ξ is a linear uncertain variable with parameters a and\nb, we denote it as ξ ∼L(a, b).\n2.3 Uncertain random variable",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 446,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "2.3 Uncertain random variable\nAn uncertain random variable is an uncertain variable whose parameters are random variables instead\nof constant values. For better clarification, in a linear uncertain variable ξ ∼L(a, b), the parameters a\nand b are taken as constants. In this scenario, the obvious question is: how can we deal with the linear\nuncertain variable ξ ∼L(a, b) if its parameters a and b are random variables instead of constant values?",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 445,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "In order to describe this kind of variable, we need to define an uncertain random variable.\nDefinition 9 An uncertain random variable ˜ξ is a function from the uncertainty space (Γ, Lu, M) to\nthe set of random variables such that Pr{˜ξ(ω) ∈B} is a measurable function of ω for any Borel set B\nof R.\nRemark 2 In broad terms, an uncertain random variable can be described as a measurable function that\noperates within the uncertainty space and maps to the set of random variables. In simpler terms, it is an",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 505,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "element characterized by uncertainty, which can take on values that belong to the category of random\nvariables.\nIn this research, we propose a linear-normal uncertain random variable. The proposed definition is\ngiven below.\nDefinition 10 A linear-normal uncertain random variable is a linear uncertain variable whose parame-\nters are normal random variables. More precisely, the uncertain random variable ˜ξ ∼L(A, B) is said to",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 427,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "be a linear-normal uncertain random variable if and only if the parameters A and B are normal random\nvariables.\nRemark 3 In Definition 10, the parameters A and B of the linear-normal uncertain random variable\n˜ξ ∼L(A, B) are taken as independent normal random variables.\n3 Transformation of uncertain random variable to random variable\nIn this section, we demonstrate the process of converting an uncertain random variable into a conventional",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "random variable. To accomplish this, we employ three critical value criteria: optimistic, pessimistic, and\nexpected value criteria. We begin by introducing the idea of critical values for uncertain variables, which\nLiu [31] first introduced in 2015. Here is the definition of these critical values.\nDefinition 11 [31,61] If ξ is an uncertain variable, then the optimistic, pessimistic, and expected values\nof ξ are defined as follows:\nI. ξsup(α) = sup{r|M{ξ ≥r} ≥α}, α ∈(0, 1);",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "I. ξsup(α) = sup{r|M{ξ ≥r} ≥α}, α ∈(0, 1);\nII. ξinf(α) = inf{r|M{ξ ≤r} ≥α}, α ∈(0, 1);\nIII. ξexp =\n∞\nR\n0\nM{ξ ≥r}dr −\n0R\n−∞\nM{ξ ≤r}dr.\nAlternatively, Definition 11 can be expressed using uncertainty distribution. The subsequent theorem,\ncommonly referred to as the measure inversion theorem, proves to be highly valuable in this context.",
+      "source": "prometheus.pdf",
+      "page": 5,
+      "char_count": 336,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "6\nTapas Mondal* et al.\nTheorem 3\n[31, 61] Consider an uncertain variable ξ with an associated uncertainty distribution Φu.\nFor any real number r, the following relationships hold: M{ξ ≤r} = Φu(r) and M{ξ ≥r} = 1 −Φu(r).\nBased on Theorem 3, Definition 11 can be redefined as\nI. ξsup(α) = sup{r|1 −Φu(r) ≥α}, α ∈(0, 1);\nII. ξinf(α) = inf{r|Φu(r) ≥α}, α ∈(0, 1);\nIII. ξexp =\n∞\nR\n0\n(1 −Φu(r))dr −\n0R\n−∞\nΦu(r)dr.\nRemark 4 Integrating by parts, we have\n∞\nR\n0\n(1 −Φu(r))dr −\n0R\n−∞\nΦu(r)dr =\n∞\nR\n−∞\nrΦ′",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "∞\nR\n0\n(1 −Φu(r))dr −\n0R\n−∞\nΦu(r)dr =\n∞\nR\n−∞\nrΦ′\nu(r)dr. Therefore, the\nexpected value of an uncertain variable ξ can be determined by the formula given as ξexp =\n∞\nR\n−∞\nrΦ′\nu(r)dr.\nBased on the above operations, the following useful theorem is developed.\nTheorem 4\n[31, 61] Let ξ ∼L(a, b) be a linear uncertain variable. The optimistic, pessimistic, and\nexpected values of ξ are as follows:\nI. ξsup(α) = αa + (1 −α)b, α ∈(0, 1);\nII. ξinf(α) = (1 −α)a + αb, α ∈(0, 1);\nIII. ξexp = a+b\n2 .",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "III. ξexp = a+b\n2 .\nIt is observed that if the parameters of an uncertain variable are random variables instead of constant\nvalues, then the critical values of the uncertain variable are random variables instead of constant values.\nBased on this concept, we transform the uncertain random variable into a random variable using the\ncritical values of uncertainty. In particular, if ˜ξ ∼L(A, B) is a linear-normal uncertain random variable,",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "then based on Theorem 4, the transformed random variables using optimistic, pessimistic, and expected\nvalue criteria are as follows:\nI. ˜ξsup(α) = αA + (1 −α)B, α ∈(0, 1);\nII. ˜ξinf(α) = (1 −α)A + αB, α ∈(0, 1);\nIII. ˜ξexp = A+B\n2\n.\nThe main aim is to characterize the random variables ˜ξsup(α), ˜ξinf(α), and ˜ξexp. The characteristic\nfunction of a random variable is an important concept and plays a powerful role in this regard. Here is\nthe definition of the characteristic function of a random variable.",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "Definition 12\n[30] If ω is a random variable with probability distribution Φp, then its characteristic\nfunction is defined as χω(t) = E[eitω] =\n∞\nR\n−∞\neitrΦ′\np(r)dr, t ∈R, i = √−1.\nUsing the characteristic function, we characterize the transformed random variables ˜ξsup(α), ˜ξinf(α),\nand ˜ξexp. The following theorem is helpful in this regard.\nTheorem 5 If ˜ξ ∼L(A, B) is a linear-normal uncertain random variable where A ∼N(µA, σA) and",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 437,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "B ∼N(µB, σB) are two independent normal random variables, then the following results hold:\nI. ˜ξsup(α) ∼N\n\u0000αµA + (1 −α)µB,\np\nα2σ2\nA + (1 −α)2σ2\nB\n\u0001\n, α ∈(0, 1);\nII. ˜ξinf(α) ∼N\n\u0000(1 −α)µA + αµB,\np\n(1 −α)2σ2\nA + α2σ2\nB\n\u0001\n, α ∈(0, 1);\nIII. ˜ξexp ∼N\n\u0000 µA+µB\n2\n,\n√\nσ2\nA+σ2\nB\n2\n\u0001\n.\nProof: We prove only (I). The proofs of (II) and (III) are similar to the proof of (I).\nWe have ˜ξsup(α) = αA + (1 −α)B, where A ∼N(µA, σA) and B ∼N(µB, σB) are two indepen-",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 449,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "dent normal random variables. So, the characteristic functions of A and B are χA(t) = E[eitA] and\nχB(t) = E[eitB]. Using Definition 12, we get χA(t) = eiµAt−1\n2 σ2\nAt2 and χB(t) = eiµBt−1\n2 σ2\nBt2. Now, the",
+      "source": "prometheus.pdf",
+      "page": 6,
+      "char_count": 206,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "Uncertain random geometric programming problems\n7\ncharacteristic function of the random variable ˜ξsup(α) is calculated as\nχ˜ξsup(t; α) = E\n\u0002\neit˜ξsup(α)\u0003\n= E\n\u0014\neit\n\u0000αA+(1−α)B\n\u0001\u0015\n= E\n\u0002\neitαA · eit(1−α)B\u0003\n= E\n\u0002\neitαA\u0003\nE\n\u0002\neit(1−α)B\u0003\n= χA(αt) · χB((1 −α)t)\n= eiµA(αt)−1\n2 σ2\nA(αt)2 · eiµB((1−α)t)−1\n2 σ2\nB((1−α)t)2\n= ei(αµA+(1−α)µB)t−1\n2 (α2σ2\nA+(1−α)2σ2\nB)t2.\nTherefore, the characteristic function of ˜ξsup(α) is χ˜ξsup(t; α) = ei(αµA+(1−α)µB)t−1\n2 (α2σ2\nA+(1−α)2σ2\nB)t2.\nThis shows that ˜ξsup(α) ∼N",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "A+(1−α)2σ2\nB)t2.\nThis shows that ˜ξsup(α) ∼N\n\u0000αµA + (1 −α)µB,\np\nα2σ2\nA + (1 −α)2σ2\nB\n\u0001\n, which completes the proof.\n□\nIt is observed that the parameters of the transformed random variables ˜ξsup(α), ˜ξinf(α), and ˜ξexp\nare known. So, we can visualize their corresponding probability distribution functions. The probability\ndistributions of ˜ξsup(α), ˜ξinf(α), and ˜ξexp are as follows:\nI.\nΦ˜ξsup(x; α) = 1\n2\n\u0014\n1 + erf\n\u0012 x −αµA −(1 −α)µB\np\n2α2σ2\nA + 2(1 −α)2σ2\nB\n\u0013\u0015\n, x ∈R, α ∈(0, 1);\nII.\nΦ˜ξinf(x; α) = 1\n2\n\u0014",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "B\n\u0013\u0015\n, x ∈R, α ∈(0, 1);\nII.\nΦ˜ξinf(x; α) = 1\n2\n\u0014\n1 + erf\n\u0012 x −(1 −α)µA −αµB\np\n2(1 −α)2σ2\nA + 2α2σ2\nB\n\u0013\u0015\n, x ∈R, α ∈(0, 1);\nIII.\nΦ˜ξexp(x) = 1\n2\n\u0014\n1 + erf\n\u00122x −µA −µB\np\n2σ2\nA + 2σ2\nB\n\u0013\u0015\n, x ∈R.\nTo understand the efficiency of the transformation methods, we provide an example of a linear-normal\nuncertain random variable below.\nExample 1 If ˜ξ ∼LN(A, B) is a linear-normal uncertain random variable where A ∼N(3, 1) and\nB ∼N(2, 1) are two independent normal random variables, then",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "I. the transformed random variable via α optimistic value criteria is ˜ξsup(α) ∼N(α+2,\np\nα2 + (1 −α)2)\nand its corresponding probability distribution is\nΦ˜ξsup(x; α) = 1\n2\n\u0014\n1 + erf\n\u0012\nx −α −2\np\n2α2 + 2(1 −α)2\n\u0013\u0015\n, x ∈R, α ∈(0, 1);\nII. the transformed random variable via α pessimistic value criteria is ˜ξinf(α) ∼N(3−α,\np\nα2 + (1 −α)2)\nand its corresponding probability distribution is\nΦ˜ξinf(x; α) = 1\n2\n\u0014\n1 + erf\n\u0012\nx + α −3\np\n2α2 + 2(1 −α)2\n\u0013\u0015\n, x ∈R, α ∈(0, 1);",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "\u0012\nx + α −3\np\n2α2 + 2(1 −α)2\n\u0013\u0015\n, x ∈R, α ∈(0, 1);\nIII. the transformed random variable via expected value criteria is ˜ξexp ∼N( 5\n2,\n√\n2\n2 ) and its corresponding\nprobability distribution is\nΦ˜ξexp(x) = 1\n2\n\u0014\n1 + erf\n\u00122x −5\n2\n\u0013\u0015\n, x ∈R.\nUtilizing the optimistic, pessimistic, and expected value criteria, we depict the transformed probability\ndistribution of the linear-normal uncertain random variable ˜ξ ∼LN(A, B) in Figure 1, Figure 2, and",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 442,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "Figure 3, correspondingly, where A ∼N(3, 1) and B ∼N(2, 1). Figure 1 and Figure 2 are presented as\nsolid illustrations because they essentially represent bivariate functions involving both x and α. To offer a\nclear visualization for different values of α ∈(0, 1), we present the transformed probability distributions\nusing the optimistic and pessimistic value criteria in Figure 4 and Figure 5 as two-dimensional plots.",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 419,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "Remark 5 The optimistic value criteria transformation method for a fixed α ∈(0, 1) is equivalent to the\npessimistic value criteria transformation method for (1 −α). In particular, at α = 0.5, the optimistic\nvalue criteria and pessimistic value criteria transformation methods are equivalent to the expected value\ncriteria transformation method.",
+      "source": "prometheus.pdf",
+      "page": 7,
+      "char_count": 344,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "8\nTapas Mondal* et al.\nFigure 1: Transformed probability distribution of a linear-normal uncertain random variable via α opti-\nmistic value criteria.\nFigure 2: Transformed probability distribution of a linear-normal uncertain random variable via α pes-\nsimistic value criteria.\n4 Geometric programming problem with linear-normal uncertain random variable\ncoefficients\nA conventional GP problem involves addressing a minimization problem where both the objective func-",
+      "source": "prometheus.pdf",
+      "page": 8,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "tion and the constraints exhibit posynomial characteristics. Problems within the GP framework, in which\nall coefficients and decision variables are positive except for the exponents, are categorized as posynomial\nproblems. A deterministic GP problem is outlined as\nmin\nf0(x) =\nN0\nX\ni=1\nβi0\nn\nY\nj=1\nxα0ij\nj\ns.t.\nfk(x) =\nNk\nX\ni=1\nβik\nn\nY\nj=1\nxαkij\nj\n≤1, k = 1, 2, . . . K,\n(1)\nwhere βik > 0, xj > 0, αkij ∈R, ∀i, j, k. In this context, we have N0 representing the total number of",
+      "source": "prometheus.pdf",
+      "page": 8,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "terms in the objective function, and Nk representing the total number of terms in the kth constraint of\nProblem 1. To formulate the dual for Problem 1, let us introduce the variable N as the total number of\nterms present in Problem 1, given by N =\nK\nP\nk=0\nNk. Additionally, we use δik as the dual variables, and λk",
+      "source": "prometheus.pdf",
+      "page": 8,
+      "char_count": 314,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "Uncertain random geometric programming problems\n9\nFigure 3: Transformed probability distribution of a linear-normal uncertain random variable via expected\nvalue criteria.\nFigure 4: Transformed probability distributions of a linear-normal uncertain random variable via opti-\nmistic value criteria for different values of α.\nas the sum of dual variables present in the kth constraint, defined as λk =\nNk\nP\ni=1\nδik, where k = 0, 1, 2, . . . , K.\nConsequently, the dual problem for Problem 1 can be expressed as\nmax",
+      "source": "prometheus.pdf",
+      "page": 9,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "max\nV (δ) =\nN\nY\ni=1\n\u0012βik\nδik\n\u0013δik\u0012\nλk\n\u0013λk\ns.t.\nN0\nX\ni=1\nδi0 = λ0 = 1,\n(Normality condition)\nN\nX\ni=1\nδikαkij = 0, j = 1, 2, . . . , n.\n(Orthogonality conditions)\n(2)\nIn a GP problem, the primal problem is converted into its dual problem, which is easier to solve\nthan the primal problem. The relationship between primal and dual problems is useful to find the\nprimal decision variables. The relationship between primal and dual GP problems due to strong duality",
+      "source": "prometheus.pdf",
+      "page": 9,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "10\nTapas Mondal* et al.\nFigure 5: Transformed probability distributions of a linear-normal uncertain random variable via pes-\nsimistic value criteria for different values of α.\ntheorem [13,14] is as follows:\nn\nX\nj=1\nα0ij ln(xj) = ln\n\u0012δi0f0(x)\nβi0\n\u0013\n, i = 1, 2, . . . , N0,\nn\nX\nj=1\nαkij ln(xj) = ln\n\u0012 δik\nλkβik\n\u0013\n, i = 1, 2, . . . , Nk, k = 1, 2, . . . , K.\n(3)\nRemark 6 In a GP problem, the total number of terms minus the total number of decision variables",
+      "source": "prometheus.pdf",
+      "page": 10,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "minus one is known as the degree of difficulty. In Problem 1 and its dual given in Problem 2, the degree\nof difficulty is D = N −n −1. Depending on D, we have the following two cases.\nI. If D ≥0, then Problem 2 is feasible. Because in this case, the number of equations is less than or\nequal to the number of dual variables. This guarantees the existence of a solution to Problem 2.\nII. On the other hand, if D < 0, then Problem 2 is inconsistent. Because in this case, the number",
+      "source": "prometheus.pdf",
+      "page": 10,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "of equations is greater than the number of dual variables. It guarantees that there is no analytical\nsolution to the dual problem. However, Sinha and Biswal [56] found an approximate solution to\nthe dual problem with a negative degree of difficulty using the least squares method and the linear\nprogramming method.\nIn this section, our main aim is to develop an equivalent deterministic form of a GP problem in which",
+      "source": "prometheus.pdf",
+      "page": 10,
+      "char_count": 416,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "the coefficients of the objective and constraint functions are linear-normal uncertain random variables.\nFirst, we consider the uncertain random GP problem as\nmin\n˜f0(x) =\nN0\nX\ni=1\n˜βi0\nn\nY\nj=1\nxα0ij\nj\ns.t.\n˜fk(x) =\nNk\nX\ni=1\n˜βik\nn\nY\nj=1\nxαkij\nj\n≤1, k = 1, 2, . . . K,\n(4)\nwhere the coefficients ˜βik ∼LN(Aik, Bik) are independent linear-normal uncertain random variables,\nAik ∼N(µAik, σAik) and Bik ∼N(µBik, σBik) are independent normal random variables, xj > 0,",
+      "source": "prometheus.pdf",
+      "page": 10,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "αkij ∈R, ∀i, j, k. To develop the equivalent deterministic form of Problem 4, we first transform uncertain\nrandom variable coefficients ˜βik ∼LN(Aik, Bik) into random variable coefficients based on Theorem\n5. For instance, Problem 4 is converted into stochastic GP problems via optimistic, pessimistic, and\nexpected value criteria. Here are the transformations of Problem 4 into stochastic GP problems.",
+      "source": "prometheus.pdf",
+      "page": 10,
+      "char_count": 402,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "Uncertain random geometric programming problems\n11\nI. The transformation of Problem 4 into the stochastic GP problem via α optimistic value criteria is\nmin\nN0\nX\ni=1\n˜βi0sup(α)\nn\nY\nj=1\nxα0ij\nj\ns.t.\nNk\nX\ni=1\n˜βiksup(α)\nn\nY\nj=1\nxαkij\nj\n≤1, k = 1, 2, . . . K,\n(5)\nwhere ˜βiksup(α) ∼N\n\u0000αµAik +(1−α)µBik,\nq\nα2σ2\nAik + (1 −α)2σ2\nBik\n\u0001\nare independent normal random\nvariables, α ∈(0, 1).\nII. The transformation of Problem 4 into the stochastic GP problem via α pessimistic value criteria is\nmin\nN0\nX\ni=1\n˜βi0inf(α)\nn\nY",
+      "source": "prometheus.pdf",
+      "page": 11,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "min\nN0\nX\ni=1\n˜βi0inf(α)\nn\nY\nj=1\nxα0ij\nj\ns.t.\nNk\nX\ni=1\n˜βikinf(α)\nn\nY\nj=1\nxαkij\nj\n≤1, k = 1, 2, . . . K,\n(6)\nwhere ˜βikinf(α) ∼N\n\u0000(1−α)µAik +αµBik,\nq\n(1 −α)2σ2\nAik + α2σ2\nBik\n\u0001\nare independent normal random\nvariables, α ∈(0, 1).\nIII. The transformation of Problem 4 into the stochastic GP problem via expected value criteria is\nmin\nN0\nX\ni=1\n˜βi0exp\nn\nY\nj=1\nxα0ij\nj\ns.t.\nNk\nX\ni=1\n˜βikexp\nn\nY\nj=1\nxαkij\nj\n≤1, k = 1, 2, . . . K,\n(7)\nwhere ˜βikexp ∼N\n\u0012\nµAik +µBik\n2\n,\nq\nσ2\nAik +σ2\nBik\n2\n\u0013",
+      "source": "prometheus.pdf",
+      "page": 11,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "\u0012\nµAik +µBik\n2\n,\nq\nσ2\nAik +σ2\nBik\n2\n\u0013\nare independent normal random variables.\nWe use probabilistic constraints with a tolerance level ϵ ∈(0, 0.5]. Then Problem 5 becomes\nmin x0\ns.t.\nPr\n\u0012 Nk\nX\ni=1\n˜βiksup(α)\nn\nY\nj=1\nxαkij\nj\n≤1\n\u0013\n≥1 −ϵ, k = 1, 2, . . . K,\nPr\n\u0012 N0\nX\ni=1\n˜βi0sup(α)\nn\nY\nj=1\nxα0ij\nj\nx−1\n0\n≤1\n\u0013\n≥1 −ϵ,\n(8)\nProblem 6 becomes\nmin\nx0\ns.t.\nPr\n\u0012 Nk\nX\ni=1\n˜βikinf(α)\nn\nY\nj=1\nxαkij\nj\n≤1\n\u0013\n≥1 −ϵ, k = 1, 2, . . . K,\nPr\n\u0012 N0\nX\ni=1\n˜βi0inf(α)\nn\nY\nj=1\nxα0ij\nj\nx−1\n0\n≤1\n\u0013\n≥1 −ϵ,\n(9)",
+      "source": "prometheus.pdf",
+      "page": 11,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "12\nTapas Mondal* et al.\nProblem 7 becomes\nmin\nx0\ns.t.\nPr\n\u0012 Nk\nX\ni=1\n˜βikexp\nn\nY\nj=1\nxαkij\nj\n≤1\n\u0013\n≥1 −ϵ, k = 1, 2, . . . K,\nPr\n\u0012 N0\nX\ni=1\n˜βi0exp\nn\nY\nj=1\nxα0ij\nj\nx−1\n0\n≤1\n\u0013\n≥1 −ϵ.\n(10)\nNow, the main focus is to find an equivalent deterministic form of a probabilistic constraint. The following\ntheorem is very useful in this regard.\nTheorem 6 If ξl ∼N(µl, σl) with l = 1, 2, . . . , L are independent normal random variables, and Ul with",
+      "source": "prometheus.pdf",
+      "page": 12,
+      "char_count": 436,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "l = 1, 2, . . . , L are nonnegative variables, then for every tolerance level ϵ ∈(0, 0.5],\nPr\n\u0012\nL\nX\nl=1\nξlUl ≤1\n\u0013\n≥1 −ϵ\nis equivalent to\nL\nX\nl=1\nµlUl + Φ−1(1 −ϵ)\nv\nu\nu\nt\nL\nX\nl=1\nσ2\nl U 2\nl ≤1,\nwhere Φ−1(1 −ϵ) =\n√\n2erf−1(1 −2ϵ) is the inverse of the standard normal distribution function.\nProof: Let Z =\n\u0012 L\nP\nl=1\nξlUl\n\u0013\n−1. Then we have µZ = E[Z] = E\n\u0014\u0012 L\nP\nl=1\nξlUl\n\u0013\n−1\n\u0015\n=\n\u0012 L\nP\nl=1\nE[ξl]Ul\n\u0013\n−1 =\nL\nP\nl=1\nµlUl −1 and σ2\nZ = var(Z) = var\n\u0014\u0012 L\nP\nl=1\nξlUl\n\u0013\n−1\n\u0015\n=\n\u0012 L\nP\nl=1\nvar[ξl]U 2\nl\n\u0013\n−0 =\nL\nP\nl=1\nσ2",
+      "source": "prometheus.pdf",
+      "page": 12,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "\u0013\n−1\n\u0015\n=\n\u0012 L\nP\nl=1\nvar[ξl]U 2\nl\n\u0013\n−0 =\nL\nP\nl=1\nσ2\nl U 2\nl . Therefore, we\nhave\nPr\n\u0012\nL\nX\nl=1\nξlUl ≤1\n\u0013\n≥1 −ϵ ⇔Pr(Z ≤0) ≥1 −ϵ\n⇔Pr\n\u0012Z −µZ\nσZ\n≤−µZ\nσZ\n\u0013\n≥1 −ϵ\n⇔Φ\n\u0012\n−µZ\nσZ\n\u0013\n≥1 −ϵ\n\u0014\n∵Z −µZ\nσZ\n∼N(0, 1)\n\u0015\n⇔−µZ\nσZ\n≥Φ−1(1 −ϵ)\n⇔µZ + σZΦ−1(1 −ϵ) ≤0\n⇔\nL\nX\nl=1\nµlUl −1 + Φ−1(1 −ϵ)\nv\nu\nu\nt\nL\nX\nl=1\nσ2\nl U 2\nl ≤0\n⇔\nL\nX\nl=1\nµlUl + Φ−1(1 −ϵ)\nv\nu\nu\nt\nL\nX\nl=1\nσ2\nl U 2\nl ≤1.\nThis completes the proof.\n□\nBased on Theorem 6, we convert each probabilistic constraint into a deterministic constraint. There-",
+      "source": "prometheus.pdf",
+      "page": 12,
+      "char_count": 483,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "fore, converting probabilistic constraints into deterministic constraints and, after simplification, the de-\nterministic form of Problem 8, Problem 9, and Problem 10 are derived in Problem 11, Problem 12, and",
+      "source": "prometheus.pdf",
+      "page": 12,
+      "char_count": 208,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "Uncertain random geometric programming problems\n13\nProblem 13, respectively. Problem 11 is\nmin\nN0\nX\ni=1\n\u0000αµAi0 + (1 −α)µBi0\n\u0001\nn\nY\nj=1\nxα0ij\nj\n+ Φ−1(1 −ϵ)\nv\nu\nu\nt\nN0\nX\ni=1\n\u0000α2σ2\nAi0 + (1 −α)2σ2\nBi0\n\u0001\nn\nY\nj=1\nx2α0ij\nj\ns.t.\nNk\nX\ni=1\n\u0000αµAik + (1 −α)µBik\n\u0001\nn\nY\nj=1\nxαkij\nj\n+ Φ−1(1 −ϵ)\nv\nu\nu\nt\nNk\nX\ni=1\n\u0000α2σ2\nAik + (1 −α)2σ2\nBik\n\u0001\nn\nY\nj=1\nx2αkij\nj\n≤1,\nwhere α ∈(0, 1), ϵ ∈(0, 0.5], k = 1, 2, . . . K.\n(11)\nProblem 12 is\nmin\nN0\nX\ni=1\n\u0000(1 −α)µAi0 + αµBi0\n\u0001\nn\nY\nj=1\nxα0ij\nj\n+ Φ−1(1 −ϵ)\nv\nu\nu\nt\nN0\nX\ni=1\n\u0000(1 −α)2σ2",
+      "source": "prometheus.pdf",
+      "page": 13,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "xα0ij\nj\n+ Φ−1(1 −ϵ)\nv\nu\nu\nt\nN0\nX\ni=1\n\u0000(1 −α)2σ2\nAi0 + α2σ2\nBi0\n\u0001\nn\nY\nj=1\nx2α0ij\nj\ns.t.\nNk\nX\ni=1\n\u0000(1 −α)µAik + αµBik\n\u0001\nn\nY\nj=1\nxαkij\nj\n+ Φ−1(1 −ϵ)\nv\nu\nu\nt\nNk\nX\ni=1\n\u0000(1 −α)2σ2\nAik + α2σ2\nBik\n\u0001\nn\nY\nj=1\nx2αkij\nj\n≤1,\nwhere α ∈(0, 1), ϵ ∈(0, 0.5], k = 1, 2, . . . K.\n(12)\nProblem 13 is\nmin\nN0\nX\ni=1\n\u0012µAi0 + µBi0\n2\n\u0013\nn\nY\nj=1\nxα0ij\nj\n+ Φ−1(1 −ϵ)\n2\nv\nu\nu\nt\nN0\nX\ni=1\n\u0000σ2\nAi0 + σ2\nBi0\n\u0001\nn\nY\nj=1\nx2α0ij\nj\ns.t.\nNk\nX\ni=1\n\u0012µAik + µBik\n2\n\u0013\nn\nY\nj=1\nxαkij\nj\n+ Φ−1(1 −ϵ)\n2\nv\nu\nu\nt\nNk\nX\ni=1\n\u0000σ2\nAik + σ2\nBik\n\u0001\nn\nY\nj=1\nx2αkij\nj\n≤1,",
+      "source": "prometheus.pdf",
+      "page": 13,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "Nk\nX\ni=1\n\u0000σ2\nAik + σ2\nBik\n\u0001\nn\nY\nj=1\nx2αkij\nj\n≤1,\nwhere ϵ ∈(0, 0.5], k = 1, 2, . . . K.\n(13)\n5 Numerical example\nIn this section, we solve a numerical example to show the efficiency and efficacy of the procedures. We\nconsider a GP problem with linear-normal uncertain random variable coefficients as\nmin\n˜f0(x) = ˜β10x−1\n1 x−1\n2 x−1\n3\n+ ˜β20x1x3\ns.t.\n˜f1(x) = ˜β11x1x2 + ˜β21x2x3 ≤1,\nx1, x2, x3 > 0,\n(14)\nwhere ˜β10 ∼LN(A10, B10), ˜β20 ∼LN(A20, B20), ˜β11 ∼LN(A11, B11), ˜β21 ∼LN(A21, B21) are inde-",
+      "source": "prometheus.pdf",
+      "page": 13,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "pendent linear-normal uncertain random variables, A10 ∼N(50, 3), B10 ∼N(40, 2), A20 ∼N(45, 2),\nB20 ∼N(40, 1), A11 ∼N(1, 1\n3), B11 ∼N( 3\n2, 2\n3), A21 ∼N( 2\n3, 1\n3), B21 ∼N( 4\n3, 1) are independent normal\nrandom variables. Based on an α optimistic value point of view, the deterministic form of Problem 14\nwith a tolerance level ϵ is\nmin\n(40 + 10α)x−1\n1 x−1\n2 x−1\n3\n+ (40 + 5α)x1x3\n+ Φ−1(1 −ϵ)\nq\u00009α2 + 4(1 −α)2\u0001\nx−2\n1 x−2\n2 x−2\n3\n+\n\u00004α2 + (1 −α)2\u0001\nx2\n1x2\n3\ns.t.\n3 −α\n2\nx1x2 + 4 −2α\n3\nx2x3\n+ Φ−1(1 −ϵ)\ns\u00121\n9α2 + 4",
+      "source": "prometheus.pdf",
+      "page": 13,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "2\nx1x2 + 4 −2α\n3\nx2x3\n+ Φ−1(1 −ϵ)\ns\u00121\n9α2 + 4\n9(1 −α)2\n\u0013\nx2\n1x2\n2 +\n\u00121\n9α2 + (1 −α)2\n\u0013\nx2\n2x2\n3 ≤1,\nx1, x2, x3 > 0, α ∈(0, 1), ϵ ∈(0, 0.5].\n(15)",
+      "source": "prometheus.pdf",
+      "page": 13,
+      "char_count": 144,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "14\nTapas Mondal* et al.\nTo solve Problem 15, let us introduce two new variables, x4 and x5, defined as x4 =\n\u00009α2 + 4(1 −\nα)2\u0001\nx−2\n1 x−2\n2 x−2\n3\n+\n\u00004α2 + (1 −α)2\u0001\nx2\n1x2\n3 and x5 =\n\u0000 1\n9α2 + 4\n9(1 −α)2\u0001\nx2\n1x2\n2 +\n\u0000 1\n9α2 + (1 −α)2\u0001\nx2\n2x2\n3. Then,\nProblem 15 becomes as\nmin\n(40 + 10α)x−1\n1 x−1\n2 x−1\n3\n+ (40 + 5α)x1x3 + Φ−1(1 −ϵ)x\n1\n2\n4\ns.t.\n3 −α\n2\nx1x2 + 4 −2α\n3\nx2x3 + Φ−1(1 −ϵ)x\n1\n2\n5 ≤1,\n\u00009α2 + 4(1 −α)2\u0001\nx−2\n1 x−2\n2 x−2\n3 x−1\n4\n+\n\u00004α2 + (1 −α)2\u0001\nx2\n1x2\n3x−1\n4\n≤1,\n\u00121\n9α2 + 4\n9(1 −α)2\n\u0013\nx2\n1x2\n2x−1\n5\n+\n\u00121",
+      "source": "prometheus.pdf",
+      "page": 14,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "4\n≤1,\n\u00121\n9α2 + 4\n9(1 −α)2\n\u0013\nx2\n1x2\n2x−1\n5\n+\n\u00121\n9α2 + (1 −α)2\n\u0013\nx2\n2x2\n3x−1\n5\n≤1,\nx1, x2, x3, x4, x5 > 0, α ∈(0, 1), ϵ ∈(0, 0.5].\n(16)\nIn Problem 16, the total number of terms is 10 and the total number of variables is 5. So, the degree\nof difficulty is = 10 −5 −1 = 4. Let δ1, δ2, . . . , δ10 be the corresponding dual variables. The the dual of\nProblem 16 is\nmax\nV (δ) =\n\u001240 + 10α\nδ1\n\u0013δ1\u001240 + 5α\nδ2\n\u0013δ2\u0012Φ−1(1 −ϵ)\nδ3\n\u0013δ3\u00123 −α\n2δ4\n\u0013δ4\u00124 −2α\n3δ5\n\u0013δ5\n\u0012Φ−1(1 −ϵ)\nδ6\n\u0013δ6\u00129α2 + 4(1 −α)2\nδ7\n\u0013δ7\u00124α2 + (1 −α)2\nδ8",
+      "source": "prometheus.pdf",
+      "page": 14,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "δ6\n\u0013δ6\u00129α2 + 4(1 −α)2\nδ7\n\u0013δ7\u00124α2 + (1 −α)2\nδ8\n\u0013δ8\u0012α2 + 4(1 −α)2\n9δ9\n\u0013δ9\n\u0012α2 + 9(1 −α)2\n9δ10\n\u0013δ10\n(δ4 + δ5 + δ6)δ4+δ5+δ6(δ7 + δ8)δ7+δ8(δ9 + δ10)δ9+δ10\ns.t.\nδ1 + δ2 + δ3 = 1,\n−δ1 + δ2 + δ4 −2δ7 + 2δ8 + 2δ9 = 0,\n−δ1 + δ4 + δ5 −2δ7 + 2δ9 + 2δ10 = 0,\n−δ1 + δ2 + δ5 −2δ7 + 2δ8 + 2δ10 = 0,\n1\n2δ3 −δ7 −δ8 = 0,\n1\n2δ6 −δ9 −δ10 = 0.\n(17)\nSolving Problem 17 for a fixed α ∈(0, 1) with the tolerance level ϵ = 0.05, we get the dual solution.",
+      "source": "prometheus.pdf",
+      "page": 14,
+      "char_count": 428,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "Consequently, by the primal-dual relationship, we find the primal solution. When we set parameter α to\ndiscrete values from 0.1 to 0.9 with an increment 0.1, the corresponding solutions are computed in Table\n1.\nTable 1: Optimal solutions\nα\nx∗\n1\nx∗\n2\nx∗\n3\nx∗\n4\nx∗\n5\nObjective value\n0.1\n1.454\n0.167\n1.233\n39.882\n0.056\n219.893\n0.2\n1.409\n0.183\n1.219\n31.919\n0.051\n213.316\n0.3\n1.361\n0.201\n1.207\n27.584\n0.047\n206.732\n0.4\n1.310\n0.223\n1.199\n26.036\n0.042\n200.180\n0.5\n1.254\n0.247\n1.195\n26.533\n0.038\n193.715\n0.6\n1.194\n0.274",
+      "source": "prometheus.pdf",
+      "page": 14,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "0.247\n1.195\n26.533\n0.038\n193.715\n0.6\n1.194\n0.274\n1.197\n28.480\n0.034\n187.493\n0.7\n1.132\n0.304\n1.208\n31.494\n0.031\n181.885\n0.8\n1.075\n0.332\n1.225\n35.514\n0.030\n177.570\n0.9\n1.033\n0.354\n1.242\n40.852\n0.032\n175.417\nWe find the deterministic form of Problem 14 based on an optimistic value point of view. Further, we\nsolve the transformed deterministic problem for different values of α ∈(0, 1), which are given in Table 1.",
+      "source": "prometheus.pdf",
+      "page": 14,
+      "char_count": 412,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "Similarly, it is easy to find the solution to Problem 14 based on the pessimistic value point of view and\nthe expected value point of view. However, from Table 1, we visualize the solution to Problem 14 based",
+      "source": "prometheus.pdf",
+      "page": 14,
+      "char_count": 208,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "Uncertain random geometric programming problems\n15\non the pessimistic value point of view and the expected value point of view. Figure 6 shows the objective\nvalues with respect to the parameter α based on the optimistic value point of view and the pessimistic\nvalue point of view. However, α = 0.5 gives the optimal objective value based on expected value point\nof view.\nFigure 6: Optimal objective values with respect to the parameter α.\n6 Conclusion",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 451,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "6 Conclusion\nIn conclusion, our work delves into the realm of GP from a unique perspective by incorporating indepen-\ndent linear-normal uncertain random variables into the problem. We introduce and define the concept\nof an uncertain random variable and propose a novel approach in the form of linear-normal uncertain\nrandom variables. We are able to transform these uncertain random variables into their stochastic coun-",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 420,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "terparts by using three different criteria: optimistic value, pessimistic value, and expected value. This\nturns the uncertain random GP problem into a manageable stochastic GP problem.\nOne of the primary advantages of our approach is its ability to model and address uncertainty\nin a structured manner, which is particularly useful in real-world scenarios where data is not always\ndeterministic. This method allows decision-makers to make informed choices that consider the inherent",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "uncertainty and randomness in the input coefficients, ultimately leading to more reliable solutions.\nFurthermore, we present an equivalent deterministic representation of the transformed GP problem,\nwhich simplifies the decision-making process for practitioners who may prefer working with determin-\nistic models. This duality between stochastic and deterministic representations provides flexibility in\naddressing the problem based on the decision-maker’s preference and data availability.",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "However, it is essential to acknowledge the limitations of our work. Firstly, the computational com-\nplexity of solving stochastic GP problems can be substantial, especially for large-scale instances, and may\nrequire specialized optimization techniques or approximation methods. Secondly, our approach relies on\nthe assumption that the coefficients are independent linear-normal uncertain random variables, which",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 412,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "might not always hold in practical applications. Addressing correlated uncertainties remains an avenue\nfor future research. Additionally, the transformation of uncertain variables into stochastic forms may\nintroduce approximations, potentially impacting the accuracy of the results.\nIn summary, our work offers a valuable contribution to the field of GP problems by providing a\nsystematic approach to handling uncertainty and randomness through linear-normal uncertain random",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "variables. While it offers practical benefits in decision-making under uncertainty, decision-makers should\nbe aware of the computational challenges and the assumptions inherent in our approach. Future research\ncould explore more sophisticated techniques to handle correlated uncertainties and further improve the\napplicability of stochastic GP problems in real-world scenarios.\nAcknowledgement The first author is thankful to CSIR for financial support of this work through file No: 09\\1059(0027)\\2019-\nEMR-I.",
+      "source": "prometheus.pdf",
+      "page": 15,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "16\nTapas Mondal* et al.\nData availability Data sharing not applicable to this article as no datasets were generated. A random\ndata set is taken for the numerical example given in this paper.\nConflict of interests The authors have no relevant financial or non financial interests to disclose. The\nauthors declare that they have no conflict of interests.\nReferences\n1. Ahmadzade, H., Gao, R., Naderi, H., Farahikia, M.: Partial divergence measure of uncertain random variables and",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "its application. Soft Comput. 24, 501–512 (2020)\n2. Avriel, M., Dembo, R., Passy, U.: Solution of generalized geometric programs. Int. J. Numer. Method Eng. 9,\n149–168 (1975)\n3. Avriel, M., Wilde, D.J.: Engineering design under uncertainty. I&EC Process Des. Dev. 8, 127–131 (1969)\n4. Beightler, C.S., Phillips, D,T.: Applied Geometric Programming. Wiley, New York (1976)\n5. Cao, B.Y.: Extended fuzzy geometric programming. J. Fuzzy Math. 1, 285–293 (1993)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "6. Cao, B.Y.: Research for a geometric programming model with T-fuzzy variable. J. Fuzzy Math. 5, 625–632 (1997)\n7. Chassein, A., Goerigk, M.: On the complexity of robust geometric programming with polyhedral uncertainty. Oper.\nRes. Lett. 47, 21–24 (2019)\n8. Cheng, T.C.E.: An economic order quantity model with demand-dependent unit production cost and imperfect\nproduction process. IIE Trans. 23, 23–28 (1991)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 411,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "production process. IIE Trans. 23, 23–28 (1991)\n9. Chen, L., Gao, R., Bian, Y., Di, H.: Elliptic entropy of uncertain random variables with application to portfolio\nselection. Soft Comput. 25, 1925–1939 (2021)\n10. Chiang, M.: Geometric programming for communication systems. Found. Trends Commun. Inf. Theory. 2, 1–154\n(2005)\n11. Choi, J.C., Bricker, D.L.: Effectiveness of a geometric programming algorithm for optimization of machining eco-\nnomics models. Comput. Oper. Res. 10, 957–961 (1996)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "12. Chu, C., Wong, D.F.: VLSI circuit performance optimization by geometric programming. Ann. Oper. Res. 105,\n37–60 (2001)\n13. Duffin, R.J., Peterson, E.L., Zener, C.M.: Geometric Programming Theory and Applications. Wiley, New York\n(1967)\n14. Duffin, R.J., Peterson, E.L.: Geometric programming with signomials. J. Optim. Theory Appl. 11, 3–35 (1973)\n15. Dupaˇcov´a, J. Stochastic geometric programming with an application. Kybernetika 46, 374–386 (2010)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "16. Fang, S.C., Peterson, E.L., Rajasekera, J.R.: Controlled dual perturbations for posynomial programs. Eur. J. Oper.\nRes. 35, 111–117 (1988)\n17. Fontem, B.: Robust chance-constrained geometric programming with application to demand risk mitigation. J.\nOptim. Theory Appl. 197, 765–797 (2023)\n18. Gao, R., Ralescu, D.A.: Convergence in distribution for uncertain random variables. IEEE Trans. Fuzzy Syst. 26,\n1427–1434 (2018)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 426,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "1427–1434 (2018)\n19. Gao, R., Zhang, Z., Ahmadzade, H., Ralescu, D.A.: Complex uncertain random variables. Soft Comput. 22, 5817–\n5824 (2018)\n20. Gupta, N.C.D., Paul, H., Yu, C.H.: An application of geometric programming to structural design. Computers &\nStructures. 22, 965–971 (1986)\n21. Hershenson, M.D., Boyd, S.P., Lee, T.H.: Optimal design of a CMOS op-amp via geometric programming. IEEE\nTrans. Comput. Aid. Design. 20, 1–21 (2001)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 438,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "Trans. Comput. Aid. Design. 20, 1–21 (2001)\n22. Islam, S., Roy, T.K.: Fuzzy multi-item economic production quantity model under space constraint: a geometric\nprogramming approach. Appl. Math. Comput. 184, 326–335 (2007)\n23. Jung, H., Klein, C.M.: Optimal inventory policies under decreasing cost functions via geometric programming. Eur.\nJ. Oper. Res. 132, 628–642 (2001)\n24. Ke, H., Su, T., Ni, Y.: Uncertain random multilevel programming with application to production control problem.",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "Soft Comput. 19, 1739–1746 (2015)\n25. Kim, D., Lee, W.J.: Optimal joint pricing and lot sizing with fixed and variable capacity. Eur. J. Oper. Res. 109,\n212–227 (1998)\n26. Kortanek, K.O., No, H.: A second order affine scaling algorithm for the geometric programming dual with logarithmic\nbarrier. Optimization 23, 303–322 (1992)\n27. Kortanek, K.O., Xu, X., Ye, Y.: An infeasible interior-point algorithm for solving primal and dual geometric pro-\ngrams. Math. Program. 76, 155–181 (1997)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "grams. Math. Program. 76, 155–181 (1997)\n28. Lee, W.J.: Determining order quantity and selling price by geometric programming. Optimal solution, bounds, and\nsensitivity. Decis. Sci. 24, 76–87 (1993)\n29. Li, B., Li, X., Teo, K.L., Zheng, P.: A new uncertain random portfolio optimization model for complex systems with\ndownside risks and diversification. Chaos Solit. Fractals. 160, 11-22 (2022)\n30. Liu, B.: Uncertainty theory: An Introduction to Its Axiomatic Foundation, Physica-Verlag, Heidelberg (2004)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "31. Liu, B.: Uncertainty Theory, 4th edn. Springer, Berlin (2015)\n32. Liu, J., Lisser, A., Chen, Z.:Stochastic geometric optimization with joint probabilistic constraints. Oper. Res. Lett.\n44, 687–691 (2016)\n33. Liu, J., Peng, S., Lisser, A., Chen, Z.: Rectangular chance constrained geometric optimization. Optim. Eng. 21,\n537–566 (2020)\n34. Liu, S.T.: Geometric programming with fuzzy parameters in engineering optimization. Int. J. Approx. Reason. 46,\n484–498 (2007)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "484–498 (2007)\n35. Liu, S.T.: Posynomial geometric programming with parametric uncertainty. Eur. J. Oper. Res. 168, 345–353 (2006)\n36. Liu, Y., Ahmadzade, H., Farahikia, M.: Portfolio selection of uncertain random returns based on value at risk. Soft\nComput. 25, 6339–6346 (2021)\n37. Liu, Y.: Uncertain random variables: a mixture of uncertainty and randomness. Soft Comput. 17, 625–634 (2013)",
+      "source": "prometheus.pdf",
+      "page": 16,
+      "char_count": 393,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "Uncertain random geometric programming problems\n17\n38. Liu, Y.: Uncertain random programming with applications. Fuzzy Optim. Decis. Mak. 12, 153–169 (2013)\n39. Mahapatra, G.S., Mandal, T.K.: Posynomial parametric geometric programming with interval valued coefficient. J.\nOptim. Theory Appl. 154, 120–132 (2012)\n40. Mandal, N.K., Roy, T.K.: A displayed inventory model with L-R fuzzy number. Fuzzy Optim. Decis. Mak. 5, 227–243\n(2006)",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 434,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "(2006)\n41. Maranas, C.D., Floudas, C.A.: Global optimization in generalized geometric programming. Comput. Chem. Eng.\n21, 351–369 (1997)\n42. Mondal, T., Ojha, A.K., Pani, S.: Geometric programming problems with triangular and trapezoidal two-fold un-\ncertainty distributions. arXiv preprint arXiv:2302.01710 (2023)\n43. Mondal, T., Ojha, A.K., Pani, S.: Solving geometric programming problems with triangular and trapezoidal uncer-\ntainty distributions. RAIRO–Oper. Res. 56, 2833–2851 (2022)",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "44. Passy, U., Wilde, D.J.: A geometric programming algorithm for solving chemical equilibrium problems. SIAM J.\nAppl. Math. 16, 363–373 (1968)\n45. Qin, Z.: Uncertain random goal programming. Fuzzy Optim. Decis. Mak. 17, 375–386 (2018)\n46. Rajgopal, J.: An alternative approach to the refined duality theory of geometric programming. J. Math. Anal. Appl.\n167, 266–288 (1992)\n47. Rajgopal, J., Bricker, D.L.: Posynomial geometric programming as a special case of semi-infinite linear programming.",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "J. Optim. Theory Appl. 66, 455–475 (1990)\n48. Rajgopal, J., Bricker, D.L.: Solving posynomial geometric programming problems via generalized linear program-\nming. Comput. Optim. Appl. 21, 95–109 (2002)\n49. Roy, T.K., Maiti, M.: A fuzzy EOQ model with demand-dependent unit cost under limited storage capacity. Eur.\nJ. Oper. Res. 99, 425–432 (1997)\n50. Ruckaert, M.J., Martens, X.M., Desarnauts, J.: Ethylene plant optimization by geometric programming. Comput.\n& Chem. Eng. 2, 93–97 (1978)",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "& Chem. Eng. 2, 93–97 (1978)\n51. Scott, C.H., Jefferson, T.R.: Allocation of resources in project management. Int. J. Syst. Sci. 26, 413–420 (1995)\n52. Shiraz, R.K., Khodayifar, S., Pardalos, P.M.: Copula theory approach to stochastic geometric programming. J. Glob.\nOptim. 81, 435–468 (2021)\n53. Shiraz, R.K., Tavana, M., Di Caprio, D., Fukuyama, H.: Solving geometric programming problems with normal,\nlinear and zigzag uncertainty distributions. J. Optim. Theory Appl. 170, 243–265 (2016)",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 491,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "54. Shiraz, R.K., Tavana, M., Fukuyama, H., Di Caprio, D.: Fuzzy chance-constrained geometric programming: the\npossibility, necessity and credibility approaches. Oper. Res. Int. J. 17, 67–97 (2017)\n55. Shiraz, R.K., Fukuyama, H.: Integrating geometric programming with rough set theory. Oper. Res. Int. J. 18, 1–32\n(2018)\n56. Sinha, S.B., Biswas, A., Biswal, M.P.: Geometric programming problems with negative degrees of difficulty. Eur. J.\nOper. Res. 28, 101–103 (1987)",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "Oper. Res. 28, 101–103 (1987)\n57. Wall, T.W., Greening, D., Woolsey, R.E.D.: OR practice—solving complex chemical equilibria using a geometric-\nprogramming based technique. Oper. Res. 34, 345–493 (1986)\n58. Wang, D., Qin, Z., Kar, S.: A novel single-period inventory problem with uncertain random demand and its appli-\ncation. Appl. Math. Comput. 269, 133–145 (2015)\n59. Worrall, B.M., HALL, M.A: The analysis of an inventory control model using posynomial geometric programming.",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "Int. J. Prod. Res. 20, 657–667 (1982)\n60. Yang, J.H., Cao, B.Y.: Monomial geometric programming with fuzzy relation equation constraints. Fuzzy Optim.\nDecis. Mak. 6, 337–349 (2007)\n61. Yang, L., Liu, P., Li, S., Gao, Y., Ralescu, D.A.: Reduction methods of type-2 uncertain variables and their appli-\ncations to solid transportation problem. Inf. Sci. 291, 204–237 (2015)\n62. Zhou, J., Yang, F., Wang, K.: Multi-objective optimization in uncertain random environments. Fuzzy Optim. Decis.",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "Mak. 13, 397–413 (2014)",
+      "source": "prometheus.pdf",
+      "page": 17,
+      "char_count": 23,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

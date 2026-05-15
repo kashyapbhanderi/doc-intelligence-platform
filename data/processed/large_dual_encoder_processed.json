@@ -1,0 +1,980 @@
+{
+  "source": "large_dual_encoder.pdf",
+  "full_path": "data\\raw\\large_dual_encoder.pdf",
+  "total_pages": 13,
+  "text_chunks": 121,
+  "vision_chunks": 0,
+  "total_chunks": 121,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nArvind Neelakantan * 1 Tao Xu * 1 Raul Puri 1 Alec Radford 1 Jesse Michael Han 1 Jerry Tworek 1\nQiming Yuan 1 Nikolas Tezak 1 Jong Wook Kim 1 Chris Hallacy 1 Johannes Heidecke 1 Pranav Shyam 1\nBoris Power 1 Tyna Eloundou Nekoul 1 Girish Sastry 1 Gretchen Krueger 1 David Schnurr 1\nFelipe Petroski Such 1 Kenny Hsu 1 Madeleine Thompson 1 Tabarak Khan 1 Toki Sherbakov 1 Joanne Jang 1\nPeter Welinder 1 Lilian Weng 1\nAbstract",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "Peter Welinder 1 Lilian Weng 1\nAbstract\nText embeddings are useful features in many\napplications such as semantic search and com-\nputing text similarity. Previous work typically\ntrains models customized for different use cases,\nvarying in dataset choice, training objective and\nmodel architecture. In this work, we show that\ncontrastive pre-training on unsupervised data at\nscale leads to high quality vector representations\nof text and code. The same unsupervised text em-",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "of text and code. The same unsupervised text em-\nbeddings that achieve new state-of-the-art results\nin linear-probe classiﬁcation also display impres-\nsive semantic search capabilities and sometimes\neven perform competitively with ﬁne-tuned mod-\nels. On linear-probe classiﬁcation accuracy aver-\naging over 7 tasks, our best unsupervised model\nachieves a relative improvement of 4% and 1.8%\nover previous best unsupervised and supervised\ntext embedding models respectively. The same",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 482,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "text embedding models respectively. The same\ntext embeddings when evaluated on large-scale\nsemantic search attains a relative improvement\nof 23.4%, 14.7%, and 10.6% over previous best\nunsupervised methods on MSMARCO, Natural\nQuestions and TriviaQA benchmarks, respec-\ntively.\nSimilarly to text embeddings, we train\ncode embedding models on (text, code) pairs, ob-\ntaining a 20.8% relative improvement over prior\nbest work on code search.\n1. Introduction\nDeep unsupervised learning with generative and embed-",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "ding models has seen dramatic success in the past few\nyears. Generative models (Peters et al., 2018; Raffel et al.,\n2019; van den Oord et al., 2016; Ramesh et al., 2021;\nBrown et al., 2020; Chen et al., 2021) are trained to max-\n*Equal contribution\n1OpenAI. Correspondence to: Arvind\nNeelakantan <arvind@openai.com>.\nS-300M\nM-1.2B\nL-6B\nXL-175B\nModel Size\n60\n62\n64\n66\n68\n70\nPerformance\nAverage performance vs model size\nFigure 1. Average performance of unsupervised cpt-text",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "models of different sizes across 22 tasks consisting of linear-probe\nclassiﬁcation, text search, and sentence similarity tasks.\nimize the likelihood of observed data while embedding\nmodels are trained to distinguish observed data from noise\n(Sohn, 2016; van den Oord et al., 2018; Radford et al.,\n2021; Jia et al., 2021; Gao et al., 2021; Izacard et al., 2021).\nGenerative models have been shown to produce realistic\ncontent and beneﬁt many downstream applications, reduc-",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 472,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "ing the need for labeled training datasets. In generative\nmodels, the information about the input is typically dis-\ntributed over multiple hidden states of the model. While\nsome generative models (Kingma & Welling, 2014; Kiros\net al., 2015) can learn a single representation of the in-\nput, most autoregressive Transformer (Vaswani et al., 2017)\nmodels do not (Raffel et al., 2019; Brown et al., 2020; Chen\net al., 2021; Ramesh et al., 2021). However, learning such a",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "representation (or embedding) is necessary for many tasks.\nSystems that search over millions or billions of items re-\nquire each entry to be embedded as a dense representation\nand build an index in advance to save computational costs\nat query time. These embeddings are useful features for\nclassiﬁcation tasks and can also enable data visualization\napplications via techniques such as clustering. Embedding\nmodels are explicitly optimized to learn a low dimensional",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 465,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "representation that captures the semantic meaning of the\ninput (Radford et al., 2021; Jia et al., 2021; Giorgi et al.,\n2020; Gao et al., 2021; Izacard et al., 2021).\narXiv:2201.10005v1  [cs.CL]  24 Jan 2022",
+      "source": "large_dual_encoder.pdf",
+      "page": 1,
+      "char_count": 206,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nIn this work, we train embedding models using a con-\ntrastive learning objective with in-batch negatives (Sohn,\n2016; Yih et al., 2011) on unlabeled data. The input is en-\ncoded with a Transformer encoder (Vaswani et al., 2017)\nand we leverage naturally occurring paired data to con-\nstruct training data with no explicit labels. Text embedding\nmodels are trained on paired text data where we consider",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "neighboring pieces of text on the Internet as positive pairs.\nCode embedding models treat the top-level docstring in a\nfunction along with its implementation as a (text, code)\npair. The training signal of the contrastive objective on\nits own is not sufﬁcient to learn useful representations and\nwe overcome this by initializing our model with other pre-\ntrained models (Brown et al., 2020; Chen et al., 2021). Fi-\nnally, we ﬁnd that it is critical to use a sufﬁciently large",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 474,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "batch to achieve the optimal performance. We show that\nthis simple recipe combining pre-trained model initializa-\ntion, large-batch contrastive learning and training at scale,\ncan produce text and code embeddings that possess a broad\nrange of capabilities.\nWe train a series of unsupervised text embedding mod-\nels (cpt-text) of different sizes, ranging from 300M\nto 175B parameters, and observe a consistent perfor-\nmance improvement with increasing model sizes (Figure",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 12,
+      "text": "1). On classiﬁcation accuracy averaging across 7 linear-\nprobe classiﬁcation tasks in SentEval (Conneau & Kiela,\n2018), our largest unsupervised model achieves new state-\nof-the-art results with a relative improvement of 4% and\n1.8% over the previous best unsupervised (Giorgi et al.,\n2020) and supervised (Gao et al., 2021) text embedding\nmodels, respectively.\nText embedding in previous work was studied under differ-\nent domains, varying in data, training objective and model",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 478,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 13,
+      "text": "architecture. Precisely, sentence embedding (Reimers &\nGurevych, 2019; Gao et al., 2021; Giorgi et al., 2020)\nand neural information retrieval (Lee et al.; Guu et al.,\n2020; Karpukhin et al., 2020a; Sachan et al., 2021; Izac-\nard et al., 2021) have remained different research topics\nevaluated on distinct benchmarks, even though both aim to\nlearn high-quality text representation. However, we ﬁnd the\nsame model that achieves good performance on sentence\nembedding benchmarks, as discussed above, is also able",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 14,
+      "text": "to obtain impressive results on large-scale information re-\ntrieval. When evaluated on the MSMARCO passage rank-\ning task (Nguyen et al., 2016) to search over 4M passages,\ncpt-text gets a relative improvement of 23.4% over pre-\nvious best unsupervised methods (Robertson, 2009). On\nthe task of searching on 21M documents from Wikipedia,\ncpt-text obtains a relative improvement of 14.7%, and\n10.6% over previous unsupervised methods (Izacard et al.,\n2021) for Natural Questions (Kwiatkowski et al., 2019)",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 15,
+      "text": "and TriviaQA (Joshi et al., 2017), respectively. On Triv-\niaQA, our unsupervised method is even competitive with\nﬁne-tuned models.\nNext, we train code embedding models (cpt-code) using\nthe same recipe. Our models learn via (text, code) pairs,\nextracted from open source code. We evaluate our model\non CodeSearchNet (Husain et al., 2020), a commonly used\ncode search benchmark, where the task is to ﬁnd the most\nrelevant code snippet given a natural language query. Our",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 16,
+      "text": "models achieve new state-of-the-art results with a 20.8%\nrelative improvement over the previous best result (Guo\net al., 2021). Unlike text embedding models, we observe\nno performance improvement on code search when increas-\ning the number of parameters of cpt-code from 300M to\n1.2B.\nFinally, we experiment with ﬁne-tuning our models on\nseveral supervised datasets and study the transfer learn-\ning performance. When ﬁne-tuned on NLI (Natural Lan-\nguage Inference) datasets, we see a further boost in linear-",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 17,
+      "text": "probe classiﬁcation, outperforming the previous best trans-\nfer method (Gao et al., 2021) by 2.2%. On SST-2 senti-\nment classiﬁcation (Socher et al., 2013), we ﬁnd that our\nrepresentations are sufﬁciently descriptive that even a sim-\nple k-NN classiﬁer achieves results comparable to a linear-\nprobe classiﬁer. Interestingly, zero-shot performance with\nour embeddings outperforms the supervised neural network\nmodels introduced along with the release of the SST-2",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 18,
+      "text": "dataset. We also ﬁne-tune the unsupervised model on MS-\nMARCO and evaluate it on a suite of zero-shot search tasks\nin the BEIR benchmark (Thakur et al., 2021). In the trans-\nfer setting, our models achieve a 5.2% relative improve-\nment over previous methods (Izacard et al., 2021) and is\ncomparable even with methods (Santhanam et al., 2021;\nFormal et al., 2021; Wang et al., 2020) that demand sub-\nstantially more computation at test time.\n2. Approach\nOur models are trained with a contrastive objective on",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 19,
+      "text": "paired data. In this section, we present more details on the\nmodel architecture and the training objective. The training\nset consists of paired samples, {(xi, yi)}N\ni=1, where (xi, yi)\ncorresponds to a positive example pair, indicating that xi\nand yi are semantically similar or contextually relevant.\n2.1. Model\nGiven a training pair (x, y), a Transformer (Vaswani et al.,\n2017) encoder E is used to process x and y independently.\nThe encoder maps the input to a dense vector representa-",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 488,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 20,
+      "text": "tion or embedding (Figure 2). We insert two special token\ndelimiters, [SOS] and [EOS], to the start and end of the\ninput sequence respectively. The hidden state from the last\nlayer corresponding to the special token [EOS] is consid-\nered as the embedding of the input sequence.",
+      "source": "large_dual_encoder.pdf",
+      "page": 2,
+      "char_count": 277,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 21,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\n ENCODER\nINPUT\n[EOS]\n[SOS]\nFigure 2. The encoder E maps input x to embedding vx. Special\ntokens, [SOS] and [EOS], are appended to the start and end\nof the input sequence respectively. The last layer hidden state\ncorresponding to the token [EOS] is extracted as the embedding\nof the input sequence.\n ENCODER\nFigure 3. The encoder E maps inputs x and y, to embeddings,\nvx and vy independently. The similarity score between x and y",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 22,
+      "text": "is deﬁned as the cosine similarity between these two embedding\nvectors.\nThe Transformer encoder maps the input, x and y, to em-\nbeddings, vx and vy respectively and the similarity between\ntwo inputs is quantiﬁed by the cosine similarity between\ntheir embeddings, vx and vy (Figure 3).\nvx = E([SOS]x ⊕x ⊕[EOS]x)\nvy = E([SOS]y ⊕y ⊕[EOS]y)\nsim(x, y) =\nvx · vy\n∥vx∥· ∥vy∥\nwhere ⊕is an operation to concatenate two strings to-\ngether. We found that using different delimiters leads to",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 23,
+      "text": "more stable training. For x, we use ‘[’ as [SOS]x and\n‘]’ as [EOS]x, while we use ‘{’ and ‘}’ as [SOS]y and\n[EOS]y respectively for y.\n2.2. Training Objective\nThe paired samples in the training set are contrasted against\nin-batch negatives (Yih et al., 2011; Sohn, 2016). Con-\ntrastive learning with in-batch negatives has been widely\nModel\nParameters\nEmbed Dimensions\nBatch size\nS\n300M\n1024\n12288\nM\n1.2B\n2048\n6912\nL\n6B\n4096\n5896\nXL\n175B\n12288\n4976",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 448,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 24,
+      "text": "1.2B\n2048\n6912\nL\n6B\n4096\n5896\nXL\n175B\n12288\n4976\nTable 1. Batch size used to train the models of different sizes.\nused for unsupervised representation learning in prior work\n(Radford et al., 2021; Jia et al., 2021; Chen et al., 2020;\nIzacard et al., 2021). For each example in a mini-batch\nof M examples, the other (M −1) in the batch are used as\nnegative examples. The usage of in-batch negatives enables\nre-use of computation both in the forward and the backward",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 25,
+      "text": "pass making training highly efﬁcient. The logits for one\nbatch is a M × M matrix, where each entry logit(xi, yj) is\ngiven by,\nlogit(xi,yj) = sim(xi, yj) · exp(τ),\n∀(i, j), i, j ∈{1, 2, . . . , M}\nwhere τ is a trainable temperature parameter.\nOnly entries on the diagonal of the matrix are considered\npositive examples. The ﬁnal training loss is the sum of the\ncross entropy losses on the row and the column direction,\nas described in the following numpy style pseudo code.\nlabels = np.arange(M)",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 26,
+      "text": "labels = np.arange(M)\nl_r = cross_entropy(logits, labels, axis=0)\nl_c = cross_entropy(logits, labels, axis=1)\nloss = (l_r + l_c) / 2\nWe initialize our models with pre-trained generative lan-\nguage models. cpt-text is initialized with GPT mod-\nels (Brown et al., 2020) and cpt-code is initialized with\nCodex models (Chen et al., 2021). When ﬁne-tuning our\nmodels (Section 3), the supervised training data like NLI\ndatasets contain explicit negative examples and they are\nused along with the in-batch negatives.",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 27,
+      "text": "used along with the in-batch negatives.\n3. Results\nOur models are trained on naturally occurring paired data.\ncpt-text models are trained on Internet data with neigh-\nboring pieces of text as positive pairs for the contrastive ob-\njective. The code embedding cpt-code models use (text,\ncode) pairs extracted from open source code. As discussed\nin Section 3.4.1, sufﬁciently large batch size is crucial to\nachieve good performance with our setup. Table 1 lists the",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 28,
+      "text": "batch sizes used to train the models of different sizes.\nWe evaluate our text embedding models on a broad range of\ntasks: linear-probe classiﬁcation, sentence similarity, and",
+      "source": "large_dual_encoder.pdf",
+      "page": 3,
+      "char_count": 174,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 29,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nsemantic search. While sentence embedding (Reimers &\nGurevych, 2019; Gao et al., 2021; Giorgi et al., 2020) meth-\nods report results only on embedding benchmarks and neu-\nral information retrieval methods (Lee et al.; Guu et al.,\n2020; Karpukhin et al., 2020a; Sachan et al., 2021; Izacard\net al., 2021) report results only on search benchmarks, we\nuse the same unsupervised model across all these tasks.\n3.1. Text Embedding",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 30,
+      "text": "3.1. Text Embedding\nThe SentEval benchmark (Conneau & Kiela, 2018) is\nwidely adopted to assess the quality of sentence embed-\ndings, consisting of a broad collection of tasks in the cate-\ngories of linear-probe classiﬁcation and sentence similarity,\nand we use the same to evaluate ours.\n3.1.1. LINEAR PROBE CLASSIFICATION\nWhen evaluated on linear-probe classiﬁcation, the embed-\ndings are used as features to train a linear classiﬁer to\nsolve a variety of downstream tasks. The results in Ta-",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 31,
+      "text": "ble 2 demonstrate a clear advantage of larger model sizes\nproducing better features for improved classiﬁcation per-\nformance. In transfer learning setup, we ﬁne-tune unsuper-\nvised cpt-text models on SNLI (Bowman et al., 2015)\nand MNLI (Williams et al., 2018) datasets using entailment\npairs as positive examples and contradiction pairs as nega-\ntive examples. On both unsupervised learning and transfer\nlearning settings, we achieve state-of-the-art results.\n3.1.2. ZERO-SHOT AND k-NN CLASSIFICATION",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 500,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 32,
+      "text": "3.1.2. ZERO-SHOT AND k-NN CLASSIFICATION\nIn this section, we discuss results using zero-shot classiﬁ-\ncation and k-nearest neighbor classiﬁcation on the SST-2\nbinary sentiment classiﬁcation task (Socher et al., 2013).\nWe experiment with 6B (L) cpt-text model ﬁne-tuned\non NLI data for this study. In the ﬁrst zero-shot experiment,\neach input text is assigned with one of the two labels (‘pos-\nitive’, ‘negative’) based on which label has its embedding\nclosest to the input text embedding. The performance can",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 33,
+      "text": "be further improved by prompting, where we use a simple\nlabel description, ‘this is an example of a positive/negative\nmovie review.’, instead of a single word. This zero-shot\nusage of embeddings is novel compared to prior work on\nembeddings and it is interesting to note that our zero-shot\nresults are better than the supervised neural network results\nreported along with the release of the dataset (Socher et al.,\n2013).\nIn the k-NN classiﬁcation experiment, given an",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 34,
+      "text": "In the k-NN classiﬁcation experiment, given an\ninput text, the prediction is the majority label among 256\ntraining examples closest to the test input in the embedding\nspace. As shown in Table 3, the k-NN classiﬁer without\nany task-speciﬁc tuning of trainable parameters achieves\nresults comparable to a linear classiﬁer.\n3.1.3. SENTENCE SIMILARITY\nOn sentence similarity tasks in SentEval, we ﬁnd that our\nmodels perform worse than previous SOTA methods (Ta-",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 35,
+      "text": "ble 4). Sentence similarity is not a completely well-deﬁned\ndownstream task (e.g. are the sentences, ‘Jack loves Jill’\nand ‘Mary loves chocolates’, similar?).1,2\nFor example,\nGoodman (1972) argue that two objects can be inﬁnitely\nsimilar or dissimilar (Vervaeke et al., 2012). A possible\nexplanation for why our models perform better than prior\nwork on search and classiﬁcation but not on these tasks is\nthat our models might not be optimized for the speciﬁc def-",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 36,
+      "text": "inition used by these sentence similarity benchmarks. It\nis important to note that previous embedding search meth-\nods do not report performance on sentence similarity tasks\n(Karpukhin et al., 2020a; Sachan et al., 2021; Izacard et al.,\n2021). More discussion on this phenomenon is presented\nin Section 3.4.2.\n3.2. Text Search\nPrevious work on training embedding methods for search\ntypically requires ﬁne-tuning on a particular text search\ndataset (Karpukhin et al., 2020a; Sachan et al., 2021; Qu",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 37,
+      "text": "et al., 2021).\nIt is also common to have a multi-step\nsetup where ﬁne-tuned models rely on an expensive query\nand document cross-attention encoder in the ﬁnal step (Qu\net al., 2021; Wang et al., 2020). In contrast, we push the\nlimits of using a single embedding model for large-scale\nsemantic search.\n3.2.1. LARGE-SCALE SEARCH\nFirst, we evaluate our models on several large-scale text\nsearch benchmarks.\nMSMARCO (Nguyen et al., 2016)\nrequires the model to search over 4M documents while",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 38,
+      "text": "Natural Questions (NQ) (Kwiatkowski et al., 2019) and\nTriviaQA (Joshi et al., 2017) involve searching over 21M\nWikipedia documents. We use the FAISS library (John-\nson et al., 2019) to build the vector indices for approximate\nk-nearest neighbor search. The same unsupervised model\ndiscussed previously achieves impressive performance on\nsemantic search. Table 5 demonstrates that cpt-text\noutperforms prior unsupervised approaches by a big mar-\ngin and larger model sizes consistently lead to improved",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 39,
+      "text": "performance. Surprisingly, on TriviaQA, our model is even\ncompetitive with ﬁne-tuned models.\n1https://twitter.com/yoavgo/status/\n1431299645570011142\n2https://twitter.com/yoavgo/status/\n1483565266575540225?s=20",
+      "source": "large_dual_encoder.pdf",
+      "page": 4,
+      "char_count": 209,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 40,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nMR\nCR\nSUBJ\nMPQA\nSST\nTREC\nMRPC\nAvg.\nUnsupervised\nBERT (Devlin et al., 2019)\n78.7\n86.2\n94.4\n88.7\n84.4\n92.8\n69.4\n84.9\nSimCSE (Gao et al., 2021)\n84.7\n88.6\n95.4\n87.5\n89.5\n95.0\n72.4\n87.6\nDECLUTR (Giorgi et al., 2020)\n85.2\n90.7\n95.8\n88.5\n90.0\n93.2\n74.6\n88.3\ncpt-text S\n87.1\n90.1\n94.9\n88.3\n91.8\n95.2\n71.6\n88.4\ncpt-text M\n89.0\n90.9\n96.7\n89.6\n93.9\n96.6\n73.6\n89.9\ncpt-text L\n90.6\n92.6\n97.0\n90.6\n95.3\n97.0\n73.6\n90.9\ncpt-text XL\n92.2\n93.5\n97.4\n91.5\n96.2\n97.4\n74.1\n91.8",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 41,
+      "text": "92.2\n93.5\n97.4\n91.5\n96.2\n97.4\n74.1\n91.8\nTransfer from NLI data\nSBERT (Reimers & Gurevych, 2019)\n84.9\n90.1\n94.5\n90.3\n90.7\n87.4\n75.9\n87.7\nSimCSE (Gao et al., 2021)\n88.4\n92.5\n95.2\n90.1\n93.3\n93.8\n77.7\n90.2\ncpt-text S\n87.3\n91.0\n94.6\n90.5\n91.4\n95.0\n75.6\n89.3\ncpt-text M\n89.8\n92.7\n95.7\n91.3\n95.3\n96.6\n76.5\n91.1\ncpt-text L\n90.8\n93.5\n96.2\n91.2\n95.7\n96.0\n76.9\n91.5\ncpt-text XL\n92.4\n93.9\n97.0\n91.8\n95.8\n96.4\n78.1\n92.2",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 406,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 42,
+      "text": "92.4\n93.9\n97.0\n91.8\n95.8\n96.4\n78.1\n92.2\nTable 2. cpt-text models of different sizes, ranging from 300M (S) to 175B (XL), are compared to previous work on linear-probe\nclassiﬁcation tasks in SentEval. We report performance of unsupervised models, as well as those ﬁne-tuned on NLI data.\nMethod\nAccuracy\nZero-shot\n88.1\nZero-shot with prompting\n89.1\nk-NN\n93.3\nLinear-probe\n95.7\nFull ﬁne-tuned SOTA\n97.5\nTable 3. Comparison of different classiﬁcation strategies using",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 43,
+      "text": "the 6B cpt-text model ﬁne-tuned on NLI data for SST-2 bi-\nnary sentiment task (Socher et al., 2013). Our zero-shot results\nare better than the 85.4% accuracy obtained by supervised neural\nnetworks reported along with the release of the dataset (Socher\net al., 2013).\nSTS -12\n-13\n-14\n-15\n-16\nAvg\nUnsupervised\nSimCSE (Gao et al., 2021) 72.9 84.0 75.6 84.8 81.8 79.8\ncpt-text S\n62.1 60.0 62.0 71.8 73.7 65.9\ncpt-text M\n62.7 62.8 64.6 73.9 75.3 67.9\ncpt-text L\n62.4 66.4 67.6 76.0 77.5 70.0\ncpt-text XL",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 498,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 44,
+      "text": "62.4 66.4 67.6 76.0 77.5 70.0\ncpt-text XL\n64.1 67.5 68.4 76.7 78.7 71.1\nTransfer from NLI\nSimCSE (Gao et al., 2021) 77.5 87.3 82.4 86.7 83.9 83.6\ncpt-text S\n72.8 80.6 78.7 84.7 82.0 79.8\ncpt-text M\n73.7 80.2 78.9 85.0 82.8 80.1\ncpt-text L\n71.8 79.7 79.0 85.8 84.0 80.1\ncpt-text XL\n72.3 80.3 78.9 85.1 85.1 80.3\nTable 4. cpt-text performs worse than the previous best sen-\ntence embedding method on sentence similarity tasks. We inves-\ntigate this result in more detail in Section 3.4.2.\nMSMARCO\nNQ\nTriviaQA",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 45,
+      "text": "MSMARCO\nNQ\nTriviaQA\nFine-tuned SOTA\n44.3\n84.8, 89.8\n84.1, 87.8\nUnsupervised\nBM25\n18.4\n62.9, 78.3\n76.4, 83.2\nICT\n-\n50.9, 66.8\n57.5, 73.6\nMSS\n-\n59.8, 74.9\n68.2, 79.4\nContriever\n-\n67.2, 81.3\n74.2, 83.2\ncpt-text S\n19.9\n65.5, 77.2\n75.1, 81.7\ncpt-text M\n20.6\n68.7, 79.6\n78.0, 83.8\ncpt-text L\n21.5\n73.0, 83.4\n80.0, 86.8\ncpt-text XL\n22.7\n78.8, 86.8\n82.1, 86.9\nTable 5. Evaluation of unsupervised cpt-text models of differ-\nent sizes on several large-scale text search benchmarks. We report",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 46,
+      "text": "MRR@10 on MSMARCO and Recall@20, Recall@100 for NQ\nand TriviaQA as done in prior work. Results for training with\nInverse Cloze Task (ICT) and masked salient spans (MSS) objec-\ntives are taken from Sachan et al. (2021). cpt-text achieves the\nbest results among unsupervised methods, surpassing keyword\nsearch methods on MSMARCO (Robertson, 2009) and embed-\nding based methods (Izacard et al., 2021) on NQ and TriviaQA.",
+      "source": "large_dual_encoder.pdf",
+      "page": 5,
+      "char_count": 417,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 47,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\n3.2.2. BEIR SEARCH\nNext, we evaluate our models on 11 zero-shot search tasks\nin the BEIR evaluation suite (Thakur et al., 2021). First,\nwe observe that our unsupervised model performs compet-\nitively even with some previous embedding methods that\nleverage supervised MSMARCO data (Xiong et al., 2020;\nHofst¨atter et al., 2021). Keyword-based BM25 (Robertson,\n2009) achieves the best results in the unsupervised setting",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 471,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 48,
+      "text": "while cpt-text achieves the best transfer learning re-\nsults.\nIn the transfer setting, our models achieve a 5.2% relative\nimprovement over the previous best embedding method\n(Izacard et al., 2021).\nIt also outperforms docT5query\n(Nogueira et al., 2019a) that relies on a ﬁne-tuned T5 model\n(Raffel et al., 2019) for document expansion. cpt-text\nresults are competitive even with methods that use sub-\nstantially more compute at test time. BM25+CE (Wang\net al., 2020) uses keyword search to select top 100 docu-",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 510,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 49,
+      "text": "ments which are then re-ranked by a cross-attention neural\nnetwork encoder. The ranking encoder network performs\ncomputationally expensive joint query and document atten-\ntion and cannot exploit indexing and approximate nearest\nneighbor algorithms for fast and efﬁcient search at query\ntime. Several other existing work take this approach of\nleveraging more computation resources at query time to ob-\ntain better search performance. ColBERT v2 (Santhanam",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 454,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 50,
+      "text": "et al., 2021) is a multi-vector method that represents the\nquery and the documents as a set of vectors, and employs\na multi-step retrieval procedure to obtain relevant docu-\nments. Splade v2 (Formal et al., 2021) represents queries\nand documents as sparse vectors of size equivalent to the\nvocabulary of the BERT encoder (Devlin et al., 2019). Our\ncpt-text models compute only one dense embedding\nper document which are indexed ofﬂine and does not de-\npend on any cross-attention re-ranker at query time.",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 504,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 51,
+      "text": "3.3. Code Search\nWe evaluate our code embedding models on the code\nsearch task using the CodeSearchNet benchmark (Husain\net al., 2020). Given a natural language query, the model\nis expected to retrieve the relevant code block among 1K\ncandidates. The models are evaluated on 6 programming\nlanguages and our model achieves state-of-the-art results\n(Table 7). Unlike with text embeddings, we do not see a\nperformance improvement with increased model size for\ncode embeddings.",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 473,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 52,
+      "text": "code embeddings.\nWe also evaluate on a harder setting of ﬁnding the relevant\ncode block among 10K candidates instead of 1K. Here, we\ncompare the performance of cpt-text models against\ncpt-code models (Table 8). It is interesting to see that\ntext embedding performs fairly well in code search espe-\ncially in Python. We see a drop in performance for code\nembedding models with increased distractors and still don’t\nsee bigger models giving a boost in search performance.\n3.4. Analysis\n3.4.1. EFFECT OF BATCH SIZE",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 53,
+      "text": "3.4. Analysis\n3.4.1. EFFECT OF BATCH SIZE\nOur ablation study highlights the effect of the model’s\nbatch size on the ﬁnal performance. Table 9 compares the\nperformance of S (300M) cpt-text model trained with\ndifferent batch sizes on the NQ development set. Since we\ntrain with in-batch negatives, a larger batch increases the\nchances of having hard negatives in a batch, resulting in a\nsigniﬁcant performance boost.\n3.4.2. TRAINING BEHAVIOR\nWe observe that as we train our models for longer, the",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 54,
+      "text": "performance on search and classiﬁcation tasks increases\nwhile the performance on sentence similarity tasks de-\ncreases (Figure 4). As discussed previously, sentence simi-\nlarity is not a well deﬁned task. A hypothesis is that search\ntasks and sentence similarity tasks might have contradict-\ning deﬁnitions. For example, a sentence and its negation\ncould be considered as relevant during search, but not “sim-\nilar” in sentence similarity tasks. It is also important to",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 55,
+      "text": "note that previous embedding search methods do not report\nperformance on sentence similarity tasks (Karpukhin et al.,\n2020a; Sachan et al., 2021; Izacard et al., 2021) and previ-\nous sentence embedding methods do not evaluate on search\ntasks (Reimers & Gurevych, 2019; Giorgi et al., 2020; Gao\net al., 2021). When deciding the model checkpoints to use\nfor evaluation, we assigned higher importance to search\nand classiﬁcation tasks as they are commonly associated",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 56,
+      "text": "with clearly deﬁned real-world applications while sentence\nsimilarity tasks are less so.\n4. Related Work\nThe goal of representation learning (Bengio et al., 2012)\nis to learn an embedding space in which similar examples\nstay close to each other while dissimilar ones are far apart\n(Hadsell et al., 2006). In contrastive learning, the learning\nprocedure is formulated as a classiﬁcation problem given\nsimilar and dissimilar candidates (Chopra et al., 2005; Gut-",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 460,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 57,
+      "text": "mann & Hyv¨arinen, 2010; Schroff et al., 2015; Sohn, 2016;\nvan den Oord et al., 2018). Recent work relies on con-\ntrastive objective to learn representations for images (Wu\net al., 2018; He et al., 2020; Chen et al., 2020; Zbontar\net al., 2021), text, or both jointly (Lu et al., 2019; Sun\net al., 2019; Kim et al., 2021; Radford et al., 2021; Khosla\net al., 2020). In self-supervised contrastive learning, pos-\nitive samples can be collected in various approaches in-",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 58,
+      "text": "cluding by creating an augmented version of the origi-\nnal input without modifying the semantic meaning (Gao",
+      "source": "large_dual_encoder.pdf",
+      "page": 6,
+      "char_count": 108,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 59,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\ncovid nfc\nﬁqa\narg. touche quora scifact climate dbp. hotpot fever Avg.\nUnsupervised\nBM25 (Robertson, 2009)\n65.6 32.5 23.6 31.5\n36.7\n78.9\n66.5\n21.3\n31.3\n60.3\n75.3 47.6\nContriever (Izacard et al., 2021)\n27.4 31.7 24.5 37.9\n19.3\n83.5\n64.9\n15.5\n29.2\n48.1\n68.2 40.9\ncpt-text S\n52.9 32.0 34.1 38.7\n21.0\n68.1\n65.4\n15.8\n27.2\n51.5\n57.1 42.2\ncpt-text M\n44.3 34.5 37.3 41.2\n23.3\n70.3\n68.3\n15.6\n29.6\n53.0\n58.2 43.2\ncpt-text L\n42.7 36.9 39.7 39.2\n22.8\n68.7\n71.2\n16.1\n31.2",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 60,
+      "text": "42.7 36.9 39.7 39.2\n22.8\n68.7\n71.2\n16.1\n31.2\n54.3\n63.8 44.2\nTransfer from MSMARCO\nTAS-B (Hofst¨atter et al., 2021)\n48.1 31.9 30.0 42.9\n16.2\n83.5\n64.3\n22.8\n38.4\n58.4\n70.0 46.0\nANCE (Xiong et al., 2020)\n65.4 23.7 29.5 41.5\n24.0\n85.2\n50.7\n19.8\n28.1\n45.6\n66.9 43.7\nContriever (Izacard et al., 2021)\n59.6 32.8 32.9 44.6\n23.0\n86.5\n67.7\n23.7\n41.3\n63.8\n75.8 50.2\ncpt-text S\n67.9 33.2 38.4 47.0\n28.5\n70.6\n67.2\n18.5\n36.2\n59.4\n72.1 49.0\ncpt-text M\n58.5 36.7 42.2 49.2\n29.7\n69.7\n70.4\n19.9\n38.6\n63.1\n77.0 50.5\ncpt-text L",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 61,
+      "text": "69.7\n70.4\n19.9\n38.6\n63.1\n77.0 50.5\ncpt-text L\n56.2 38.0 45.2 46.9\n30.9\n67.7\n74.4\n19.4\n41.2\n64.8\n75.6 50.9\ncpt-text XL\n64.9 40.7 51.2 43.5\n29.1\n63.8\n75.4\n22.3\n43.2\n68.8\n77.5 52.8\ndocT5query (Nogueira et al., 2019a)\n71.3 32.8 29.1 34.9\n34.7\n80.2\n67.5\n20.1\n33.1\n58.0\n71.4 48.5\nBM25+CE (Wang et al., 2020)\n75.7 35.0 34.7 31.1\n27.1\n82.5\n68.8\n25.3\n39.2\n70.7\n81.9 52.0\nColBERT v2 (Santhanam et al., 2021) 73.8 33.8 35.6 46.3\n26.3\n85.2\n69.3\n17.6\n44.6\n66.7\n78.5 52.5\nSplade v2 (Formal et al., 2021)\n71.0 33.4 33.6 47.9",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 62,
+      "text": "71.0 33.4 33.6 47.9\n27.2\n83.8\n69.3\n23.5\n43.5\n68.4\n78.6 52.7\nTable 6. Comparison of cpt-text to previous methods on 11 zero-shot search tasks in the BEIR evaluation suite (Thakur et al.,\n2021). Results are reported both in the unsupervised data setting and in the transfer data setting. cpt-text outperforms previous best\nembedding methods (Xiong et al., 2020; Hofst¨atter et al., 2021; Izacard et al., 2021) in both the settings. In the unsupervised setting,",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 458,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 63,
+      "text": "BM25 (Robertson, 2009) still achieves the best performance while in the transfer setting cpt-text is competitive with methods that\nuse substantially more compute at test time (Wang et al., 2020; Santhanam et al., 2021; Formal et al., 2021).\nGo\nRuby Python Java\nJS\nPHP Avg.\nCodeBERT\n69.3\n70.6\n84.0\n86.8 74.8 70.6 76.0\nGraphCodeBERT 84.1\n73.2\n87.9\n75.7 71.1 72.5 77.4\ncpt-code S\n97.7\n86.3\n99.8\n94.0 86.0 96.7 93.4\ncpt-code M\n97.5\n85.5\n99.9\n94.4 86.5 97.2 93.5",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 64,
+      "text": "cpt-code M\n97.5\n85.5\n99.9\n94.4 86.5 97.2 93.5\nTable 7. Comparison of cpt-code on code search across 6 pro-\ngramming languages (Husain et al., 2020) with CodeBERT (Feng\net al., 2020) and GraphCodeBERT (Guo et al., 2021). The task re-\nquires ﬁnding the relevant code block among 1K candidates for a\ngiven natural language query. cpt-code performs substantially\nbetter than previous methods on all the languages.\nGo\nRuby Python Java\nJS\nPHP Avg.\ncpt-text S\n60.6\n58.9\n92.6\n48.4 52.8 47.6\n60.1\ncpt-text M 65.4\n63.1",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 65,
+      "text": "92.6\n48.4 52.8 47.6\n60.1\ncpt-text M 65.4\n63.1\n91.4\n47.9 53.5 43.1\n60.7\ncpt-code S\n90.4\n80.6\n98.8\n81.9 76.1 85.3\n85.5\ncpt-code M 90.0\n89.1\n98.9\n81.1 75.6 85.1\n85.0\nTable 8. Comparison of cpt-code vs cpt-text on large scale\ncode search (Husain et al., 2020). The task is to retrieve the rel-\nevant code block among 10K candidates for a given natural lan-\nguage query. It is interesting to note that cpt-text performs\nquite well on Python code search without explicitly training on\n(text, code) pairs.\nBatch Size",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 66,
+      "text": "(text, code) pairs.\nBatch Size\nMRR@10\n1536\n71.4\n12288\n84.7\nTable 9. Performance of the cpt-text 300M model on NQ dev\nset given different training batch sizes.\net al., 2021), by grouping samples within the same context\n(Giorgi et al., 2020; Izacard et al., 2021), or by collecting\ndata about the same object from different views (Tian et al.,\n2019).\nLearning word embeddings is a well studied research area\n(Brown et al., 1992; Gutmann & Hyv¨arinen, 2010; Mikolov\net al., 2013; Pennington et al., 2014).",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 67,
+      "text": "et al., 2013; Pennington et al., 2014).\nLearning low-\ndimensional representations of larger text pieces, denser\nthan raw term-based vectors, has been studied extensively\nas well (Deerwester et al., 1990; Yih et al., 2011). Most\nof the recent models for learning sentence embeddings rely\non supervised NLI datasets, using entailment pairs as pos-\nitive examples and contradiction pairs as (hard) negatives.\nSBERT (Reimers & Gurevych, 2019) trained a siamese net-",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 461,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 68,
+      "text": "work to learn a representation where sentence similarity is\nestimated by the cosine similarity between embeddings. Li\net al. (2020) improves the embedding space to be isotropic",
+      "source": "large_dual_encoder.pdf",
+      "page": 7,
+      "char_count": 176,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 69,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\n85\n86\n87\n88\n89\n90\nPerformance\nSenteval\nNQ\n0\n10000\n20000\n30000\n40000\n50000\nTraining Steps\n65\n70\n75\nPerformance\nsts12\nsts13\nsts14\nsts15\nsts16\nTraining Behavior\nFigure 4. Performance of M (1.2B) cpt-text model on classi-\nﬁcation, search and sentence similarity tasks at different training\nsteps. While the performance on search and classiﬁcation im-\nproves with longer training, the performance on sentence similar-\nity degrades.",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 70,
+      "text": "ity degrades.\nvia normalizing ﬂows. The whitening operation is another\nalternative operation to improve the isotropy of the embed-\nding space (Su et al., 2021). It is typical to initialize such\nmodels with a pre-trained language model (Devlin et al.,\n2019) before training on NLI datasets.\nSeveral methods have been studied for unsupervised or\nself-supervised sentence embedding learning (Logeswaran\n& Lee, 2018; Zhang et al., 2020; Gao et al., 2021). Com-\nmon approaches consider sentences within the same con-",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 71,
+      "text": "text as semantically similar samples (Kiros et al., 2015; Lo-\ngeswaran & Lee, 2018). To create positive training pairs\nwith augmented samples, a diverse set of text augmen-\ntation operations have been explored, including lexicon-\nbased distortion (Wei & Zou, 2019), synonym replacement\n(Kobayashi, 2018), back-translation (Fang & Xie, 2020),\ncut-off (Shen et al., 2020) and dropout (Gao et al., 2021).\nHowever, unsupervised sentence embedding models still",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 455,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 72,
+      "text": "perform notably worse than supervised sentence encoders.\nLarge-scale text search based on dense embeddings and\nneural information retrieval (neural IR) have the poten-\ntial to generalize better than keyword matching in classic\nIR systems. Neural IR systems encode documents at the\nindexing stage and then perform nearest neighbor search\n(Johnson et al., 2019) at query time (Lin et al., 2021).\nNeural IR models are usually learned by ﬁne-tuning a pre-\ntrained language model on supervised search corpus (Lee",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 507,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 73,
+      "text": "et al.; Guu et al., 2020; Karpukhin et al., 2020b; Lewis\net al., 2020). Many SOTA search models combine classical\nIR with neural IR in a staged setup, where the candidates\nare ﬁrst narrowed down by BM25 keyword search (Robert-\nson, 2009) and then re-ranked by joint query and document\nneural encoders (Nogueira et al., 2019b; Qu et al., 2021).\nXiong et al. (2020) proposed ANCE, a contrastive learn-\ning framework for learning text representations for dense",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 457,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 74,
+      "text": "retrieval using mined hard negatives. Other unsupervised\nretriever methods use the Inverse Cloze Task or masked\nsalient spans to achieve signiﬁcant improvement on ODQA\ntasks (Sachan et al., 2021). In comparison to most prior\nwork, we ﬁnd that with a large enough batch size, it is\npossible to achieve good search performance without us-\ning supervised data. Finally, the recently published Con-\ntriever (Izacard et al., 2021) is most similar to our work on",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 75,
+      "text": "learning text embeddings for text search using contrastive\nlearning on unlabeled data.\nSemantic code search refers to the task of retrieving code\nrelevant to a query in natural language. The CodeSearch-\nNet challenge (Husain et al., 2020) presents a set of bench-\nmark code search tasks in different programming lan-\nguages, as well as a simple baseline model to predict em-\nbeddings of query and code via contrastive learning on a\ndataset of (text, code) pairs. ContraCode (Jain et al., 2021)",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 493,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 76,
+      "text": "uses a contrastive learning task of identifying functionally\nsimilar programs, where the functionally similar samples\nare generated via source-to-source compiler transforma-\ntions. CodeBERT (Feng et al., 2020) learns to predict se-\nmantic similarity with a pre-trained language model and\nGraphCodeBERT (Guo et al., 2021) further improves the\nperformance on the CodeSearchNet benchmark by adding\npre-training tasks on code structure.\n5. Broader Impacts\nPrior research has shown that text representation models",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 77,
+      "text": "encode the biases present in their training data, including\nthose which are discriminatory towards protected groups\nsuch as Black people or women (Bolukbasi et al., 2016;\nCaliskan et al., 2017; May et al., 2019; Zhao et al., 2018;\nRudinger et al., 2018). Biases encoded in embedding mod-\nels may cause representational harms3 by reinforcing exis-\ntent societal biases in the text corpus, and further propagat-\ning them in downstream tasks of embedding models.",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 78,
+      "text": "ing them in downstream tasks of embedding models.\nTherefore, we encourage further research on two research\nagendas: (a) developing robust evaluation methodologies\nfor multiple classes of bias in training data and pre-trained\nmodels, and (b) developing and improving methods for\nmitigating encoded bias, including ﬁne-tuning to reduce\nbias in pre-trained models (Caliskan et al., 2017; May et al.,\n2019; Bolukbasi et al., 2016; Liang et al., 2020; Park et al.,",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 459,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 79,
+      "text": "2018; Solaiman & Dennison, 2021). Until we have robust\nevaluation methodology, it is important to restrict and mon-\nitor the use of the model in downstream applications. Par-\n3Representational harms occur when systems reinforce the\nsubordination of some groups along the lines of identity, e.g.\nstereotyping or denigration (Crawford, 2017).",
+      "source": "large_dual_encoder.pdf",
+      "page": 8,
+      "char_count": 340,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 80,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nticularly for those where risk of representational harm is\ngreat and those where biased representations may inﬂuence\nthe allocation of resources and opportunities to people.\nOur embedding models are trained with large batch sizes\nand require substantial computation resources. While this\ntraining regime is environmentally and computationally\ncostly, there are promising paths forward to amortize and\noffset these costs while allowing users to beneﬁts from",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 81,
+      "text": "the capabilities of these models. For example, safe public\naccess to large pre-trained language models, and efﬁcient\ntraining pipelines that leverage improved model architec-\ntures and training schemes. We encourage further research\nand implementation efforts in these areas.\n6. Conclusion\nWe showed that contrastive pre-training on unsupervised\ndata with a sufﬁciently large batch size can lead to high\nquality vector representations of text and code. Our models",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 463,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 82,
+      "text": "achieved new state-of-the-art results in linear-probe classi-\nﬁcation, text search and code search. We ﬁnd that our mod-\nels underperformed on sentence similarity tasks and ob-\nserved unexpected training behavior with respect to these\ntasks. Finally, we discussed the broader impact of our work\non society.\nReferences\nBengio, Y., Courville, A. C., and Vincent, P. Representa-\ntion learning: A review and new perspectives. Transac-\ntions on pattern analysis and machine intelligence, 35\n(8), 2012.",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 83,
+      "text": "(8), 2012.\nBolukbasi, T., Chang, K., Zou, J. Y., Saligrama, V., and\nKalai, A. Man is to computer programmer as woman is\nto homemaker? debiasing word embeddings. 29, 2016.\nBowman, S. R., Angeli, G., Potts, C., and Manning, C. D.\nA large annotated corpus for learning natural language\ninference. In Conference on Empirical Methods in Nat-\nural Language Processing (EMNLP). ACL, 2015.\nBrown, P. F., Della Pietra, V. J., deSouza, P. V., Lai, J. C.,\nand Mercer, R. L. Class-based n-gram models of nat-",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 496,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 84,
+      "text": "ural language. Computational Linguistics, 18(4):467–\n480, 1992.\nBrown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan,\nJ. D., Dhariwal, P., Neelakantan, A., Shyam, P., Sastry,\nG., Askell, A., Agarwal, S., Herbert-Voss, A., Krueger,\nG., Henighan, T., Child, R., Ramesh, A., Ziegler, D.,\nWu, J., Winter, C., Hesse, C., Chen, M., Sigler, E.,\nLitwin, M., Gray, S., Chess, B., Clark, J., Berner, C.,\nMcCandlish, S., Radford, A., Sutskever, I., and Amodei,\nD. Language models are few-shot learners. In Advances",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 85,
+      "text": "in Neural Information Processing Systems, 2020.\nCaliskan, A., Bryson, J. J., and Narayanan, A.\nSeman-\ntics derived automatically from language corpora contain\nhuman-like biases. Science, 356(6334):183–186, 2017.\nChen, M., Tworek, J., Jun, H., Yuan, Q., de Oliveira Pinto,\nH. P., Kaplan, J., Edwards, H., Burda, Y., Joseph, N.,\nBrockman, G., Ray, A., Puri, R., Krueger, G., Petrov,\nM., Khlaaf, H., Sastry, G., Mishkin, P., Chan, B., Gray,\nS., Ryder, N., Pavlov, M., Power, A., Kaiser, L., Bavar-",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 86,
+      "text": "ian, M., Winter, C., Tillet, P., Such, F. P., Cummings,\nD., Plappert, M., Chantzis, F., Barnes, E., Herbert-Voss,\nA., Guss, W. H., Nichol, A., Paino, A., Tezak, N., Tang,\nJ., Babuschkin, I., Balaji, S., Jain, S., Saunders, W.,\nHesse, C., Carr, A. N., Leike, J., Achiam, J., Misra,\nV., Morikawa, E., Radford, A., Knight, M., Brundage,\nM., Murati, M., Mayer, K., Welinder, P., McGrew, B.,\nAmodei, D., McCandlish, S., Sutskever, I., and Zaremba,\nW. Evaluating large language models trained on code.",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 495,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 87,
+      "text": "arXiv preprint arXiv:2107.03374, 2021.\nChen, T., Kornblith, S., Norouzi, M., and Hinton, G. E.\nA simple framework for contrastive learning of visual\nrepresentations. In International conference on machine\nlearning (ICML), 2020.\nChopra, S., Hadsell, R., and LeCun, Y. Learning a similar-\nity metric discriminatively, with application to face ver-\niﬁcation. In Computer Vision and Pattern Recognition\n(CVPR). IEEE, 2005.\nConneau, A. and Kiela, D. Senteval: An evaluation toolkit",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 476,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 88,
+      "text": "for universal sentence representations.\narXiv preprint\narXiv:1803.05449, 2018.\nCrawford, K. The trouble with bias. Keynote at NeurIPS,\n2017.\nDeerwester, S., Dumais, S., Furnas, G., Landauer, T., and\nHarshman, R.\nIndexing by latent semantic analysis.\nJournal of the American society for information science,\n41(6):391–407, 1990.\nDevlin, J., Chang, M.-W., Lee, K., and Toutanova, K.\nBERT: Pre-training of deep bidirectional transformers\nfor language understanding. In Conference of the North",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 489,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 89,
+      "text": "American Chapter of the Association for Computational\nLinguistics (NAACL). ACL, 2019.\nFang, H. and Xie, P.\nCERT: contrastive self-supervised\nlearning for language understanding.\narXiv preprint\narXiv:2005.12766, 2020.\nFeng, Z., Guo, D., Tang, D., Duan, N., Feng, X., Gong, M.,\nShou, L., Qin, B., Liu, T., Jiang, D., and Zhou, M. Code-\nbert: A pre-trained model for programming and natural",
+      "source": "large_dual_encoder.pdf",
+      "page": 9,
+      "char_count": 387,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 90,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nlanguages. In Conference on Empirical Methods in Nat-\nural Language Processing (EMNLP), 2020.\nFormal, T., Lassance, C., Piwowarski, B., and Clinchant,\nS. SPLADE v2: Sparse lexical and expansion model for\ninformation retrieval. arXiv preprint arXiv:2109.10086,\n2021.\nGao, T., Yao, X., and Chen, D.\nSimCSE: Simple con-\ntrastive learning of sentence embeddings. In Conference\non Empirical Methods in Natural Language Processing\n(EMNLP), 2021.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 492,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 91,
+      "text": "(EMNLP), 2021.\nGiorgi, J. M., Nitski, O., Bader, G. D., and Wang, B. De-\nclutr: Deep contrastive learning for unsupervised textual\nrepresentations. In Proceedings of ACL/IJCNLP, 2020.\nGoodman, N. Seven strictures on similarity. Bobbs Merrill,\n1972.\nGuo, D., Ren, S., Lu, S., Feng, Z., Tang, D., Liu, S.,\nZhou, L., Duan, N., Svyatkovskiy, A., Fu, S., Tufano,\nM., Deng, S. K., Clement, C. B., Drain, D., Sundaresan,\nN., Yin, J., Jiang, D., and Zhou, M. Graphcodebert: Pre-",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 92,
+      "text": "training code representations with data ﬂow. In Interna-\ntional Conference on Learning Representation (ICLR),\n2021.\nGutmann, M. and Hyv¨arinen, A. Noise-contrastive estima-\ntion: A new estimation principle for unnormalized sta-\ntistical models. In Conference on Artiﬁcial Intelligence\nand Statistics. PMLR, 2010.\nGuu, K., Lee, K., Tung, Z., Pasupat, P., and Chang,\nM. REALM: retrieval-augmented language model pre-\ntraining. arXiv preprint arXiv:2002.08909, 2020.\nHadsell, R., Chopra, S., and LeCun, Y.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 502,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 93,
+      "text": "Hadsell, R., Chopra, S., and LeCun, Y.\nDimensionality\nreduction by learning an invariant mapping. In Computer\nVision and Pattern Recognition (CVPR), volume 2, pp.\n1735–1742. IEEE, 2006.\nHe, K., Fan, H., Wu, Y., Xie, S., and Girshick, R. B. Mo-\nmentum contrast for unsupervised visual representation\nlearning. In Computer Vision and Pattern Recognition\n(CVPR), 2020.\nHofst¨atter, S., Lin, S., Yang, J., Lin, J., and Hanbury,\nA.\nEfﬁciently teaching an effective dense retriever\nwith balanced topic aware sampling.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 511,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 94,
+      "text": "with balanced topic aware sampling.\narXiv preprint\narXiv:2104.06967, 2021.\nHusain, H., Wu, H.-H., Gazit, T., Allamanis, M., and\nBrockschmidt, M. CodeSearchNet challenge: Evaluat-\ning the state of semantic code search.\narXiv preprint\narXiv:1909.09436, 2020.\nIzacard, G., Caron, M., Hosseini, L., Riedel, S., Bo-\njanowski, P., Joulin, A., and Grave, E. Towards unsuper-\nvised dense information retrieval with contrastive learn-\ning. arXiv preprint arXiv:2112.09118, 2021.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 95,
+      "text": "ing. arXiv preprint arXiv:2112.09118, 2021.\nJain, P., Jain, A., Zhang, T., Abbeel, P., Gonzalez, J. E., and\nStoica, I. Contrastive code representation learning. In\nConference on Empirical Methods in Natural Language\nProcessing (EMNLP), 2021.\nJia, C., Yang, Y., Xia, Y., Chen, Y.-T., Parekh, Z., Pham,\nH., Le, Q. V., Sung, Y., Li, Z., and Duerig, T. Scaling up\nvisual and vision-language representation learning with\nnoisy text supervision. In International Conference on\nMachine Learning (ICML), 2021.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 501,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 96,
+      "text": "Machine Learning (ICML), 2021.\nJohnson, J., Douze, M., and J´egou, H. Billion-scale simi-\nlarity search with gpus. IEEE Transactions on Big Data,\n2019.\nJoshi, M., Choi, E., Weld, D., and Zettlemoyer, L.\nTriviaQA: A large scale distantly supervised challenge\ndataset for reading comprehension. In Conference of the\nAssociation for Computational Linguistics (ACL). ACL,\n2017.\nKarpukhin, V., Oguz, B., Min, S., Lewis, P., Wu, L.,\nEdunov, S., Chen, D., and Yih, W.-t.\nDense passage",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 477,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 97,
+      "text": "Dense passage\nretrieval for open-domain question answering. In Con-\nference on Empirical Methods in Natural Language Pro-\ncessing (EMNLP), 2020a.\nKarpukhin, V., Oguz, B., Min, S., Wu, L., Edunov, S.,\nChen, D., and Yih, W. Dense passage retrieval for open-\ndomain question answering. In Conference on Empiri-\ncal Methods in Natural Language Processing (EMNLP),\n2020b.\nKhosla, P., Teterwak, P., Wang, C., Sarna, A., Tian,\nY., Isola, P., Maschinot, A., Liu, C., and Krishnan,\nD.\nSupervised contrastive learning.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 508,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 98,
+      "text": "D.\nSupervised contrastive learning.\narXiv preprint\narXiv:2004.11362, 2020.\nKim, W., Son, B., and Kim, I.\nVilt:\nVision-and-\nlanguage transformer without convolution or region su-\npervision.\nIn International Conference on Machine\nLearning (ICML), 2021.\nKingma, D. P. and Welling, M. Auto-Encoding Variational\nBayes. In International Conference on Learning Repre-\nsentation (ICLR), 2014.\nKiros, J., Zhu, Y., Salakhutdinov, R., Zemel, R. S., Tor-\nralba, A., Urtasun, R., and Fidler, S. Skip-thought vec-",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 499,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 99,
+      "text": "tors. In Advances in Neural Information Processing Sys-\ntems (NeuriPS), 2015.",
+      "source": "large_dual_encoder.pdf",
+      "page": 10,
+      "char_count": 77,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 100,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nKobayashi, S.\nContextual augmentation: Data augmen-\ntation by words with paradigmatic relations.\narXiv\npreprint arXiv:1805.06201, 2018.\nKwiatkowski, T., Palomaki, J., Redﬁeld, O., Collins, M.,\nParikh, A., Alberti, C., Epstein, D., Polosukhin, I., Kel-\ncey, M., Devlin, J., Lee, K., Toutanova, K. N., Jones,\nL., Chang, M.-W., Dai, A., Uszkoreit, J., Le, Q., and\nPetrov, S. Natural questions: a benchmark for question",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 468,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 101,
+      "text": "answering research. Transactions of the Association of\nComputational Linguistics, 2019.\nLee, K., Chang, M., and Toutanova, K. Latent retrieval\nfor weakly supervised open domain question answering.\nIn Korhonen, A., Traum, D. R., and M`arquez, L. (eds.),\nConference of the Association for Computational Lin-\nguistics (ACL), pp. 6086–6096. ACL.\nLewis, P. S. H., Perez, E., Piktus, A., Petroni, F.,\nKarpukhin, V., Goyal, N., K¨uttler, H., Lewis, M., Yih,\nW., Rockt¨aschel, T., Riedel, S., and Kiela, D. Retrieval-",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 102,
+      "text": "augmented generation for knowledge-intensive NLP\ntasks.\nIn Advances in Neural Information Processing\nSystems (NeuriPS), 2020.\nLi, B., Zhou, H., He, J., Wang, M., Yang, Y., and Li, L.\nOn the sentence embeddings from pre-trained language\nmodels. In Conference on Empirical Methods in Natural\nLanguage Processing (EMNLP), 2020.\nLiang, P. P., Li, I. M., Zheng, E., Lim, Y. C., Salakhutdinov,\nR., and Morency, L. Towards debiasing sentence repre-\nsentations. In Conference of the Association for Compu-",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 497,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 103,
+      "text": "tational Linguistics (ACL), 2020.\nLin, J., Nogueira, R., and Yates, A. Pretrained transformers\nfor text ranking: BERT and beyond. Synthesis Lectures\non Human Language Technologies, 14(4):1–325, 2021.\nLogeswaran, L. and Lee, H. An efﬁcient framework for\nlearning sentence representations. In International Con-\nference on Learning Representation (ICLR), 2018.\nLu, J., Batra, D., Parikh, D., and Lee, S.\nVil-\nbert: Pretraining task-agnostic visiolinguistic represen-\ntations for vision-and-language tasks.",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 503,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 104,
+      "text": "tations for vision-and-language tasks.\narXiv preprint\narXiv:1908.02265, 2019.\nMay, C., Wang, A., Bordia, S., Bowman, S. R., and\nRudinger, R. On measuring social biases in sentence en-\ncoders. In Conference of the North American Chapter of\nthe Association for Computational Linguistics (NAACL),\n2019.\nMikolov, T., Chen, K., Corrado, G. S., and Dean, J. Efﬁ-\ncient estimation of word representations in vector space.\narXiv preprint arXiv:1301.3781, 2013.\nNguyen, T., Rosenberg, M., Song, X., Gao, J., Tiwary,",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 506,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 105,
+      "text": "S., Majumder, R., and Deng, L. MS MARCO: A hu-\nman generated machine reading comprehension dataset.\narXiv preprint arXiv:1611.09268, 2016.\nNogueira, R., Lin, J., and Epistemic, A. From doc2query\nto doctttttquery. Online preprint, 2019a.\nNogueira, R., Yang, W., Cho, K., and Lin, J.\nMulti-\nstage document ranking with BERT.\narXiv preprint\narXiv:1910.14424, 2019b.\nPark, J. H., Shin, J., and Fung, P. Reducing gender bias in\nabusive language detection. In Conference on Empiri-",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 475,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 106,
+      "text": "cal Methods in Natural Language Processing (EMNLP),\n2018.\nPennington, J., Socher, R., and Manning, C.\nGloVe:\nGlobal vectors for word representation. In Conference\non Empirical Methods in Natural Language Processing\n(EMNLP), 2014.\nPeters, M. E., Neumann, M., Iyyer, M., Gardner, M.,\nClark, C., Lee, K., and Zettlemoyer, L.\nDeep con-\ntextualized word representations.\nIn Proceedings of\nNCAAL/IJCNLP, 2018.\nQu, Y., Ding, Y., Liu, J., Liu, K., Ren, R., Zhao, X., Dong,",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 464,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 107,
+      "text": "D., Wu, H., and Wang, H. Rocketqa: An optimized train-\ning approach to dense passage retrieval for open-domain\nquestion answering. In Conference of the Association for\nComputational Linguistics (ACL), 2021.\nRadford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G.,\nAgarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark,\nJ., Krueger, G., and Sutskever, I. Learning transferable\nvisual models from natural language supervision. arXiv\npreprint arXiv:2103.00020, 2021.",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 467,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 108,
+      "text": "preprint arXiv:2103.00020, 2021.\nRaffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S.,\nMatena, M., Zhou, Y., Li, W., and Liu, P. J. Exploring\nthe limits of transfer learning with a uniﬁed text-to-text\ntransformer. arXiv preprint arXiv:1910.10683, 2019.\nRamesh, A., Pavlov, M., Goh, G., Gray, S., Voss, C., Rad-\nford, A., Chen, M., and Sutskever, I.\nZero-shot text-\nto-image generation. arXiv preprint arXiv:2102.12092,\n2021.\nReimers, N. and Gurevych, I. Sentence-bert: Sentence em-",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 486,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 109,
+      "text": "beddings using siamese bert-networks. In Conference\non Empirical Methods in Natural Language Processing\n(EMNLP), 2019.\nRobertson, S.\nThe Probabilistic Relevance Framework:\nBM25 and Beyond. Foundations and Trends® in Infor-\nmation Retrieval, 2009.",
+      "source": "large_dual_encoder.pdf",
+      "page": 11,
+      "char_count": 246,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 110,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nRudinger, R., Naradowsky, J., Leonard, B., and Durme,\nB. V.\nGender bias in coreference resolution.\narXiv\npreprint arXiv:1804.09301, 2018.\nSachan, D. S., Patwary, M., Shoeybi, M., Kant, N., Ping,\nW., Hamilton, W. L., and Catanzaro, B.\nEnd-to-end\ntraining of neural retrievers for open-domain question\nanswering. In Zong, C., Xia, F., Li, W., and Navigli,\nR. (eds.), Proceedings of ACL/IJCNLP, pp. 6648–6662.\nACL, 2021.",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 111,
+      "text": "ACL, 2021.\nSanthanam, K., Khattab, O., Saad-Falcon, J., Potts, C.,\nand Zaharia, M. Colbertv2: Effective and efﬁcient re-\ntrieval via lightweight late interaction.\narXiv preprint\narXiv:2112.01488, 2021.\nSchroff, F., Kalenichenko, D., and Philbin, J. Facenet: A\nuniﬁed embedding for face recognition and clustering.\nIn Computer Vision and Pattern Recognition (CVPR),\n2015.\nShen, D., Zheng, M., Shen, Y., Qu, Y., and Chen, W. A\nsimple but tough-to-beat data augmentation approach for",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 480,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 112,
+      "text": "natural language understanding and generation. arXiv\npreprint arXiv:2009.13818, 2020.\nSocher, R., Perelygin, A., Wu, J., Chuang, J., Manning,\nC. D., Ng, A., and Potts, C. Recursive deep models for\nsemantic compositionality over a sentiment treebank. In\nConference on Empirical Methods in Natural Language\nProcessing (EMNLP), 2013.\nSohn, K. Improved deep metric learning with multi-class\nn-pair loss objective. In Advances in Neural Information\nProcessing Systems (NeuriPS), 2016.",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 113,
+      "text": "Processing Systems (NeuriPS), 2016.\nSolaiman, I. and Dennison, C. Process for adapting lan-\nguage models to society (PALMS) with values-targeted\ndatasets. arXiv preprint arXiv:2106.10328, 2021.\nSu, J., Cao, J., Liu, W., and Ou, Y. Whitening sentence\nrepresentations for better semantics and faster retrieval.\narXiv preprint arXiv:2103.15316, 2021.\nSun, C., Myers, A., Vondrick, C., Murphy, K., and Schmid,\nC.\nVideobert: A joint model for video and language",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 114,
+      "text": "Videobert: A joint model for video and language\nrepresentation learning. In International Conference on\nComputer Vision (ICCV), 2019.\nThakur, N., Reimers, N., R¨uckl´e, A., Srivastava, A., and\nGurevych, I.\nBEIR: A heterogenous benchmark for\nzero-shot evaluation of information retrieval models.\nIn Advances in Neural Information Processing Systems\n(NeuriPS), 2021.\nTian, Y., Krishnan, D., and Isola, P.\nContrastive multi-\nview coding. European Conference on Computer Vision\n(ECCV), 2019.",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 115,
+      "text": "(ECCV), 2019.\nvan den Oord, A., Dieleman, S., Zen, H., Simonyan, K.,\nVinyals, O., Graves, A., Kalchbrenner, N., Senior, A.,\nand Kavukcuoglu, K. Wavenet: A generative model for\nraw audio. arXiv preprint arXiv:1609.03499, 2016.\nvan den Oord, A., Li, Y., and Vinyals, O.\nRepresenta-\ntion learning with contrastive predictive coding. arXiv\npreprint arXiv:1807.03748, 2018.\nVaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones,\nL., Gomez, A. N., Kaiser, L. u., and Polosukhin, I. Atten-",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 487,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 116,
+      "text": "tion is all you need. In Advances in Neural Information\nProcessing Systems (NeuriPS), 2017.\nVervaeke, J., Lillicrap, T. P., and Richards, B. A. Relevance\nrealization and the emerging framework in cognitive sci-\nence. Journal of logic and computation, 22(1):79–99,\n2012.\nWang, W., Wei, F., Dong, L., Bao, H., Yang, N., and Zhou,\nM.\nMinilm: Deep self-attention distillation for task-\nagnostic compression of pre-trained transformers. arXiv\npreprint arXiv:2002.10957, 2020.",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 117,
+      "text": "preprint arXiv:2002.10957, 2020.\nWei, J. W. and Zou, K. EDA: easy data augmentation tech-\nniques for boosting performance on text classiﬁcation\ntasks. arXiv preprint arXiv:1901.11196, 2019.\nWilliams, A., Nangia, N., and Bowman, S.\nA broad-\ncoverage challenge corpus for sentence understanding\nthrough inference. In Conference of the North American\nChapter of the Association for Computational Linguis-\ntics (NAACL). ACL, 2018.\nWu, Z., Xiong, Y., Yu, S. X., and Lin, D. Unsupervised",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 481,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 118,
+      "text": "feature learning via non-parametric instance-level dis-\ncrimination. In Computer Vision and Pattern Recogni-\ntion (CVPR), 2018.\nXiong, L., Xiong, C., Li, Y., Tang, K., Liu, J., Bennett,\nP. N., Ahmed, J., and Overwijk, A. Approximate near-\nest neighbor negative contrastive learning for dense text\nretrieval. arXiv preprint arXiv:2007.00808, 2020.\nYih, W.-t., Toutanova, K., Platt, J. C., and Meek, C. Learn-\ning discriminative projections for text similarity mea-\nsures.",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 119,
+      "text": "sures.\nIn Conference on Computational Natural Lan-\nguage Learning (CoNLL). ACL, 2011.\nZbontar, J., Jing, L., Misra, I., LeCun, Y., and Deny, S. Bar-\nlow twins: Self-supervised learning via redundancy re-\nduction. In International Conference on Machine Learn-\ning (ICML), 2021.\nZhang, Y., He, R., Liu, Z., Lim, K. H., and Bing, L.\nAn unsupervised sentence embedding method by mutual\ninformation maximization.\nIn Conference on Empiri-\ncal Methods in Natural Language Processing (EMNLP),\n2020.",
+      "source": "large_dual_encoder.pdf",
+      "page": 12,
+      "char_count": 490,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 120,
+      "text": "Text and Code Embeddings by Contrastive Pre-Training\nZhao, J., Wang, T., Yatskar, M., Ordonez, V., and Chang,\nK. Gender bias in coreference resolution: Evaluation and\ndebiasing methods.\narXiv preprint arXiv:1804.06876,\n2018.",
+      "source": "large_dual_encoder.pdf",
+      "page": 13,
+      "char_count": 224,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}
