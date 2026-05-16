@@ -74,7 +74,9 @@ class DocumentEmbedder:
             "description": "A chunk of text from a document",
             "vectorizer": "none",  # we provide our own vectors
             "vectorIndexConfig": {
-                "distance": "cosine"  # cosine similarity for search
+                "distance": "cosine",
+                "ef": 100,
+                "maxConnections": 64  # cosine similarity for search
             },
             "invertedIndexConfig": {
                 "bm25": {
@@ -252,41 +254,69 @@ class DocumentEmbedder:
         return hits
 
     def search_hybrid(self, query: str, top_k: int = 5,
-                      alpha: float = 0.5) -> list:
+                  alpha: float = 0.5) -> list:
         """
-        Hybrid search — combines BM25 + vector search.
+        Hybrid search using manual RRF (Reciprocal Rank Fusion).
 
-        alpha=0.0 → pure BM25 (keyword only)
-        alpha=0.5 → balanced (recommended)
-        alpha=1.0 → pure vector (semantic only)
+        Why manual RRF instead of Weaviate's built-in?
+        More control, works with all Weaviate versions,
+        and RRF is the industry standard fusion algorithm.
 
-        This is better than either alone because:
-        - BM25 catches exact keyword matches
-        - Vector search catches semantic meaning
-        - Together they cover both cases
+        RRF formula: score = sum(1 / (rank + 60))
+        Higher score = more relevant result.
 
         Args:
             query: Search query
-            top_k: Number of results
-            alpha: Balance between BM25 and vector (0-1)
+            top_k: Number of results to return
+            alpha: Balance (unused in RRF but kept for API compat)
 
         Returns:
-            List of matching chunks
+            List of top_k most relevant chunks
         """
-        result = (
-            self.client.query
-            .get(CLASS_NAME, ["text", "source", "page",
-                              "chunkId"])
-            .with_hybrid(query=query, alpha=alpha)
-            .with_limit(top_k)
-            .with_additional(["score"])
-            .do()
-        )
+        try:
+            # Get more results from each method to fuse
+            fetch_k = top_k * 3
 
-        hits = result.get("data", {}).get("Get", {}).get(
-            CLASS_NAME, [])
-        return hits
+            bm25_results = self.search_bm25(query,
+                                            top_k=fetch_k) or []
+            vector_results = self.search_vector(query,
+                                                top_k=fetch_k) or []
 
+            # Build score map using chunk text as unique key
+            scores = {}
+            chunk_map = {}
+
+            # Score BM25 results
+            for rank, result in enumerate(bm25_results):
+                key = result.get("text", "")[:100]
+                if key not in scores:
+                    scores[key] = 0
+                    chunk_map[key] = result
+                # RRF formula
+                scores[key] += 1 / (rank + 60)
+
+            # Score vector results
+            for rank, result in enumerate(vector_results):
+                key = result.get("text", "")[:100]
+                if key not in scores:
+                    scores[key] = 0
+                    chunk_map[key] = result
+                # RRF formula
+                scores[key] += 1 / (rank + 60)
+
+            # Sort by combined score
+            sorted_keys = sorted(
+                scores.keys(),
+                key=lambda k: scores[k],
+                reverse=True
+            )
+
+            # Return top_k results
+            return [chunk_map[k] for k in sorted_keys[:top_k]]
+
+        except Exception as e:
+            print(f"  Hybrid search error: {e}")
+            return []
 
 if __name__ == "__main__":
     # Quick test

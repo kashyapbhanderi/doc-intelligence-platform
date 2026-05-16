@@ -1,0 +1,1982 @@
+[
+  {
+    "query": "What is retrieval augmented generation?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "193",
+        "page": 18,
+        "source": "rag_advanced.pdf",
+        "text": "moyer, and W.-t. Yih, \u201cReplug: Retrieval-augmented black-box lan-\nguage models,\u201d arXiv preprint arXiv:2301.12652, 2023.\n[73] E. Melz, \u201cEnhancing llm intelligence with arm-rag: Auxiliary ra-\ntionale memory for retrieval augmented generation,\u201d arXiv preprint\narXiv:2311.04177, 2023.\n[74] H. Wang, W. Huang, Y. Deng, R. Wang, Z. Wang, Y. Wang, F. Mi,\nJ. Z. Pan, and K.-F. Wong, \u201cUnims-rag: A unified multi-source\nretrieval-augmented generation for personalized dialogue systems,\u201d"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "97",
+        "page": 10,
+        "source": "selfrag.pdf",
+        "text": "more parameters or with conventional retrieval-augmented generation approaches.\n10"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "corrective_rag.pdf",
+        "text": "exhibit hallucinations since the accuracy of\ngenerated texts cannot be secured solely by\nthe parametric knowledge they encapsulate. Al-\nthough retrieval-augmented generation (RAG)\nis a practicable complement to LLMs, it relies\nheavily on the relevance of retrieved docu-\nments, raising concerns about how the model\nbehaves if retrieval goes wrong. To this end, we\npropose the Corrective Retrieval Augmented\nGeneration (CRAG) to improve the robustness\nof generation.\nSpecifically, a lightweight"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "selfrag.pdf",
+        "text": "ric knowledge they encapsulate. Retrieval-Augmented Generation (RAG), an ad\nhoc approach that augments LMs with retrieval of relevant knowledge, decreases\nsuch issues. However, indiscriminately retrieving and incorporating a fixed number\nof retrieved passages, regardless of whether retrieval is necessary, or passages are\nrelevant, diminishes LM versatility or can lead to unhelpful response generation.\nWe introduce a new framework called Self-Reflective Retrieval-Augmented Gen-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "115",
+        "page": 12,
+        "source": "corrective_rag.pdf",
+        "text": "Ma, and Yitao Liang. 2024.\nRAT: retrieval\naugmented thoughts elicit context-aware reasoning\nin long-horizon generation. CoRR, abs/2403.05313.\nOri Yoran, Tomer Wolfson, Ori Ram, and Jonathan\nBerant. 2024. Making retrieval-augmented language\nmodels robust to irrelevant context."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "6",
+        "page": 1,
+        "source": "corrective_rag.pdf",
+        "text": "information, impeding the generators from acquiring\naccurate knowledge and potentially misleading them.\nthe parametric knowledge they encapsulate (Zhang\net al., 2023b; Muhlgay et al., 2023).\nPrior research has introduced the retrieval tech-\nniques to incorporate the knowledge relevant to\ninput and augment generation, as exemplified\nby retrieval-augmented generation (RAG) (Lewis\net al., 2020). In this framework, the input to models\nis augmented by prepending relevant documents"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "18",
+        "page": 2,
+        "source": "selfrag.pdf",
+        "text": "2\nRELATED WORK\nRetrieval-Augmented Generation. Retrieval-Augmented Generation (RAG) augments the input\nspace of LMs with retrieved text passages (Guu et al., 2020; Lewis et al., 2020), leading to large\nimprovements in knowledge-intensive tasks after fine-tuning or used with off-the-shelf LMs (Ram\net al., 2023). A more recent work (Luo et al., 2023) instruction-tunes an LM with a fixed number\n2"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "9",
+        "page": 2,
+        "source": "selfrag.pdf",
+        "text": "Preprint.\nStep 1: Retrieve K documents\nCalifornia was named after a fictional \nisland in a Spanish book. \nPrompt How did US states get their names? \nUS states got their names from a variety of \nsources. Eleven states are named after an \nindividual person (e.g, California was named \nafter Christopher Columbus). Some states \nincluding Texas and Utah, are named after \nNative American tribe.\nRetrieval-Augmented Generation (RAG)\nOurs: Self-reflective Retrieval-Augmented Generation (Self-RAG)"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "231",
+        "page": 20,
+        "source": "rag_advanced.pdf",
+        "text": "[163] Q. Leng, K. Uhlenhuth, and A. Polyzotis, \u201cBest practices for\nllm evaluation of rag applications,\u201d https://www.databricks.com/blog/\nLLM-auto-eval-best-practices-RAG, 2023.\n[164] S. Es, J. James, L. Espinosa-Anke, and S. Schockaert, \u201cRagas: Au-\ntomated evaluation of retrieval augmented generation,\u201d arXiv preprint\narXiv:2309.15217, 2023.\n[165] J. Saad-Falcon, O. Khattab, C. Potts, and M. Zaharia, \u201cAres: An\nautomated evaluation framework for retrieval-augmented generation"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "87",
+        "page": 10,
+        "source": "corrective_rag.pdf",
+        "text": "6\nConclusion & Limitation\nThis paper studies the problem where RAG-based\napproaches are challenged if retrieval goes wrong,\nthereby exposing inaccurate and misleading knowl-\nedge to generative LMs.\nCorrective Retrieval\nAugmented Generation is proposed to improve the\nrobustness of generation. Essentially, a lightweight\nretrieval evaluator is to estimate and trigger three\nknowledge retrieval actions discriminately. With\nthe further leverage of web search and optimized"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8693431317806244,
+          "distance": 0.26131374
+        },
+        "chunkId": "6",
+        "page": 1,
+        "source": "corrective_rag.pdf",
+        "text": "information, impeding the generators from acquiring\naccurate knowledge and potentially misleading them.\nthe parametric knowledge they encapsulate (Zhang\net al., 2023b; Muhlgay et al., 2023).\nPrior research has introduced the retrieval tech-\nniques to incorporate the knowledge relevant to\ninput and augment generation, as exemplified\nby retrieval-augmented generation (RAG) (Lewis\net al., 2020). In this framework, the input to models\nis augmented by prepending relevant documents"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8693149089813232,
+          "distance": 0.26137018
+        },
+        "chunkId": "97",
+        "page": 10,
+        "source": "selfrag.pdf",
+        "text": "more parameters or with conventional retrieval-augmented generation approaches.\n10"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8539303541183472,
+          "distance": 0.2921393
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "corrective_rag.pdf",
+        "text": "exhibit hallucinations since the accuracy of\ngenerated texts cannot be secured solely by\nthe parametric knowledge they encapsulate. Al-\nthough retrieval-augmented generation (RAG)\nis a practicable complement to LLMs, it relies\nheavily on the relevance of retrieved docu-\nments, raising concerns about how the model\nbehaves if retrieval goes wrong. To this end, we\npropose the Corrective Retrieval Augmented\nGeneration (CRAG) to improve the robustness\nof generation.\nSpecifically, a lightweight"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8414773344993591,
+          "distance": 0.31704533
+        },
+        "chunkId": "18",
+        "page": 2,
+        "source": "selfrag.pdf",
+        "text": "2\nRELATED WORK\nRetrieval-Augmented Generation. Retrieval-Augmented Generation (RAG) augments the input\nspace of LMs with retrieved text passages (Guu et al., 2020; Lewis et al., 2020), leading to large\nimprovements in knowledge-intensive tasks after fine-tuning or used with off-the-shelf LMs (Ram\net al., 2023). A more recent work (Luo et al., 2023) instruction-tunes an LM with a fixed number\n2"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8393563628196716,
+          "distance": 0.32128727
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "selfrag.pdf",
+        "text": "ric knowledge they encapsulate. Retrieval-Augmented Generation (RAG), an ad\nhoc approach that augments LMs with retrieval of relevant knowledge, decreases\nsuch issues. However, indiscriminately retrieving and incorporating a fixed number\nof retrieved passages, regardless of whether retrieval is necessary, or passages are\nrelevant, diminishes LM versatility or can lead to unhelpful response generation.\nWe introduce a new framework called Self-Reflective Retrieval-Augmented Gen-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8347846865653992,
+          "distance": 0.33043063
+        },
+        "chunkId": "15",
+        "page": 2,
+        "source": "rag_advanced.pdf",
+        "text": "three sections explore core components\u2014\u201cRetrieval\u201d, \u201cGen-\neration\u201d and \u201cAugmentation\u201d, respectively. Section III focuses\non optimization methods in retrieval,including indexing, query\nand embedding optimization. Section IV concentrates on post-\nretrieval process and LLM fine-tuning in generation. Section V\nanalyzes the three augmentation processes. Section VI focuses\non RAG\u2019s downstream tasks and evaluation system. Sec-\ntion VII mainly discusses the challenges that RAG currently"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8225153088569641,
+          "distance": 0.35496938
+        },
+        "chunkId": "7",
+        "page": 1,
+        "source": "selfrag.pdf",
+        "text": "indicate the need for retrieval and its generation quality respectively (Figure 1 right). In particular,\ngiven an input prompt and preceding generations, SELF-RAG first determines if augmenting the\ncontinued generation with retrieved passages would be helpful. If so, it outputs a retrieval token that\ncalls a retriever model on demand (Step 1). Subsequently, SELF-RAG concurrently processes multiple\nretrieved passages, evaluating their relevance and then generating corresponding task outputs (Step"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8180404901504517,
+          "distance": 0.36391902
+        },
+        "chunkId": "109",
+        "page": 11,
+        "source": "rag_advanced.pdf",
+        "text": "11\nFig. 5. In addition to the most common once retrieval, RAG also includes three types of retrieval augmentation processes. (left) Iterative retrieval involves\nalternating between retrieval and generation, allowing for richer and more targeted context from the knowledge base at each step. (Middle) Recursive retrieval\ninvolves gradually refining the user query and breaking down the problem into sub-problems, then continuously solving complex problems through retrieval"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8115361034870148,
+          "distance": 0.3769278
+        },
+        "chunkId": "10",
+        "page": 2,
+        "source": "corrective_rag.pdf",
+        "text": "as reference knowledge both during retrieval and\nutilization. But a considerable portion of the text\nwithin these retrieved documents is often non-\nessential for generation, which should not have\nbeen equally referred to and involved in RAG.\nOn account of the above issues, this paper\nparticularly\nstudies\nthe\nscenarios\nwhere\nthe retriever returns inaccurate results.\nA\nmethod named Corrective Retrieval-Augmented\nGeneration (CRAG) is proposed to self-correct"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8114689588546753,
+          "distance": 0.37706208
+        },
+        "chunkId": "231",
+        "page": 20,
+        "source": "rag_advanced.pdf",
+        "text": "[163] Q. Leng, K. Uhlenhuth, and A. Polyzotis, \u201cBest practices for\nllm evaluation of rag applications,\u201d https://www.databricks.com/blog/\nLLM-auto-eval-best-practices-RAG, 2023.\n[164] S. Es, J. James, L. Espinosa-Anke, and S. Schockaert, \u201cRagas: Au-\ntomated evaluation of retrieval augmented generation,\u201d arXiv preprint\narXiv:2309.15217, 2023.\n[165] J. Saad-Falcon, O. Khattab, C. Potts, and M. Zaharia, \u201cAres: An\nautomated evaluation framework for retrieval-augmented generation"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "How does LoRA fine-tuning work?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "31",
+        "page": 4,
+        "source": "lora.pdf",
+        "text": "rate if we scale the initialization appropriately. As a result, we simply set \u03b1 to the \ufb01rst r we try\nand do not tune it. This scaling helps to reduce the need to retune hyperparameters when we vary\nr (Yang & Hu, 2021).\nA Generalization of Full Fine-tuning.\nA more general form of \ufb01ne-tuning allows the training of\na subset of the pre-trained parameters. LoRA takes a step further and does not require the accumu-\nlated gradient update to weight matrices to have full-rank during adaptation. This means that when"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "167",
+        "page": 22,
+        "source": "lora.pdf",
+        "text": "MNLI-n tasks. In Table 16, we show the performance of different adaptation approaches on MNLI-\nn. To our surprise, Pre\ufb01xEmbed and Pre\ufb01xLayer performs very poorly on MNLI-100 dataset, with\nPre\ufb01xEmbed performing only slightly better than random chance (37.6% vs. 33.3%). Pre\ufb01xLayer\nperforms better than Pre\ufb01xEmbed but is still signi\ufb01cantly worse than Fine-Tune or LoRA on MNLI-\n100. The gap between pre\ufb01x-based approaches and LoRA/Fine-tuning becomes smaller as we in-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "160",
+        "page": 21,
+        "source": "lora.pdf",
+        "text": "embeddings and subsequent Transformer block activations are treated as trainable parameters. For\nmore on pre\ufb01x-layer tuning, see Section 5.1.\nIn Table 15, we show the evaluation results of LoRA+PE and LoRA+PL on WikiSQL and MultiNLI.\nFirst of all, LoRA+PE signi\ufb01cantly outperforms both LoRA and pre\ufb01x-embedding tuning on\nWikiSQL, which indicates that LoRA is somewhat orthogonal to pre\ufb01x-embedding tuning. On\nMultiNLI, the combination of LoRA+PE doesn\u2019t perform better than LoRA, possibly because LoRA"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "157",
+        "page": 20,
+        "source": "lora.pdf",
+        "text": "or rq = rk = rv = ro = 2). We report the best validation performance from each run. The training\nhyperparameters used in our GPT-3 experiments are listed in Table 12.\nE\nCOMBINING LORA WITH PREFIX TUNING\nLoRA can be naturally combined with existing pre\ufb01x-based approaches. In this section, we evaluate\ntwo combinations of LoRA and variants of pre\ufb01x-tuning on WikiSQL and MNLI.\nLoRA+Pre\ufb01xEmbed (LoRA+PE) combines LoRA with pre\ufb01x-embedding tuning, where we insert"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "101",
+        "page": 12,
+        "source": "lora.pdf",
+        "text": "networks with dense layers.\nThere are many directions for future works. 1) LoRA can be combined with other ef\ufb01cient adapta-\ntion methods, potentially providing orthogonal improvement. 2) The mechanism behind \ufb01ne-tuning\nor LoRA is far from clear \u2013 how are features learned during pre-training transformed to do well\non downstream tasks? We believe that LoRA makes it more tractable to answer this than full \ufb01ne-\n12"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "33",
+        "page": 6,
+        "source": "donut.pdf",
+        "text": "addition, several image rendering techniques [13,41,67] are applied to mimic\nreal documents. The generated examples are shown in Figure 4. More details of\nSynthDoG are available in the code1 and Appendix A.2.\n2.4\nFine-tuning\nAfter the model learns how to read, in the application stage (i.e., fine-tuning), we\nteach the model how to understand the document image. As shown in Figure 3,\nwe interpret all downstream tasks as a JSON prediction problem."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "158",
+        "page": 20,
+        "source": "lora.pdf",
+        "text": "lp + li special tokens whose embeddings are treated as trainable parameters. For more on pre\ufb01x-\nembedding tuning, see Section 5.1.\nLoRA+Pre\ufb01xLayer (LoRA+PL) combines LoRA with pre\ufb01x-layer tuning. We also insert lp + li\nspecial tokens; however, instead of letting the hidden representations of these tokens evolve natu-\n20"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "455",
+        "page": 72,
+        "source": "qlora.pdf",
+        "text": "focus on zero-shot and few-shot evaluations, although future evaluation work should also explore prompt-tuning and\nfine-tuning classifier workflows.\nPotential harms from classifiers can be many and diverse, depending on what the classifier is measuring and how it is\nembedded within a larger product or system. Some classifiers are used within human-in-the-loop settings, as part of\ncontent moderation processes, or within high-stakes decision contexts requiring specific forms of transparency. As a"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "62",
+        "page": 7,
+        "source": "instructblip.pdf",
+        "text": "Base [5] as the text encoder and Deformable DETR (D-DETR) [82] to capture high-level information.\nWe set the number of queries M to 100, and the number of encoder/decoder layers to 6 for D-DETR.\nFor the LLM, we employ Alpaca-7B [53], a LLaMA [54] model fine-tuned with instructions, and\nequip it with LoRA [24] for parameter-efficient fine-tuning.\nThe model is trained in two stages. In the first stage, we initialize the model with the pre-trained"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "173",
+        "page": 23,
+        "source": "lora.pdf",
+        "text": "Method\nMNLI(m)-100\nMNLI(m)-1k\nMNLI(m)-10k\nMNLI(m)-392K\nGPT-3 (Fine-Tune)\n60.2\n85.8\n88.9\n89.5\nGPT-3 (Pre\ufb01xEmbed)\n37.6\n75.2\n79.5\n88.6\nGPT-3 (Pre\ufb01xLayer)\n48.3\n82.5\n85.9\n89.6\nGPT-3 (LoRA)\n63.8\n85.6\n89.2\n91.7\nTable 16: Validation accuracy of different methods on subsets of MNLI using GPT-3 175B. MNLI-\nn describes a subset with n training examples. We evaluate with the full validation set. LoRA\nperforms exhibits favorable sample-ef\ufb01ciency compared to other methods, including \ufb01ne-tuning."
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8335940837860107,
+          "distance": 0.33281183
+        },
+        "chunkId": "31",
+        "page": 4,
+        "source": "lora.pdf",
+        "text": "rate if we scale the initialization appropriately. As a result, we simply set \u03b1 to the \ufb01rst r we try\nand do not tune it. This scaling helps to reduce the need to retune hyperparameters when we vary\nr (Yang & Hu, 2021).\nA Generalization of Full Fine-tuning.\nA more general form of \ufb01ne-tuning allows the training of\na subset of the pre-trained parameters. LoRA takes a step further and does not require the accumu-\nlated gradient update to weight matrices to have full-rank during adaptation. This means that when"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8307491540908813,
+          "distance": 0.3385017
+        },
+        "chunkId": "161",
+        "page": 21,
+        "source": "lora.pdf",
+        "text": "on its own already achieves performance comparable to the human baseline. Secondly, we notice\nthat LoRA+PL performs slightly worse than LoRA even with more trainable parameters. We at-\ntribute this to the fact that pre\ufb01x-layer tuning is very sensitive to the choice of learning rate and thus\nmakes the optimization of LoRA weights more dif\ufb01cult in LoRA+PL.\nF\nADDITIONAL EMPIRICAL EXPERIMENTS\nF.1\nADDITIONAL EXPERIMENTS ON GPT-2"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8252561688423157,
+          "distance": 0.34948766
+        },
+        "chunkId": "101",
+        "page": 12,
+        "source": "lora.pdf",
+        "text": "networks with dense layers.\nThere are many directions for future works. 1) LoRA can be combined with other ef\ufb01cient adapta-\ntion methods, potentially providing orthogonal improvement. 2) The mechanism behind \ufb01ne-tuning\nor LoRA is far from clear \u2013 how are features learned during pre-training transformed to do well\non downstream tasks? We believe that LoRA makes it more tractable to answer this than full \ufb01ne-\n12"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8148974180221558,
+          "distance": 0.37020516
+        },
+        "chunkId": "172",
+        "page": 23,
+        "source": "lora.pdf",
+        "text": "37.8 M\n75.0\n91.4\nrq = rv = 32, lp = 8, li = 4\n151.1 M\n75.9\n91.1\nrq = rv = 64, lp = 8, li = 4\n302.1 M\n76.2\n91.3\nLoRA+PL\nrq = rv = 8, lp = 8, li = 4\n52.8 M\n72.9\n90.2\nTable 15: Hyperparameter analysis of different adaptation approaches on WikiSQL and MNLI. Both\npre\ufb01x-embedding tuning (Pre\ufb01xEmbed) and pre\ufb01x-layer tuning (Pre\ufb01xLayer) perform worse as we\nincrease the number of trainable parameters, while LoRA\u2019s performance stabilizes. Performance is\nmeasured in validation accuracy.\nMethod\nMNLI(m)-100\nMNLI(m)-1k"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8037804663181305,
+          "distance": 0.39243907
+        },
+        "chunkId": "32",
+        "page": 4,
+        "source": "lora.pdf",
+        "text": "applying LoRA to all weight matrices and training all biases2, we roughly recover the expressive-\nness of full \ufb01ne-tuning by setting the LoRA rank r to the rank of the pre-trained weight matrices. In\nother words, as we increase the number of trainable parameters 3, training LoRA roughly converges\nto training the original model, while adapter-based methods converges to an MLP and pre\ufb01x-based\nmethods to a model that cannot take long input sequences.\nNo Additional Inference Latency."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7928786277770996,
+          "distance": 0.41424274
+        },
+        "chunkId": "160",
+        "page": 21,
+        "source": "lora.pdf",
+        "text": "embeddings and subsequent Transformer block activations are treated as trainable parameters. For\nmore on pre\ufb01x-layer tuning, see Section 5.1.\nIn Table 15, we show the evaluation results of LoRA+PE and LoRA+PL on WikiSQL and MultiNLI.\nFirst of all, LoRA+PE signi\ufb01cantly outperforms both LoRA and pre\ufb01x-embedding tuning on\nWikiSQL, which indicates that LoRA is somewhat orthogonal to pre\ufb01x-embedding tuning. On\nMultiNLI, the combination of LoRA+PE doesn\u2019t perform better than LoRA, possibly because LoRA"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7833876609802246,
+          "distance": 0.43322468
+        },
+        "chunkId": "102",
+        "page": 13,
+        "source": "lora.pdf",
+        "text": "tuning. 3) We mostly depend on heuristics to select the weight matrices to apply LoRA to. Are\nthere more principled ways to do it? 4) Finally, the rank-de\ufb01ciency of \u2206W suggests that W could\nbe rank-de\ufb01cient as well, which can also be a source of inspiration for future works.\nREFERENCES\nArmen Aghajanyan, Luke Zettlemoyer, and Sonal Gupta. Intrinsic Dimensionality Explains the\nEffectiveness of Language Model Fine-Tuning. arXiv:2012.13255 [cs], December 2020. URL\nhttp://arxiv.org/abs/2012.13255."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7830898761749268,
+          "distance": 0.43382025
+        },
+        "chunkId": "2",
+        "page": 1,
+        "source": "lora.pdf",
+        "text": "rameters for downstream tasks. Compared to GPT-3 175B \ufb01ne-tuned with Adam,\nLoRA can reduce the number of trainable parameters by 10,000 times and the\nGPU memory requirement by 3 times. LoRA performs on-par or better than \ufb01ne-\ntuning in model quality on RoBERTa, DeBERTa, GPT-2, and GPT-3, despite hav-\ning fewer trainable parameters, a higher training throughput, and, unlike adapters,\nno additional inference latency. We also provide an empirical investigation into"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7815541326999664,
+          "distance": 0.43689173
+        },
+        "chunkId": "58",
+        "page": 7,
+        "source": "lora.pdf",
+        "text": "setup. To ensure a fair comparison, we make two crucial changes to how we evaluate LoRA when\ncomparing with adapters. First, we use the same batch size for all tasks and use a sequence length\nof 128 to match the adapter baselines. Second, we initialize the model to the pre-trained model for\nMRPC, RTE, and STS-B, not a model already adapted to MNLI like the \ufb01ne-tuning baseline. Runs\nfollowing this more restricted setup from Houlsby et al. (2019) are labeled with \u2020. The result is"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7721210420131683,
+          "distance": 0.45575792
+        },
+        "chunkId": "10",
+        "page": 2,
+        "source": "lora.pdf",
+        "text": "head signi\ufb01cantly.\n\u2022 LoRA makes training more ef\ufb01cient and lowers the hardware barrier to entry by up to 3\ntimes when using adaptive optimizers since we do not need to calculate the gradients or\nmaintain the optimizer states for most parameters. Instead, we only optimize the injected,\nmuch smaller low-rank matrices.\n\u2022 Our simple linear design allows us to merge the trainable matrices with the frozen weights\nwhen deployed, introducing no inference latency compared to a fully \ufb01ne-tuned model, by"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "Explain transformer attention mechanisms",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "108",
+        "page": 15,
+        "source": "t5.pdf",
+        "text": "3.2 Architectures\nWhile the Transformer was originally introduced with an encoder-decoder architecture, much\nmodern work on transfer learning for NLP uses alternative architectures. In this section, we\nreview and compare these architectural variants.\n3.2.1 Model Structures\nA major distinguishing factor for different architectures is the \u201cmask\u201d used by different\nattention mechanisms in the model. Recall that the self-attention operation in a Transformer"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "29",
+        "page": 5,
+        "source": "t5.pdf",
+        "text": "Exploring the Limits of Transfer Learning\nmechanism after each self-attention layer that attends to the output of the encoder. The\nself-attention mechanism in the decoder also uses a form of autoregressive or causal self-\nattention, which only allows the model to attend to past outputs. The output of the final\ndecoder block is fed into a dense layer with a softmax output, whose weights are shared with\nthe input embedding matrix. All attention mechanisms in the Transformer are split up into"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "69",
+        "page": 10,
+        "source": "attention.pdf",
+        "text": "English-to-French translation tasks, we achieve a new state of the art. In the former task our best\nmodel outperforms even all previously reported ensembles.\nWe are excited about the future of attention-based models and plan to apply them to other tasks. We\nplan to extend the Transformer to problems involving input and output modalities other than text and\nto investigate local, restricted attention mechanisms to efficiently handle large inputs and outputs"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "10",
+        "page": 2,
+        "source": "attention.pdf",
+        "text": "tion models in various tasks, allowing modeling of dependencies without regard to their distance in\nthe input or output sequences [2, 19]. In all but a few cases [27], however, such attention mechanisms\nare used in conjunction with a recurrent network.\nIn this work we propose the Transformer, a model architecture eschewing recurrence and instead\nrelying entirely on an attention mechanism to draw global dependencies between input and output."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "79",
+        "page": 11,
+        "source": "t5.pdf",
+        "text": "block consist of a dense layer with an output dimensionality of dff = 3072 followed by a\nReLU nonlinearity and another dense layer. The \u201ckey\u201d and \u201cvalue\u201d matrices of all attention\nmechanisms have an inner dimensionality of dkv = 64 and all attention mechanisms have 12\nheads. All other sub-layers and embeddings have a dimensionality of dmodel = 768. In total,\nthis results in a model with about 220 million parameters. This is roughly twice the number"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "29",
+        "page": 5,
+        "source": "attention.pdf",
+        "text": "\u2022 In \"encoder-decoder attention\" layers, the queries come from the previous decoder layer,\nand the memory keys and values come from the output of the encoder. This allows every\nposition in the decoder to attend over all positions in the input sequence. This mimics the\ntypical encoder-decoder attention mechanisms in sequence-to-sequence models such as\n[38, 2, 9].\n\u2022 The encoder contains self-attention layers. In a self-attention layer all of the keys, values"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "24",
+        "page": 4,
+        "source": "attention.pdf",
+        "text": "much faster and more space-efficient in practice, since it can be implemented using highly optimized\nmatrix multiplication code.\nWhile for small values of dk the two mechanisms perform similarly, additive attention outperforms\ndot product attention without scaling for larger values of dk [3]. We suspect that for large values of\ndk, the dot products grow large in magnitude, pushing the softmax function into regions where it has"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "5",
+        "page": 1,
+        "source": "mistral.pdf",
+        "text": "applications. In addition, SWA is designed to handle longer sequences more effectively at a reduced\ncomputational cost, thereby alleviating a common limitation in LLMs. These attention mechanisms\ncollectively contribute to the enhanced performance and efficiency of Mistral 7B.\narXiv:2310.06825v1  [cs.CL]  10 Oct 2023"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "68",
+        "page": 10,
+        "source": "attention.pdf",
+        "text": "7\nConclusion\nIn this work, we presented the Transformer, the first sequence transduction model based entirely on\nattention, replacing the recurrent layers most commonly used in encoder-decoder architectures with\nmulti-headed self-attention.\nFor translation tasks, the Transformer can be trained significantly faster than architectures based\non recurrent or convolutional layers. On both WMT 2014 English-to-German and WMT 2014"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "17",
+        "page": 3,
+        "source": "attention.pdf",
+        "text": "Figure 1: The Transformer - model architecture.\nThe Transformer follows this overall architecture using stacked self-attention and point-wise, fully\nconnected layers for both the encoder and decoder, shown in the left and right halves of Figure 1,\nrespectively.\n3.1\nEncoder and Decoder Stacks\nEncoder:\nThe encoder is composed of a stack of N = 6 identical layers. Each layer has two\nsub-layers. The first is a multi-head self-attention mechanism, and the second is a simple, position-"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8386629223823547,
+          "distance": 0.32267416
+        },
+        "chunkId": "30",
+        "page": 5,
+        "source": "t5.pdf",
+        "text": "independent \u201cheads\u201d whose outputs are concatenated before being further processed.\nSince self-attention is order-independent (i.e. it is an operation on sets), it is common\nto provide an explicit position signal to the Transformer. While the original Transformer\nused a sinusoidal position signal or learned position embeddings, it has recently become\nmore common to use relative position embeddings (Shaw et al., 2018; Huang et al., 2018a)."
+      },
+      {
+        "_additional": {
+          "certainty": 0.8302274942398071,
+          "distance": 0.339545
+        },
+        "chunkId": "17",
+        "page": 3,
+        "source": "attention.pdf",
+        "text": "Figure 1: The Transformer - model architecture.\nThe Transformer follows this overall architecture using stacked self-attention and point-wise, fully\nconnected layers for both the encoder and decoder, shown in the left and right halves of Figure 1,\nrespectively.\n3.1\nEncoder and Decoder Stacks\nEncoder:\nThe encoder is composed of a stack of N = 6 identical layers. Each layer has two\nsub-layers. The first is a multi-head self-attention mechanism, and the second is a simple, position-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8226871192455292,
+          "distance": 0.35462576
+        },
+        "chunkId": "28",
+        "page": 4,
+        "source": "t5.pdf",
+        "text": "connection, on the attention weights, and at the input and output of the entire stack. The\ndecoder is similar in structure to the encoder except that it includes a standard attention\n3. http://nlp.seas.harvard.edu/2018/04/03/attention.html\n4. http://jalammar.github.io/illustrated-transformer/\n4"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8096073865890503,
+          "distance": 0.38078523
+        },
+        "chunkId": "12",
+        "page": 2,
+        "source": "attention.pdf",
+        "text": "the number of operations required to relate signals from two arbitrary input or output positions grows\nin the distance between positions, linearly for ConvS2S and logarithmically for ByteNet. This makes\nit more difficult to learn dependencies between distant positions [12]. In the Transformer this is\nreduced to a constant number of operations, albeit at the cost of reduced effective resolution due\nto averaging attention-weighted positions, an effect we counteract with Multi-Head Attention as"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8072717189788818,
+          "distance": 0.38545656
+        },
+        "chunkId": "119",
+        "page": 17,
+        "source": "t5.pdf",
+        "text": "Exploring the Limits of Transfer Learning\nx1\nx2\nx3\nx4\ny1\ny2\n.\nEncoder\nDecoder\nx1\nx2\nx3\ny1\ny2\nx2\nx3\ny1\ny2\n.\nLanguage model\nx1\nx2\nx3\ny1\ny2\nx2\nx3\ny1\ny2\n.\nPre\ufb01x LM\nFigure 4: Schematics of the Transformer architecture variants we consider. In this diagram,\nblocks represent elements of a sequence and lines represent attention visibility.\nDifferent colored groups of blocks indicate different Transformer layer stacks. Dark\ngrey lines correspond to fully-visible masking and light grey lines correspond"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8023206889629364,
+          "distance": 0.39535862
+        },
+        "chunkId": "108",
+        "page": 15,
+        "source": "t5.pdf",
+        "text": "3.2 Architectures\nWhile the Transformer was originally introduced with an encoder-decoder architecture, much\nmodern work on transfer learning for NLP uses alternative architectures. In this section, we\nreview and compare these architectural variants.\n3.2.1 Model Structures\nA major distinguishing factor for different architectures is the \u201cmask\u201d used by different\nattention mechanisms in the model. Recall that the self-attention operation in a Transformer"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8005180954933167,
+          "distance": 0.3989638
+        },
+        "chunkId": "24",
+        "page": 4,
+        "source": "t5.pdf",
+        "text": "originally proposed. Instead of providing a comprehensive definition of this model, we refer\nthe interested reader to the original paper (Vaswani et al., 2017) or follow-up tutorials3,4 for\na more detailed introduction.\nThe primary building block of the Transformer is self-attention (Cheng et al., 2016).\nSelf-attention is a variant of attention (Graves, 2013; Bahdanau et al., 2015) that processes\na sequence by replacing each element by a weighted average of the rest of the sequence."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7977952659130096,
+          "distance": 0.40440947
+        },
+        "chunkId": "28",
+        "page": 5,
+        "source": "attention.pdf",
+        "text": "i\n\u2208Rdmodel\u00d7dk, W K\ni\n\u2208Rdmodel\u00d7dk, W V\ni\n\u2208Rdmodel\u00d7dv\nand W O \u2208Rhdv\u00d7dmodel.\nIn this work we employ h = 8 parallel attention layers, or heads. For each of these we use\ndk = dv = dmodel/h = 64. Due to the reduced dimension of each head, the total computational cost\nis similar to that of single-head attention with full dimensionality.\n3.2.3\nApplications of Attention in our Model\nThe Transformer uses multi-head attention in three different ways:"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7969512045383453,
+          "distance": 0.4060976
+        },
+        "chunkId": "115",
+        "page": 16,
+        "source": "t5.pdf",
+        "text": "at the timestep corresponding to the classification token is then used to make a prediction\nfor classifying the input sequence.\nThe self-attention operations in the Transformer\u2019s decoder use a \u201ccausal\u201d masking pattern.\nWhen producing the ith entry of the output sequence, causal masking prevents the model\nfrom attending to the jth entry of the input sequence for j > i. This is used during training\nso that the model can\u2019t \u201csee into the future\u201d as it produces its output. An attention matrix"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7926159501075745,
+          "distance": 0.4147681
+        },
+        "chunkId": "29",
+        "page": 5,
+        "source": "t5.pdf",
+        "text": "Exploring the Limits of Transfer Learning\nmechanism after each self-attention layer that attends to the output of the encoder. The\nself-attention mechanism in the decoder also uses a form of autoregressive or causal self-\nattention, which only allows the model to attend to past outputs. The output of the final\ndecoder block is fed into a dense layer with a softmax output, whose weights are shared with\nthe input embedding matrix. All attention mechanisms in the Transformer are split up into"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "What is BERT pre-training?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "23",
+        "page": 3,
+        "source": "bert.pdf",
+        "text": "strated the importance of transfer learning from\nlarge pre-trained models, where an effective recipe\nis to \ufb01ne-tune models pre-trained with Ima-\ngeNet (Deng et al., 2009; Yosinski et al., 2014).\n3\nBERT\nWe introduce BERT and its detailed implementa-\ntion in this section. There are two steps in our\nframework: pre-training and \ufb01ne-tuning.\nDur-\ning pre-training, the model is trained on unlabeled\ndata over different pre-training tasks.\nFor \ufb01ne-\ntuning, the BERT model is \ufb01rst initialized with"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "108",
+        "page": 13,
+        "source": "lora.pdf",
+        "text": "parameters in deep learning, 2014.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: Pre-training of deep\nbidirectional transformers for language understanding, 2019a.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of Deep\nBidirectional Transformers for Language Understanding. arXiv:1810.04805 [cs], May 2019b.\nURL http://arxiv.org/abs/1810.04805. arXiv: 1810.04805."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "114",
+        "page": 12,
+        "source": "bert.pdf",
+        "text": "presented in Appendix B; and\n\u2022 Additional ablation studies are presented in\nAppendix C.\nWe present additional ablation studies for\nBERT including:\n\u2013 Effect of Number of Training Steps; and\n\u2013 Ablation for Different Masking Proce-\ndures.\nA\nAdditional Details for BERT\nA.1\nIllustration of the Pre-training Tasks\nWe provide examples of the pre-training tasks in\nthe following.\nMasked LM and the Masking Procedure\nAs-\nsuming the unlabeled sentence is\nmy dog is\nhairy, and during the random masking procedure"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "79",
+        "page": 9,
+        "source": "cpt_text.pdf",
+        "text": "5.1\nMultilingual pre-training\nOur multilingual model, called mContriever, is jointly pre-trained on 29 languages. The multilingual pre-\ntraining largely follows the method discussed in previous sections, but it di\ufb00ers by few particularities related\nto the pre-training data and the hyperparameters used. The model is initialized with the multilingual version\nof BERT, mBERT, trained on 104 languages. For the pre-training data, we consider the languages contained"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "8",
+        "page": 1,
+        "source": "layoutlmv3.pdf",
+        "text": "constructive pre-training objectives. In NLP research, BERT firstly\nproposed \u201cmasked language modeling\u201d (MLM) to learn bidirec-\ntional representations by predicting the original vocabulary id of\na randomly masked word token based on its context [9]. Whereas\nmost performant multimodal pre-trained Document AI models use\nthe MLM proposed by BERT for text modality, they differ in pre-\ntraining objectives for image modality as depicted in Figure 2. For"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "25",
+        "page": 4,
+        "source": "flava.pdf",
+        "text": "Model\nPre-Training Sources\nSize of Pre-Training Corpus\n# Model parameters\n(1) English Monolingual Models\nBERT(BASE)(Devlin et al., 2019)\nWiki, books\n3.3B tokens (13GB data)\n110M\nBERT(LARGE)(DEVLIN ET AL., 2019)\nWiki, books\n3.3B tokens (13GB data)\n340M\nROBERTA(Liu et al., 2019)\nWiki, books, web crawl\n161GB data\n340M\nXLNET (Yang et al., 2019)\nWiki, books, web crawl\n142GB data\n340M\nGPT(Radford et al., 2018)\nWeb crawl\n800M tokens\n117M\nGPT-2(Radford et al., 2019)\nWeb crawl\n8M documents (40GB data)\n1.5B"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "47",
+        "page": 6,
+        "source": "finetuned_lm.pdf",
+        "text": "Shumin Deng, Chuanqi Tan, Fei Huang, Luo Si, and\nHuajun Chen. 2021. Adaprompt: Adaptive prompt-\nbased \ufb01netuning for relation extraction.\narXiv\npreprint arXiv:2104.07650.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2018. Bert: Pre-training of deep\nbidirectional transformers for language understand-\ning. arXiv preprint arXiv:1810.04805.\nJacob Devlin, Ming-Wei Chang, Kenton Lee, and\nKristina Toutanova. 2018. Bert: Pre-training of deep\nbidirectional transformers for language understand-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "41",
+        "page": 4,
+        "source": "layoutlmv3.pdf",
+        "text": "are 5\ud835\udc52\u22125 and 10%, respectively.\n3.3\nFine-tuning on Multimodal Tasks\nWe compare LayoutLMv3 with typical self-supervised pre-training\napproaches and categorize them by their pre-training modalities.\n\u2022 [T] text modality: BERT [9] and RoBERTa [36] are typical\npre-trained language models which only use text information\nwith Transformer architecture. We use FUNSD and RVL-\nCDIP results of the RoBERTa from LayoutLM [54] and results\nof BERT from LayoutLMv2 [56]. We reproduce and report"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "197",
+        "page": 27,
+        "source": "t5.pdf",
+        "text": "We investigate at what point using a smaller pre-training data sets poses an issue in the\nfollowing section.\n3.4.2 Pre-training Data set Size\nThe pipeline we use to create C4 was designed to be able to create extremely large pre-\ntraining data sets. The access to so much data allows us to pre-train our models without\nrepeating examples. It is not clear whether repeating examples during pre-training would\nbe helpful or harmful to downstream performance because our pre-training objective is itself"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "156",
+        "page": 21,
+        "source": "t5.pdf",
+        "text": "similar performance on the translation tasks. Indeed, the motivation for the BERT objective\nwas to outperform language model-based pre-training. The deshuffling objective performs\nconsiderably worse than both prefix language modeling and the BERT-style objective.\n21"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8351083397865295,
+          "distance": 0.32978332
+        },
+        "chunkId": "23",
+        "page": 3,
+        "source": "bert.pdf",
+        "text": "strated the importance of transfer learning from\nlarge pre-trained models, where an effective recipe\nis to \ufb01ne-tune models pre-trained with Ima-\ngeNet (Deng et al., 2009; Yosinski et al., 2014).\n3\nBERT\nWe introduce BERT and its detailed implementa-\ntion in this section. There are two steps in our\nframework: pre-training and \ufb01ne-tuning.\nDur-\ning pre-training, the model is trained on unlabeled\ndata over different pre-training tasks.\nFor \ufb01ne-\ntuning, the BERT model is \ufb01rst initialized with"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8285101056098938,
+          "distance": 0.3429798
+        },
+        "chunkId": "194",
+        "page": 27,
+        "source": "t5.pdf",
+        "text": "SQuAD, which is a question-answering data set with passages sourced from Wikipedia.\nSimilar observations have been made in prior work, e.g. Beltagy et al. (2019) found that\npre-training BERT on text from research papers improved its performance on scientific tasks.\nThe main lesson behind these findings is that pre-training on in-domain unlabeled data can\nimprove performance on downstream tasks. This is unsurprising but also unsatisfying if"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8186991810798645,
+          "distance": 0.36260164
+        },
+        "chunkId": "73",
+        "page": 8,
+        "source": "flava.pdf",
+        "text": "to the bias terms (or a subset of the bias terms,\naround 0.1% of the total parameters) of pre-trained\nBERT models, plus a task-speci\ufb01c classi\ufb01cation\nlayer. This is shown to be competitive with, and\nfor some tasks better than, \ufb01ne-tuning all of BERT.\nBitFit builds on the intuition that \ufb01ne-tuning ex-\nposes existing capabilities, rather than teaching the\nmodel new ones.\nSimilarly, Radiya-Dixit and Wang (2020) show\nthat it suf\ufb01ces to \ufb01ne-tune only the \u201cmost sensitive\u201d"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8109261393547058,
+          "distance": 0.37814772
+        },
+        "chunkId": "129",
+        "page": 14,
+        "source": "bert.pdf",
+        "text": "between how BERT and GPT were trained:\n\u2022 GPT is trained on the BooksCorpus (800M\nwords); BERT is trained on the BooksCor-\npus (800M words) and Wikipedia (2,500M\nwords).\n\u2022 GPT uses a sentence separator ([SEP]) and\nclassi\ufb01er token ([CLS]) which are only in-\ntroduced at \ufb01ne-tuning time; BERT learns\n[SEP], [CLS] and sentence A/B embed-\ndings during pre-training.\n\u2022 GPT was trained for 1M steps with a batch\nsize of 32,000 words; BERT was trained for\n1M steps with a batch size of 128,000 words."
+      },
+      {
+        "_additional": {
+          "certainty": 0.805288553237915,
+          "distance": 0.3894229
+        },
+        "chunkId": "21",
+        "page": 3,
+        "source": "bert.pdf",
+        "text": "SQuAD\nQuestion Answer Pair\nNER\nMNLI\nFigure 1: Overall pre-training and \ufb01ne-tuning procedures for BERT. Apart from output layers, the same architec-\ntures are used in both pre-training and \ufb01ne-tuning. The same pre-trained model parameters are used to initialize\nmodels for different down-stream tasks. During \ufb01ne-tuning, all parameters are \ufb01ne-tuned. [CLS] is a special\nsymbol added in front of every input example, and [SEP] is a special separator token (e.g. separating ques-\ntions/answers)."
+      },
+      {
+        "_additional": {
+          "certainty": 0.8029032945632935,
+          "distance": 0.3941934
+        },
+        "chunkId": "24",
+        "page": 3,
+        "source": "bert.pdf",
+        "text": "tuning, the BERT model is \ufb01rst initialized with\nthe pre-trained parameters, and all of the param-\neters are \ufb01ne-tuned using labeled data from the\ndownstream tasks. Each downstream task has sep-\narate \ufb01ne-tuned models, even though they are ini-\ntialized with the same pre-trained parameters. The\nquestion-answering example in Figure 1 will serve\nas a running example for this section.\nA distinctive feature of BERT is its uni\ufb01ed ar-\nchitecture across different tasks. There is mini-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8015615344047546,
+          "distance": 0.39687693
+        },
+        "chunkId": "114",
+        "page": 12,
+        "source": "bert.pdf",
+        "text": "presented in Appendix B; and\n\u2022 Additional ablation studies are presented in\nAppendix C.\nWe present additional ablation studies for\nBERT including:\n\u2013 Effect of Number of Training Steps; and\n\u2013 Ablation for Different Masking Proce-\ndures.\nA\nAdditional Details for BERT\nA.1\nIllustration of the Pre-training Tasks\nWe provide examples of the pre-training tasks in\nthe following.\nMasked LM and the Masking Procedure\nAs-\nsuming the unlabeled sentence is\nmy dog is\nhairy, and during the random masking procedure"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8014937043190002,
+          "distance": 0.3970126
+        },
+        "chunkId": "146",
+        "page": 16,
+        "source": "bert.pdf",
+        "text": "the [MASK] symbol for MLM; SAME means that\nwe keep the target token as is; RND means that\nwe replace the target token with another random\ntoken.\nThe numbers in the left part of the table repre-\nsent the probabilities of the speci\ufb01c strategies used\nduring MLM pre-training (BERT uses 80%, 10%,\n10%). The right part of the paper represents the\nDev set results. For the feature-based approach,\nwe concatenate the last 4 layers of BERT as the\nfeatures, which was shown to be the best approach\nin Section 5.3."
+      },
+      {
+        "_additional": {
+          "certainty": 0.798925518989563,
+          "distance": 0.40214896
+        },
+        "chunkId": "81",
+        "page": 9,
+        "source": "instructor.pdf",
+        "text": "of various sizes, including 30M, 110M, and 330M,\nwhich correspond to the small, base, and large\nscales of the BERT model. Figure 3c illustrates\nthe performance of the pre-trained and fine-tuned\nmodels. It can be observed that as the model size\ngrows exponentially, the model performance also\nimproves linearly."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7947123646736145,
+          "distance": 0.41057527
+        },
+        "chunkId": "109",
+        "page": 12,
+        "source": "cpt_text.pdf",
+        "text": "dataset. Since CCNet is signi\ufb01cantly larger than Wikipedia, this means that most of the batches are from\nCCNet.\nImpact of \ufb01ne-tuning on MS MARCO.\nTo isolate the impact of pre-training from the impact of\n\ufb01ne-tuning on MS MARCO, we apply the same \ufb01ne-tuning to the BERT base uncased model. We report\nresults in Table 9, and observe that when applied to BERT, our \ufb01ne-tuning leads to results that are lower\nthan the state-of-the-art. Hence, we believe that most of the improvement compared to the state-of-the-art"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "How to reduce hallucination in LLMs?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "126",
+        "page": 15,
+        "source": "shepherd.pdf",
+        "text": "known as hallucination [163, 253]. Evaluating these issues helps improve the training methods of\nLLMs to reduce the occurrence of hallucinations. For the evaluation of illusions in large-scale visual\nmodels, Liu et al. [123] introduced a comprehensive and robust large-scale visual instruction dataset:\nLRV-Instruction. Through the GAVIE method, they fine-tuned the evaluation visual instructions,\nand experimental results demonstrated that LRV-Instruction effectively alleviates illusions in LLMs."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "249",
+        "page": 32,
+        "source": "autogen.pdf",
+        "text": "LLMs remains a critical and unresolved challenge.\nThere are two potential solutions to the aforemen-\ntioned problems: (1) manually crafting the essential\nprompt elements through trial and error, or (2) auto-\nmatically generating prompts using GPT.\n6.4\nHallucination\nHallucination poses a fundamental challenge for\nLLMs, characterized by the models\u2019 tendency to"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "42",
+        "page": 5,
+        "source": "scaling_rlhf.pdf",
+        "text": "neering. To further reduce human effort, we investigate how to self-generate more training questions\nas well as example prompts.\nQuestion Generation\nPrevious work (Yoo et al., 2021; Meng et al., 2022) discuss few-shot data\naugmentation by generating diverse training samples using LLMs. However, those methods are\ndesigned for classi\ufb01cation tasks and require ground truth label for each few-shot example. We use\na simple yet effective approach to generate diverse questions (without ground truth answers) for"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "224",
+        "page": 25,
+        "source": "shepherd.pdf",
+        "text": "language and culture. It addresses the potential inconsistency in the local context that may arise\nfrom relying solely on English-based medical assessments. In the realm of hallucination assessment,\n[116] has developed UHGEval, a benchmark specifically designed to evaluate the performance of\nChinese LLMs in text generation without being constrained by hallucination-related limitations.\nIn addition to existing evaluation benchmarks, there is a research gap in assessing the effectiveness"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "106",
+        "page": 14,
+        "source": "autogen.pdf",
+        "text": "In general, we can roughly divide these actions\ninto two classes: (1) external tools and (2) inter-\nnal knowledge of the LLMs. In the following, we\nintroduce these actions more in detail.\n\u2022 External Tools.\nWhile LLMs have been\ndemonstrated to be effective in accomplishing a\nlarge amount of tasks, they may not work well\nfor the domains which need comprehensive expert\nknowledge. In addition, LLMs may also encounter\nhallucination problems, which are hard to be re-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "72",
+        "page": 8,
+        "source": "improved_llava.pdf",
+        "text": "steady when further downscaling the data from 50% to 30%.\nThese results show promise of having the less-is-more [61]\nbenefit for multimodal models as well.\n5.2. Rethinking Hallucination in LMMs\nHallucination is an important issue to tackle for LLMs and\nLMMs. Often in LMMs, we attribute the model\u2019s hallucina-\ntion to the errors or hallucinations in the training dataset. For\nexample, the detailed descriptions in LLaVA-Instruct [36]\nmay contain a small amount of hallucinated content, and it"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "189",
+        "page": 22,
+        "source": "shepherd.pdf",
+        "text": "MMBench [126]\nLarge vision-language models(LVLMs)\nMulti-modal task\nMultifaceted capabilities of VLMs\nSEED-Bench [107]\nMultimodal Large Language Models\nMulti-modal task\nGenerative understanding of MLLMs\nUHGEval [116]\nHallucination of Chinese LLMs\nSpecific downstream task\nForm, metric and granularity\nARB [171]\nAdvanced reasoning ability\nSpecific downstream task\nMultidomain advanced reasoning ability\nBIG-bench [182]\nCapabilities and limitations of LMs\nGeneral language task\nModel performance and calibration"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "190",
+        "page": 22,
+        "source": "shepherd.pdf",
+        "text": "Model performance and calibration\nMultiMedQA [177]\nMedical QA\nSpecific downstream task\nAccuracy and human evaluation\nCVALUES [230]\nSafety and responsibility\nSpecific downstream task\nAlignment ability of LLMs\nLVLM-eHub [231]\nLVLMs\nMulti-modal task\nMultimodal capabilities of LVLMs\nToolBench [191]\nSoftware tools\nSpecific downstream task\nExecution success rate\nFRESHQA [198]\nDynamic QA\nSpecific downstream task\nCorrectness and hallucination\nCMB [211]\nChinese comprehensive medicine\nSpecific downstream task"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "35",
+        "page": 4,
+        "source": "shepherd.pdf",
+        "text": "As depicted in Figure 1, we explore existing work in three dimensions: 1) What to evaluate, 2) Where\nto evaluate, and 3) How to evaluate. Specifically, \u201cwhat to evaluate\" encapsulates existing evaluation\ntasks for LLMs, \u201cwhere to evaluate\" involves selecting appropriate datasets and benchmarks for\nevaluation, while \u201chow to evaluate\" is concerned with the evaluation process given appropriate\ntasks and datasets. These three dimensions are integral to the evaluation of LLMs. We subsequently"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "rag_advanced.pdf",
+        "text": "sive capabilities but encounter challenges like hallucination,\noutdated knowledge, and non-transparent, untraceable reasoning\nprocesses. Retrieval-Augmented Generation (RAG) has emerged\nas a promising solution by incorporating knowledge from external\ndatabases. This enhances the accuracy and credibility of the\ngeneration, particularly for knowledge-intensive tasks, and allows\nfor continuous knowledge updates and integration of domain-\nspecific information. RAG synergistically merges LLMs\u2019 intrin-"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8409103453159332,
+          "distance": 0.3181793
+        },
+        "chunkId": "249",
+        "page": 32,
+        "source": "autogen.pdf",
+        "text": "LLMs remains a critical and unresolved challenge.\nThere are two potential solutions to the aforemen-\ntioned problems: (1) manually crafting the essential\nprompt elements through trial and error, or (2) auto-\nmatically generating prompts using GPT.\n6.4\nHallucination\nHallucination poses a fundamental challenge for\nLLMs, characterized by the models\u2019 tendency to"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8163738250732422,
+          "distance": 0.36725235
+        },
+        "chunkId": "17",
+        "page": 2,
+        "source": "corrective_rag.pdf",
+        "text": "Hallucinations of LLMs\nAlthough LLMs have\nexhibited impressive abilities to understand instruc-\ntions and generate fluent language texts (Bang et al.,\n2023; Qin et al., 2023; Zhong et al., 2023), one of\nthe most severe issues that LLMs have still been\nstruggling with is hallucinations. As many studies\nfound (Tonmoy et al., 2024; Zhang et al., 2023b;\nShuster et al., 2021), either outdated information\nor incorrect knowledge that is activated would\nseriously result in hallucinations.\nLarge-scale"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8007963299751282,
+          "distance": 0.39840734
+        },
+        "chunkId": "72",
+        "page": 8,
+        "source": "improved_llava.pdf",
+        "text": "steady when further downscaling the data from 50% to 30%.\nThese results show promise of having the less-is-more [61]\nbenefit for multimodal models as well.\n5.2. Rethinking Hallucination in LMMs\nHallucination is an important issue to tackle for LLMs and\nLMMs. Often in LMMs, we attribute the model\u2019s hallucina-\ntion to the errors or hallucinations in the training dataset. For\nexample, the detailed descriptions in LLaVA-Instruct [36]\nmay contain a small amount of hallucinated content, and it"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7772314846515656,
+          "distance": 0.44553703
+        },
+        "chunkId": "126",
+        "page": 15,
+        "source": "shepherd.pdf",
+        "text": "known as hallucination [163, 253]. Evaluating these issues helps improve the training methods of\nLLMs to reduce the occurrence of hallucinations. For the evaluation of illusions in large-scale visual\nmodels, Liu et al. [123] introduced a comprehensive and robust large-scale visual instruction dataset:\nLRV-Instruction. Through the GAVIE method, they fine-tuned the evaluation visual instructions,\nand experimental results demonstrated that LRV-Instruction effectively alleviates illusions in LLMs."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7564271092414856,
+          "distance": 0.48714578
+        },
+        "chunkId": "124",
+        "page": 13,
+        "source": "improved_llava.pdf",
+        "text": "structions, its problem-solving capabilities can still be lim-\nited in certain domains, which could be improved with a\nmore capable language model and with high-quality, tar-\ngeted visual instruction tuning data. Finally, despite its sig-\nnificantly reduced propensity for hallucination, LLaVA-1.5\nis not exempt from producing hallucinations and occasion-\nally disseminating misinformation, and should be used with\ncaution in critical applications (e.g. medical).\nReferences"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7393399477005005,
+          "distance": 0.5213201
+        },
+        "chunkId": "80",
+        "page": 8,
+        "source": "improved_llava.pdf",
+        "text": "training for high-resolution images, lack of multiple-image\nunderstanding, limited problem solving capabilities in cer-\ntain fields. It is not exempt from producing hallucinations,\nand should be used with caution in critical applications (e.g.\nmedical). See appendix for a detailed discussion.\nAcknowledgements. This work was supported in part by\nNSF CAREER IIS2150012, and Institute of Information &\ncommunications Technology Planning & Evaluation(IITP)\ngrants funded by the Korea government(MSIT) (No. 2022-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7343141138553619,
+          "distance": 0.5313718
+        },
+        "chunkId": "106",
+        "page": 14,
+        "source": "autogen.pdf",
+        "text": "In general, we can roughly divide these actions\ninto two classes: (1) external tools and (2) inter-\nnal knowledge of the LLMs. In the following, we\nintroduce these actions more in detail.\n\u2022 External Tools.\nWhile LLMs have been\ndemonstrated to be effective in accomplishing a\nlarge amount of tasks, they may not work well\nfor the domains which need comprehensive expert\nknowledge. In addition, LLMs may also encounter\nhallucination problems, which are hard to be re-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7273395657539368,
+          "distance": 0.54532087
+        },
+        "chunkId": "220",
+        "page": 35,
+        "source": "chatgpt_survey.pdf",
+        "text": "inconsistent with the fact that LLMs can \u201challucinate\u201d and make up new facts. Second, our findings in\nSection 2 contradict this view: the AI and human subjects\u2019 responses differ in scenarios that are in the\ntraining data. Moreover, memorization is not intrinsically bad.\nMemorization would be problematic if the LLM\u2019s predictions were so \u201cshallow\u201d as to be brittle. To make\nan analogy, consider an economics student studying for a game theory exam. A bad student has memorized"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7213868498802185,
+          "distance": 0.5572263
+        },
+        "chunkId": "160",
+        "page": 23,
+        "source": "qlora.pdf",
+        "text": "misleading or false information while presenting it confidently (also known as \u201challucination\u201d). These, and potential\n23"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7193716764450073,
+          "distance": 0.56125665
+        },
+        "chunkId": "113",
+        "page": 12,
+        "source": "corrective_rag.pdf",
+        "text": "Association for Computational Linguistics.\nS. M. Towhidul Islam Tonmoy, S. M. Mehedi Zaman,\nVinija Jain, Anku Rani, Vipula Rawte, Aman Chadha,\nand Amitava Das. 2024. A comprehensive survey of\nhallucination mitigation techniques in large language\nmodels. CoRR, abs/2401.01313.\nHugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier\nMartinet, Marie-Anne Lachaux, Timoth\u00e9e Lacroix,\nBaptiste Rozi\u00e8re, Naman Goyal, Eric Hambro, Faisal\nAzhar, Aur\u00e9lien Rodriguez, Armand Joulin, Edouard"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "What is reinforcement learning from human feedback?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "105",
+        "page": 10,
+        "source": "rag_advanced.pdf",
+        "text": "structural and semantic nuances. The initial phase focuses on\nthe retriever, where contrastive learning is harnessed to refine\nthe query and document embeddings.\nAligning LLM outputs with human or retriever preferences\nthrough reinforcement learning is a potential approach. For\ninstance, manually annotating the final generated answers\nand then providing feedback through reinforcement learning.\nIn addition to aligning with human preferences, it is also"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "2",
+        "page": 1,
+        "source": "chain_of_thought.pdf",
+        "text": "of the desired model behavior, which we use to \ufb01ne-tune GPT-3 using supervised\nlearning. We then collect a dataset of rankings of model outputs, which we use to\nfurther \ufb01ne-tune this supervised model using reinforcement learning from human\nfeedback. We call the resulting models InstructGPT. In human evaluations on\nour prompt distribution, outputs from the 1.3B parameter InstructGPT model are\npreferred to outputs from the 175B GPT-3, despite having 100x fewer parameters."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "106",
+        "page": 13,
+        "source": "nougat.pdf",
+        "text": "2022; Wang et al., 2023).\nThose chat models\nhave demonstrated a marked improvement in\nunderstanding human instructions and solving\ncomplex tasks (Chiang et al., 2023; Xu et al.,\n2023; Sun et al., 2023).\nTo further improve\nalignment, (Ouyang et al., 2022) incorporates the\nReinforcement Learning from Human Feedback\n(RLHF) approach. This involves learning from\nhuman preferences by training a reward model\non human-rated outputs. Other methods such as\ndirect preference optimization (DPO) (Rafailov"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "113",
+        "page": 14,
+        "source": "nougat.pdf",
+        "text": "reinforcement learning from human feedback. arXiv\npreprint arXiv:2204.05862.\nYuntao Bai,\nSaurav Kadavath,\nSandipan Kundu,\nAmanda Askell, Jackson Kernion, Andy Jones,\nAnna Chen,\nAnna Goldie,\nAzalia Mirhoseini,\nCameron McKinnon, et al. 2022b. Constitutional\nai: Harmlessness from ai feedback. arXiv preprint\narXiv:2212.08073.\nBaichuan. 2023a.\nA 13b large language model\ndeveloped by baichuan intelligent technology.\nBaichuan. 2023b. A large-scale 7b pretraining language\nmodel developed by baichuan-inc."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "307",
+        "page": 51,
+        "source": "chatgpt_survey.pdf",
+        "text": "desired style. In the RLHF phase, the pre-trained LLM is trained further using human feedback. First,\nhuman evaluators prompt the LLM and evaluate its responses.22 The human evaluation data is then used to\nestimate a separate \u201creward model,\u201d which predicts human feedback given a prompt and an LLM response.\nThe LLM\u2019s parameters are updated through a form of reinforcement learning so that its responses receive"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "5",
+        "page": 2,
+        "source": "llama2.pdf",
+        "text": "9\n3.2\nReinforcement Learning with Human Feedback (RLHF)\n. . . . . . . . . . . . . . . . . . . . .\n9\n3.3\nSystem Message for Multi-Turn Consistency . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n16\n3.4\nRLHF Results\n. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n17\n4\nSafety\n20\n4.1\nSafety in Pretraining\n. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .\n20\n4.2\nSafety Fine-Tuning"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "92",
+        "page": 9,
+        "source": "rag_advanced.pdf",
+        "text": "and an LLM to calculate the probability distributions of the\nretrieved documents and then performs supervised training\nby computing the KL divergence. This straightforward and\neffective training method enhances the performance of the\nretrieval model by using an LM as the supervisory signal,\neliminating the need for specific cross-attention mechanisms.\nMoreover, inspired by RLHF (Reinforcement Learning from\nHuman Feedback), utilizing LM-based feedback to reinforce"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "107",
+        "page": 13,
+        "source": "nougat.pdf",
+        "text": "direct preference optimization (DPO) (Rafailov\net al., 2023) and reinforcement learning from AI\nfeedback (RLAIF) (Bai et al., 2022b) have also"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "60",
+        "page": 9,
+        "source": "llama2.pdf",
+        "text": "the loss on tokens from the user prompt, so as a result, we backpropagate only on answer tokens. Finally, we\nfine-tune the model for 2 epochs.\n3.2\nReinforcement Learning with Human Feedback (RLHF)\nRLHF is a model training procedure that is applied to a fine-tuned language model to further align model\nbehavior with human preferences and instruction following. We collect data that represents empirically\n9"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "262",
+        "page": 41,
+        "source": "chatgpt_survey.pdf",
+        "text": "Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback,\u201d 2022.\nBanki, Daniel, Uri Simonsohn, Robert Walatka, and George Wu, \u201cDecisions under Risk Are Decisions\nunder Complexity: Comment,\u201d SSRN Electronic Journal, 02 2025.\nBinz, Marcel and Eric Schulz, \u201cTurning large language models into cognitive models,\u201d 2023.\n41"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8306570947170258,
+          "distance": 0.3386858
+        },
+        "chunkId": "306",
+        "page": 51,
+        "source": "chatgpt_survey.pdf",
+        "text": "training step is reinforcement learning with human feedback (RLHF), in which human evaluators rate model\noutputs, their judgments are used to train a reward model, and the LLM\u2019s parameters are adjusted so that\nits responses receive higher predicted rewards. Other post-training steps include supervised fine-tuning\n(or instruction-tuning), where human-written examples \u201cteach\u201d the model to follow prompts or exhibit a"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7979180216789246,
+          "distance": 0.40416396
+        },
+        "chunkId": "7",
+        "page": 2,
+        "source": "reflexion.pdf",
+        "text": "from prior mistakes to perform better on the task. This is akin to how humans iteratively learn to\naccomplish complex tasks in a few-shot manner \u2013 by reflecting on their previous failures in order to\nform an improved plan of attack for the next attempt. For example, in figure 1, a Reflexion agent\nlearns to optimize its own behavior to solve decision-making, programming, and reasoning tasks\nthrough trial, error, and self-reflection."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7957824766635895,
+          "distance": 0.40843505
+        },
+        "chunkId": "84",
+        "page": 12,
+        "source": "autogen.pdf",
+        "text": "ously, when examining how humans tackle complex\ntasks, we find that individuals may iteratively make\nand revise their plans based on external feedback.\nTo simulate such human capability, researchers have\ndesigned many planning modules, where the agent\ncan receive feedback after taking actions. The feed-\nback can be obtained from environments, humans,\nand models, which are detailed in the following.\n\u2022 Environmental Feedback. This feedback is\nobtained from the objective world or virtual envi-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7937830984592438,
+          "distance": 0.4124338
+        },
+        "chunkId": "29",
+        "page": 4,
+        "source": "reflexion.pdf",
+        "text": "additional context to this agent. This adaption was inspired by Brooks et al. [3], who suggest a policy\niteration approach using in-context learning. Details on how this is populated are provided below.\nEvaluator\nThe Evaluator component of the Reflexion framework plays a crucial role in assessing\nthe quality of the generated outputs produced by the Actor. It takes as input a generated trajectory\nand computes a reward score that reflects its performance within the given task context. Defining"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7927879691123962,
+          "distance": 0.41442406
+        },
+        "chunkId": "6",
+        "page": 2,
+        "source": "reflexion.pdf",
+        "text": "In this paper, we propose an alternative approach called Reflexion that uses verbal reinforcement\nto help agents learn from prior failings. Reflexion converts binary or scalar feedback from the\nenvironment into verbal feedback in the form of a textual summary, which is then added as additional\ncontext for the LLM agent in the next episode. This self-reflective feedback acts as a \u2018semantic\u2019\ngradient signal by providing the agent with a concrete direction to improve upon, helping it learn"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7912392914295197,
+          "distance": 0.41752142
+        },
+        "chunkId": "23",
+        "page": 3,
+        "source": "selfrag.pdf",
+        "text": "and to generate with tree search, guided by LM-generated value scores. While their value function\nsimply indicates an overall score of each generation, SELF-RAG trains to an arbitrary LM to learn to\ngenerate fine-grained self-reflection and customizable inference.\nTraining and generating with critics. Training LLMs with reinforcement learning (e.g., Proximal\nPolicy Optimization or PPO; Schulman et al. 2017) from human feedback (RLHF) has proven"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7877722382545471,
+          "distance": 0.42445552
+        },
+        "chunkId": "95",
+        "page": 13,
+        "source": "autogen.pdf",
+        "text": "utilizes model feedback to improve the quality of\nits reasoning process. The model feedback is gen-\nerated by an evaluation module that monitors the\nagent reasoning steps. Reflexion [12] is developed\nto enhance the agent\u2019s planning capability through\ndetailed verbal feedback. In this model, the agent\nfirst produces an action based on its memory, and\nthen, the evaluator generates feedback by taking\nthe agent trajectory as input. In contrast to previ-\nous studies, where the feedback is given as a scalar"
+      },
+      {
+        "_additional": {
+          "certainty": 0.786647379398346,
+          "distance": 0.42670524
+        },
+        "chunkId": "307",
+        "page": 51,
+        "source": "chatgpt_survey.pdf",
+        "text": "desired style. In the RLHF phase, the pre-trained LLM is trained further using human feedback. First,\nhuman evaluators prompt the LLM and evaluate its responses.22 The human evaluation data is then used to\nestimate a separate \u201creward model,\u201d which predicts human feedback given a prompt and an LLM response.\nThe LLM\u2019s parameters are updated through a form of reinforcement learning so that its responses receive"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7866241037845612,
+          "distance": 0.4267518
+        },
+        "chunkId": "106",
+        "page": 13,
+        "source": "nougat.pdf",
+        "text": "2022; Wang et al., 2023).\nThose chat models\nhave demonstrated a marked improvement in\nunderstanding human instructions and solving\ncomplex tasks (Chiang et al., 2023; Xu et al.,\n2023; Sun et al., 2023).\nTo further improve\nalignment, (Ouyang et al., 2022) incorporates the\nReinforcement Learning from Human Feedback\n(RLHF) approach. This involves learning from\nhuman preferences by training a reward model\non human-rated outputs. Other methods such as\ndirect preference optimization (DPO) (Rafailov"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7828786075115204,
+          "distance": 0.43424278
+        },
+        "chunkId": "77",
+        "page": 8,
+        "source": "tree_of_thought.pdf",
+        "text": "feasible plans simultaneously at each problem-solving step, and proceeding with the most promising\nones. The integration between thought sampling and value feedback organically integrates planning\nand decision-making mechanisms, enabling effective search inside a solution tree. On the other hand,\ntraditional decision-making procedures usually require training dedicated reward and policy models\nas in reinforcement learning (for example CHAI [33]), whereas we use the LM itself to provide"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "How do sentence embeddings work?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "68",
+        "page": 7,
+        "source": "large_dual_encoder.pdf",
+        "text": "work to learn a representation where sentence similarity is\nestimated by the cosine similarity between embeddings. Li\net al. (2020) improves the embedding space to be isotropic"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "251",
+        "page": 30,
+        "source": "flan.pdf",
+        "text": "Hypothesis:\nIt\u2019s not certain how many lessons you\u2019ll learn by your\nthirties.\nDoes the premise entail the hypothesis?\nSo because FLAN prompts are formulated as responding to an instruction, they do not work well\nfor pretrained language models without \ufb01netuning. Performance was near zero for most generation\ntasks. For instance, given the input \u201c\u2018The dog runs.\u2019 Translate this sentence to French.\u201d, LaMDA-PT\ncontinues with \u201dThe dog runs after the cat\u201d instead of actually translating the sentence. Hence, we"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "57",
+        "page": 7,
+        "source": "sentence_bert.pdf",
+        "text": "83.64\n89.43\n94.39\n89.86\n88.96\n89.6\n76.00\n87.41\nSBERT-NLI-large\n84.88\n90.07\n94.52\n90.33\n90.66\n87.4\n75.94\n87.69\nTable 5: Evaluation of SBERT sentence embeddings using the SentEval toolkit. SentEval evaluates sentence\nembeddings on different sentence classi\ufb01cation tasks by training a logistic regression classi\ufb01er using the sentence\nembeddings as features. Scores are based on a 10-fold cross-validation.\nIt appears that the sentence embeddings from\nSBERT capture well sentiment information: We"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "14",
+        "page": 2,
+        "source": "bert.pdf",
+        "text": "These approaches have been generalized to\ncoarser granularities, such as sentence embed-\ndings (Kiros et al., 2015; Logeswaran and Lee,\n2018) or paragraph embeddings (Le and Mikolov,\n2014).\nTo train sentence representations, prior\nwork has used objectives to rank candidate next\nsentences (Jernite et al., 2017; Logeswaran and\nLee, 2018), left-to-right generation of next sen-\ntence words given a representation of the previous\nsentence (Kiros et al., 2015), or denoising auto-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "2",
+        "page": 1,
+        "source": "sentence_bert.pdf",
+        "text": "BERT network that use siamese and triplet net-\nwork structures to derive semantically mean-\ningful sentence embeddings that can be com-\npared using cosine-similarity. This reduces the\neffort for \ufb01nding the most similar pair from 65\nhours with BERT / RoBERTa to about 5 sec-\nonds with SBERT, while maintaining the ac-\ncuracy from BERT.\nWe evaluate SBERT and SRoBERTa on com-\nmon STS tasks and transfer learning tasks,\nwhere it outperforms other state-of-the-art\nsentence embeddings methods.1\n1\nIntroduction"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "12",
+        "page": 2,
+        "source": "sentence_bert.pdf",
+        "text": "(Misra et al., 2016). Section 5 evaluates SBERT\non SentEval. In section 6, we perform an ablation\nstudy to test some design aspect of SBERT. In sec-\ntion 7, we compare the computational ef\ufb01ciency of\nSBERT sentence embeddings in contrast to other\nstate-of-the-art sentence embedding methods.\n2\nRelated Work\nWe \ufb01rst introduce BERT, then, we discuss state-\nof-the-art sentence embedding methods.\nBERT (Devlin et al., 2018) is a pre-trained\ntransformer network (Vaswani et al., 2017), which"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "0",
+        "page": 1,
+        "source": "sentence_bert.pdf",
+        "text": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks\nNils Reimers and Iryna Gurevych\nUbiquitous Knowledge Processing Lab (UKP-TUDA)\nDepartment of Computer Science, Technische Universit\u00a8at Darmstadt\nwww.ukp.tu-darmstadt.de\nAbstract\nBERT (Devlin et al., 2018) and RoBERTa (Liu\net al., 2019) has set a new state-of-the-art\nperformance on sentence-pair regression tasks\nlike semantic textual similarity (STS). How-\never, it requires that both sentences are fed\ninto the network, which causes a massive com-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "223",
+        "page": 27,
+        "source": "selfrag.pdf",
+        "text": "classification, predicting the next word in a sequence, and understanding synonyms and\nanalogies.\nRating [Retrieval]\nExplanation The output discusses the applications of word embeddings, while the evidence\nonly discusses the definitions of word embeddings and how they work. Therefore, we need to\nretrieve other evidence to verify whether the output is correct or not.\nTable 9: Instructions and demonstrations for Retrieve aspect given the input, preceding generations,\nand retrieved passages.\n27"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "28",
+        "page": 3,
+        "source": "cpt_text.pdf",
+        "text": "et al., 2020; Meng et al., 2021). SBERT (Reimers & Gurevych, 2019) uses a Siamese network similar to\ncontrastive learning to learn a BERT-like model that is adapted to matching sentence embeddings. Their\nformulation is similar to our work but requires aligned pairs of sentences to form positive pairs while we\npropose to use data augmentation to leverage large unaligned textual corpora. Concurrent to this work, Gao"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "18",
+        "page": 2,
+        "source": "sentence_bert.pdf",
+        "text": "training on SNLI. Hill et al. (2016) showed, that\nthe task on which sentence embeddings are trained\nsigni\ufb01cantly impacts their quality. Previous work\n(Conneau et al., 2017; Cer et al., 2018) found that\nthe SNLI datasets are suitable for training sen-\ntence embeddings. Yang et al. (2018) presented\na method to train on conversations from Reddit\nusing siamese DAN and siamese transformer net-\nworks, which yielded good results on the STS\nbenchmark dataset.\nHumeau et al. (2019) addresses the run-time"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8662783205509186,
+          "distance": 0.26744336
+        },
+        "chunkId": "221",
+        "page": 27,
+        "source": "selfrag.pdf",
+        "text": "Please provide explanations for your judgments.\nInstruction Explain the use of word embeddings in Natural Language Processing.\nPreceding sentences Word embeddings are one of the most powerful tools available for\nNatural Language Processing (NLP). They are mathematical representations of words or\nphrases in a vector space, allowing similarities between words and the context in which they\nare used to be measured.\nEvidence: Word embedding"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8513520061969757,
+          "distance": 0.297296
+        },
+        "chunkId": "231",
+        "page": 29,
+        "source": "selfrag.pdf",
+        "text": "Instruction Explain the use of word embeddings in Natural Language Processing.\nPreceding sentences Word embeddings are one of the most powerful tools available for\nNatural Language Processing (NLP). They are mathematical representations of words or\nphrases in a vector space, allowing similarities between words and the context in which they\nare used to be measured.\nOutput Word embeddings are useful for tasks such as sentiment analysis, text classification,"
+      },
+      {
+        "_additional": {
+          "certainty": 0.848135769367218,
+          "distance": 0.30372846
+        },
+        "chunkId": "31",
+        "page": 4,
+        "source": "bert.pdf",
+        "text": "two ways. First, we separate them with a special\ntoken ([SEP]). Second, we add a learned embed-\nding to every token indicating whether it belongs\nto sentence A or sentence B. As shown in Figure 1,\nwe denote input embedding as E, the \ufb01nal hidden\nvector of the special [CLS] token as C \u2208RH,\nand the \ufb01nal hidden vector for the ith input token\nas Ti \u2208RH.\nFor a given token, its input representation is\nconstructed by summing the corresponding token,\nsegment, and position embeddings. A visualiza-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8263342976570129,
+          "distance": 0.3473314
+        },
+        "chunkId": "3",
+        "page": 1,
+        "source": "instructor.pdf",
+        "text": "model with broad applicability across various\nNLP and code-related tasks.1\n1\nIntroduction\nText embeddings have became an indispensable\ncomponent in many natural language processing\ntasks, such as text classification, text retrieval, ques-\ntion answering and dialogue systems (Karpukhin\net al., 2020; Humeau et al., 2020; Choi et al., 2021;\nIzacard et al., 2022a; Long et al., 2022a; Rajapakse,\n2023). These embedding models represent texts us-\ning low-dimensional vectors and capture their sim-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8249343633651733,
+          "distance": 0.35013127
+        },
+        "chunkId": "222",
+        "page": 27,
+        "source": "selfrag.pdf",
+        "text": "are used to be measured.\nEvidence: Word embedding\nWord embedding is the collective name for a set of language modeling and feature learning\ntechniques in natural language processing (NLP) where words or phrases from the vocabulary\nare mapped to vectors of real numbers. Conceptually it involves a mathematical embedding\nfrom a space with one dimension per word to a continuous vector space with a much lower\ndimension. Output: Word embeddings are useful for tasks such as sentiment analysis, text"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8212748765945435,
+          "distance": 0.35745025
+        },
+        "chunkId": "14",
+        "page": 2,
+        "source": "bert.pdf",
+        "text": "These approaches have been generalized to\ncoarser granularities, such as sentence embed-\ndings (Kiros et al., 2015; Logeswaran and Lee,\n2018) or paragraph embeddings (Le and Mikolov,\n2014).\nTo train sentence representations, prior\nwork has used objectives to rank candidate next\nsentences (Jernite et al., 2017; Logeswaran and\nLee, 2018), left-to-right generation of next sen-\ntence words given a representation of the previous\nsentence (Kiros et al., 2015), or denoising auto-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8143700957298279,
+          "distance": 0.3712598
+        },
+        "chunkId": "13",
+        "page": 2,
+        "source": "large_dual_encoder.pdf",
+        "text": "architecture. Precisely, sentence embedding (Reimers &\nGurevych, 2019; Gao et al., 2021; Giorgi et al., 2020)\nand neural information retrieval (Lee et al.; Guu et al.,\n2020; Karpukhin et al., 2020a; Sachan et al., 2021; Izac-\nard et al., 2021) have remained different research topics\nevaluated on distinct benchmarks, even though both aim to\nlearn high-quality text representation. However, we \ufb01nd the\nsame model that achieves good performance on sentence\nembedding benchmarks, as discussed above, is also able"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8109791576862335,
+          "distance": 0.37804168
+        },
+        "chunkId": "68",
+        "page": 7,
+        "source": "large_dual_encoder.pdf",
+        "text": "work to learn a representation where sentence similarity is\nestimated by the cosine similarity between embeddings. Li\net al. (2020) improves the embedding space to be isotropic"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8104098439216614,
+          "distance": 0.3791803
+        },
+        "chunkId": "28",
+        "page": 3,
+        "source": "large_dual_encoder.pdf",
+        "text": "batch sizes used to train the models of different sizes.\nWe evaluate our text embedding models on a broad range of\ntasks: linear-probe classi\ufb01cation, sentence similarity, and"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8093169331550598,
+          "distance": 0.38136613
+        },
+        "chunkId": "232",
+        "page": 29,
+        "source": "selfrag.pdf",
+        "text": "predicting the next word in a sequence, and understanding synonyms and analogies.\nEvidence Word embedding\nWord embedding is the collective name for a set of language modeling and feature learning\ntechniques in natural language processing (NLP) where words or phrases from the vocabulary\nare mapped to vectors of real numbers. Conceptually it involves a mathematical embedding\nfrom a space with one dimension per word to a continuous vector space with a much lower"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "What is the tree of thought prompting?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "108",
+        "page": 14,
+        "source": "scaling_rlhf.pdf",
+        "text": "A.2\nCHAIN-OF-THOUGHT PROMPTS FOR EACH DATASET\nWe list the Chain-of-Thought Prompts for each dataset for \u201cCoT-Prompting\u201d experiments and self-\ngenerated training samples.\nQ: Poison causes harm to which of the following? (a) a Tree (b) a robot (c) a house (d) a car\nA: Poison will harm living things, only a tree is a living thing. The answer is (a).\nQ: As you look deeper into a Marbel you can see (a) the future (b) minut defects (c) colors (d) the other side"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "111",
+        "page": 13,
+        "source": "tree_of_thought.pdf",
+        "text": "A\nCode, Prompts, Trajectories\nAll code is available at https://github.com/princeton-nlp/tree-of-thought-llm.\nAll prompts are available at https://github.com/princeton-nlp/tree-of-thought-llm/\ntree/master/src/tot/prompts.\nTrajectories are available at https://github.com/princeton-nlp/tree-of-thought-llm/\ntree/master/logs.\nB\nAdditional Experiment Results\nGiven the motivation of exploring and extending the capability frontier of language models, our"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "3",
+        "page": 1,
+        "source": "tree_of_thought.pdf",
+        "text": "For instance, in Game of 24, while GPT-4 with chain-of-thought prompting only\nsolved 4% of tasks, our method achieved a success rate of 74%. Code repo with all\nprompts: https://github.com/princeton-nlp/tree-of-thought-llm.\n1\nIntroduction\nOriginally designed to generate text, scaled-up versions of language models (LMs) such as GPT [25,\n26, 1, 23] and PaLM [5] have been shown to be increasingly capable of performing an ever wider"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "tree_of_thought.pdf",
+        "text": "decision-making processes during inference. This means they can fall short in\ntasks that require exploration, strategic lookahead, or where initial decisions play\na pivotal role. To surmount these challenges, we introduce a new framework for\nlanguage model inference, \u201cTree of Thoughts\u201d (ToT), which generalizes over the\npopular \u201cChain of Thought\u201d approach to prompting language models, and enables\nexploration over coherent units of text (\u201cthoughts\u201d) that serve as intermediate steps"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "9",
+        "page": 2,
+        "source": "tree_of_thought.pdf",
+        "text": "starting in the 1950s [21, 22]. Newell and colleagues characterized problem solving [21] as search\nthrough a combinatorial problem space, represented as a tree. We thus propose the Tree of Thoughts\n(ToT) framework for general problem solving with language models. As Figure 1 illustrates, while\nexisting methods (detailed below) sample continuous language sequences for problem solving, ToT\nactively maintains a tree of thoughts, where each thought is a coherent language sequence that serves"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "242",
+        "page": 33,
+        "source": "react.pdf",
+        "text": "Thought 2:\nI need to search Frigg instead...\nFailure: Hallucination\nCoT\nQuestion:\nWhat was the first year a scientific journal published by an organization\nlocated in the Bronx was published?\nThought:\nLet\u2019s think step by step.\nThe first year a scientific journal published by\nan organization located in the Bronx was published was 1916.\nAnswer:\n1916 (Label:\n1909)\nFailure: Label ambiguity\nReAct\nQuestion:\nWhat nationality is the man who developed the dictator game?\nThought 1:"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "75",
+        "page": 11,
+        "source": "autogen.pdf",
+        "text": "step. In specific, Self-consistent CoT (CoT-SC) [51]\nbelieves that each complex problem has multiple\nways of thinking to deduce the final answer. Thus, it\nstarts by employing CoT to generate various reason-\ning paths and corresponding answers. Subsequently,\nthe answer with the highest frequency is chosen\nas the final output. Tree of Thoughts (ToT) [52]\nis designed to generate plans using a tree-like rea-\nsoning structure. In this approach, each node in\nthe tree represents a \"thought,\" which corresponds"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "127",
+        "page": 13,
+        "source": "dit.pdf",
+        "text": "answering challenge targeting commonsense knowl-\nedge. north american chapter of the association for\ncomputational linguistics.\nBoshi Wang, Sewon Min, Xiang Deng, Jiaming Shen,\nYou Wu, Luke Zettlemoyer, and Huan Sun. 2022a.\nTowards understanding chain-of-thought prompting:\nAn empirical study of what matters. In Annual Meet-\ning of the Association for Computational Linguistics.\nLei Wang, Yan Wang, Deng Cai, Dongxiang Zhang,\nand Xiaojiang Liu. 2018. Translating a math word"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "35",
+        "page": 4,
+        "source": "tree_of_thought.pdf",
+        "text": "4\nExperiments\nWe propose three tasks that are hard even when sampling from the state-of-the-art language model,\nGPT-4 [23], using standard IO prompting or chain-of-thought (CoT) prompting. We show how\n4"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "15",
+        "page": 2,
+        "source": "react.pdf",
+        "text": "\u0015\f\u0003$OI:RUOG\n\u000b\u0014\f\u0003+RWVSRW\u00034$\nFigure 1: (1) Comparison of 4 prompting methods, (a) Standard, (b) Chain-of-thought (CoT,\nReason Only), (c) Act-only, and (d) ReAct (Reason+Act), solving a HotpotQA (Yang et al., 2018)\nquestion. (2) Comparison of (a) Act-only and (b) ReAct prompting to solve an AlfWorld (Shridhar\net al., 2020b) game. In both domains, we omit in-context examples in the prompt, and only show task\nsolving trajectories generated by the model (Act, Thought) and the environment (Obs)."
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.808641791343689,
+          "distance": 0.38271642
+        },
+        "chunkId": "1",
+        "page": 1,
+        "source": "tree_of_thought.pdf",
+        "text": "decision-making processes during inference. This means they can fall short in\ntasks that require exploration, strategic lookahead, or where initial decisions play\na pivotal role. To surmount these challenges, we introduce a new framework for\nlanguage model inference, \u201cTree of Thoughts\u201d (ToT), which generalizes over the\npopular \u201cChain of Thought\u201d approach to prompting language models, and enables\nexploration over coherent units of text (\u201cthoughts\u201d) that serve as intermediate steps"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8071427643299103,
+          "distance": 0.38571447
+        },
+        "chunkId": "75",
+        "page": 11,
+        "source": "autogen.pdf",
+        "text": "step. In specific, Self-consistent CoT (CoT-SC) [51]\nbelieves that each complex problem has multiple\nways of thinking to deduce the final answer. Thus, it\nstarts by employing CoT to generate various reason-\ning paths and corresponding answers. Subsequently,\nthe answer with the highest frequency is chosen\nas the final output. Tree of Thoughts (ToT) [52]\nis designed to generate plans using a tree-like rea-\nsoning structure. In this approach, each node in\nthe tree represents a \"thought,\" which corresponds"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8024565279483795,
+          "distance": 0.39508694
+        },
+        "chunkId": "20",
+        "page": 3,
+        "source": "tree_of_thought.pdf",
+        "text": "options \u2013 the kind of heuristic-guided search that seems characteristic of human problem-solving.\nTo address these shortcomings, we introduce Tree of Thoughts (ToT), a paradigm that allows LMs to\nexplore multiple reasoning paths over thoughts (Figure 1(c)). ToT frames any problem as a search\nover a tree, where each node is a state s = [x, z1\u00b7\u00b7\u00b7i] representing a partial solution with the input and\nthe sequence of thoughts so far. A specific instantiation of ToT involves answering four questions:"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7770278453826904,
+          "distance": 0.4459443
+        },
+        "chunkId": "35",
+        "page": 4,
+        "source": "tree_of_thought.pdf",
+        "text": "4\nExperiments\nWe propose three tasks that are hard even when sampling from the state-of-the-art language model,\nGPT-4 [23], using standard IO prompting or chain-of-thought (CoT) prompting. We show how\n4"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7726812958717346,
+          "distance": 0.4546374
+        },
+        "chunkId": "40",
+        "page": 4,
+        "source": "react.pdf",
+        "text": "thought), where free-form thoughts are used for various purposes. Speci\ufb01cally, we use a combination\nof thoughts that decompose questions (\u201cI need to search x, \ufb01nd y, then \ufb01nd z\u201d), extract information\nfrom Wikipedia observations (\u201cx was started in 1844\u201d, \u201cThe paragraph does not tell x\u201d), perform\ncommonsense (\u201cx is not y, so z must instead be...\u201d) or arithmetic reasoning (\u201c1844 < 1989\u201d), guide\n2We \ufb01nd more examples do not improve performance.\n4"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7720935344696045,
+          "distance": 0.45581293
+        },
+        "chunkId": "111",
+        "page": 13,
+        "source": "tree_of_thought.pdf",
+        "text": "A\nCode, Prompts, Trajectories\nAll code is available at https://github.com/princeton-nlp/tree-of-thought-llm.\nAll prompts are available at https://github.com/princeton-nlp/tree-of-thought-llm/\ntree/master/src/tot/prompts.\nTrajectories are available at https://github.com/princeton-nlp/tree-of-thought-llm/\ntree/master/logs.\nB\nAdditional Experiment Results\nGiven the motivation of exploring and extending the capability frontier of language models, our"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7684871554374695,
+          "distance": 0.4630257
+        },
+        "chunkId": "18",
+        "page": 3,
+        "source": "scaling_rlhf.pdf",
+        "text": "Wei et al.\n(2022b) propose Chain-of-Thought prompting, which prompts the language model to generate a se-\nries of natural-language-based intermediate steps, and show it can help language models better solve\ncomplex and multi-step reasoning tasks. Wang et al. (2022b) improve Chain-of-Thought prompting\nby sampling multiple diverse reasoning paths and \ufb01nding the most consistent answers via majority\nvoting. Kojima et al. (2022) propose to prompt the language model with \u201cLet\u2019s think step by step\u201d"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7652918696403503,
+          "distance": 0.46941626
+        },
+        "chunkId": "108",
+        "page": 14,
+        "source": "scaling_rlhf.pdf",
+        "text": "A.2\nCHAIN-OF-THOUGHT PROMPTS FOR EACH DATASET\nWe list the Chain-of-Thought Prompts for each dataset for \u201cCoT-Prompting\u201d experiments and self-\ngenerated training samples.\nQ: Poison causes harm to which of the following? (a) a Tree (b) a robot (c) a house (d) a car\nA: Poison will harm living things, only a tree is a living thing. The answer is (a).\nQ: As you look deeper into a Marbel you can see (a) the future (b) minut defects (c) colors (d) the other side"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7630678117275238,
+          "distance": 0.47386438
+        },
+        "chunkId": "105",
+        "page": 10,
+        "source": "generative_agents.pdf",
+        "text": "their observations but also on other reflections: for example, the\nsecond statement about Klaus Mueller above is a reflection that\nKlaus previously had, not an observation from his environment.\nAs a result, agents generate trees of reflections: the leaf nodes of\nthe tree represent the base observations, and the non-leaf nodes\nrepresent thoughts that become more abstract and higher-level the\nhigher up the tree they are.\n4.3\nPlanning and Reacting"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7586922943592072,
+          "distance": 0.4826154
+        },
+        "chunkId": "67",
+        "page": 7,
+        "source": "tree_of_thought.pdf",
+        "text": "explore alternative thoughts. To make search tractable, subsequent thoughts are constrained not to\nchange any filled words or letters, so that the ToT has at most 10 intermediate steps. For thought\ngeneration, at each state we translate all existing thoughts (e.g. \u201ch2.motor; h1.tasks\u201d for the state\nin Figure 6(a)) into letter constraints for remaining clues (e.g. \u201cv1.To heap: tm\n;...\u201d) and prompt\na proposal prompt 5 times to come up with candidates for where and what to fill in the next word."
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "Explain dense passage retrieval",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "8",
+        "page": 2,
+        "source": "beir.pdf",
+        "text": "Passage\nQuestion\nPassage\nQ_Emb (D=768)\nT5-base\nD_Emb (D=768)\nT5-base\nQuestion\nQ_Emb (D=768)\nT5-large\nD_Emb (D=768)\nPassage\nQuestion\nPassage\nQ_Emb (D=768)\nT5-3B\nD_Emb (D=768)\nQuestion\nQ_Emb (D=768)\nT5-11B\nD_Emb (D=768)\nT5-3B\nT5-11B\nT5-large\nFigure 2: Architecture of Generalizable T5-based dense Retrievers. The research question we ask is: can scaling\nup dual encoder model size improve the retrieval performance while keeping the bottleneck layers \ufb01xed? Only the"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "97",
+        "page": 10,
+        "source": "large_dual_encoder.pdf",
+        "text": "Dense passage\nretrieval for open-domain question answering. In Con-\nference on Empirical Methods in Natural Language Pro-\ncessing (EMNLP), 2020a.\nKarpukhin, V., Oguz, B., Min, S., Wu, L., Edunov, S.,\nChen, D., and Yih, W. Dense passage retrieval for open-\ndomain question answering. In Conference on Empiri-\ncal Methods in Natural Language Processing (EMNLP),\n2020b.\nKhosla, P., Teterwak, P., Wang, C., Sarna, A., Tian,\nY., Isola, P., Maschinot, A., Liu, C., and Krishnan,\nD.\nSupervised contrastive learning."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "79",
+        "page": 9,
+        "source": "beir.pdf",
+        "text": "Wen-tau Yih. 2020.\nDense passage retrieval for\nopen-domain question answering. In Proceedings of\nthe 2020 Conference on Empirical Methods in Nat-\nural Language Processing (EMNLP), pages 6769\u2013\n6781, Online. Association for Computational Lin-\nguistics.\nOmar Khattab and Matei Zaharia. 2020. Colbert: Ef-\n\ufb01cient and effective passage search via contextual-\nized late interaction over bert.\nIn Proceedings of\nthe 43rd International ACM SIGIR conference on\nresearch and development in Information Retrieval,"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "122",
+        "page": 14,
+        "source": "cpt_text.pdf",
+        "text": "learning for language understanding. arXiv preprint arXiv:2005.12766, 2020. 3\nThibault Formal, Carlos Lassance, Benjamin Piwowarski, and St\u00e9phane Clinchant. Splade v2: Sparse lexical\nand expansion model for information retrieval. arXiv preprint arXiv:2109.10086, 2021. 7\nLuyu Gao and Jamie Callan. Unsupervised corpus aware language model pre-training for dense passage\nretrieval. arXiv preprint arXiv:2108.05540, 2021. 3"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "124",
+        "page": 14,
+        "source": "instructor.pdf",
+        "text": "ral Language Processing (EMNLP-IJCNLP), pages\n3982\u20133992, Hong Kong, China. Association for Com-\nputational Linguistics.\nRuiyang Ren, Shangwen Lv, Yingqi Qu, Jing Liu,\nWayne Xin Zhao, QiaoQiao She, Hua Wu, Haifeng\nWang, and Ji-Rong Wen. 2021.\nPAIR: Leverag-\ning passage-centric similarity relation for improving\ndense passage retrieval. In Findings of the Associa-\ntion for Computational Linguistics: ACL-IJCNLP\n2021, pages 2173\u20132183, Online. Association for\nComputational Linguistics."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "110",
+        "page": 13,
+        "source": "instructor.pdf",
+        "text": "Wen-tau Yih. 2020. Dense passage retrieval for open-\ndomain question answering. In Proceedings of the\n2020 Conference on Empirical Methods in Natural\nLanguage Processing (EMNLP), pages 6769\u20136781,\nOnline. Association for Computational Linguistics.\nKenton Lee, Ming-Wei Chang, and Kristina Toutanova.\n2019. Latent retrieval for weakly supervised open\ndomain question answering. In Proceedings of the\n57th Annual Meeting of the Association for Computa-\ntional Linguistics, pages 6086\u20136096, Florence, Italy."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "122",
+        "page": 14,
+        "source": "instructor.pdf",
+        "text": "Thilina C. Rajapakse. 2023. Dense passage retrieval:\nArchitectures and augmentation methods. Proceed-\nings of the 46th International ACM SIGIR Confer-\nence on Research and Development in Information\nRetrieval.\nSamyam Rajbhandari, Jeff Rasley, Olatunji Ruwase,\nand Yuxiong He. 2020. Zero: Memory optimizations\ntoward training trillion parameter models. In Pro-\nceedings of the International Conference for High\nPerformance Computing, Networking, Storage and\nAnalysis, SC \u201920. IEEE Press."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "114",
+        "page": 13,
+        "source": "instructor.pdf",
+        "text": "Proceedings of the 45th International ACM SIGIR\nConference on Research and Development in Infor-\nmation Retrieval.\nDingkun Long, Yanzhao Zhang, Guangwei Xu, and\nPengjun Xie. 2022b. Retrieval oriented masking pre-\ntraining language model for dense passage retrieval.\nArXiv, abs/2210.15133.\nPaulius Micikevicius, Sharan Narang, Jonah Alben, Gre-\ngory Diamos, Erich Elsen, David Garcia, Boris Gins-\nburg, Michael Houston, Oleksii Kuchaiev, Ganesh\nVenkatesh, and Hao Wu. 2018.\nMixed precision"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "84",
+        "page": 10,
+        "source": "beir.pdf",
+        "text": "Rodrigo Nogueira. 2019. From doc2query to docttttt-\nquery.\nChen Qu, Liu Yang, Cen Chen, Minghui Qiu, W. Bruce\nCroft, and Mohit Iyyer. 2020. Open-retrieval conver-\nsational question answering. In Proceedings of the\n43rd International ACM SIGIR Conference on Re-\nsearch and Development in Information Retrieval.\nYingqi Qu, Yuchen Ding, Jing Liu, Kai Liu, Ruiyang\nRen, Wayne Xin Zhao, Daxiang Dong, Hua Wu, and\nHaifeng Wang. 2021. Rocketqa: An optimized train-\ning approach to dense passage retrieval for open-"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "137",
+        "page": 16,
+        "source": "cpt_text.pdf",
+        "text": "information retrieval. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 24(4):694\u2013707,\n2016. 2\nYingqi Qu, Yuchen Ding, Jing Liu, Kai Liu, Ruiyang Ren, Wayne Xin Zhao, Daxiang Dong, Hua Wu,\nand Haifeng Wang. RocketQA: An optimized training approach to dense passage retrieval for open-\ndomain question answering. In Proceedings of the 2021 Conference of the North American Chapter of\nthe Association for Computational Linguistics: Human Language Technologies, pp. 5835\u20135847, Online,"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.854343831539154,
+          "distance": 0.29131234
+        },
+        "chunkId": "134",
+        "page": 16,
+        "source": "cpt_text.pdf",
+        "text": "Published in Transactions on Machine Learning Research (08/2022)\nXueguang Ma, Kai Sun, Ronak Pradeep, and Jimmy Lin. A replication study of dense passage retriever,\n2021. 7\nChristopher D Manning, Hinrich Sch\u00fctze, and Prabhakar Raghavan. Introduction to information retrieval.\nCambridge university press, 2008. 2\nYu Meng, Chenyan Xiong, Payal Bajaj, Saurabh Tiwary, Paul Bennett, Jiawei Han, and Xia Song. Coco-lm:"
+      },
+      {
+        "_additional": {
+          "certainty": 0.832315593957901,
+          "distance": 0.3353688
+        },
+        "chunkId": "79",
+        "page": 9,
+        "source": "beir.pdf",
+        "text": "Wen-tau Yih. 2020.\nDense passage retrieval for\nopen-domain question answering. In Proceedings of\nthe 2020 Conference on Empirical Methods in Nat-\nural Language Processing (EMNLP), pages 6769\u2013\n6781, Online. Association for Computational Lin-\nguistics.\nOmar Khattab and Matei Zaharia. 2020. Colbert: Ef-\n\ufb01cient and effective passage search via contextual-\nized late interaction over bert.\nIn Proceedings of\nthe 43rd International ACM SIGIR conference on\nresearch and development in Information Retrieval,"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8289293646812439,
+          "distance": 0.34214127
+        },
+        "chunkId": "122",
+        "page": 14,
+        "source": "instructor.pdf",
+        "text": "Thilina C. Rajapakse. 2023. Dense passage retrieval:\nArchitectures and augmentation methods. Proceed-\nings of the 46th International ACM SIGIR Confer-\nence on Research and Development in Information\nRetrieval.\nSamyam Rajbhandari, Jeff Rasley, Olatunji Ruwase,\nand Yuxiong He. 2020. Zero: Memory optimizations\ntoward training trillion parameter models. In Pro-\nceedings of the International Conference for High\nPerformance Computing, Networking, Storage and\nAnalysis, SC \u201920. IEEE Press."
+      },
+      {
+        "_additional": {
+          "certainty": 0.8260796666145325,
+          "distance": 0.34784067
+        },
+        "chunkId": "84",
+        "page": 10,
+        "source": "beir.pdf",
+        "text": "Rodrigo Nogueira. 2019. From doc2query to docttttt-\nquery.\nChen Qu, Liu Yang, Cen Chen, Minghui Qiu, W. Bruce\nCroft, and Mohit Iyyer. 2020. Open-retrieval conver-\nsational question answering. In Proceedings of the\n43rd International ACM SIGIR Conference on Re-\nsearch and Development in Information Retrieval.\nYingqi Qu, Yuchen Ding, Jing Liu, Kai Liu, Ruiyang\nRen, Wayne Xin Zhao, Daxiang Dong, Hua Wu, and\nHaifeng Wang. 2021. Rocketqa: An optimized train-\ning approach to dense passage retrieval for open-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8259941935539246,
+          "distance": 0.3480116
+        },
+        "chunkId": "68",
+        "page": 8,
+        "source": "rag_advanced.pdf",
+        "text": "8\nthe appropriate retrieval granularity during inference can be\na simple and effective strategy to improve the retrieval and\ndownstream task performance of dense retrievers.\nIn text, retrieval granularity ranges from fine to coarse,\nincluding Token, Phrase, Sentence, Proposition, Chunks, Doc-\nument. Among them, DenseX [30]proposed the concept of\nusing propositions as retrieval units. Propositions are defined\nas atomic expressions in the text, each encapsulating a unique"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8225345015525818,
+          "distance": 0.354931
+        },
+        "chunkId": "137",
+        "page": 16,
+        "source": "cpt_text.pdf",
+        "text": "information retrieval. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 24(4):694\u2013707,\n2016. 2\nYingqi Qu, Yuchen Ding, Jing Liu, Kai Liu, Ruiyang Ren, Wayne Xin Zhao, Daxiang Dong, Hua Wu,\nand Haifeng Wang. RocketQA: An optimized training approach to dense passage retrieval for open-\ndomain question answering. In Proceedings of the 2021 Conference of the North American Chapter of\nthe Association for Computational Linguistics: Human Language Technologies, pp. 5835\u20135847, Online,"
+      },
+      {
+        "_additional": {
+          "certainty": 0.822269082069397,
+          "distance": 0.35546184
+        },
+        "chunkId": "114",
+        "page": 13,
+        "source": "instructor.pdf",
+        "text": "Proceedings of the 45th International ACM SIGIR\nConference on Research and Development in Infor-\nmation Retrieval.\nDingkun Long, Yanzhao Zhang, Guangwei Xu, and\nPengjun Xie. 2022b. Retrieval oriented masking pre-\ntraining language model for dense passage retrieval.\nArXiv, abs/2210.15133.\nPaulius Micikevicius, Sharan Narang, Jonah Alben, Gre-\ngory Diamos, Erich Elsen, David Garcia, Boris Gins-\nburg, Michael Houston, Oleksii Kuchaiev, Ganesh\nVenkatesh, and Hao Wu. 2018.\nMixed precision"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8190242648124695,
+          "distance": 0.36195147
+        },
+        "chunkId": "205",
+        "page": 19,
+        "source": "rag_advanced.pdf",
+        "text": "scenarios via prompt compression,\u201d arXiv preprint arXiv:2310.06839,\n2023.\n[102] V. Karpukhin, B. O\u02d8guz, S. Min, P. Lewis, L. Wu, S. Edunov, D. Chen,\nand W.-t. Yih, \u201cDense passage retrieval for open-domain question\nanswering,\u201d arXiv preprint arXiv:2004.04906, 2020.\n[103] Y. Ma, Y. Cao, Y. Hong, and A. Sun, \u201cLarge language model is\nnot a good few-shot information extractor, but a good reranker for\nhard samples!\u201d ArXiv, vol. abs/2303.08559, 2023. [Online]. Available:"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8175919055938721,
+          "distance": 0.3648162
+        },
+        "chunkId": "122",
+        "page": 14,
+        "source": "cpt_text.pdf",
+        "text": "learning for language understanding. arXiv preprint arXiv:2005.12766, 2020. 3\nThibault Formal, Carlos Lassance, Benjamin Piwowarski, and St\u00e9phane Clinchant. Splade v2: Sparse lexical\nand expansion model for information retrieval. arXiv preprint arXiv:2109.10086, 2021. 7\nLuyu Gao and Jamie Callan. Unsupervised corpus aware language model pre-training for dense passage\nretrieval. arXiv preprint arXiv:2108.05540, 2021. 3"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8150831460952759,
+          "distance": 0.3698337
+        },
+        "chunkId": "90",
+        "page": 8,
+        "source": "rag_survey.pdf",
+        "text": "Effective Passage Search via Contextualized Late Interac-\ntion over BERT. In Proceedings of the 43rd International\nACM SIGIR conference on research and development in In-\nformation Retrieval, SIGIR 2020, Virtual Event, China, July\n25-30, 2020, 39\u201348. ACM.\nKwiatkowski, T.; Palomaki, J.; Red\ufb01eld, O.; Collins, M.;\nParikh, A. P.; Alberti, C.; Epstein, D.; Polosukhin, I.; Devlin,\nJ.; Lee, K.; Toutanova, K.; Jones, L.; Kelcey, M.; Chang, M.;\nDai, A. M.; Uszkoreit, J.; Le, Q.; and Petrov, S. 2019. Nat-"
+      }
+    ],
+    "hybrid": []
+  },
+  {
+    "query": "What is instruction tuning for LLMs?",
+    "bm25": [
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "31",
+        "page": 4,
+        "source": "instructblip.pdf",
+        "text": "based on language instructions like LLMs.\n2.3\nInstruction Tuning\nLanguage instructions are a powerful way to express various NLP tasks and examples for LLMs,\nas introduced by GPT-3 [6]. Following this idea, subsequent works, such as InstructGPT [42],\nFLAN [14, 67], and OPT-IML [25], explore the instruction-tuning method [66, 65] and demonstrate\nthat this simple approach effectively enhances the zero-shot and few-shot capabilities of LLMs."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "8",
+        "page": 2,
+        "source": "minigpt4.pdf",
+        "text": "utilize various machine-generated high-quality instruction-following samples to improve the LLM\u2019s\nalignment ability, reporting impressive performance compared with proprietary LLMs. Importantly,\nthis line of work is text-only.\nIn this paper, we present visual instruction-tuning, the first attempt to extend instruction-tuning to\nthe language-image multimodal space, to pave the way towards building a general-purpose visual\nassistant. In particular, our paper makes the following contributions:"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "280",
+        "page": 36,
+        "source": "llama2.pdf",
+        "text": "tuning as a function of number of tasks, model size, prompt settings, etc. Prompts used for instruction tuning\ncan be created by humans or by LLMs themselves (Zhou et al., 2022), and follow-up instructions can be used\nto refine initial generations to make them more useful, engaging, and unbiased (Ganguli et al., 2023; Madaan\net al., 2023). An approach related to instruction tuning is chain-of-thought prompting (Wei et al., 2022b), in"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "60",
+        "page": 7,
+        "source": "corrective_rag.pdf",
+        "text": "output given the query prepended with the top\nretrieved documents using the same retriever as\nin our system.\nHere we adopted several pub-\nlic instruction-tuned LLMs, including LLaMA2-\n7B, 13B (Touvron et al., 2023b), Alpaca-7B,13B\n(Dubois et al., 2023), as well as LLaMA2-7B\ninstruction-tuned in Self-RAG (Asai et al., 2024).\nAdvanced RAG. (1) SAIL (Luo et al., 2023) that\ninstruction-tuned an LM on the Alpaca instruction-\ntuning data with top retrieved documents inserted\nbefore instructions."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "0",
+        "page": 1,
+        "source": "minigpt4.pdf",
+        "text": "Visual Instruction Tuning\nHaotian Liu1\u2217, Chunyuan Li2\u2217, Qingyang Wu3, Yong Jae Lee1\n1University of Wisconsin\u2013Madison\n2Microsoft Research\n3Columbia University\nhttps://llava-vl.github.io\nAbstract\nInstruction tuning large language models (LLMs) using machine-generated\ninstruction-following data has been shown to improve zero-shot capabilities on\nnew tasks, but the idea is less explored in the multimodal field. We present the\nfirst attempt to use language-only GPT-4 to generate multimodal language-image"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "279",
+        "page": 36,
+        "source": "llama2.pdf",
+        "text": "and Alpaca (Taori et al., 2023) adopting a unique approach to training with synthetic instructions (Honovich\net al., 2022; Wang et al., 2022). However, while these models show promise, they still fall short of the bar set\nby their closed-source counterparts.\nInstruction Tuning.\nWei et al. (2021) obtained zero-shot performance on unseen tasks by fine-tuning LLMs\non numerous datasets. Chung et al. (2022) and Longpre et al. (2023) investigate the impact of instruction"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "13",
+        "page": 2,
+        "source": "minigpt4.pdf",
+        "text": "via LangChain [1] / LLMs [35], such as Visual ChatGPT [53], X-GPT [63], MM-REACT [55],\nVisProg [18], and ViperGPT [46]. While sharing the same goal in building instruction-following\nagents, we focus on developing an end-to-end trained language-vision multimodal model for multiple\ntasks.\nInstruction Tuning. In the natural language processing (NLP) community, to enable LLMs such\nas GPT-3 [7], T5 [41], PaLM [10], and OPT [60] to follow natural language instructions and"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "53",
+        "page": 6,
+        "source": "shepherd.pdf",
+        "text": "3\nWHAT TO EVALUATE\nWhat tasks should we evaluate LLMs to show their performance? On what tasks can we claim the\nstrengths and weaknesses of LLMs? In this section, we divide existing tasks into the following\ncategories: natural language processing, robustness, ethics, biases and trustworthiness, social\nsciences, natural science and engineering, medical applications, agent applications (using LLMs as\nagents), and other applications.1"
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "63",
+        "page": 8,
+        "source": "flan.pdf",
+        "text": "4.5\nINSTRUCTION TUNING FACILITATES PROMPT TUNING\n32 training \nexamples\nFull training \nset\n100\n0\n50\n75\n25\nPerformance after \nprompt tuning\nInstruction-tuned model\nUntuned model\n63.8\n78.1\n79.1\n87.4\nFigure 10:\nInstruction-tuned\nmodels respond better to contin-\nuous inputs from prompt tuning.\nWhen prompt tuning on a given\ndataset, no tasks from the same\ncluster as that dataset were seen\nduring instruction tuning. Perfor-\nmance shown is the average on\nthe SuperGLUE dev set."
+      },
+      {
+        "_additional": {
+          "score": "0"
+        },
+        "chunkId": "22",
+        "page": 3,
+        "source": "flan.pdf",
+        "text": "<hypothesis>?\n<options>\nRead the following and \ndetermine if the hypothesis can \nbe inferred from the premise: \nPremise: <premise>\nHypothesis: <hypothesis>\n<options>\nTemplate 3\nTemplate 4, \u2026\nFigure 4: Multiple instruction templates describing a natural language inference task.\n2.2\nEVALUATION SPLITS\nWe are interested in how FLAN performs on tasks not seen in instruction tuning, and so it is crucial to\nde\ufb01ne what counts as an unseen task. Whereas some prior work de\ufb01nes unseen tasks by disallowing"
+      }
+    ],
+    "vector": [
+      {
+        "_additional": {
+          "certainty": 0.8438231647014618,
+          "distance": 0.31235367
+        },
+        "chunkId": "280",
+        "page": 36,
+        "source": "llama2.pdf",
+        "text": "tuning as a function of number of tasks, model size, prompt settings, etc. Prompts used for instruction tuning\ncan be created by humans or by LLMs themselves (Zhou et al., 2022), and follow-up instructions can be used\nto refine initial generations to make them more useful, engaging, and unbiased (Ganguli et al., 2023; Madaan\net al., 2023). An approach related to instruction tuning is chain-of-thought prompting (Wei et al., 2022b), in"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8359920978546143,
+          "distance": 0.3280158
+        },
+        "chunkId": "31",
+        "page": 4,
+        "source": "instructblip.pdf",
+        "text": "based on language instructions like LLMs.\n2.3\nInstruction Tuning\nLanguage instructions are a powerful way to express various NLP tasks and examples for LLMs,\nas introduced by GPT-3 [6]. Following this idea, subsequent works, such as InstructGPT [42],\nFLAN [14, 67], and OPT-IML [25], explore the instruction-tuning method [66, 65] and demonstrate\nthat this simple approach effectively enhances the zero-shot and few-shot capabilities of LLMs."
+      },
+      {
+        "_additional": {
+          "certainty": 0.8214898109436035,
+          "distance": 0.35702038
+        },
+        "chunkId": "42",
+        "page": 5,
+        "source": "rag_advanced.pdf",
+        "text": "or reinforcement learning) [26]. For example, this can involve\nfine-tuning the retriever for better retrieval results, fine-tuning\nthe generator for more personalized outputs, or engaging in\ncollaborative fine-tuning [27].\nD. RAG vs Fine-tuning\nThe augmentation of LLMs has attracted considerable atten-\ntion due to their growing prevalence. Among the optimization\nmethods for LLMs, RAG is often compared with Fine-tuning\n(FT) and prompt engineering. Each method has distinct charac-"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8065316379070282,
+          "distance": 0.38693672
+        },
+        "chunkId": "63",
+        "page": 7,
+        "source": "selfrag.pdf",
+        "text": "Llama27B,13B (Touvron et al., 2023), instruction-tuned models, Alpaca7B,13B (Dubois et al., 2023)\n(our replication based on Llama2); and models trained and reinforced using private data, Chat-\nGPT (Ouyang et al., 2022) and Llama2-chat13B. For instruction-tuned LMs, we use the official\nsystem prompt or instruction format used during training if publicly available. We also compare our\nmethod to concurrent work, CoVE65B (Dhuliawala et al., 2023), which introduces iterative prompt"
+      },
+      {
+        "_additional": {
+          "certainty": 0.8034536242485046,
+          "distance": 0.39309275
+        },
+        "chunkId": "63",
+        "page": 8,
+        "source": "flan.pdf",
+        "text": "4.5\nINSTRUCTION TUNING FACILITATES PROMPT TUNING\n32 training \nexamples\nFull training \nset\n100\n0\n50\n75\n25\nPerformance after \nprompt tuning\nInstruction-tuned model\nUntuned model\n63.8\n78.1\n79.1\n87.4\nFigure 10:\nInstruction-tuned\nmodels respond better to contin-\nuous inputs from prompt tuning.\nWhen prompt tuning on a given\ndataset, no tasks from the same\ncluster as that dataset were seen\nduring instruction tuning. Perfor-\nmance shown is the average on\nthe SuperGLUE dev set."
+      },
+      {
+        "_additional": {
+          "certainty": 0.7947330474853516,
+          "distance": 0.4105339
+        },
+        "chunkId": "59",
+        "page": 7,
+        "source": "rag_advanced.pdf",
+        "text": "7\nFig. 4. RAG compared with other model optimization methods in the aspects of \u201cExternal Knowledge Required\u201d and \u201cModel Adaption Required\u201d. Prompt\nEngineering requires low modifications to the model and external knowledge, focusing on harnessing the capabilities of LLMs themselves. Fine-tuning, on\nthe other hand, involves further training the model. In the early stages of RAG (Naive RAG), there is a low demand for model modifications. As research"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7915438413619995,
+          "distance": 0.41691232
+        },
+        "chunkId": "46",
+        "page": 5,
+        "source": "llm_eval.pdf",
+        "text": "et al., 2020) as the vanilla LM baselines (only pre-\ntraining, no additional finetuning). These baselines\nwill indicate the extent to which off-the-shelf LMs\nare capable of following instructions naturally im-\nmediately after pretraining.\nPublicly available instruction-tuned models.\nT0 and T\ud835\udc58-INSTRUCT are two instruction-tuned\nmodels proposed in Sanh et al. (2022) and Wang\net al. (2022), respectively, and are demonstrated\nto be able to follow instructions for many NLP"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7878160178661346,
+          "distance": 0.42436796
+        },
+        "chunkId": "279",
+        "page": 36,
+        "source": "llama2.pdf",
+        "text": "and Alpaca (Taori et al., 2023) adopting a unique approach to training with synthetic instructions (Honovich\net al., 2022; Wang et al., 2022). However, while these models show promise, they still fall short of the bar set\nby their closed-source counterparts.\nInstruction Tuning.\nWei et al. (2021) obtained zero-shot performance on unseen tasks by fine-tuning LLMs\non numerous datasets. Chung et al. (2022) and Longpre et al. (2023) investigate the impact of instruction"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7855318188667297,
+          "distance": 0.42893636
+        },
+        "chunkId": "54",
+        "page": 7,
+        "source": "flan.pdf",
+        "text": "tuning \ufb01lls the entire model capacity, causing these models to perform worse on new tasks. Under\nthis potential explanation, for the larger scale models, instruction tuning \ufb01lls up some model capacity\nbut also teaches these models how to follow instructions, allowing them to generalize to new tasks\nwith the remaining capacity.\n4.3\nROLE OF INSTRUCTIONS\n20\n30\n40\n50\n60\nFT: no instruction \nEval: instruction\nFT: dataset name \nEval: instruction\nFT: dataset name \nEval: dataset name\nFT: instruction"
+      },
+      {
+        "_additional": {
+          "certainty": 0.7843627333641052,
+          "distance": 0.43127453
+        },
+        "chunkId": "159",
+        "page": 21,
+        "source": "autogen.pdf",
+        "text": "that the fine-tuning method improves the agent ca-\npability by adjusting model parameters, which can\nincorporate a large amount of task-specific knowl-\nedge, but is only suitable for open-source LLMs.\nThe method without fine-tuning usually enhances\nthe agent capability based on delicate prompting\nstrategies or mechanism engineering. They can\nbe used for both open- and closed-source LLMs.\nHowever, due to the limitation of the input context\nwindow of LLMs, they cannot incorporate too much"
+      }
+    ],
+    "hybrid": []
+  }
+]

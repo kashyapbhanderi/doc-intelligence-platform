@@ -117,10 +117,12 @@ def ingest_documents(
 
 
 if __name__ == "__main__":
-    # Start with first 10 documents to verify
-    print("Testing with first 10 documents...")
+    print("Ingesting ALL 52 documents into Weaviate...")
+    print("This will take 5-10 minutes. Please wait.")
+    print("=" * 50)
     count = ingest_documents(
         processed_dir="data/processed",
-        limit=10
+        limit=None,  # None = ALL documents
+        batch_size=50
     )
     print(f"\nFinal chunk count in Weaviate: {count}")
