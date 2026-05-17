@@ -112,6 +112,21 @@ An end-to-end AI system that:
 | Hybrid RRF accuracy | 5 / 5 test queries |
 | Tests passing | 31 / 31 |
 
+### Week 2 — Embeddings & Vector DB ✅
+
+| Metric | Value |
+|--------|-------|
+| Embedding model | all-MiniLM-L6-v2 (384-dim) |
+| Chunks in Weaviate | 11,089 |
+| Q&A evaluation pairs | 50 |
+| BM25 NDCG@10 | YOUR_SCORE |
+| Vector NDCG@10 | YOUR_SCORE |
+| Hybrid NDCG@10 | YOUR_SCORE (BASELINE) |
+| Tests passing | 41/41 |
+
+> ⭐ Baseline NDCG@10 = YOUR_SCORE
+> Target after fine-tuning (Week 3): baseline + 15%
+
 ### Search Method Comparison
 
 | Method | Correct | Score | Best for |

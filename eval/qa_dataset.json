@@ -1,0 +1,533 @@
+[
+  {
+    "question": "What are the coordinates associated with the suitcase in the text?",
+    "answer": "[0.758, 0.413, 0.845, 0.69] and [0.1, 0.497, 0.173, 0.579]",
+    "difficulty": "medium",
+    "source": "minigpt4.pdf",
+    "chunk_id": "178",
+    "chunk_text": "0.487, 0.34], backpack: [0.384, 0.696, 0.485, 0.914], backpack: [0.755, 0.413, 0.846, 0.692],\nsuitcase: [0.758, 0.413, 0.845, 0.69], suitcase: [0.1, 0.497, 0.173, 0.579], bicycle: [0.282, 0.363,\n0.327, 0.442], car: [0.786, 0.25, 0.848, 0.322], car: [0.783, 0.27, 0.827, 0.335], car: [0.86, 0.254,\n0.891, 0.3], car: [0.261, 0.101, 0.787, 0.626]\nResponse type 1: conversation\nQuestion: What type of vehicle is featured in the image?\nAnswer: The image features a black sport utility vehicle (SUV).",
+    "page": 23
+  },
+  {
+    "question": "What do the symbols † and ‡ represent in the context of the metrics mentioned?",
+    "answer": "† represents a benchmark, and ‡ represents a tool.",
+    "difficulty": "easy",
+    "source": "rag_advanced.pdf",
+    "chunk_id": "148",
+    "chunk_text": "Summarization\nBLEU\nROUGE-L\nBertScore\nRAGQuestEval\n† represents a benchmark, and ‡ represents a tool. * denotes customized quantitative metrics, which deviate from traditional\nmetrics. Readers are encouraged to consult pertinent literature for the specific quantification formulas associated with these\nmetrics, as required.\nand non-parameterized advantages are areas ripe for explo-\nration [27]. Another trend is to introduce SLMs with specific\nfunctionalities into RAG and fine-tuned by the results ",
+    "page": 15
+  },
+  {
+    "question": "Who are the authors of the paper titled 'Few-shot Learning with Retrieval Augmented Language Models'?",
+    "answer": "Yu, Armand Joulin, Sebastian Riedel, and Edouard Grave.",
+    "difficulty": "easy",
+    "source": "instructor.pdf",
+    "chunk_id": "109",
+    "chunk_text": "Yu, Armand Joulin, Sebastian Riedel, and Edouard\nGrave. 2022b. Few-shot Learning with Retrieval\nAugmented Language Models.\nVladimir Karpukhin, Barlas Oguz, Sewon Min, Patrick\nLewis, Ledell Wu, Sergey Edunov, Danqi Chen, and",
+    "page": 12
+  },
+  {
+    "question": "What is the title of the paper authored by Luowei Zhou and others presented at the IEEE/CVF Conference on Computer Vision and Pattern Recognition in 2022?",
+    "answer": "Regionclip: Region-based language-image pretraining.",
+    "difficulty": "easy",
+    "source": "minigpt4.pdf",
+    "chunk_id": "118",
+    "chunk_text": "Luowei Zhou, Xiyang Dai, Lu Yuan, Yin Li, et al. Regionclip: Region-based language-image\npretraining. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern\nRecognition, pages 16793–16803, 2022. 1\n[63] Xueyan Zou, Zi-Yi Dou, Jianwei Yang, Zhe Gan, Linjie Li, Chunyuan Li, Xiyang Dai, Harkirat\nBehl, Jianfeng Wang, Lu Yuan, et al. Generalized decoding for pixel, image, and language.\narXiv preprint arXiv:2212.11270, 2022. 1, 2\n13",
+    "page": 13
+  },
+  {
+    "question": "What is the title of the paper authored by Danilo Giampiccolo and others?",
+    "answer": "The third PASCAL recognizing textual entailment challenge",
+    "difficulty": "easy",
+    "source": "gpt3.pdf",
+    "chunk_id": "499",
+    "chunk_text": "[GMDD07] Danilo Giampiccolo, Bernardo Magnini, Ido Dagan, and Bill Dolan. The third PASCAL recognizing\ntextual entailment challenge. In Proceedings of the ACL-PASCAL workshop on textual entailment and\nparaphrasing, pages 1–9. Association for Computational Linguistics, 2007.\n[Gra16] Alex Graves. Adaptive computation time for recurrent neural networks. Arxiv, 2016.\n[GSL+18] Suchin Gururangan, Swabha Swayamdipta, Omer Levy, Roy Schwartz, Samuel R Bowman, and Noah A",
+    "page": 69
+  },
+  {
+    "question": "What is the main focus of the experiments conducted in the paper?",
+    "answer": "We empirically evaluate our best retriever trained with contrastive learning, called Contriever.",
+    "difficulty": "medium",
+    "source": "cpt_text.pdf",
+    "chunk_id": "52",
+    "chunk_text": "average:\nθk ←mθk + (1 −m)θq,\n(2)\nwhere m is the momentum parameter that takes its value in [0, 1].\n4\nExperiments\nIn this section, we empirically evaluate our best retriever trained with contrastive learning, called Contriever\n(contrastive retriever), which uses MoCo with random cropping. We use a contrastive learning procedure that\ndiﬀers from ICT (Lee et al., 2019) mainly in three aspects. First, positive pairs are sampled using random",
+    "page": 6
+  },
+  {
+    "question": "What queue size was used to pre-train the multilingual mContriever, and what effect did it have?",
+    "answer": "We pre-trained our multilingual mContriever with a queue size of 32768. This generally improves stability, and is able to compensate for the additional instabilities observed in the multilingual setting.",
+    "difficulty": "medium",
+    "source": "cpt_text.pdf",
+    "chunk_id": "81",
+    "chunk_text": "deteriorates performance as reported in Appendix B.3 similarly to what has been observed for multilingual\nmasked language models (Conneau et al., 2019). We pre-trained our multilingual mContriever with a queue\nsize of 32768. This generally improves stability, and is able to compensate for the additional instabilities\nobserved in the multilingual setting. More detailed hyperparameters are given in Appendix B.1.\n5.2\nFine-tuning",
+    "page": 9
+  },
+  {
+    "question": "What is the title of the technical report published by OpenAI in 2023?",
+    "answer": "Gpt-4 technical report.",
+    "difficulty": "easy",
+    "source": "nougat.pdf",
+    "chunk_id": "133",
+    "chunk_text": "OpenAI. 2022.\nIntroducing chatgpt.\nBlog post\nopenai.com/blog/chatgpt.\nOpenAI. 2023.\nGpt-4 technical report.\nArXiv,\nabs/2303.08774.\nOpenCompass. 2023.\nOpencompass:\nA universal\nevaluation platform for foundation models. https:\n//github.com/InternLM/OpenCompass.\nLong Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida,\nCarroll Wainwright, Pamela Mishkin, Chong Zhang,\nSandhini Agarwal, Katarina Slama, Alex Ray,\net al. 2022.\nTraining language models to follow\ninstructions with human feedback.\nAdvances in",
+    "page": 16
+  },
+  {
+    "question": "What is the purpose of the penalty term in the equation R(g | p)?",
+    "answer": "This constraint is useful for training stability, and to reduce reward hacking whereby we would achieve high scores from the reward model but low scores from human evaluation.",
+    "difficulty": "medium",
+    "source": "llama2.pdf",
+    "chunk_id": "112",
+    "chunk_text": "R(g | p) = ˜Rc(g | p) −βDKL(πθ(g | p) ∥π0(g | p))\n(4)\ncontains a penalty term for diverging from the original policy π0. As was observed in other works (Stiennon\net al., 2020; Ouyang et al., 2022), we find this constraint is useful for training stability, and to reduce reward\nhacking whereby we would achieve high scores from the reward model but low scores from human evaluation.\nWe define Rc to be a piecewise combination of the safety (Rs) and helpfulness (Rh) reward models. We",
+    "page": 15
+  },
+  {
+    "question": "What does the research suggest about the effect of downsampling LLaVA's training data?",
+    "answer": "randomly downsampling LLaVA’s training data mixture by up to 75% does not significantly decrease the model’s performance",
+    "difficulty": "medium",
+    "source": "improved_llava.pdf",
+    "chunk_id": "12",
+    "chunk_text": "on long-form language reasoning together with shorter vi-\nsual reasoning can improve the model’s writing capability\nfor multimodal questions. (3) Data efficiency. We show\nthat randomly downsampling LLaVA’s training data mixture\nby up to 75% does not significantly decrease the model’s\nperformance, suggesting that the possibility of a more so-\nphisticated dataset compression strategy can further improve\nLLaVA’s already efficient training pipeline. (4) Data scaling.",
+    "page": 2
+  },
+  {
+    "question": "What type of learning gains do McCann et al. (2018) report in their study?",
+    "answer": "They report transfer learning gains on finetuning tasks as well as zero-shot domain adaptation results.",
+    "difficulty": "medium",
+    "source": "flan.pdf",
+    "chunk_id": "240",
+    "chunk_text": "McCann et al. (2018) cast ten NLP tasks as QA and train a model on a collection of tasks formulated\nwith natural language prompts; they report transfer learning gains on ﬁnetuning tasks as well as\nzero-shot domain adaptation results on SNLI (Bowman et al., 2015) and Amazon/Yelp Reviews\n(Kotzias et al., 2015). While McCann et al. (2018) does not leverage unsupervised pre-training and\nonly reports zero-shot transfer to unseen domains, our work uses a pretrained LM and focuses on",
+    "page": 29
+  },
+  {
+    "question": "What condition is stated for the map h to be invertible in relation to the function f?",
+    "answer": "The map h is invertible if and only if f is invertible.",
+    "difficulty": "medium",
+    "source": "ann_benchmarks.pdf",
+    "chunk_id": "52",
+    "chunk_text": "v ∈TRN, and n ≥1.\n4.3\nA lower bound on the Lyapunov exponent\nHere we work towards a proof of Theorem 3.2. Note that in Lemma 4.4 the bound on the\nLyapunov exponent does not require that the cone is expanding, but gives λbound > 0 if c > 1.\nLemma 4.3. The map h is invertible if and only if f is invertible.\n11",
+    "page": 11
+  },
+  {
+    "question": "What is the purpose of searching for a suitable value of β in the research?",
+    "answer": "we search for a suitable value of β by iteratively increasing its value in steps of size βstep from βmin up to (at most) βmax.",
+    "difficulty": "medium",
+    "source": "ann_benchmarks.pdf",
+    "chunk_id": "120",
+    "chunk_text": "expanding. This is because with a smaller value of pmax there are less matrices in M and\ntherefore fewer inequalities that need to be satisﬁed.\nFor these reasons we search for a suitable value of β by iteratively increasing its value in\nsteps of size βstep from βmin up to (at most) βmax. To produce Fig. 1 we used\nβstep = 0.01,\nβmin = 0.01,\nβmax = 5.\n(7.1)\nFor a given value of β there are ﬁve groups of conditions that need to be checked. These",
+    "page": 27
+  },
+  {
+    "question": "What does the comparison between ReAct and Act indicate about reasoning in the context of synthesizing final answers?",
+    "answer": "ReAct is better than Act on both tasks, demonstrating the value of reasoning to guide acting, especially for synthesizing the final answer.",
+    "difficulty": "medium",
+    "source": "react.pdf",
+    "chunk_id": "48",
+    "chunk_text": "540B as the base model with different prompting methods. We note that ReAct is better than Act\non both tasks, demonstrating the value of reasoning to guide acting, especially for synthesizing the\nﬁnal answer, as shown in Figure 1 (1c-d). Fine-tuning results 3 also conﬁrm the beneﬁt of reasoning\ntraces for more informed acting.\n3Of all trajectories with correct ﬁnal answers, those with 7 steps on HotpotQA and 5 steps on FEVER only\ntake up 0.84% and 1.33% respectively.\n5",
+    "page": 5
+  },
+  {
+    "question": "What is the computational cost of the model with parameters shared across the encoder and decoder?",
+    "answer": "an M-FLOP computational cost",
+    "difficulty": "easy",
+    "source": "t5.pdf",
+    "chunk_id": "136",
+    "chunk_text": "This model has 2P parameters and a computation cost of M FLOPs.\n• An equivalent model, but with parameters shared across the encoder and decoder,\nresulting in P parameters and an M-FLOP computational cost.\n• An encoder-decoder model with L/2 layers each in the encoder and decoder, giving P\nparameters and an M/2-FLOP cost.\n• A decoder-only language model with L layers and P parameters and a resulting\ncomputational cost of M FLOPs.",
+    "page": 19
+  },
+  {
+    "question": "What is the historical context in which believable agents were developed?",
+    "answer": "These agents were developed in the context of intelligent game non-player characters (NPCs).",
+    "difficulty": "medium",
+    "source": "generative_agents.pdf",
+    "chunk_id": "33",
+    "chunk_text": "other agents with the aim of becoming believable proxies of our\nbehavior in hypothetical simulations of individuals and communi-\nties [20, 36, 71]. Historically, these agents were developed in the\ncontext of intelligent game non-player characters (NPCs) [59, 85].\nCreating NPCs with believable behavior, if possible, could enhance\nplayer experiences in games and interactive fictions by enabling\nemergent narratives [8, 16, 49, 93] and social interactions with the",
+    "page": 3
+  },
+  {
+    "question": "What technique does TALM employ to enhance language models?",
+    "answer": "an iterative technique known as 'self-play', guided by minimal tool demonstrations",
+    "difficulty": "medium",
+    "source": "shepherd.pdf",
+    "chunk_id": "165",
+    "chunk_text": "a training approach to determine the optimal usage of specific APIs and integrates the obtained\nresults into subsequent token predictions. On the other hand, TALM combines indistinguishable\ntools with text-based methods to augment language models and employs an iterative technique\nknown as “self-play\", guided by minimal tool demonstrations. Furthermore, Shen et al. [174]\nproposed the HuggingGPT framework, which leverages LLMs to connect various AI models within",
+    "page": 19
+  },
+  {
+    "question": "What improvements do InstructGPT models show over GPT-3 according to the TruthfulQA dataset?",
+    "answer": "our PPO models show small but significant improvements in truthfulness over GPT-3.",
+    "difficulty": "medium",
+    "source": "chain_of_thought.pdf",
+    "chunk_id": "99",
+    "chunk_text": "interested in using). Of course, tasks found in NLP datasets do represent a kind of instruction that\nwe would like language models to be able to solve, so the broadest type instruction-following model\nwould combine both types of datasets.\n4.2\nResults on public NLP datasets\nInstructGPT models show improvements in truthfulness over GPT-3.\nAs measured by human\nevaluatoins on the TruthfulQA dataset, our PPO models show small but signiﬁcant improvements",
+    "page": 13
+  },
+  {
+    "question": "What was the second prediction tested regarding smaller models and accuracy?",
+    "answer": "even on nonlinear metrics such as accuracy, smaller models do not have zero accuracy, but rather have non-zero above-chance accuracy",
+    "difficulty": "medium",
+    "source": "g_eval.pdf",
+    "chunk_id": "37",
+    "chunk_text": "Prediction: Emergent Abilities Disappear With Better Statistics\nWe next tested our second\nprediction: that even on nonlinear metrics such as accuracy, smaller models do not have zero ac-\ncuracy, but rather have non-zero above-chance accuracy commensurate with choosing to use ac-\ncuracy as the metric. In order to accurately measure models’ accuracy, we increased the resolu-\ntion by generating additional test data, and found that on both arithmetic tasks, all models in the",
+    "page": 6
+  },
+  {
+    "question": "What is the title of the paper presented at EMNLP in 2018?",
+    "answer": "electricity? a new dataset for open book question answering.",
+    "difficulty": "easy",
+    "source": "scaling_rlhf.pdf",
+    "chunk_id": "92",
+    "chunk_text": "electricity? a new dataset for open book question answering. In EMNLP, 2018.\nSharan Narang, Colin Raffel, Katherine Lee, Adam Roberts, Noah Fiedel, and Karishma Malkan.\nWt5?! training text-to-text models to explain their predictions, 2020. URL https://arxiv.\norg/abs/2004.14546.\nLong Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L Wainwright, Pamela Mishkin, Chong\nZhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to follow",
+    "page": 12
+  },
+  {
+    "question": "What do the green and black ovals in Figure 7 represent?",
+    "answer": "The green oval depicts the set of true propositions about the social world, while the black oval depicts the set of propositions that have been studied and recorded in the social science literature.",
+    "difficulty": "medium",
+    "source": "chatgpt_survey.pdf",
+    "chunk_id": "189",
+    "chunk_text": "3.3\nUsing Homo silicus to navigate uncharted territory\nFigure 7 shows how we can think about the relationship between the social world, the social science literature,\nand AI simulations. The green oval (upper left) depicts the set of true propositions about the social world.\nThe black oval (upper right) depicts the set of propositions that have been studied and recorded in the social\nscience literature—regardless of the findings. These may or may not have been labeled true, which is why",
+    "page": 30
+  },
+  {
+    "question": "Was sin LLMs un was könne sie usfihre?",
+    "answer": "Großi Sprachmodell (LLMs) sin e Art vu künstlicher Intelligenz, wo druf traineert worre isch, großi Menge an Textdate z verarbeite un z verstehe. Sie kenne viili verschidini Ufgabe usfihre, z. B. Text ibersetze, Froge beantworte, Code schriibe un sogar kreativi Inhalt wi Gedicht oder Gschichte erschaffe.",
+    "difficulty": "medium",
+    "source": "qlora.pdf",
+    "chunk_id": "360",
+    "chunk_text": "Now write the same text but in Badisch.\nResponse:\nSure, here is the same text in Badisch:\nGroßi Sprachmodell (LLMs) sin e Art vu künstlicher Intelligenz, wo druf traineert worre isch, großi Menge\nan Textdate z verarbeite un z verstehe. Sie kenne viili verschidini Ufgabe usfihre, z. B. Text ibersetze, Froge\nbeantworte, Code schriibe un sogar kreativi Inhalt wi Gedicht oder Gschichte erschaffe.\nLLMs werre immer leistigsfähiger un hän s Potenzial, viili verschidini Beraich vu dr Gsellschaft z verän",
+    "page": 53
+  },
+  {
+    "question": "Who are the authors of the paper titled 'BERT rediscovers the classical NLP pipeline'?",
+    "answer": "Ian Tenney, Dipanjan Das, and Ellie Pavlick",
+    "difficulty": "easy",
+    "source": "flava.pdf",
+    "chunk_id": "449",
+    "chunk_text": "guistics.\nAlon Talmor, Yanai Elazar, Yoav Goldberg, and\nJonathan Berant. 2020.\nolmpics – on what lan-\nguage model pre-training captures. arXiv preprint\narXiv:1912.13283.\nIan Tenney, Dipanjan Das, and Ellie Pavlick. 2019.\nBERT rediscovers the classical NLP pipeline.\nIn\nProceedings of the 57th Annual Meeting of the Asso-\nciation for Computational Linguistics, pages 4593–\n4601, Florence, Italy. Association for Computational\nLinguistics.\nJames\nThorne,\nAndreas\nVlachos,\nChristos\nChristodoulopoulos,\nan",
+    "page": 43
+  },
+  {
+    "question": "What is the title of the paper authored by Jihun Ham and Daniel D. Lee?",
+    "answer": "Grassmann discriminant analysis: a unifying view on subspace-based learning",
+    "difficulty": "medium",
+    "source": "lora.pdf",
+    "chunk_id": "111",
+    "chunk_text": "A literature survey of low-rank tensor\napproximation techniques. GAMM-Mitteilungen, 36(1):53–78, 2013.\nJihun Ham and Daniel D. Lee. Grassmann discriminant analysis: a unifying view on subspace-based\nlearning. In ICML, pp. 376–383, 2008. URL https://doi.org/10.1145/1390156.\n1390204.\nKaren Hambardzumyan, Hrant Khachatrian, and Jonathan May. WARP: Word-level Adversarial\nReProgramming. arXiv:2101.00121 [cs], December 2020. URL http://arxiv.org/abs/\n2101.00121. arXiv: 2101.00121.",
+    "page": 14
+  },
+  {
+    "question": "How is the correctness of generated answers evaluated in the study?",
+    "answer": "a generated answer is considered correct if it matches any answer of the list of answers after normalization",
+    "difficulty": "medium",
+    "source": "llama.pdf",
+    "chunk_id": "145",
+    "chunk_text": "at the ﬁrst line break, ﬁnal dot or comma. Generated answers are evaluated with the standard exact\nmatch metric: a generated answer is considered correct if it matches any answer of the list of answers\nafter normalization. For this normalization step we lowercase generated answers and remove articles,\npunctuation and duplicate whitespaces. Figure 3 presents formatted examples in the 1-shot setting for\nNatural Questions and TriviaQA respectively. In all settings, we preprend the string Answer the",
+    "page": 17
+  },
+  {
+    "question": "What is the title of the paper by Corinna Cortes and Vladimir Vapnik published in 1995?",
+    "answer": "Support-vector networks.",
+    "difficulty": "easy",
+    "source": "flava.pdf",
+    "chunk_id": "333",
+    "chunk_text": "to machine translation.\nIn Proceedings of the\n16th Conference of the European Chapter of the\nAssociation for Computational Linguistics: Main\nVolume, pages 3440–3453, Online. Association for\nComputational Linguistics.\nCorinna Cortes and Vladimir Vapnik. 1995. Support-\nvector networks. Machine learning, 20(3):273–297.\nLeyang Cui, Yu Wu, Jian Liu, Sen Yang, and Yue\nZhang. 2021. Template-based named entity recog-\nnition using BART. In Findings of the Association\nfor Computational Linguistics (ACL-IJ",
+    "page": 32
+  },
+  {
+    "question": "Why might generating toxic outputs be considered beneficial in certain contexts?",
+    "answer": "it may be beneﬁcial to use language models to generate toxic outputs as part of a data augmentation pipeline",
+    "difficulty": "medium",
+    "source": "chain_of_thought.pdf",
+    "chunk_id": "157",
+    "chunk_text": "is also difﬁcult because whether an output is harmful depends on the context in which it’s deployed;\nfor example, it may be beneﬁcial to use language models to generate toxic outputs as part of a data\naugmentation pipeline. Our techniques can also be applied to making models refuse certain user\ninstructions, and we plan to explore this in subsequent iterations of this research.\nGetting models to do what we want is directly related to the steerability and controllability litera-",
+    "page": 19
+  },
+  {
+    "question": "What are the two main capabilities required for TextVQA according to the text?",
+    "answer": "the model’s capability of identifying the text characters in the images, and also processing the noisy outputs from the OCR engine",
+    "difficulty": "medium",
+    "source": "improved_llava.pdf",
+    "chunk_id": "69",
+    "chunk_text": "multilingual data as in ShareGPT. Furthermore, TextVQA\nrequires both the model’s capability of identifying the text\ncharacters in the images, and also processing the noisy out-\nputs from the OCR engine; such noise may be more com-\nmonly observed in the ShareGPT data, which is collected\nin-the-wild from daily usage of ChatGPT.\n5. Open Problems in LMMs\nGiven the successful scaling of LLaVA-1.5, we conduct\nadditional studies on open problems in LMMs using the\nmodel design and data mixture of LLaVA-",
+    "page": 7
+  },
+  {
+    "question": "Who are some of the authors of the paper titled 'JAX: composable transformations of Python+NumPy programs'?",
+    "answer": "James Bradbury, Roy Frostig, Peter Hawkins, Matthew James Johnson, Chris Leary, Dougal Maclaurin, George Necula, Adam Paszke, Jake VanderPlas, Skye Wanderman-Milne, and Qiao Zhang.",
+    "difficulty": "medium",
+    "source": "prefix_tuning.pdf",
+    "chunk_id": "92",
+    "chunk_text": "James\nBradbury,\nRoy\nFrostig,\nPeter\nHawkins,\nMatthew James Johnson,\nChris Leary,\nDougal\nMaclaurin, George Necula, Adam Paszke, Jake\nVanderPlas, Skye Wanderman-Milne, and Qiao\nZhang. 2018. JAX: composable transformations of\nPython+NumPy programs.\nTom Brown, Benjamin Mann, Nick Ryder, Melanie\nSubbiah,\nJared\nD\nKaplan,\nPrafulla\nDhariwal,\nArvind Neelakantan, Pranav Shyam, Girish Sastry,\nAmanda Askell, Sandhini Agarwal, Ariel Herbert-\nVoss, Gretchen Krueger, Tom Henighan, Rewon",
+    "page": 10
+  },
+  {
+    "question": "What is the focus of the paper by Liu et al. presented at EMNLP 2022?",
+    "answer": "The power of scale for parameter-efficient prompt tuning.",
+    "difficulty": "medium",
+    "source": "llm_eval.pdf",
+    "chunk_id": "103",
+    "chunk_text": "The power of scale for parameter-efficient prompt tun-\ning. In Conference on Empirical Methods in Natural\nLanguage Processing (EMNLP).\nAlisa Liu, Swabha Swayamdipta, Noah A. Smith, and\nYejin Choi. 2022. WANLI: Worker and ai collabora-\ntion for natural language inference dataset creation.\nIn Conference on Empirical Methods in Natural Lan-\nguage Processing (EMNLP) - Findings.\nLucie Charlotte Magister, Jonathan Mallinson, Jakub\nAdamek, Eric Malmi, and Aliaksei Severyn. 2022.",
+    "page": 11
+  },
+  {
+    "question": "What do the concepts of fairness, reciprocity, and others’ welfare indicate about human behavior according to the text?",
+    "answer": "They exhibit strong social preferences by valuing fairness, reciprocity, and others’ welfare alongside their own.",
+    "difficulty": "medium",
+    "source": "chatgpt_survey.pdf",
+    "chunk_id": "149",
+    "chunk_text": "1937) and exhibit strong social preferences by valuing fairness, reciprocity, and others’ welfare alongside\ntheir own (Fehr and Schmidt, 1999). These concepts do not just magically exist in the ether. They have\nbeen codified through decades of research, dramatically improving economists’ understanding of human\nbehavior. These are the essential ideas that any “general” human model should take into account. And while",
+    "page": 24
+  },
+  {
+    "question": "What is the performance of Self-RAG-LLaMA2-7b on the PopQA dataset compared to CRAG?",
+    "answer": "Self-RAG-LLaMA2-7b has a performance of 59.8, while CRAG has a performance of 54.9.",
+    "difficulty": "medium",
+    "source": "corrective_rag.pdf",
+    "chunk_id": "78",
+    "chunk_text": "no retrieval\nSelf-RAG\nSelf-CRAG\nFigure 3: The generation performance of Self-RAG\nand Self-CRAG given different retrieval performance\non the PopQA dataset with SelfRAG-LLaMA-7b. The\nlower horizontal line demonstrates the performance of\nthe generator without retrieval.\nLLaMA2-hf-7b SelfRAG-LLaMA2-7b\nPopQA\nCRAG\n54.9\n59.8\nRAG\n50.5\n52.8\nRAG w. web\n52.2\n53.8\nSelf-CRAG\n49.0\n61.8\nSelf-RAG\n29.0\n54.9\nSelf-RAG w. web\n24.9\n57.9\nTable 5: Comparison results between CRAG, Self-",
+    "page": 9
+  },
+  {
+    "question": "What is the title of the paper authored by Touvron et al. in 2019?",
+    "answer": "Fixing the train-test resolution discrepancy",
+    "difficulty": "medium",
+    "source": "clip.pdf",
+    "chunk_id": "360",
+    "chunk_text": "scene recognition. IEEE transactions on pattern analysis\nand machine intelligence, 30(11):1958–1970, 2008.\nTouvron, H., Vedaldi, A., Douze, M., and J´egou, H. Fix-\ning the train-test resolution discrepancy. In Advances in\nneural information processing systems, pp. 8252–8262,\n2019.\nVaradarajan, J. and Odobez, J.-M. Topic models for scene\nanalysis and abnormality detection. In 2009 IEEE 12th\nInternational Conference on Computer Vision Workshops,\nICCV Workshops, pp. 1338–1345. IEEE, 2009.",
+    "page": 35
+  },
+  {
+    "question": "What is the focus of the paper by Chuan Guo et al. published in 2017?",
+    "answer": "On calibration of modern neural networks.",
+    "difficulty": "easy",
+    "source": "shepherd.pdf",
+    "chunk_id": "324",
+    "chunk_text": "preprint arXiv:2306.05783 (2023).\n[60] Chuan Guo, Geoff Pleiss, Yu Sun, and Kilian Q Weinberger. 2017. On calibration of modern neural networks. In\nInternational conference on machine learning. PMLR, 1321–1330.\n[61] Taicheng Guo, Kehan Guo, Zhengwen Liang, Zhichun Guo, Nitesh V Chawla, Olaf Wiest, Xiangliang Zhang, et al.\n2023. What indeed can GPT models do in chemistry? A comprehensive benchmark on eight tasks. arXiv preprint\narXiv:2305.18365 (2023).",
+    "page": 36
+  },
+  {
+    "question": "What does LeCun emphasize about the future of AI in the song?",
+    "answer": "We gotta think about the future, it’s gonna be here soon",
+    "difficulty": "medium",
+    "source": "llama.pdf",
+    "chunk_id": "164",
+    "chunk_text": "Deep Learning is the title track of the album. In the song, LeCun talks about his vision for\nthe future of AI. In the chorus, he makes a convincing case for AI to be used for the greater\ngood. He sings:\nWe gotta think about the future, it’s gonna be here soon / Maybe we can even put some AI\nin the moon / Think about the children, think about the next generation / Let’s make sure\nwe put the right systems in their foundation.",
+    "page": 20
+  },
+  {
+    "question": "What effect did normalizing the logits have on training and inference according to the text?",
+    "answer": "This helped stabilize training and made the inference more robust to hyper-parameters.",
+    "difficulty": "medium",
+    "source": "nougat.pdf",
+    "chunk_id": "39",
+    "chunk_text": "to normalize the logits:\nLmax-z = 2e−4 ∗z2\n(1)\nwhere z is the maximum logit value. This helped\nstabilize training and made the inference more\nrobust to hyper-parameters.\nFigure 3: The pre-training loss of Baichuan 2.\nThe final training loss of Baichuan 2-7B and\nBaichuan 2-13B are shown in Figure 3.\n2.6\nScaling Laws\nNeural scaling laws, where the error decreases as\na power function of training set size, model size,\nor both, have enabled an assuring performance\nwhen training became more and more e",
+    "page": 5
+  },
+  {
+    "question": "How does GPT3SELF-INST compare to instruction-tuned models in performance?",
+    "answer": "GPT3SELF-INST outperforms those counterparts trained on T0 or SUPERNI data by a large margin.",
+    "difficulty": "medium",
+    "source": "llm_eval.pdf",
+    "chunk_id": "64",
+    "chunk_text": "see Appendix B for details). As anticipated, the\nvanilla GPT3 LM is largely unable to respond to in-\nstructions, and all instruction-tuned models demon-\nstrate comparatively higher performance. Nonethe-\nless, GPT3SELF-INST (i.e., GPT3 model finetuned\nwith SELF-INSTRUCT) outperforms those counter-\nparts trained on T0 or SUPERNI data by a large mar-\ngin, demonstrating the value of the generated data\ndespite the noise. Compared with InstructGPT001,\nGPT3SELF-INST is quite close in performance—if",
+    "page": 7
+  },
+  {
+    "question": "What did RoBERTa demonstrate regarding BERT's performance?",
+    "answer": "the performance of BERT can further improved by small adaptations to the pre-training process",
+    "difficulty": "medium",
+    "source": "sentence_bert.pdf",
+    "chunk_id": "14",
+    "chunk_text": "rive the ﬁnal label. Using this setup, BERT set a\nnew state-of-the-art performance on the Semantic\nTextual Semilarity (STS) benchmark (Cer et al.,\n2017). RoBERTa (Liu et al., 2019) showed, that\nthe performance of BERT can further improved by\nsmall adaptations to the pre-training process. We\nalso tested XLNet (Yang et al., 2019), but it led in\ngeneral to worse results than BERT.\nA large disadvantage of the BERT network\nstructure is that no independent sentence embed-",
+    "page": 2
+  },
+  {
+    "question": "What did Thakur et al. (2021) conclude about dual encoder models?",
+    "answer": "dual encoder models have 'issues for out-of-distribution data'",
+    "difficulty": "medium",
+    "source": "beir.pdf",
+    "chunk_id": "5",
+    "chunk_text": "performance.\nembeddings. Several papers (Lu et al., 2021; Khat-\ntab and Zaharia, 2020) have discussed that the sim-\nple dot-product (or cosine similarity) between the\nembeddings might not be powerful enough to cap-\nture semantic relevance. Thakur et al. (2021) stud-\nied whether the retriever models can generalize to\nother domains and conclude that dual encoder mod-\nels have “issues for out-of-distribution data”, and\nshowed that models with more interactions between",
+    "page": 1
+  },
+  {
+    "question": "What are some limitations of the models mentioned in the text?",
+    "answer": "they still generate toxic or biased outputs, make up facts, and generate sexual and violent content without explicit prompting",
+    "difficulty": "medium",
+    "source": "chain_of_thought.pdf",
+    "chunk_id": "153",
+    "chunk_text": "group, we may want the preferences of labelers belonging to that group to be weighted more heavily.\nModels.\nOur models are neither fully aligned nor fully safe; they still generate toxic or biased\noutputs, make up facts, and generate sexual and violent content without explicit prompting. They can\nalso fail to generate reasonable outputs on some inputs; we show some examples of this in Figure 9.\nPerhaps the greatest limitation of our models is that, in most cases, they follow the user’s instructi",
+    "page": 19
+  },
+  {
+    "question": "What is the relationship between the variables a, b, and X in the equation a / b = X?",
+    "answer": "If a / b = X, then 8a + 5b = 22.",
+    "difficulty": "medium",
+    "source": "dit.pdf",
+    "chunk_id": "187",
+    "chunk_text": "= 50, X = 40. The answer is 40.\nQ: \"If a / b = ’X’ and 8a + 5b = 22, then the value of a is 3/2.\" What is the answer of ’X’?\nA: If a / b = X, then 8a + 5b = 22 and a = 3/2, so , 8 * 3/2 + 5b = 22, 5b = 22 - 12 = 10, b = 2, X = a / b = 3/2 / 2 = 3/4. The\nanswer is 3/4.\nQ: \"A person is traveling at ’X’ km/hr and reached his destiny in 2.5 hr then find the distance is 50km.\" What is the answer\nof ’X’?",
+    "page": 22
+  },
+  {
+    "question": "What is the effect of varying the batch size B on the percentage of documents that activate dimension?",
+    "answer": "The effect of varying the batch size B shows that B = 100 R@1000 has 84.22%, B = 1000 R@1000 has 76.52%, and B = 10000 R@1000 has 90.67%.",
+    "difficulty": "medium",
+    "source": "mteb.pdf",
+    "chunk_id": "111",
+    "chunk_text": "40\n60\n80\n100\n0%\n0.4%\n1%\n2%\nDimension percentile\nPercentage of documents that activate dimension\nB = 100 R@1000: 84.22%\nB = 1000 R@1000: 76.52%\nB = 10000 R@1000: 90.67%\nFig. 3 Eﬀect of varying the batch size B on MSMARCO. Recall that a perfectly balanced\nindex would have all dimensions activated by 1\nL ≈0.4% of the documents.\nVGG-128 (Chatﬁeld et al. 2014) extracted features, ii) Fine tune the features\nin a supervised fashion on the landmarks dataset () using 60k batches of 200",
+    "page": 19
+  },
+  {
+    "question": "What does the authors' proposed hybrid evaluation framework aim to combine?",
+    "answer": "the existing capability-based benchmarks and the new preference-based benchmarks with LLM-as-a-judge",
+    "difficulty": "medium",
+    "source": "ragas.pdf",
+    "chunk_id": "20",
+    "chunk_text": "Chatbot Arena. In addition, we argue for the adoption of a hybrid evaluation framework for future\nLLM benchmarks: by combining the existing capability-based benchmarks and the new preference-\nbased benchmarks with LLM-as-a-judge, one can swiftly and automatically evaluate both the core\ncapabilities and human alignment of models. We publicly release 80 MT-bench questions, 3K expert\nvotes, and 30K conversations with human preferences for future study.\nTable 1: Sample multi-turn questions in MT-ben",
+    "page": 3
+  },
+  {
+    "question": "How many tasks did ReAct + Reflexion complete out of 134?",
+    "answer": "ReAct + Reflexion significantly outperforms ReAct by completing 130 out of 134 tasks.",
+    "difficulty": "easy",
+    "source": "reflexion.pdf",
+    "chunk_id": "43",
+    "chunk_text": "ReAct few-shot prompts, and Reflexion examples are included in the appendix.\nResults\nReAct + Reflexion significantly outperforms ReAct by completing 130 out of 134 tasks\nusing the simple heuristic to detect hallucinations and inefficient planning. Further, ReAct + Reflexion\nlearns to solve additional tasks by learning in 12 consecutive trials. In the ReAct-only approach, we\nsee that performance increase halts between trials 6 and 7.\nAnalysis",
+    "page": 5
+  },
+  {
+    "question": "How can inputs and targets be used in the text-to-text framework for translation?",
+    "answer": "by concatenating the inputs and targets",
+    "difficulty": "medium",
+    "source": "t5.pdf",
+    "chunk_id": "118",
+    "chunk_text": "2013). However, they can also be used in the text-to-text framework simply by concatenating\nthe inputs and targets. As an example, consider the case of English to German translation:\nIf we have a training datapoint with input sentence “That is good.” and target “Das ist\ngut.”, we would simply train the model on next-step prediction over the concatenated input\nsequence “translate English to German: That is good. target: Das ist gut.” If we wanted to\n16",
+    "page": 16
+  },
+  {
+    "question": "What is the focus of the research paper by N. Kotonya and F. Toni?",
+    "answer": "Explainable automated fact-checking for public health claims",
+    "difficulty": "medium",
+    "source": "rag_advanced.pdf",
+    "chunk_id": "225",
+    "chunk_text": "[149] J. Thorne, A. Vlachos, C. Christodoulopoulos, and A. Mittal, “Fever: a\nlarge-scale dataset for fact extraction and verification,” arXiv preprint\narXiv:1803.05355, 2018.\n[150] N. Kotonya and F. Toni, “Explainable automated fact-checking for\npublic health claims,” arXiv preprint arXiv:2010.09926, 2020.\n[151] R. Lebret, D. Grangier, and M. Auli, “Neural text generation from\nstructured data with application to the biography domain,” arXiv\npreprint arXiv:1603.07771, 2016.",
+    "page": 20
+  },
+  {
+    "question": "What is the purpose of the ToolBench project?",
+    "answer": "to drive progress in language models and enhance their practical applications",
+    "difficulty": "medium",
+    "source": "shepherd.pdf",
+    "chunk_id": "227",
+    "chunk_text": "to empower the development of large language models that effectively leverage the capabilities\nof general-purpose tools. By providing a platform for creating optimized instruction datasets,\nthe ToolBench project seeks to drive progress in language models and enhance their practical\napplications. To evaluate LLMs in multi-turn interactions, Wang et al. [213] proposed MINT, which\nutilizes tools and natural language feedback.\n4.3\nBenchmarks for Multi-modal task",
+    "page": 26
+  },
+  {
+    "question": "What does the comparison with zero and few-shot results for LaMDA-PT aim to provide?",
+    "answer": "This baseline provides the most direct ablation of how much instruction tuning helps.",
+    "difficulty": "medium",
+    "source": "flan.pdf",
+    "chunk_id": "32",
+    "chunk_text": "sometimes available for manual prompt engineering (Brown et al., 2020), for each dataset we also\nobtain the test set performance using the template with the best dev set performance.\nFor comparison, we report zero and few-shot results for LaMDA-PT using the same prompts as\nGPT-3 (as LaMDA-PT is not suitable for natural instructions without instruction tuning). This\nbaseline provides the most direct ablation of how much instruction tuning helps. Instruction tuning",
+    "page": 4
+  },
+  {
+    "question": "What types of words shifted to describe men when the threshold was lowered to 0.5%?",
+    "answer": "appearance oriented words such as ‘suit’, ‘tie’ and ‘necktie’",
+    "difficulty": "medium",
+    "source": "clip.pdf",
+    "chunk_id": "242",
+    "chunk_text": "and points to historical gendered differences (Schwemmer\net al., 2020).\nInterestingly, when we lowered the threshold to 0.5% for\nthis set of labels, we found that the labels disproportionately\ndescribing men also shifted to appearance oriented words\nsuch as ‘suit’, ‘tie’ and ‘necktie’ (Figure 18). Many occupa-\ntion oriented words such as ‘military person’ and ‘executive’\n- which were not used to describe images of women at the\nhigher 4% threshold - were used for both men and women",
+    "page": 23
+  },
+  {
+    "question": "What potential issue is highlighted regarding the model's learning during pretraining related to pronouns?",
+    "answer": "the model is learning less during pretraining about context that mentions She pronouns, and subsequently may potentially generate He pronouns at a higher rate than She pronouns.",
+    "difficulty": "medium",
+    "source": "llama2.pdf",
+    "chunk_id": "155",
+    "chunk_text": "sized model pretraining datasets (Chowdhery et al., 2022). This could mean that the model is learning less\nduring pretraining about context that mentions She pronouns, and subsequently may potentially generate He\npronouns at a higher rate than She pronouns.\nDemographic Representation: Identities.\nWe also analyze the representation of different demographic\ngroups in the pretraining data by measuring rates of usage of demographic identity terms from the HolisticBias",
+    "page": 20
+  },
+  {
+    "question": "What format should the output be in when identifying objects in the image?",
+    "answer": "The output should be a list of tuples in the format (c, x1, y1, x2, y2), where ‘c’ represents the index of the class label starting from 0, and x1, y1, x2, y2 are the offsets of the top-left and bottom-right corners of the box relative to the center point.",
+    "difficulty": "medium",
+    "source": "instructblip.pdf",
+    "chunk_id": "128",
+    "chunk_text": "center point. The coordinates should be within <range>. The \nimage is: <image>”\nInstruction : “Identify the objects in the image that belong \nto {‘frisbee': <c0>} and draw a bounding box around each\none. The output should be a list of tuples in the format (c, x1, \ny1, x2, y2), where ‘c’ represents the index of the class label \nstarting from 0, and x1, y1, x2, y2 are the offsets of the top-\nleft and bottom-right corners of the box relative to the \ncenter point. The coordinates should be within <r",
+    "page": 16
+  },
+  {
+    "question": "What does the performance of the model on reading comprehension tasks suggest about the evaluation metrics?",
+    "answer": "the evaluation metrics used for these tasks may be biased towards machine-made predictions",
+    "difficulty": "medium",
+    "source": "t5.pdf",
+    "chunk_id": "288",
+    "chunk_text": "performance of 89.8 (Wang et al., 2019b). Interestingly, on the reading comprehension tasks\n(MultiRC and ReCoRD) we exceed human performance by a large margin, suggesting the\nevaluation metrics used for these tasks may be biased towards machine-made predictions.\nOn the other hand, humans achieve 100% accuracy on both COPA and WSC, which is\nsignificantly better than our model’s performance. This suggests that there remain linguistic",
+    "page": 40
+  },
+  {
+    "question": "What is another name for cross-country skiing and what type of terrain does it typically involve?",
+    "answer": "Also known as Nordic skiing, cross-country skiing involves traversing relatively flat terrain or gentle slopes.",
+    "difficulty": "medium",
+    "source": "minigpt4.pdf",
+    "chunk_id": "194",
+    "chunk_text": "===\nAnswer:\nCross-country skiing and downhill skiing are two distinct types of skiing, each with its own techniques, equipment, and terrain\npreferences.\n1. Cross-Country Skiing:\nAlso known as Nordic skiing, cross-country skiing involves traversing relatively flat terrain or gentle slopes using skis and poles.\nIt is a popular recreational and competitive sport that focuses on endurance, balance, and aerobic fitness. Cross-country skiers use",
+    "page": 25
+  },
+  {
+    "question": "What is the significance of common sense understanding in relation to LLMs and agent behaviors?",
+    "answer": "Without the common sense understanding capability of LLMs, these behaviors cannot be reliably simulated.",
+    "difficulty": "medium",
+    "source": "autogen.pdf",
+    "chunk_id": "120",
+    "chunk_text": "ronment, and summarize high-level ideas based on\nbasic observations. Without the common sense un-\nderstanding capability of LLMs, these behaviors\ncannot be reliably simulated. Similar conclusions\nmay also apply to RecAgent [21] and S3 [78], where\nthe agents focus on simulating user social behaviors.\nAction Impact: Action impact refers to the con-\nsequences of an agent’s actions. While the range\nof possible impacts is vast, we highlight a few key\nexamples for clarity: (1) Changing Environments.",
+    "page": 16
+  },
+  {
+    "question": "What is the title of Tal Linzen's 2020 paper presented at the 58th Annual Meeting of the Association for Computational Linguistics?",
+    "answer": "How can we accelerate progress towards human-like linguistic generalization?",
+    "difficulty": "medium",
+    "source": "flava.pdf",
+    "chunk_id": "386",
+    "chunk_text": "problems. In Proceedings of the 55th Annual Meet-\ning of the Association for Computational Linguistics\n(ACL).\nTal Linzen. 2020. How can we accelerate progress to-\nwards human-like linguistic generalization? In Pro-\nceedings of the 58th Annual Meeting of the Asso-\nciation for Computational Linguistics, pages 5210–\n5217, Online. Association for Computational Lin-\nguistics.\nTal Linzen, Emmanuel Dupoux, and Yoav Goldberg.\nAssessing the ability of lstms to learn syntax-",
+    "page": 37
+  },
+  {
+    "question": "What is the purpose of the synthetic document image generator, SynthDoG?",
+    "answer": "to alleviate the dependency on large-scale real document images",
+    "difficulty": "medium",
+    "source": "donut.pdf",
+    "chunk_id": "84",
+    "chunk_text": "also propose a synthetic document image generator, SynthDoG, to alleviate the\ndependency on large-scale real document images and we show that Donut can\nbe easily extended to a multi-lingual setting. We gradually trained the model\nfrom how to read to how to understand through the proposed training pipeline.\nOur extensive experiments and analysis on both external public benchmarks\nand private internal service datasets show higher performance and better cost-",
+    "page": 14
+  },
+  {
+    "question": "What is the title of the paper authored by Joel Hestness and others in 2017?",
+    "answer": "Deep learning scaling is predictable, empirically.",
+    "difficulty": "easy",
+    "source": "t5.pdf",
+    "chunk_id": "428",
+    "chunk_text": "Advances in neural information processing systems, 2015.\nJoel Hestness, Sharan Narang, Newsha Ardalani, Gregory Diamos, Heewoo Jun, Hassan\nKianinejad, Md. Mostofa Ali Patwary, Yang Yang, and Yanqi Zhou. Deep learning scaling\nis predictable, empirically. arXiv preprint arXiv:1712.00409, 2017.\nFelix Hill, Kyunghyun Cho, and Anna Korhonen. Learning distributed representations of\nsentences from unlabelled data. arXiv preprint arXiv:1602.03483, 2016.",
+    "page": 60
+  },
+  {
+    "question": "What happens to model performance when the batch size is increased beyond ten thousand?",
+    "answer": "No performance gain is observed when further scaling up batch size.",
+    "difficulty": "medium",
+    "source": "instructor.pdf",
+    "chunk_id": "80",
+    "chunk_text": "Pre-training Batch Size\nWe gradually increase\nthe batch size by a factor of 2 while keeping the\ntraining steps fixed to study the influence of batch\nsize used in embedding model pre-training. Ac-\ncording to Figure 3b, model performance saturates\nat around a batch size of ten thousands. No per-\nformance gain is observed when further scaling up\nbatch size.\nNumber of Model Parameters\nWe investigate\nthe scaling behavior by training language models\nof various sizes, including 30M, 110M, and 330M,",
+    "page": 9
+  },
+  {
+    "question": "What did Joaquin Phoenix wear at the Golden Globes to express his stance on changing for Hollywood?",
+    "answer": "a tuxedo with a paper bag over his head that read, 'I am a shape-shifter. I can't change the world. I can only change myself.'",
+    "difficulty": "medium",
+    "source": "gpt3.pdf",
+    "chunk_id": "203",
+    "chunk_text": "Subtitle:\nJoaquin Phoenix pledged to not change for each awards event\nArticle:\nA year ago, Joaquin Phoenix made headlines when he appeared on\nthe red carpet at the Golden Globes wearing a tuxedo with a paper bag over\nhis head that read, \"I am a shape-shifter.\nI can't change the world.\nI\ncan only change myself.\" It was a promise to not change to fit into the\nHollywood mold:\n\"I think that's a really special thing, to not change\nyourself.\nI think it's a really special thing to say, `This is what's",
+    "page": 28
+  }
+]
