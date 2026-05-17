@@ -1,0 +1,420 @@
+[
+  {
+    "question": "What is retrieval augmented generation?",
+    "answer": "Retrieval-Augmented Generation (RAG) is a framework that augments the input to language models (LMs) with retrieved text passages, which can lead to significant improvements in knowledge-intensive tasks. It incorporates relevant documents to enhance the generation process, addressing limitations of the parametric knowledge encapsulated by the models. However, its effectiveness depends on the relevance of the retrieved documents, and indiscriminate retrieval can diminish the versatility of the models or result in unhelpful responses. This information is sourced from [1] and [4].",
+    "sources": [
+      {
+        "source": "corrective_rag.pdf",
+        "page": 1,
+        "score": 0.7387,
+        "text_preview": "information, impeding the generators from acquiring\naccurate knowledge and potentially misleading them.\nthe parametric knowledge they encapsulate (Zha"
+      },
+      {
+        "source": "selfrag.pdf",
+        "page": 10,
+        "score": 0.7386,
+        "text_preview": "more parameters or with conventional retrieval-augmented generation approaches.\n10"
+      },
+      {
+        "source": "corrective_rag.pdf",
+        "page": 1,
+        "score": 0.7079,
+        "text_preview": "exhibit hallucinations since the accuracy of\ngenerated texts cannot be secured solely by\nthe parametric knowledge they encapsulate. Al-\nthough retriev"
+      },
+      {
+        "source": "selfrag.pdf",
+        "page": 2,
+        "score": 0.683,
+        "text_preview": "2\nRELATED WORK\nRetrieval-Augmented Generation. Retrieval-Augmented Generation (RAG) augments the input\nspace of LMs with retrieved text passages (Guu "
+      },
+      {
+        "source": "selfrag.pdf",
+        "page": 1,
+        "score": 0.6787,
+        "text_preview": "ric knowledge they encapsulate. Retrieval-Augmented Generation (RAG), an ad\nhoc approach that augments LMs with retrieval of relevant knowledge, decre"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 3.2
+  },
+  {
+    "question": "How does LoRA fine-tuning reduce memory usage?",
+    "answer": "LoRA fine-tuning reduces memory usage by decreasing the number of trainable parameters by 10,000 times compared to GPT-3 175B fine-tuned with Adam, and it also reduces the GPU memory requirement by 3 times. This is achieved while maintaining comparable or better model quality on various tasks. \n\n(Source: [2] lora.pdf, page 1)",
+    "sources": [
+      {
+        "source": "lora.pdf",
+        "page": 21,
+        "score": 0.6463,
+        "text_preview": "on its own already achieves performance comparable to the human baseline. Secondly, we notice\nthat LoRA+PL performs slightly worse than LoRA even with"
+      },
+      {
+        "source": "lora.pdf",
+        "page": 1,
+        "score": 0.6426,
+        "text_preview": "rameters for downstream tasks. Compared to GPT-3 175B ﬁne-tuned with Adam,\nLoRA can reduce the number of trainable parameters by 10,000 times and the\n"
+      },
+      {
+        "source": "lora.pdf",
+        "page": 4,
+        "score": 0.6073,
+        "text_preview": "rate if we scale the initialization appropriately. As a result, we simply set α to the ﬁrst r we try\nand do not tune it. This scaling helps to reduce "
+      },
+      {
+        "source": "lora.pdf",
+        "page": 12,
+        "score": 0.6064,
+        "text_preview": "networks with dense layers.\nThere are many directions for future works. 1) LoRA can be combined with other efﬁcient adapta-\ntion methods, potentially "
+      },
+      {
+        "source": "lora.pdf",
+        "page": 5,
+        "score": 0.58,
+        "text_preview": "on the ﬂy on machines that store the pre-trained weights in VRAM. We also observe a 25% speedup\nduring training on GPT-3 175B compared to full ﬁne-tun"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 2.78
+  },
+  {
+    "question": "What is the attention mechanism in transformers?",
+    "answer": "The attention mechanism in transformers is called self-attention, which processes a sequence by replacing each element with a weighted average of the rest of the sequence. This allows the model to focus on different parts of the input sequence when generating an output. The self-attention mechanism is a variant of attention and is a primary building block of the Transformer architecture. (Source: [2] t5.pdf, page 4)",
+    "sources": [
+      {
+        "source": "t5.pdf",
+        "page": 5,
+        "score": 0.6555,
+        "text_preview": "independent “heads” whose outputs are concatenated before being further processed.\nSince self-attention is order-independent (i.e. it is an operation "
+      },
+      {
+        "source": "t5.pdf",
+        "page": 4,
+        "score": 0.6102,
+        "text_preview": "originally proposed. Instead of providing a comprehensive definition of this model, we refer\nthe interested reader to the original paper (Vaswani et a"
+      },
+      {
+        "source": "attention.pdf",
+        "page": 3,
+        "score": 0.6081,
+        "text_preview": "Figure 1: The Transformer - model architecture.\nThe Transformer follows this overall architecture using stacked self-attention and point-wise, fully\nc"
+      },
+      {
+        "source": "t5.pdf",
+        "page": 4,
+        "score": 0.5988,
+        "text_preview": "connection, on the attention weights, and at the input and output of the entire stack. The\ndecoder is similar in structure to the encoder except that "
+      },
+      {
+        "source": "attention.pdf",
+        "page": 2,
+        "score": 0.5707,
+        "text_preview": "the number of operations required to relate signals from two arbitrary input or output positions grows\nin the distance between positions, linearly for"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 2.12
+  },
+  {
+    "question": "How does BERT differ from GPT?",
+    "answer": "BERT differs from GPT in several key ways:\n\n1. **Training Data**: BERT is trained on both the BooksCorpus (800M words) and Wikipedia (2,500M words), while GPT is trained only on the BooksCorpus (800M words) (Source: [1]).\n\n2. **Token Usage**: BERT learns the sentence separator ([SEP]), classifier token ([CLS]), and sentence A/B embeddings during pre-training, whereas GPT introduces these tokens only at fine-tuning time (Source: [1]).\n\n3. **Training Steps and Batch Size**: Both models were trained for 1 million steps, but BERT used a larger batch size of 128,000 words compared to GPT's 32,000 words (Source: [1]).\n\n4. **Attention Mechanism**: BERT uses bidirectional self-attention, allowing it to consider context from both directions, while GPT uses constrained self-attention, where each token can only attend to the context to its left (Source: [2]).\n\n5. **Model Architecture**: BERT employs a bidirectional Transformer architecture, whereas GPT uses a left-to-right Transformer architecture (Source: [4]).\n\nThese differences contribute to the distinct capabilities and performance of BERT compared to GPT.",
+    "sources": [
+      {
+        "source": "bert.pdf",
+        "page": 14,
+        "score": 0.7541,
+        "text_preview": "between how BERT and GPT were trained:\n• GPT is trained on the BooksCorpus (800M\nwords); BERT is trained on the BooksCor-\npus (800M words) and Wikiped"
+      },
+      {
+        "source": "bert.pdf",
+        "page": 3,
+        "score": 0.6684,
+        "text_preview": "BERTBASE (L=12, H=768, A=12, Total Param-\neters=110M) and BERTLARGE (L=24, H=1024,\nA=16, Total Parameters=340M).\nBERTBASE was chosen to have the same "
+      },
+      {
+        "source": "bert.pdf",
+        "page": 14,
+        "score": 0.6567,
+        "text_preview": "left-to-right Transformer LM on a large text cor-\npus. In fact, many of the design decisions in BERT\nwere intentionally made to make it as close to\nGP"
+      },
+      {
+        "source": "bert.pdf",
+        "page": 13,
+        "score": 0.6384,
+        "text_preview": "BERT (Ours)\nTrm\nTrm\nTrm\nTrm\nTrm\nTrm\n...\n...\nTrm\nTrm\nTrm\nTrm\nTrm\nTrm\n...\n...\nOpenAI GPT\nLstm\nELMo\nLstm\nLstm\nLstm\nLstm\nLstm\nLstm\nLstm\nLstm\nLstm\nLstm\nLst"
+      },
+      {
+        "source": "gpt3.pdf",
+        "page": 20,
+        "score": 0.6139,
+        "text_preview": "set (125K examples), whereas BERT++ was ﬁrst ﬁne-tuned on MultiNLI (392K examples) and SWAG (113K examples)\nbefore further ﬁne-tuning on the SuperGLUE"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 3.03
+  },
+  {
+    "question": "What is contrastive learning for embeddings?",
+    "answer": "Contrastive learning for embeddings is an approach that aims to learn an embedding space where similar examples are close together and dissimilar examples are far apart. It involves formulating the learning procedure as a classification problem, using a contrastive loss that discriminates between positive pairs (similar examples) and negative pairs (dissimilar examples). This method relies on the uniqueness of each document or example, using the available information to learn representations without manual supervision. (Sources: [1], [2])",
+    "sources": [
+      {
+        "source": "large_dual_encoder.pdf",
+        "page": 6,
+        "score": 0.7071,
+        "text_preview": "with clearly deﬁned real-world applications while sentence\nsimilarity tasks are less so.\n4. Related Work\nThe goal of representation learning (Bengio e"
+      },
+      {
+        "source": "cpt_text.pdf",
+        "page": 4,
+        "score": 0.6977,
+        "text_preview": "3.1.1\nContrastive learning\nContrastive learning is an approach that relies on the fact that every document is, in some way, unique. This\nsignal is the"
+      },
+      {
+        "source": "large_dual_encoder.pdf",
+        "page": 2,
+        "score": 0.6773,
+        "text_preview": "neighboring pieces of text on the Internet as positive pairs.\nCode embedding models treat the top-level docstring in a\nfunction along with its impleme"
+      },
+      {
+        "source": "cpt_text.pdf",
+        "page": 14,
+        "score": 0.6546,
+        "text_preview": "Tianyu Gao, Xingcheng Yao, and Danqi Chen. Simcse: Simple contrastive learning of sentence embeddings.\narXiv preprint arXiv:2104.08821, 2021. 5, 7\nDan"
+      },
+      {
+        "source": "clip.pdf",
+        "page": 4,
+        "score": 0.6509,
+        "text_preview": "dict the exact words of the text accompanying each image.\nThis is a difﬁcult task due to the wide variety of descriptions,\ncomments, and related text "
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 2.27
+  },
+  {
+    "question": "How do agents use tools in LLM systems?",
+    "answer": "The context does not provide information on how agents use tools in LLM systems. Therefore, I cannot answer the question based on the provided sources.",
+    "sources": [
+      {
+        "source": "autogen.pdf",
+        "page": 24,
+        "score": 0.7413,
+        "text_preview": "to open-ended questions and offer feedback.\n3.3\nEngineering\nLLM-based autonomous agents have shown great\npotential in assisting and enhancing engineer"
+      },
+      {
+        "source": "autogen.pdf",
+        "page": 31,
+        "score": 0.7197,
+        "text_preview": "to evaluate, and how to assess their performance\nin downstream tasks and societal impact.\n[181]\nalso discusses the capabilities and limitations of\nLLM"
+      },
+      {
+        "source": "autogen.pdf",
+        "page": 21,
+        "score": 0.7163,
+        "text_preview": "Table 1. It should be noted that, for the sake of\nintegrity, we have also incorporated several studies,\nwhich do not explicitly mention LLM-based agen"
+      },
+      {
+        "source": "autogen.pdf",
+        "page": 31,
+        "score": 0.7115,
+        "text_preview": "on LLM-based Agents, covering their construction,\napplications, and evaluation processes.\n6\nChallenges\nWhile previous work on LLM-based autonomous\nage"
+      },
+      {
+        "source": "autogen.pdf",
+        "page": 31,
+        "score": 0.7017,
+        "text_preview": "Different from traditional LLMs, autonomous agent\nusually has to play as specific roles (e.g., program\ncoder, researcher and chemist) for accomplishin"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 1.43
+  },
+  {
+    "question": "What is chain of thought prompting?",
+    "answer": "Chain-of-Thought prompting is a technique that prompts a language model to generate a series of natural-language-based intermediate steps to help it better solve complex and multi-step reasoning tasks. This approach allows the model to follow a structured reasoning path before arriving at a final answer. It can involve inputting reasoning steps into the prompt to inspire the model to plan and act in a step-by-step manner. This method has been improved by sampling multiple diverse reasoning paths and finding the most consistent answers through majority voting. (Source: [1] scaling_rlhf.pdf, [3] autogen.pdf, [4] dit.pdf)",
+    "sources": [
+      {
+        "source": "scaling_rlhf.pdf",
+        "page": 3,
+        "score": 0.6368,
+        "text_preview": "Wei et al.\n(2022b) propose Chain-of-Thought prompting, which prompts the language model to generate a se-\nries of natural-language-based intermediate "
+      },
+      {
+        "source": "react.pdf",
+        "page": 2,
+        "score": 0.6031,
+        "text_preview": "answers from questions in arithmetic, commonsense, and symbolic reasoning tasks (Wei et al.,\n2022). However, this “chain-of-thought” reasoning is a st"
+      },
+      {
+        "source": "autogen.pdf",
+        "page": 10,
+        "score": 0.5946,
+        "text_preview": "ner, with each step leading to only one subsequent\nstep. LLMs follow these steps to achieve the final\ngoal. Specifically, Chain of Thought (CoT) [45]\n"
+      },
+      {
+        "source": "dit.pdf",
+        "page": 3,
+        "score": 0.5704,
+        "text_preview": "struggles with tasks requiring complex reasoning\n(Rae et al., 2021), which drives researchers to ex-\nplore other prompting strategies. CoT (Wei et al."
+      },
+      {
+        "source": "autogen.pdf",
+        "page": 12,
+        "score": 0.559,
+        "text_preview": "ronment. For instance, it could be the game’s task\ncompletion signals or the observations made after\nthe agent takes an action. In specific, ReAct [60"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 2.39
+  },
+  {
+    "question": "How does RLHF improve language models?",
+    "answer": "RLHF (Reinforcement Learning from Human Feedback) improves language models by fine-tuning them, which enables significant enhancements in their performance. This method encourages models to explain their reasoning when faced with complex problems, thereby increasing the likelihood that their final answers are correct. (Source: [1] llama2.pdf, page 36)",
+    "sources": [
+      {
+        "source": "llama2.pdf",
+        "page": 36,
+        "score": 0.7519,
+        "text_preview": "which models are prompted to explain their reasoning when given a complex problem, in order to increase\nthe likelihood that their final answer is corr"
+      },
+      {
+        "source": "nougat.pdf",
+        "page": 14,
+        "score": 0.6466,
+        "text_preview": "been proposed to improve the RLHF both in terms\nof efficiency and effectiveness.\n7\nLimitations and Ethical Considerations\nLike other large language mo"
+      },
+      {
+        "source": "chain_of_thought.pdf",
+        "page": 5,
+        "score": 0.6156,
+        "text_preview": "a normative prior (Nahian et al., 2021). Our work can be seen as a direct application of RLHF to\naligning language models on a broad distribution of l"
+      },
+      {
+        "source": "chain_of_thought.pdf",
+        "page": 20,
+        "score": 0.6068,
+        "text_preview": "Comparisons are also not necessarily the most efﬁcient way of providing an alignment signal. For\nexample, we could have labelers edit model responses "
+      },
+      {
+        "source": "qlora.pdf",
+        "page": 40,
+        "score": 0.6034,
+        "text_preview": "language models with a holistic descriptor dataset. May 2022. URL https://arxiv.org/abs/2205.09209.\nSrivastava, A., Rastogi, A., Rao, A., Shoeb, A. A."
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 10.18
+  },
+  {
+    "question": "What is the difference between dense and sparse retrieval?",
+    "answer": "Dense retrieval models encode both queries and documents into low-dimensional dense representations, allowing them to retrieve semantically similar documents even with low lexical overlap. In contrast, sparse retrieval models rely on high-dimensional sparse representations based on lexical match, which can generalize well but often fail to find documents that are semantically related to the query. This distinction highlights that dense retrieval focuses on semantic similarity, while sparse retrieval emphasizes lexical matching. \n\n(Source: beir.pdf, pages 2)",
+    "sources": [
+      {
+        "source": "cpt_text.pdf",
+        "page": 7,
+        "score": 0.5953,
+        "text_preview": "dense retrievers trained with ICT and the Masked Salient Spans from Sachan et al. (2021). On BEIR, we\nconsider the retriever from REALM (Guu et al., 2"
+      },
+      {
+        "source": "rag_survey.pdf",
+        "page": 1,
+        "score": 0.5832,
+        "text_preview": "mismatch. In recent years, many dense retrieval methods are\nproposed to tackle this problem (Gao et al. 2021; Zhan et al.\n2020). They ﬁrst encode the "
+      },
+      {
+        "source": "cpt_text.pdf",
+        "page": 14,
+        "score": 0.5766,
+        "text_preview": "learning of visual representations. In International conference on machine learning, pp. 1597–1607. PMLR,\n2020. 2, 4, 5\nXilun Chen, Kushal Lakhotia, B"
+      },
+      {
+        "source": "beir.pdf",
+        "page": 2,
+        "score": 0.5763,
+        "text_preview": "frequency heuristics, inverse document frequency\nand document length. This type of retrieval models\ndoes not require any training and can generalize r"
+      },
+      {
+        "source": "beir.pdf",
+        "page": 2,
+        "score": 0.5593,
+        "text_preview": "both queries and documents are embedded into low-\ndimensional dense representations, in contrast to\nthe high-dimensional sparse representations used i"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 2.19
+  },
+  {
+    "question": "How do sentence transformers create embeddings?",
+    "answer": "The context does not provide enough information on how sentence transformers create embeddings. Therefore, I cannot answer the question clearly.",
+    "sources": [
+      {
+        "source": "sentence_bert.pdf",
+        "page": 2,
+        "score": 0.6992,
+        "text_preview": "(Misra et al., 2016). Section 5 evaluates SBERT\non SentEval. In section 6, we perform an ablation\nstudy to test some design aspect of SBERT. In sec-\nt"
+      },
+      {
+        "source": "bert.pdf",
+        "page": 2,
+        "score": 0.6606,
+        "text_preview": "These approaches have been generalized to\ncoarser granularities, such as sentence embed-\ndings (Kiros et al., 2015; Logeswaran and Lee,\n2018) or parag"
+      },
+      {
+        "source": "selfrag.pdf",
+        "page": 29,
+        "score": 0.6573,
+        "text_preview": "Instruction Explain the use of word embeddings in Natural Language Processing.\nPreceding sentences Word embeddings are one of the most powerful tools "
+      },
+      {
+        "source": "selfrag.pdf",
+        "page": 27,
+        "score": 0.6423,
+        "text_preview": "Please provide explanations for your judgments.\nInstruction Explain the use of word embeddings in Natural Language Processing.\nPreceding sentences Wor"
+      },
+      {
+        "source": "cpt_text.pdf",
+        "page": 3,
+        "score": 0.6414,
+        "text_preview": "that are most related to our approach: sentence level models and contrastive techniques. Jernite et al. (2017)\nintroduced diﬀerent objective functions"
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 1.12
+  },
+  {
+    "question": "Your question: What is the difference between LoRA and QLoRA?",
+    "answer": "The context provided does not contain any information about QLoRA or its differences from LoRA. Therefore, I cannot answer the question based on the given context.",
+    "sources": [
+      {
+        "source": "lora.pdf",
+        "page": 6,
+        "score": 0.4429,
+        "text_preview": "the number of baselines we compare with; they are in rows with an asterisk (*) in the ﬁrst column.\nIn all cases, we have |Θ| = ˆLAdpt ×(2×dmodel ×r+r+"
+      },
+      {
+        "source": "lora.pdf",
+        "page": 10,
+        "score": 0.4172,
+        "text_preview": "the entire model (similar to LoRA with r = dmodel) could certainly outperform LoRA with a small r.\n10"
+      },
+      {
+        "source": "lora.pdf",
+        "page": 21,
+        "score": 0.4067,
+        "text_preview": "on its own already achieves performance comparable to the human baseline. Secondly, we notice\nthat LoRA+PL performs slightly worse than LoRA even with"
+      },
+      {
+        "source": "lora.pdf",
+        "page": 10,
+        "score": 0.4051,
+        "text_preview": "consistent for a given dataset, which we report in the ﬁrst column.\nNote that putting all the parameters in ∆Wq or ∆Wk results in signiﬁcantly lower p"
+      },
+      {
+        "source": "lora.pdf",
+        "page": 23,
+        "score": 0.386,
+        "text_preview": "37.8 M\n75.0\n91.4\nrq = rv = 32, lp = 8, li = 4\n151.1 M\n75.9\n91.1\nrq = rv = 64, lp = 8, li = 4\n302.1 M\n76.2\n91.3\nLoRA+PL\nrq = rv = 8, lp = 8, li = 4\n52."
+      }
+    ],
+    "num_sources": 5,
+    "latency_seconds": 1.67
+  }
+]
