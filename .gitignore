@@ -8,3 +8,8 @@ logs/
 .DS_Store
 *.egg-info/
 dist/
+models/
+*.safetensors
+*.pt
+*.bin
+*.ckpt
