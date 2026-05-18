@@ -100,18 +100,18 @@ An end-to-end AI system that:
 | Tests passing | 17 / 17 |
 | CI pipeline | ✅ Green |
 
-### Week 2 — Embeddings & Vector DB ✅
+### Week 2 — Complete ✅
 
 | Metric | Value |
 |--------|-------|
 | Embedding model | all-MiniLM-L6-v2 (384-dim) |
 | Chunks in Weaviate | 11,089 |
-| Q&A evaluation pairs | 44 |
-| Hybrid NDCG@10 | YOUR_SCORE (baseline) |
-| Answer keyword overlap | YOUR_SCORE |
+| Q&A evaluation pairs | 44 (cleaned) |
+| Hybrid NDCG@10 baseline | YOUR_SCORE |
 | Source accuracy | YOUR_SCORE |
 | Avg query latency | YOUR_SECONDs |
-| Tests passing | 51/51 |
+| Fine-tuning triplets | 274 (validated) |
+| Tests passing | 59/59 |
 
 ### Search Method Comparison
 
@@ -125,6 +125,8 @@ An end-to-end AI system that:
 > matching with vector semantic search using Reciprocal Rank
 > Fusion algorithm for best overall performance.
 
+![baseline-answer-quality](image.png)
+![retrieval-quality(baseline-all-MiniLM)](<Screenshot 2026-05-18 104743.png>)
 ---
 
 ## Project Progress
@@ -132,7 +134,7 @@ An end-to-end AI system that:
 | Week | Topic | Status | Tests |
 |------|-------|--------|-------|
 | Week 1 | Data Pipeline + OCR + Vision | ✅ Complete | 17/17 |
-| Week 2 | Embeddings + Vector DB + Search | ✅ Complete | 31/31 |
+| Week 2 | Embeddings + Vector DB + RAG | ✅ Complete | 59/59 |
 | Week 3 | Fine-tuning embedding model | ⬜ Upcoming | - |
 | Week 4 | Multi-agent RAG system | ⬜ Upcoming | - |
 | Week 5 | Document Editor Agent | ⬜ Upcoming | - |
