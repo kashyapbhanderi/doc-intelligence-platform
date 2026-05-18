@@ -73,7 +73,7 @@ def setup_model_and_loss(
         model, loss function
     """
     from sentence_transformers import SentenceTransformer
-    from sentence_transformers.losses import (
+    from sentence_transformers.losses import ( # type: ignore
         MultipleNegativesRankingLoss
     )
 
