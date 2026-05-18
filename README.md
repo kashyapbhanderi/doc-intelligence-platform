@@ -113,6 +113,9 @@ An end-to-end AI system that:
 | Fine-tuning triplets | 274 (validated) |
 | Tests passing | 59/59 |
 
+## Model Weights
+Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
+
 ### Search Method Comparison
 
 | Method | Correct | Score | Best for |
