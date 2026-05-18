@@ -1,0 +1,10 @@
+{
+  "winner": "lr2e-5_ep5",
+  "winner_path": "models/finetuned/lr2e-5_ep5",
+  "winner_score": 0.5957,
+  "all_scores": {
+    "base_model": 0.0,
+    "lr2e-5_ep5": 0.5957,
+    "lr3e-5_ep5": 0.5957
+  }
+}

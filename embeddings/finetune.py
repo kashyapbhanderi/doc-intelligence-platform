@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.abspath('.'))
 
-
+learning_rate: float = 2e-5
 def load_triplets(
     path: str = "data/triplets_clean.json"
 ) -> list:
@@ -96,10 +96,11 @@ def setup_model_and_loss(
 
 
 def get_training_args(
+    triplets_path: str = "data/triplets_clean.json",
     output_dir: str = "models/finetuned",
-    num_epochs: int = 3,
+    num_epochs: int = 1,
     batch_size: int = 16,
-    learning_rate: float = 2e-5
+    learning_rate: float = 2e-5 
 ):
     """
     Configure training arguments.
@@ -216,7 +217,7 @@ def run_finetuning(
     # Log to MLflow
     mlflow.set_experiment("fine-tuning")
     with mlflow.start_run(
-        run_name=f"epoch-{num_epochs}-bs{batch_size}"
+       run_name=f"lr{learning_rate:.0e}-ep{num_epochs}-bs{batch_size}"
     ):
         mlflow.log_param("base_model",
                          "all-MiniLM-L6-v2")
@@ -228,6 +229,7 @@ def run_finetuning(
                          len(eval_dataset))
         mlflow.log_param("triplets_total",
                          len(triplets))
+        mlflow.log_param("learning_rate", learning_rate)
 
         # Train
         train_result = trainer.train()
@@ -259,14 +261,45 @@ def run_finetuning(
 
 
 if __name__ == "__main__":
-    print("Starting fine-tuning with 1 epoch first...")
-    print("(Test run — full 3 epochs in Day 12)")
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=5,
+        help="Number of training epochs"
+    )
+    parser.add_argument(
+        "--lr",
+        type=float,
+        default=2e-5,
+        help="Learning rate (try 2e-5 or 3e-5 or 1e-4)"
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=16,
+        help="Training batch size"
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="models/finetuned",
+        help="Where to save checkpoints"
+    )
+    args = parser.parse_args()
+
+    print(f"Starting fine-tuning:")
+    print(f"  Epochs:        {args.epochs}")
+    print(f"  Learning rate: {args.lr}")
+    print(f"  Batch size:    {args.batch_size}")
     print()
 
     model, path = run_finetuning(
-        num_epochs=1,
-        batch_size=16
+        num_epochs=args.epochs,
+        batch_size=args.batch_size,
+        output_dir=args.output_dir
     )
 
     print(f"\nFine-tuned model saved at: {path}")
-    print("Ready for benchmarking tomorrow!")
