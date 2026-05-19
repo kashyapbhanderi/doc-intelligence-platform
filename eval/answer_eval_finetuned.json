@@ -1,0 +1,333 @@
+{
+  "summary": {
+    "total_evaluated": 20,
+    "avg_keyword_overlap": 0.5903,
+    "avg_source_accuracy": 0.8,
+    "avg_latency_seconds": 2.76,
+    "p95_latency_seconds": 9.5,
+    "model": "all-MiniLM-L6-v2",
+    "stage": "baseline"
+  },
+  "results": [
+    {
+      "question": "What are the coordinates associated with the suitcase in the text?",
+      "expected_answer": "[0.758, 0.413, 0.845, 0.69] and [0.1, 0.497, 0.173, 0.579]",
+      "generated_answer": "The coordinates associated with the suitcase in the text are [0.758, 0.413, 0.845, 0.69] and [0.1, 0.497, 0.173, 0.579]. (Source: minigpt4.pdf, page 23)",
+      "expected_source": "minigpt4.pdf",
+      "retrieved_sources": [
+        "layoutlmv3.pdf",
+        "minigpt4.pdf",
+        "instructblip.pdf",
+        "donut.pdf",
+        "instructblip.pdf"
+      ],
+      "keyword_score": 0.875,
+      "source_score": 1.0,
+      "latency_seconds": 9.5
+    },
+    {
+      "question": "What do the symbols † and ‡ represent in the context of the metrics mentioned?",
+      "expected_answer": "† represents a benchmark, and ‡ represents a tool.",
+      "generated_answer": "In the context of the metrics mentioned, the symbol † represents a benchmark, and the symbol ‡ represents a tool. This information is sourced from [1] Source: rag_advanced.pdf (page 15).",
+      "expected_source": "rag_advanced.pdf",
+      "retrieved_sources": [
+        "rag_advanced.pdf",
+        "finetuned_lm.pdf",
+        "instructor.pdf",
+        "flava.pdf",
+        "shepherd.pdf"
+      ],
+      "keyword_score": 1.0,
+      "source_score": 1.0,
+      "latency_seconds": 1.95
+    },
+    {
+      "question": "Who are the authors of the paper titled 'Few-shot Learning with Retrieval Augmented Language Models'?",
+      "expected_answer": "Yu, Armand Joulin, Sebastian Riedel, and Edouard Grave.",
+      "generated_answer": "The authors of the paper titled 'Few-shot Learning with Retrieval Augmented Language Models' are J. Dwivedi-Yu, A. Joulin, S. Riedel, and E. Grave. This information is sourced from [1] and [2].",
+      "expected_source": "instructor.pdf",
+      "retrieved_sources": [
+        "rag_advanced.pdf",
+        "instructor.pdf",
+        "selfrag.pdf",
+        "chatgpt_survey.pdf",
+        "minigpt4.pdf"
+      ],
+      "keyword_score": 0.4286,
+      "source_score": 1.0,
+      "latency_seconds": 3.31
+    },
+    {
+      "question": "What is the title of the paper authored by Luowei Zhou and others presented at the IEEE/CVF Conference on Computer Vision and Pattern Recognition in 2022?",
+      "expected_answer": "Regionclip: Region-based language-image pretraining.",
+      "generated_answer": "The context does not contain enough information to answer the question about the title of the paper authored by Luowei Zhou and others presented at the IEEE/CVF Conference on Computer Vision and Pattern Recognition in 2022.",
+      "expected_source": "minigpt4.pdf",
+      "retrieved_sources": [
+        "instructblip.pdf",
+        "instructblip.pdf",
+        "improved_llava.pdf",
+        "donut.pdf",
+        "clip.pdf"
+      ],
+      "keyword_score": 0.0,
+      "source_score": 0.0,
+      "latency_seconds": 1.77
+    },
+    {
+      "question": "What is the title of the paper authored by Danilo Giampiccolo and others?",
+      "expected_answer": "The third PASCAL recognizing textual entailment challenge",
+      "generated_answer": "The title of the paper authored by Danilo Giampiccolo and others is \"The second PASCAL recognising textual entailment challenge.\" This information is sourced from [2] Source: prefix_tuning.pdf (page 9).",
+      "expected_source": "gpt3.pdf",
+      "retrieved_sources": [
+        "selfrag.pdf",
+        "prefix_tuning.pdf",
+        "llama2.pdf",
+        "flan.pdf",
+        "flava.pdf"
+      ],
+      "keyword_score": 0.5,
+      "source_score": 0.0,
+      "latency_seconds": 1.84
+    },
+    {
+      "question": "What is the main focus of the experiments conducted in the paper?",
+      "expected_answer": "We empirically evaluate our best retriever trained with contrastive learning, called Contriever.",
+      "generated_answer": "The main focus of the experiments conducted in the paper is to use large language models (LLMs) as simulated experimental subjects to recover core qualitative patterns observed in analogous human-subjects experiments and to identify deviations that may be informative for future research. This approa",
+      "expected_source": "cpt_text.pdf",
+      "retrieved_sources": [
+        "chain_of_thought.pdf",
+        "chatgpt_survey.pdf",
+        "chatgpt_survey.pdf",
+        "chatgpt_survey.pdf",
+        "chatgpt_survey.pdf"
+      ],
+      "keyword_score": 0.0,
+      "source_score": 0.0,
+      "latency_seconds": 3.46
+    },
+    {
+      "question": "What queue size was used to pre-train the multilingual mContriever, and what effect did it have?",
+      "expected_answer": "We pre-trained our multilingual mContriever with a queue size of 32768. This generally improves stability, and is able to compensate for the additional instabilities observed in the multilingual setti",
+      "generated_answer": "The queue size used to pre-train the multilingual mContriever was 32,768. This generally improves stability and is able to compensate for the additional instabilities observed in the multilingual setting. (Source: cpt_text.pdf, page 9)",
+      "expected_source": "cpt_text.pdf",
+      "retrieved_sources": [
+        "cpt_text.pdf",
+        "cpt_text.pdf",
+        "cpt_text.pdf",
+        "cpt_text.pdf",
+        "cpt_text.pdf"
+      ],
+      "keyword_score": 0.7059,
+      "source_score": 1.0,
+      "latency_seconds": 1.7
+    },
+    {
+      "question": "What is the title of the technical report published by OpenAI in 2023?",
+      "expected_answer": "Gpt-4 technical report.",
+      "generated_answer": "The title of the technical report published by OpenAI in 2023 is \"GPT-4 Technical Report.\" (Source: [1] chatgpt_survey.pdf)",
+      "expected_source": "nougat.pdf",
+      "retrieved_sources": [
+        "chatgpt_survey.pdf",
+        "nougat.pdf",
+        "qlora.pdf",
+        "instructblip.pdf",
+        "gpt3.pdf"
+      ],
+      "keyword_score": 0.3333,
+      "source_score": 1.0,
+      "latency_seconds": 2.13
+    },
+    {
+      "question": "What is the purpose of the penalty term in the equation R(g | p)?",
+      "expected_answer": "This constraint is useful for training stability, and to reduce reward hacking whereby we would achieve high scores from the reward model but low scores from human evaluation.",
+      "generated_answer": "The purpose of the penalty term in the equation R(g | p) is to prevent divergence from the original policy π0, which contributes to training stability and reduces the risk of reward hacking. This means that while the reward model may yield high scores, the penalty helps ensure that the model also pe",
+      "expected_source": "llama2.pdf",
+      "retrieved_sources": [
+        "llama2.pdf",
+        "chain_of_thought.pdf",
+        "nougat.pdf",
+        "chain_of_thought.pdf",
+        "sentence_bert.pdf"
+      ],
+      "keyword_score": 0.3333,
+      "source_score": 1.0,
+      "latency_seconds": 2.24
+    },
+    {
+      "question": "What does the research suggest about the effect of downsampling LLaVA's training data?",
+      "expected_answer": "randomly downsampling LLaVA’s training data mixture by up to 75% does not significantly decrease the model’s performance",
+      "generated_answer": "The research suggests that randomly downsampling LLaVA's training data mixture by up to 75% does not significantly decrease the model’s performance. This indicates the possibility of a more sophisticated dataset compression strategy that can further improve LLaVA’s already efficient training pipelin",
+      "expected_source": "improved_llava.pdf",
+      "retrieved_sources": [
+        "improved_llava.pdf",
+        "minigpt4.pdf",
+        "improved_llava.pdf",
+        "improved_llava.pdf",
+        "improved_llava.pdf"
+      ],
+      "keyword_score": 0.9231,
+      "source_score": 1.0,
+      "latency_seconds": 6.74
+    },
+    {
+      "question": "What type of learning gains do McCann et al. (2018) report in their study?",
+      "expected_answer": "They report transfer learning gains on finetuning tasks as well as zero-shot domain adaptation results.",
+      "generated_answer": "McCann et al. (2018) report transfer learning gains on finetuning tasks as well as zero-shot domain adaptation results. This information is sourced from [1] flan.pdf (page 29).",
+      "expected_source": "flan.pdf",
+      "retrieved_sources": [
+        "flan.pdf",
+        "t5.pdf",
+        "shepherd.pdf",
+        "cpt_text.pdf",
+        "chain_of_thought.pdf"
+      ],
+      "keyword_score": 0.9167,
+      "source_score": 1.0,
+      "latency_seconds": 1.94
+    },
+    {
+      "question": "What condition is stated for the map h to be invertible in relation to the function f?",
+      "expected_answer": "The map h is invertible if and only if f is invertible.",
+      "generated_answer": "The map h is invertible if and only if the function f is invertible. This condition is stated in Lemma 4.3 from the source [1] (ann_benchmarks.pdf, page 11).",
+      "expected_source": "ann_benchmarks.pdf",
+      "retrieved_sources": [
+        "ann_benchmarks.pdf",
+        "ann_benchmarks.pdf",
+        "ann_benchmarks.pdf",
+        "ann_benchmarks.pdf",
+        "ann_benchmarks.pdf"
+      ],
+      "keyword_score": 1.0,
+      "source_score": 1.0,
+      "latency_seconds": 1.52
+    },
+    {
+      "question": "What is the purpose of searching for a suitable value of β in the research?",
+      "expected_answer": "we search for a suitable value of β by iteratively increasing its value in steps of size βstep from βmin up to (at most) βmax.",
+      "generated_answer": "The purpose of searching for a suitable value of β in the research is to iteratively increase its value in steps from βmin up to (at most) βmax, which helps in determining the conditions that need to be satisfied for a given value of β. This process is related to managing the number of matrices in M",
+      "expected_source": "ann_benchmarks.pdf",
+      "retrieved_sources": [
+        "ann_benchmarks.pdf",
+        "autogen.pdf",
+        "rag_survey.pdf",
+        "chatgpt_survey.pdf",
+        "prefix_tuning.pdf"
+      ],
+      "keyword_score": 0.625,
+      "source_score": 1.0,
+      "latency_seconds": 2.47
+    },
+    {
+      "question": "What does the comparison between ReAct and Act indicate about reasoning in the context of synthesizing final answers?",
+      "expected_answer": "ReAct is better than Act on both tasks, demonstrating the value of reasoning to guide acting, especially for synthesizing the final answer.",
+      "generated_answer": "The comparison between ReAct and Act indicates that reasoning plays a significant role in guiding actions, particularly in the process of synthesizing final answers. ReAct outperforms Act on both tasks, demonstrating the value of reasoning in enhancing the quality of the final answer synthesis. This",
+      "expected_source": "react.pdf",
+      "retrieved_sources": [
+        "react.pdf",
+        "react.pdf",
+        "react.pdf",
+        "react.pdf",
+        "react.pdf"
+      ],
+      "keyword_score": 0.6,
+      "source_score": 1.0,
+      "latency_seconds": 2.48
+    },
+    {
+      "question": "What is the computational cost of the model with parameters shared across the encoder and decoder?",
+      "expected_answer": "an M-FLOP computational cost",
+      "generated_answer": "The computational cost of the model with parameters shared across the encoder and decoder is M FLOPs. This information is sourced from [5] in the context provided.",
+      "expected_source": "t5.pdf",
+      "retrieved_sources": [
+        "t5.pdf",
+        "t5.pdf",
+        "t5.pdf",
+        "t5.pdf",
+        "t5.pdf"
+      ],
+      "keyword_score": 0.6667,
+      "source_score": 1.0,
+      "latency_seconds": 1.8
+    },
+    {
+      "question": "What is the historical context in which believable agents were developed?",
+      "expected_answer": "These agents were developed in the context of intelligent game non-player characters (NPCs).",
+      "generated_answer": "Believable agents were historically developed in the context of intelligent game non-player characters (NPCs). This development aimed to create NPCs with believable behavior to enhance player experiences in games and interactive fictions, enabling emergent narratives and social interactions. (Source",
+      "expected_source": "generative_agents.pdf",
+      "retrieved_sources": [
+        "generative_agents.pdf",
+        "generative_agents.pdf",
+        "generative_agents.pdf",
+        "generative_agents.pdf",
+        "generative_agents.pdf"
+      ],
+      "keyword_score": 0.8889,
+      "source_score": 1.0,
+      "latency_seconds": 1.97
+    },
+    {
+      "question": "What technique does TALM employ to enhance language models?",
+      "expected_answer": "an iterative technique known as 'self-play', guided by minimal tool demonstrations",
+      "generated_answer": "TALM employs an iterative technique known as “self-play,\" guided by minimal tool demonstrations, to enhance language models. This information is sourced from [1] Source: shepherd.pdf (page 19).",
+      "expected_source": "shepherd.pdf",
+      "retrieved_sources": [
+        "shepherd.pdf",
+        "shepherd.pdf",
+        "shepherd.pdf",
+        "flava.pdf",
+        "scaling_rlhf.pdf"
+      ],
+      "keyword_score": 0.75,
+      "source_score": 1.0,
+      "latency_seconds": 1.55
+    },
+    {
+      "question": "What improvements do InstructGPT models show over GPT-3 according to the TruthfulQA dataset?",
+      "expected_answer": "our PPO models show small but significant improvements in truthfulness over GPT-3.",
+      "generated_answer": "InstructGPT models show improvements in truthfulness over GPT-3 according to the TruthfulQA dataset. Specifically, InstructGPT generates truthful and informative answers about twice as often as GPT-3. This improvement is also noted on the subset of questions that were not adversarially selected agai",
+      "expected_source": "chain_of_thought.pdf",
+      "retrieved_sources": [
+        "flan.pdf",
+        "chain_of_thought.pdf",
+        "chain_of_thought.pdf",
+        "chain_of_thought.pdf",
+        "chain_of_thought.pdf"
+      ],
+      "keyword_score": 0.5455,
+      "source_score": 1.0,
+      "latency_seconds": 3.35
+    },
+    {
+      "question": "What was the second prediction tested regarding smaller models and accuracy?",
+      "expected_answer": "even on nonlinear metrics such as accuracy, smaller models do not have zero accuracy, but rather have non-zero above-chance accuracy",
+      "generated_answer": "The second prediction tested regarding smaller models and accuracy was that smaller models do not have zero accuracy, but rather have non-zero above-chance accuracy commensurate with choosing to use accuracy as the metric. This information is sourced from [1] g_eval.pdf (page 6).",
+      "expected_source": "g_eval.pdf",
+      "retrieved_sources": [
+        "g_eval.pdf",
+        "g_eval.pdf",
+        "minigpt4.pdf",
+        "t5.pdf",
+        "scaling_rlhf.pdf"
+      ],
+      "keyword_score": 0.7143,
+      "source_score": 1.0,
+      "latency_seconds": 1.59
+    },
+    {
+      "question": "What is the title of the paper presented at EMNLP in 2018?",
+      "expected_answer": "electricity? a new dataset for open book question answering.",
+      "generated_answer": "The title of the paper presented at EMNLP in 2018 is \"GLUE: A multi-task benchmark and analysis platform for natural language understanding.\" This information is sourced from [3].",
+      "expected_source": "scaling_rlhf.pdf",
+      "retrieved_sources": [
+        "prefix_tuning.pdf",
+        "flava.pdf",
+        "rag_original.pdf",
+        "llm_eval.pdf",
+        "flan.pdf"
+      ],
+      "keyword_score": 0.0,
+      "source_score": 0.0,
+      "latency_seconds": 1.87
+    }
+  ]
+}

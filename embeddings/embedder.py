@@ -39,12 +39,9 @@ class DocumentEmbedder:
             self.model = SentenceTransformer(model_name)
             self.model_name = model_name
 
-            print(f"Loading embedding model: {model_name}")
-            self.model = SentenceTransformer(model_name)
-            self.model_name = model_name
-
-            print(f"Connecting to Weaviate at {weaviate_url}")
-            self.client = weaviate.Client(weaviate_url)
+        # Connect to Weaviate (always, regardless of model source)
+        print(f"Connecting to Weaviate at {weaviate_url}")
+        self.client = weaviate.Client(weaviate_url)
 
         # Test connection
         try:
