@@ -13,3 +13,4 @@ models/
 *.pt
 *.bin
 *.ckpt
+models/
