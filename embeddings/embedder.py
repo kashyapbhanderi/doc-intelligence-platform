@@ -23,15 +23,28 @@ class DocumentEmbedder:
     """
 
     def __init__(self,
-                 model_name: str = MODEL_NAME,
-                 weaviate_url: str = WEAVIATE_URL):
+             model_name: str = MODEL_NAME,
+             weaviate_url: str = WEAVIATE_URL,
+             model_path: str = None):
+        """
+        model_path: if provided, loads fine-tuned model
+                    from local path instead of HuggingFace
+        """
+        if model_path and os.path.exists(model_path):
+            print(f"Loading fine-tuned model: {model_path}")
+            self.model = SentenceTransformer(model_path)
+            self.model_name = model_path
+        else:
+            print(f"Loading model: {model_name}")
+            self.model = SentenceTransformer(model_name)
+            self.model_name = model_name
 
-        print(f"Loading embedding model: {model_name}")
-        self.model = SentenceTransformer(model_name)
-        self.model_name = model_name
+            print(f"Loading embedding model: {model_name}")
+            self.model = SentenceTransformer(model_name)
+            self.model_name = model_name
 
-        print(f"Connecting to Weaviate at {weaviate_url}")
-        self.client = weaviate.Client(weaviate_url)
+            print(f"Connecting to Weaviate at {weaviate_url}")
+            self.client = weaviate.Client(weaviate_url)
 
         # Test connection
         try:
