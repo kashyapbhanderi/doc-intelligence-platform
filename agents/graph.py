@@ -25,6 +25,19 @@ from agents.state import AgentState, create_initial_state
 from agents.planner import planner_node
 from agents.executor import executor_node
 from agents.critic import critic_node
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# LangSmith tracing — set in .env to enable
+# All agent runs will appear at smith.langchain.com
+os.environ.setdefault("LANGCHAIN_TRACING_V2",
+    os.getenv("LANGCHAIN_TRACING_V2", "false"))
+os.environ.setdefault("LANGCHAIN_API_KEY",
+    os.getenv("LANGCHAIN_API_KEY", ""))
+os.environ.setdefault("LANGCHAIN_PROJECT",
+    os.getenv("LANGCHAIN_PROJECT",
+               "doc-intelligence-platform"))
 
 
 def build_agent_graph():

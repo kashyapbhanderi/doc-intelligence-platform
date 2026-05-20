@@ -1,0 +1,372 @@
+{
+  "summary": {
+    "total_questions": 20,
+    "faithful_count": 16,
+    "faithfulness_rate": 0.8,
+    "avg_latency": 5.98,
+    "p95_latency": 11.74,
+    "avg_sources": 4.75
+  },
+  "results": [
+    {
+      "question": "What is retrieval augmented generation?",
+      "sub_queries": [
+        "What is retrieval augmented generation?",
+        "What are the key components of retrieval augmented generation?",
+        "What are the applications of retrieval augmented generation?"
+      ],
+      "answer": "Retrieval-augmented generation (RAG) is a framework that incorporates retrieval techniques to enhance the generation of text by augmenting the input to models with relevant documents. This approach aims to provide models with additional knowledge relevant to the input, which can improve the accuracy",
+      "is_faithful": true,
+      "critique": "All claims in the answer about retrieval-augmented generation (RAG) incorporating retrieval techniques, augmenting input with relevant documents, and the reliance on the relevance of retrieved documents are supported by the context provided in \"corrective_rag.pdf\" (page 1).",
+      "num_sources": 3,
+      "sources": [
+        "selfrag.pdf",
+        "corrective_rag.pdf",
+        "corrective_rag.pdf"
+      ],
+      "latency_seconds": 7.27
+    },
+    {
+      "question": "How does LoRA reduce memory during fine-tuning?",
+      "sub_queries": [
+        "What is LoRA in the context of fine-tuning?",
+        "What techniques does LoRA use to reduce memory usage?",
+        "What are the memory savings achieved by LoRA compared to traditional fine-tuning?"
+      ],
+      "answer": "LoRA reduces memory during fine-tuning by significantly decreasing the number of trainable parameters, allowing for a reduction of up to 10,000 times compared to traditional fine-tuning methods. Additionally, it lowers the GPU memory requirement by 3 times. This efficiency is achieved because LoRA o",
+      "is_faithful": true,
+      "critique": "All claims in the answer regarding LoRA's reduction of trainable parameters and GPU memory requirements are supported by the context provided in source [1].",
+      "num_sources": 5,
+      "sources": [
+        "lora.pdf",
+        "lora.pdf",
+        "lora.pdf"
+      ],
+      "latency_seconds": 7.63
+    },
+    {
+      "question": "What is the attention mechanism in transformers?",
+      "sub_queries": [
+        "What is the attention mechanism?",
+        "What role does the attention mechanism play in transformers?",
+        "What are the types of attention mechanisms used in transformers?"
+      ],
+      "answer": "The attention mechanism in transformers can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, with the weights determined by the compatibility of the query with",
+      "is_faithful": true,
+      "critique": "All claims in the answer are supported by the context, including the description of the attention mechanism, the order-independence of self-attention, and the use of relative position embeddings.",
+      "num_sources": 5,
+      "sources": [
+        "t5.pdf",
+        "t5.pdf",
+        "t5.pdf"
+      ],
+      "latency_seconds": 6.07
+    },
+    {
+      "question": "How does BERT differ from GPT architecturally?",
+      "sub_queries": [
+        "What is the architecture of BERT?",
+        "What is the architecture of GPT?",
+        "What are the key architectural differences between BERT and GPT?"
+      ],
+      "answer": "BERT differs from GPT architecturally in that BERT uses bidirectional self-attention, allowing every token to attend to both its left and right context, while GPT uses constrained self-attention where every token can only attend to context to its left. Additionally, BERT was designed to have the sam",
+      "is_faithful": true,
+      "critique": "All claims in the answer regarding BERT's bidirectional self-attention, GPT's constrained self-attention, and the model sizes of BERTBASE and BERTLARGE are supported by the context provided.",
+      "num_sources": 5,
+      "sources": [
+        "bert.pdf",
+        "bert.pdf",
+        "bert.pdf"
+      ],
+      "latency_seconds": 5.8
+    },
+    {
+      "question": "What is contrastive learning for embeddings?",
+      "sub_queries": [
+        "What is contrastive learning?",
+        "What are embeddings in machine learning?",
+        "How does contrastive learning improve embeddings?"
+      ],
+      "answer": "Contrastive learning is an approach that relies on the uniqueness of each document, using a contrastive loss to learn by discriminating between document representations. This loss compares positive pairs (from the same document) and negative pairs (from different documents) to learn effective embedd",
+      "is_faithful": false,
+      "critique": "The claim about achieving competitive results on benchmarks like BEIR is not supported by the provided context.",
+      "num_sources": 5,
+      "sources": [
+        "cpt_text.pdf",
+        "selfrag.pdf",
+        "selfrag.pdf"
+      ],
+      "latency_seconds": 5.76
+    },
+    {
+      "question": "How do agents use tools in LLM systems?",
+      "sub_queries": [
+        "What are the types of tools used by agents in LLM systems?",
+        "How do agents interact with tools in LLM systems?",
+        "What are the benefits of using tools in LLM systems for agents?"
+      ],
+      "answer": "Agents in LLM systems utilize external tools to expand their capabilities significantly. For instance, ToolLLM provides a framework that equips open-source large language models with tool use capabilities, allowing them to perform a wider range of tasks beyond general language processing. This integ",
+      "is_faithful": true,
+      "critique": "All claims in the answer regarding the use of external tools by LLM agents, the framework provided by ToolLLM, and the enhancement of capabilities in tasks such as coding, testing, and data management are supported by the context provided.",
+      "num_sources": 5,
+      "sources": [
+        "autogen.pdf",
+        "autogen.pdf",
+        "autogen.pdf"
+      ],
+      "latency_seconds": 6.29
+    },
+    {
+      "question": "What is chain of thought prompting?",
+      "sub_queries": [
+        "What is the definition of chain of thought prompting?",
+        "What are the applications of chain of thought prompting?",
+        "What are the benefits of using chain of thought prompting?"
+      ],
+      "answer": "Chain of Thought prompting is a technique that prompts language models to generate a series of natural-language-based intermediate steps to help them better solve complex and multi-step reasoning tasks. This approach encourages the model to think through the problem step-by-step, which can improve i",
+      "is_faithful": true,
+      "critique": "Each sentence in the answer accurately reflects the information provided in the context, specifically regarding Chain of Thought prompting and its purpose in aiding language models with complex reasoning tasks.",
+      "num_sources": 5,
+      "sources": [
+        "tree_of_thought.pdf",
+        "scaling_rlhf.pdf",
+        "tree_of_thought.pdf"
+      ],
+      "latency_seconds": 6.63
+    },
+    {
+      "question": "How does RLHF improve language model alignment?",
+      "sub_queries": [
+        "What is RLHF in the context of language models?",
+        "What are the mechanisms by which RLHF enhances alignment?",
+        "What evidence supports the effectiveness of RLHF in improving alignment?"
+      ],
+      "answer": "RLHF (Reinforcement Learning from Human Feedback) improves language model alignment by providing a clear empirical feedback loop that helps refine alignment techniques. It allows models to be fine-tuned based on human feedback, which increases the likelihood that their final answers are correct. Add",
+      "is_faithful": true,
+      "critique": "All claims in the answer regarding RLHF's role in improving language model alignment, its empirical feedback loop, its validation in real-world applications, and its effectiveness as a low-tax alignment technique are supported by the context provided.",
+      "num_sources": 5,
+      "sources": [
+        "llama2.pdf",
+        "chain_of_thought.pdf",
+        "chain_of_thought.pdf"
+      ],
+      "latency_seconds": 11.74
+    },
+    {
+      "question": "What is the difference between dense and sparse retrieval?",
+      "sub_queries": [
+        "What is dense retrieval?",
+        "What is sparse retrieval?",
+        "What are the key differences between dense and sparse retrieval?"
+      ],
+      "answer": "Dense retrieval models encode semantic information from queries and documents into dense vectors, allowing for the retrieval of documents that are semantically related to the query, even with low lexical overlap. In contrast, sparse retrieval models rely on lexical matching and do not require traini",
+      "is_faithful": true,
+      "critique": "All sentences in the answer accurately reflect the distinctions between dense and sparse retrieval models as described in the context, particularly regarding their methods of encoding and retrieval capabilities.",
+      "num_sources": 5,
+      "sources": [
+        "rag_advanced.pdf",
+        "mteb.pdf",
+        "beir.pdf"
+      ],
+      "latency_seconds": 6.11
+    },
+    {
+      "question": "How do sentence transformers create embeddings?",
+      "sub_queries": [
+        "What are sentence transformers?",
+        "What is the process of creating embeddings in sentence transformers?",
+        "What techniques do sentence transformers use for embedding generation?"
+      ],
+      "answer": "Sentence transformers create embeddings by modifying the BERT network using siamese and triplet networks, which allows them to derive semantically meaningful sentence embeddings. This enables the use of BERT for new tasks that were not previously applicable. The embeddings produced are designed to c",
+      "is_faithful": true,
+      "critique": "All claims in the answer regarding sentence transformers, their modification of the BERT network, and the ability to derive semantically meaningful sentence embeddings are supported by the context provided in source [4].",
+      "num_sources": 5,
+      "sources": [
+        "selfrag.pdf",
+        "selfrag.pdf",
+        "instructor.pdf"
+      ],
+      "latency_seconds": 5.99
+    },
+    {
+      "question": "What problem does layer normalisation solve?",
+      "sub_queries": [
+        "What is layer normalisation?",
+        "What issues does layer normalisation address in neural networks?",
+        "How does layer normalisation improve training stability?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.",
+      "is_faithful": true,
+      "critique": "The answer accurately states that there is insufficient information in the retrieved documents, which is consistent with the context provided.",
+      "num_sources": 5,
+      "sources": [
+        "t5.pdf",
+        "llama.pdf",
+        "t5.pdf"
+      ],
+      "latency_seconds": 4.8
+    },
+    {
+      "question": "How does self-attention scale with sequence length?",
+      "sub_queries": [
+        "What is self-attention in neural networks?",
+        "How does sequence length affect self-attention computation?",
+        "What are the implications of scaling self-attention with sequence length?"
+      ],
+      "answer": "Self-attention scales quadratically with sequence lengths, which can lead to computational costs that increase significantly as the length of the input sequence grows. To address this issue, self-attention can be restricted to considering only a neighborhood of size r around the respective output po",
+      "is_faithful": true,
+      "critique": "Each claim in the answer is supported by the context, specifically that self-attention scales quadratically with sequence lengths (source [2]) and that it can be restricted to a neighborhood of size r to improve computational performance for long sequences (source [1]).",
+      "num_sources": 5,
+      "sources": [
+        "attention.pdf",
+        "t5.pdf",
+        "attention.pdf"
+      ],
+      "latency_seconds": 5.38
+    },
+    {
+      "question": "What is the purpose of the critic in RAG systems?",
+      "sub_queries": [
+        "What is the role of the critic in RAG systems?",
+        "What functions does the critic serve in RAG systems?",
+        "How does the critic influence the performance of RAG systems?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.\n\n[Note: Some claims may not be fully supported by the retrieved documents. Please verify with the source papers.]",
+      "is_faithful": false,
+      "critique": "The answer claims a lack of sufficient information, while the context provides detailed insights into the RAG framework, its evaluation methods, and its evolution.",
+      "num_sources": 4,
+      "sources": [
+        "rag_advanced.pdf",
+        "rag_advanced.pdf",
+        "rag_advanced.pdf"
+      ],
+      "latency_seconds": 4.69
+    },
+    {
+      "question": "How does hybrid search combine BM25 and vectors?",
+      "sub_queries": [
+        "What is hybrid search?",
+        "What is BM25 and how does it work?",
+        "What are vector-based search methods?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.",
+      "is_faithful": true,
+      "critique": "The answer accurately reflects the lack of sufficient information in the provided context.",
+      "num_sources": 5,
+      "sources": [
+        "rag_advanced.pdf",
+        "tree_of_thought.pdf",
+        "faiss.pdf"
+      ],
+      "latency_seconds": 3.54
+    },
+    {
+      "question": "What is reciprocal rank fusion?",
+      "sub_queries": [
+        "What is the definition of reciprocal rank fusion?",
+        "What are the applications of reciprocal rank fusion?",
+        "What are the advantages of using reciprocal rank fusion in information retrieval?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.",
+      "is_faithful": true,
+      "critique": "The answer accurately reflects the lack of sufficient information in the provided context.",
+      "num_sources": 5,
+      "sources": [
+        "rag_survey.pdf",
+        "rag_advanced.pdf",
+        "cpt_text.pdf"
+      ],
+      "latency_seconds": 4.34
+    },
+    {
+      "question": "How does QLoRA differ from LoRA?",
+      "sub_queries": [
+        "What are the key features of QLoRA?",
+        "What are the key features of LoRA?",
+        "What are the main differences in performance between QLoRA and LoRA?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.",
+      "is_faithful": true,
+      "critique": "The answer accurately reflects the lack of sufficient information in the provided context.",
+      "num_sources": 5,
+      "sources": [
+        "lora.pdf",
+        "lora.pdf",
+        "lora.pdf"
+      ],
+      "latency_seconds": 5.12
+    },
+    {
+      "question": "What is the role of the embedding model in RAG?",
+      "sub_queries": [
+        "What is an embedding model in RAG?",
+        "What functions does the embedding model serve in RAG?",
+        "How does the embedding model impact RAG performance?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.\n\n[Note: Some claims may not be fully supported by the retrieved documents. Please verify with the source papers.]",
+      "is_faithful": false,
+      "critique": "The answer claims a lack of sufficient information in the retrieved documents, but the context provides detailed insights into the RAG framework, its assessment methods, and future directions, indicating that there is indeed relevant information available.",
+      "num_sources": 5,
+      "sources": [
+        "rag_advanced.pdf",
+        "rag_original.pdf",
+        "rag_advanced.pdf"
+      ],
+      "latency_seconds": 5.03
+    },
+    {
+      "question": "How does query decomposition improve retrieval?",
+      "sub_queries": [
+        "What is query decomposition?",
+        "How does query decomposition enhance information retrieval?",
+        "What are the benefits of using query decomposition in search algorithms?"
+      ],
+      "answer": "I could not find sufficient information in the retrieved documents.\n\n[Note: Some claims may not be fully supported by the retrieved documents. Please verify with the source papers.]",
+      "is_faithful": false,
+      "critique": "The answer claims a lack of sufficient information in the retrieved documents, but the context discusses various methods and processes for optimizing query retrieval and does not indicate any specific insufficiency in the documents retrieved.",
+      "num_sources": 5,
+      "sources": [
+        "rag_advanced.pdf",
+        "corrective_rag.pdf",
+        "rag_survey.pdf"
+      ],
+      "latency_seconds": 4.1
+    },
+    {
+      "question": "What metrics measure RAG system quality?",
+      "sub_queries": [
+        "What are the common metrics for evaluating RAG systems?",
+        "What specific quality aspects do RAG metrics assess?",
+        "How do RAG system metrics compare to other evaluation metrics?"
+      ],
+      "answer": "The metrics that measure RAG system quality are traditional measures derived from related work, although they do not yet represent a mature or standardized approach for quantifying RAG evaluation aspects. Additionally, custom metrics tailored to the nuances of RAG models have been developed in some ",
+      "is_faithful": true,
+      "critique": "All claims in the answer are supported by the context, including the nature of the metrics, the development of custom metrics, the importance of retrieval quality, and the lack of research on the distinct characteristics of RAG models.",
+      "num_sources": 3,
+      "sources": [
+        "rag_advanced.pdf",
+        "rag_advanced.pdf",
+        "rag_advanced.pdf"
+      ],
+      "latency_seconds": 5.47
+    },
+    {
+      "question": "How does fine-tuning improve embedding models?",
+      "sub_queries": [
+        "What is fine-tuning in the context of embedding models?",
+        "What are the benefits of fine-tuning for embedding model performance?",
+        "How does fine-tuning affect the generalization of embedding models?"
+      ],
+      "answer": "Fine-tuning improves embedding models by aligning the retriever and generator, which can be achieved using the results of large language models (LLMs) as a supervision signal for fine-tuning, known as LSR (LM-supervised Retriever). Additionally, fine-tuning can help mitigate discrepancies in domain ",
+      "is_faithful": true,
+      "critique": "All claims in the answer are supported by the context, specifically regarding the alignment of retriever and generator through LSR, the mitigation of discrepancies in domain knowledge, and the reduction of bias in pre-trained models.",
+      "num_sources": 5,
+      "sources": [
+        "rag_advanced.pdf",
+        "finetuned_lm.pdf",
+        "gpt3.pdf"
+      ],
+      "latency_seconds": 7.92
+    }
+  ]
+}

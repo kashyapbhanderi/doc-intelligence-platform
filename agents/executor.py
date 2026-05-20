@@ -192,31 +192,22 @@ Answer:"""
 
 
 def executor_node(state: dict) -> dict:
-    """
-    Executor agent node for LangGraph.
-
-    Takes sub_queries from state, searches Weaviate
-    for each, aggregates results, generates answer.
-
-    Args:
-        state: Current AgentState dict
-
-    Returns:
-        Updated state with context, answer, sources filled
-    """
     question    = state["question"]
     sub_queries = state.get("sub_queries", [question])
 
     print(f"\n⚙️  EXECUTOR: running "
           f"{len(sub_queries)} sub-queries...")
 
-    all_chunks = []
+    # Reduce top_k when many sub-queries to stay fast
+    # 3 queries × 3 chunks = 9 unique chunks (enough)
+    # 3 queries × 5 chunks = 15 (slower, more dupes)
+    per_query_k = 3 if len(sub_queries) >= 3 else TOP_K
 
-    # Search for each sub-query
+    all_chunks = []
     for i, query in enumerate(sub_queries, 1):
         print(f"   [{i}/{len(sub_queries)}] "
               f"{query[:55]}...")
-        chunks = search_single_query(query, TOP_K)
+        chunks = search_single_query(query, per_query_k)
         all_chunks.extend(chunks)
         print(f"   → {len(chunks)} chunks retrieved")
 
