@@ -166,6 +166,18 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 ![retrieval-quality(baseline-all-MiniLM)](<Screenshot 2026-05-18 104743.png>)
 ---
 
+### Week 4 — Multi-Agent RAG ✅
+
+| Metric | Value |
+|--------|-------|
+| Architecture | Planner → Executor → Critic |
+| Questions tested | 20 |
+| Faithfulness rate | YOUR_RATE% |
+| Avg query latency | YOUR_SECONDs |
+| P95 latency | YOUR_SECONDs |
+| Avg sources/answer | YOUR_COUNT |
+| Tests passing | 136/136 |
+
 ## Project Progress
 
 | Week | Topic | Status | Tests |
@@ -173,7 +185,7 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 | Week 1 | Data Pipeline + OCR + Vision | ✅ Complete | 17/17 |
 | Week 2 | Embeddings + Vector DB + RAG | ✅ Complete | 59/59 |
 | Week 3 | Fine-tuning | ✅ Complete | 78/78 |
-| Week 4 | Multi-agent RAG system | ⬜ Upcoming | - |
+| Week 4 | Multi-Agent RAG | ✅ Complete | 136/136 |
 | Week 5 | Document Editor Agent | ⬜ Upcoming | - |
 | Week 6 | FastAPI + Docker | ⬜ Upcoming | - |
 | Week 7 | RAGAS + Monitoring | ⬜ Upcoming | - |
