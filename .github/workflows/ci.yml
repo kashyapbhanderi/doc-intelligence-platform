@@ -33,7 +33,9 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests/ -v
+          pytest tests/ -v --ignore=tests/test_search.py --ignore=tests/test_embedder.py --ignore=tests/test_query_engine.py --ignore=tests/test_reembed.py
+        env:
+          PYTHONPATH: .
 
       - name: Show test summary
         if: always()

@@ -1,0 +1,485 @@
+{
+  "summary": {
+    "total_queries": 59,
+    "k": 10,
+    "bm25_ndcg": 0.8915,
+    "vector_ndcg": 0.865,
+    "hybrid_ndcg": 0.9058,
+    "model": "all-MiniLM-L6-v2",
+    "note": "BASELINE \u2014 before fine-tuning"
+  },
+  "details": [
+    {
+      "question": "What are the coordinates associated with the suitcase in the text?",
+      "source": "minigpt4.pdf",
+      "bm25_ndcg": 0.7977,
+      "vector_ndcg": 0.6309,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What do the symbols \u2020 and \u2021 represent in the context of the metrics mentioned?",
+      "source": "rag_advanced.pdf",
+      "bm25_ndcg": 0.6309,
+      "vector_ndcg": 0.8175,
+      "hybrid_ndcg": 0.8772,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "Who are the authors of the paper titled 'Few-shot Learning with Retrieval Augmented Language Models'?",
+      "source": "instructor.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the title of the paper authored by Luowei Zhou and others presented at the IEEE/CVF Conference on Computer Vision and Pattern Recognition in 2022?",
+      "source": "minigpt4.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.3155,
+      "hybrid_ndcg": 0.6309,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the title of the paper authored by Danilo Giampiccolo and others?",
+      "source": "gpt3.pdf",
+      "bm25_ndcg": 0.9963,
+      "vector_ndcg": 0.6462,
+      "hybrid_ndcg": 0.7934,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the main focus of the experiments conducted in the paper?",
+      "source": "cpt_text.pdf",
+      "bm25_ndcg": 0.2891,
+      "vector_ndcg": 0.8316,
+      "hybrid_ndcg": 0.578,
+      "best_method": "vector"
+    },
+    {
+      "question": "What queue size was used to pre-train the multilingual mContriever, and what effect did it have?",
+      "source": "cpt_text.pdf",
+      "bm25_ndcg": 0.9888,
+      "vector_ndcg": 0.9972,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the title of the technical report published by OpenAI in 2023?",
+      "source": "nougat.pdf",
+      "bm25_ndcg": 0.6943,
+      "vector_ndcg": 0.6546,
+      "hybrid_ndcg": 0.7466,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the purpose of the penalty term in the equation R(g | p)?",
+      "source": "llama2.pdf",
+      "bm25_ndcg": 0.9002,
+      "vector_ndcg": 0.977,
+      "hybrid_ndcg": 0.9842,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What does the research suggest about the effect of downsampling LLaVA's training data?",
+      "source": "improved_llava.pdf",
+      "bm25_ndcg": 0.8897,
+      "vector_ndcg": 0.9002,
+      "hybrid_ndcg": 0.9617,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What type of learning gains do McCann et al. (2018) report in their study?",
+      "source": "flan.pdf",
+      "bm25_ndcg": 0.9439,
+      "vector_ndcg": 0.8175,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What condition is stated for the map h to be invertible in relation to the function f?",
+      "source": "ann_benchmarks.pdf",
+      "bm25_ndcg": 0.9972,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the purpose of searching for a suitable value of \u03b2 in the research?",
+      "source": "ann_benchmarks.pdf",
+      "bm25_ndcg": 0.9938,
+      "vector_ndcg": 0.942,
+      "hybrid_ndcg": 0.9667,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What does the comparison between ReAct and Act indicate about reasoning in the context of synthesizing final answers?",
+      "source": "react.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the computational cost of the model with parameters shared across the encoder and decoder?",
+      "source": "t5.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the historical context in which believable agents were developed?",
+      "source": "generative_agents.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What technique does TALM employ to enhance language models?",
+      "source": "shepherd.pdf",
+      "bm25_ndcg": 0.9044,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 0.9349,
+      "best_method": "vector"
+    },
+    {
+      "question": "What improvements do InstructGPT models show over GPT-3 according to the TruthfulQA dataset?",
+      "source": "chain_of_thought.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.7983,
+      "hybrid_ndcg": 0.9933,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What was the second prediction tested regarding smaller models and accuracy?",
+      "source": "g_eval.pdf",
+      "bm25_ndcg": 0.9582,
+      "vector_ndcg": 0.8773,
+      "hybrid_ndcg": 0.8393,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the title of the paper presented at EMNLP in 2018?",
+      "source": "scaling_rlhf.pdf",
+      "bm25_ndcg": 0.3562,
+      "vector_ndcg": 0.3618,
+      "hybrid_ndcg": 0.3869,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What do the green and black ovals in Figure 7 represent?",
+      "source": "chatgpt_survey.pdf",
+      "bm25_ndcg": 0.962,
+      "vector_ndcg": 0.9878,
+      "hybrid_ndcg": 0.9877,
+      "best_method": "vector"
+    },
+    {
+      "question": "Was sin LLMs un was k\u00f6nne sie usfihre?",
+      "source": "qlora.pdf",
+      "bm25_ndcg": 0.9877,
+      "vector_ndcg": 0.9505,
+      "hybrid_ndcg": 0.9877,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "Who are the authors of the paper titled 'BERT rediscovers the classical NLP pipeline'?",
+      "source": "flava.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.8375,
+      "hybrid_ndcg": 0.8503,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the title of the paper authored by Jihun Ham and Daniel D. Lee?",
+      "source": "lora.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.301,
+      "hybrid_ndcg": 0.8855,
+      "best_method": "bm25"
+    },
+    {
+      "question": "How is the correctness of generated answers evaluated in the study?",
+      "source": "llama.pdf",
+      "bm25_ndcg": 0.6664,
+      "vector_ndcg": 0.5932,
+      "hybrid_ndcg": 0.8478,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the title of the paper by Corinna Cortes and Vladimir Vapnik published in 1995?",
+      "source": "flava.pdf",
+      "bm25_ndcg": 0.6934,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 0.6241,
+      "best_method": "vector"
+    },
+    {
+      "question": "Why might generating toxic outputs be considered beneficial in certain contexts?",
+      "source": "chain_of_thought.pdf",
+      "bm25_ndcg": 0.9249,
+      "vector_ndcg": 0.9852,
+      "hybrid_ndcg": 0.9972,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What are the two main capabilities required for TextVQA according to the text?",
+      "source": "improved_llava.pdf",
+      "bm25_ndcg": 0.7247,
+      "vector_ndcg": 0.977,
+      "hybrid_ndcg": 0.8981,
+      "best_method": "vector"
+    },
+    {
+      "question": "Who are some of the authors of the paper titled 'JAX: composable transformations of Python+NumPy programs'?",
+      "source": "prefix_tuning.pdf",
+      "bm25_ndcg": 0.6309,
+      "vector_ndcg": 0.8503,
+      "hybrid_ndcg": 0.5714,
+      "best_method": "vector"
+    },
+    {
+      "question": "What is the focus of the paper by Liu et al. presented at EMNLP 2022?",
+      "source": "llm_eval.pdf",
+      "bm25_ndcg": 0.6569,
+      "vector_ndcg": 0.9672,
+      "hybrid_ndcg": 0.8737,
+      "best_method": "vector"
+    },
+    {
+      "question": "What do the concepts of fairness, reciprocity, and others\u2019 welfare indicate about human behavior according to the text?",
+      "source": "chatgpt_survey.pdf",
+      "bm25_ndcg": 0.9878,
+      "vector_ndcg": 0.8288,
+      "hybrid_ndcg": 0.9764,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the performance of Self-RAG-LLaMA2-7b on the PopQA dataset compared to CRAG?",
+      "source": "corrective_rag.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the title of the paper authored by Touvron et al. in 2019?",
+      "source": "clip.pdf",
+      "bm25_ndcg": 0.9349,
+      "vector_ndcg": 0.6309,
+      "hybrid_ndcg": 0.6045,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the focus of the paper by Chuan Guo et al. published in 2017?",
+      "source": "shepherd.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.7904,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What does LeCun emphasize about the future of AI in the song?",
+      "source": "llama.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.9829,
+      "hybrid_ndcg": 0.9797,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What effect did normalizing the logits have on training and inference according to the text?",
+      "source": "nougat.pdf",
+      "bm25_ndcg": 0.8508,
+      "vector_ndcg": 0.92,
+      "hybrid_ndcg": 0.9456,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "How does GPT3SELF-INST compare to instruction-tuned models in performance?",
+      "source": "llm_eval.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.9972,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What did RoBERTa demonstrate regarding BERT's performance?",
+      "source": "sentence_bert.pdf",
+      "bm25_ndcg": 0.941,
+      "vector_ndcg": 0.9613,
+      "hybrid_ndcg": 0.9963,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What did Thakur et al. (2021) conclude about dual encoder models?",
+      "source": "beir.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 0.9938,
+      "best_method": "vector"
+    },
+    {
+      "question": "What are some limitations of the models mentioned in the text?",
+      "source": "chain_of_thought.pdf",
+      "bm25_ndcg": 0.2891,
+      "vector_ndcg": 0.8503,
+      "hybrid_ndcg": 0.9197,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the relationship between the variables a, b, and X in the equation a / b = X?",
+      "source": "dit.pdf",
+      "bm25_ndcg": 0.943,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the effect of varying the batch size B on the percentage of documents that activate dimension?",
+      "source": "mteb.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What does the authors' proposed hybrid evaluation framework aim to combine?",
+      "source": "ragas.pdf",
+      "bm25_ndcg": 0.6534,
+      "vector_ndcg": 0.9013,
+      "hybrid_ndcg": 0.8033,
+      "best_method": "vector"
+    },
+    {
+      "question": "How many tasks did ReAct + Reflexion complete out of 134?",
+      "source": "reflexion.pdf",
+      "bm25_ndcg": 0.9764,
+      "vector_ndcg": 0.8712,
+      "hybrid_ndcg": 0.9878,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "How can inputs and targets be used in the text-to-text framework for translation?",
+      "source": "t5.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the focus of the research paper by N. Kotonya and F. Toni?",
+      "source": "rag_advanced.pdf",
+      "bm25_ndcg": 0.8503,
+      "vector_ndcg": 0.0,
+      "hybrid_ndcg": 0.7977,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is the purpose of the ToolBench project?",
+      "source": "shepherd.pdf",
+      "bm25_ndcg": 0.9972,
+      "vector_ndcg": 0.9667,
+      "hybrid_ndcg": 0.9938,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What does the comparison with zero and few-shot results for LaMDA-PT aim to provide?",
+      "source": "flan.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.9766,
+      "hybrid_ndcg": 0.9938,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What types of words shifted to describe men when the threshold was lowered to 0.5%?",
+      "source": "clip.pdf",
+      "bm25_ndcg": 0.9878,
+      "vector_ndcg": 0.9453,
+      "hybrid_ndcg": 0.9842,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What potential issue is highlighted regarding the model's learning during pretraining related to pronouns?",
+      "source": "llama2.pdf",
+      "bm25_ndcg": 0.8948,
+      "vector_ndcg": 0.9532,
+      "hybrid_ndcg": 0.943,
+      "best_method": "vector"
+    },
+    {
+      "question": "What format should the output be in when identifying objects in the image?",
+      "source": "instructblip.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.9888,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What does the performance of the model on reading comprehension tasks suggest about the evaluation metrics?",
+      "source": "t5.pdf",
+      "bm25_ndcg": 0.9415,
+      "vector_ndcg": 0.8981,
+      "hybrid_ndcg": 0.8357,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What is another name for cross-country skiing and what type of terrain does it typically involve?",
+      "source": "minigpt4.pdf",
+      "bm25_ndcg": 0.9918,
+      "vector_ndcg": 0.9972,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the significance of common sense understanding in relation to LLMs and agent behaviors?",
+      "source": "autogen.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.9842,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the title of Tal Linzen's 2020 paper presented at the 58th Annual Meeting of the Association for Computational Linguistics?",
+      "source": "flava.pdf",
+      "bm25_ndcg": 0.9558,
+      "vector_ndcg": 1.0,
+      "hybrid_ndcg": 0.8756,
+      "best_method": "vector"
+    },
+    {
+      "question": "What is the purpose of the synthetic document image generator, SynthDoG?",
+      "source": "donut.pdf",
+      "bm25_ndcg": 1.0,
+      "vector_ndcg": 0.9896,
+      "hybrid_ndcg": 1.0,
+      "best_method": "hybrid"
+    },
+    {
+      "question": "What is the title of the paper authored by Joel Hestness and others in 2017?",
+      "source": "t5.pdf",
+      "bm25_ndcg": 0.9617,
+      "vector_ndcg": 0.8773,
+      "hybrid_ndcg": 0.7682,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What happens to model performance when the batch size is increased beyond ten thousand?",
+      "source": "instructor.pdf",
+      "bm25_ndcg": 0.8737,
+      "vector_ndcg": 0.7654,
+      "hybrid_ndcg": 0.8665,
+      "best_method": "bm25"
+    },
+    {
+      "question": "What did Joaquin Phoenix wear at the Golden Globes to express his stance on changing for Hollywood?",
+      "source": "gpt3.pdf",
+      "bm25_ndcg": 0.977,
+      "vector_ndcg": 0.9428,
+      "hybrid_ndcg": 0.9581,
+      "best_method": "bm25"
+    }
+  ]
+}

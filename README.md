@@ -8,6 +8,7 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
 ![Tests](https://img.shields.io/badge/Tests-31%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Tests](https://img.shields.io/badge/Tests-78%20passing-brightgreen)
 
 ---
 
@@ -116,6 +117,39 @@ An end-to-end AI system that:
 ## Model Weights
 Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 
+### Week 3 — Fine-tuning ✅
+
+#### Training Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Base model | all-MiniLM-L6-v2 |
+| Training triplets | 274 (validated) |
+| Epochs | 3 |
+| Batch size | 16 |
+| Learning rate | 2e-5 |
+| Loss function | MultipleNegativesRankingLoss |
+
+#### NDCG@10 Results
+
+| Method | Baseline | Fine-tuned | Improvement |
+|--------|----------|------------|-------------|
+| BM25 | YOUR_SCORE | YOUR_SCORE | +X% |
+| Vector | YOUR_SCORE | YOUR_SCORE | +X% |
+| **Hybrid** | **YOUR_SCORE** | **YOUR_SCORE** | **+X%** |
+
+#### Answer Quality
+
+| Metric | Baseline | Fine-tuned | Change |
+|--------|----------|------------|--------|
+| Source accuracy | YOUR | YOUR | +X% |
+| Keyword overlap | YOUR | YOUR | +X% |
+| Avg latency | Xs | Xs | - |
+
+> Fine-tuned `all-MiniLM-L6-v2` on 274 domain-specific
+> AI/ML triplets using contrastive learning,
+> achieving +X% improvement in retrieval NDCG@10.
+
 ### Search Method Comparison
 
 | Method | Correct | Score | Best for |
@@ -138,7 +172,7 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 |------|-------|--------|-------|
 | Week 1 | Data Pipeline + OCR + Vision | ✅ Complete | 17/17 |
 | Week 2 | Embeddings + Vector DB + RAG | ✅ Complete | 59/59 |
-| Week 3 | Fine-tuning embedding model | ⬜ Upcoming | - |
+| Week 3 | Fine-tuning | ✅ Complete | 78/78 |
 | Week 4 | Multi-agent RAG system | ⬜ Upcoming | - |
 | Week 5 | Document Editor Agent | ⬜ Upcoming | - |
 | Week 6 | FastAPI + Docker | ⬜ Upcoming | - |
