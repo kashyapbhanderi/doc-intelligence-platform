@@ -178,6 +178,18 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 | Avg sources/answer | YOUR_COUNT |
 | Tests passing | 136/136 |
 
+### Week 5 — Document Editor Agent ✅
+
+| Component | Details |
+|-----------|---------|
+| DOCX tools | Read, edit text, insert tables, add headings |
+| PDF tools | Watermark, merge, split, PDF→DOCX |
+| Image tools | Resize, watermark, format convert |
+| Tool registry | 12 @tool functions registered |
+| Editor Agent | ReAct loop via LangGraph prebuilt |
+| Router | Intent detection (edit vs question) |
+| Tests passing | 165/165 |
+
 ## Project Progress
 
 | Week | Topic | Status | Tests |
@@ -186,7 +198,7 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 | Week 2 | Embeddings + Vector DB + RAG | ✅ Complete | 59/59 |
 | Week 3 | Fine-tuning | ✅ Complete | 78/78 |
 | Week 4 | Multi-Agent RAG | ✅ Complete | 136/136 |
-| Week 5 | Document Editor Agent | ⬜ Upcoming | - |
+| Week 5 | Document Editor Agent | ✅ Complete | 165/165 |
 | Week 6 | FastAPI + Docker | ⬜ Upcoming | - |
 | Week 7 | RAGAS + Monitoring | ⬜ Upcoming | - |
 | Week 8 | Cloud Deploy | ⬜ Upcoming | - |
