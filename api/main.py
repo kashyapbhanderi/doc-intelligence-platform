@@ -103,8 +103,12 @@ async def health():
 
     try:
         import weaviate
-        client = weaviate.Client(
-            "http://localhost:8080")
+        client = weaviate.connect_to_local(
+            host="weaviate",
+            port=8080,
+            grpc_port=50051,
+            skip_init_checks=True
+        )
         result = (
             client.query
             .aggregate("Document")

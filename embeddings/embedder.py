@@ -4,6 +4,7 @@ import time
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
 import weaviate
+import weaviate.classes 
 
 
 # ── Configuration ──────────────────────────────────────────────
@@ -40,13 +41,20 @@ class DocumentEmbedder:
             self.model_name = model_name
 
         # Connect to Weaviate (always, regardless of model source)
+        # Connect to Weaviate v4
         print(f"Connecting to Weaviate at {weaviate_url}")
-        self.client = weaviate.Client(weaviate_url)
+
+        self.client = weaviate.connect_to_local(
+            host="localhost",      # use "localhost" if running outside Docker
+            port=8080,
+            grpc_port=50051,
+            skip_init_checks=True
+        )
 
         # Test connection
         try:
-            self.client.schema.get()
-            print("Weaviate connected successfully!")
+            if self.client.is_ready():
+                print("Weaviate connected successfully!")
         except Exception as e:
             raise ConnectionError(
                 f"Cannot connect to Weaviate at {weaviate_url}.\n"
@@ -66,13 +74,13 @@ class DocumentEmbedder:
             force_recreate: If True, deletes existing schema first
         """
         # Check if class already exists
-        existing = self.client.schema.get()
-        classes = [c["class"] for c in existing.get("classes", [])]
+        existing = self.client.collections.list_all()
+        classes = list(existing.keys())
 
         if CLASS_NAME in classes:
             if force_recreate:
                 print(f"Deleting existing {CLASS_NAME} schema...")
-                self.client.schema.delete_class(CLASS_NAME)
+                self.client.collections.delete(CLASS_NAME)
             else:
                 print(f"Schema '{CLASS_NAME}' already exists. Skipping.")
                 return
@@ -131,7 +139,35 @@ class DocumentEmbedder:
             ]
         }
 
-        self.client.schema.create_class(class_obj)
+        self.client.collections.create(
+            name=CLASS_NAME,
+            properties=[
+                weaviate.classes.config.Property(
+                    name="text",
+                    data_type=weaviate.classes.config.DataType.TEXT
+                ),
+                weaviate.classes.config.Property(
+                    name="source",
+                    data_type=weaviate.classes.config.DataType.TEXT
+                ),
+                weaviate.classes.config.Property(
+                    name="page",
+                    data_type=weaviate.classes.config.DataType.INT
+                ),
+                weaviate.classes.config.Property(
+                    name="chunkId",
+                    data_type=weaviate.classes.config.DataType.TEXT
+                ),
+                weaviate.classes.config.Property(
+                    name="chunkType",
+                    data_type=weaviate.classes.config.DataType.TEXT
+                ),
+                weaviate.classes.config.Property(
+                    name="charCount",
+                    data_type=weaviate.classes.config.DataType.INT
+                ),
+            ]
+        )
         print(f"Schema created successfully!")
 
     def embed_text(self, text: str) -> list:
@@ -210,59 +246,50 @@ class DocumentEmbedder:
             return 0
 
     def search_vector(self, query: str, top_k: int = 5) -> list:
-        """
-        Semantic vector search — finds chunks similar in MEANING
-        to the query, even if they don't share keywords.
 
-        Args:
-            query: Natural language question
-            top_k: Number of results to return
-
-        Returns:
-            List of matching chunks with scores
-        """
         query_vector = self.embed_text(query)
 
-        result = (
-            self.client.query
-            .get(CLASS_NAME, ["text", "source", "page",
-                              "chunkId"])
-            .with_near_vector({"vector": query_vector})
-            .with_limit(top_k)
-            .with_additional(["certainty", "distance"])
-            .do()
+        collection = self.client.collections.get(CLASS_NAME)
+
+        response = collection.query.near_vector(
+            near_vector=query_vector,
+            limit=top_k,
+            return_metadata=["distance"]
         )
 
-        hits = result.get("data", {}).get("Get", {}).get(
-            CLASS_NAME, [])
-        return hits
+        results = []
+
+        for obj in response.objects:
+            results.append({
+                "text": obj.properties.get("text", ""),
+                "source": obj.properties.get("source", ""),
+                "page": obj.properties.get("page", 0),
+                "chunkId": obj.properties.get("chunkId", ""),
+                "distance": getattr(obj.metadata, "distance", None)
+            })
+
+        return results
 
     def search_bm25(self, query: str, top_k: int = 5) -> list:
-        """
-        BM25 keyword search — finds chunks that contain
-        the exact words from the query.
 
-        Args:
-            query: Search query
-            top_k: Number of results
+        collection = self.client.collections.get(CLASS_NAME)
 
-        Returns:
-            List of matching chunks
-        """
-        result = (
-            self.client.query
-            .get(CLASS_NAME, ["text", "source", "page",
-                              "chunkId"])
-            .with_bm25(query=query, properties=["text"])
-            .with_limit(top_k)
-            .with_additional(["score"])
-            .do()
+        response = collection.query.bm25(
+            query=query,
+            limit=top_k
         )
 
-        hits = result.get("data", {}).get("Get", {}).get(
-            CLASS_NAME, [])
-        return hits
+        results = []
 
+        for obj in response.objects:
+            results.append({
+                "text": obj.properties.get("text", ""),
+                "source": obj.properties.get("source", ""),
+                "page": obj.properties.get("page", 0),
+                "chunkId": obj.properties.get("chunkId", "")
+            })
+
+        return results
     def search_hybrid(self, query: str, top_k: int = 5,
                   alpha: float = 0.5) -> list:
         """

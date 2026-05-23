@@ -55,7 +55,12 @@ def reembed_all_documents(
 
     # Step 3 — Connect to Weaviate
     print(f"\nConnecting to Weaviate: {weaviate_url}")
-    client = weaviate.Client(weaviate_url)
+    client =client = weaviate.connect_to_local(
+        host="weaviate",
+        port=8080,
+        grpc_port=50051,
+        skip_init_checks=True
+    )
 
     # Step 4 — Delete old schema + data
     print("\nClearing old embeddings...")

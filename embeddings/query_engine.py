@@ -341,7 +341,12 @@ def get_embedder():
 def get_weaviate_client(url="http://localhost:8080"):
     global _weaviate_client
     if _weaviate_client is None:
-        _weaviate_client = weaviate.Client(url)
+        _weaviate_client = weaviate.connect_to_local(
+            host="weaviate",
+            port=8080,
+            grpc_port=50051,
+            skip_init_checks=True
+        )
     return _weaviate_client
 
 
@@ -517,7 +522,12 @@ def build_query_engine(
 
     # Connect to Weaviate
     print(f"Connecting to Weaviate: {weaviate_url}")
-    client = weaviate.Client(weaviate_url)
+    client = client = weaviate.connect_to_local(
+            host="weaviate",
+            port=8080,
+            grpc_port=50051,
+            skip_init_checks=True
+        )
 
     # Build index
     print("Building vector store index...")

@@ -65,7 +65,6 @@ def test_weaviate_connection(embedder):
 
 def test_schema_exists(embedder):
     """Document schema should exist in Weaviate."""
-    schema = embedder.client.schema.get()
-    classes = [c["class"] for c in
-               schema.get("classes", [])]
+    schema = embedder.client.collections.list_all()
+    classes =  list(schema.keys())
     assert "Document" in classes

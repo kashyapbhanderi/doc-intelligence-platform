@@ -35,7 +35,12 @@ _embedder        = None
 def get_weaviate():
     global _weaviate_client
     if _weaviate_client is None:
-        _weaviate_client = weaviate.Client(WEAVIATE_URL)
+        _weaviate_client =client = weaviate.connect_to_local(
+                host="weaviate",
+                port=8080,
+                grpc_port=50051,
+                skip_init_checks=True
+            )
     return _weaviate_client
 
 
