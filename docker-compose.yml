@@ -1,9 +1,8 @@
-version: '3.8'
-
 services:
 
+  # ── Weaviate vector database ──────────────────
   weaviate:
-    image: semitechnologies/weaviate:1.24.1
+    image: cr.weaviate.io/semitechnologies/weaviate:1.30.5
     ports:
       - "8080:8080"
       - "50051:50051"
@@ -16,6 +15,33 @@ services:
       CLUSTER_HOSTNAME: 'node1'
     volumes:
       - weaviate_data:/var/lib/weaviate
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:8080/v1/.well-known/ready || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+
+  # ── FastAPI application ───────────────────────
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
+      - WEAVIATE_URL=http://weaviate:8080
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./eval:/app/eval
+      - ./logs:/app/logs
+    depends_on:
+      weaviate:
+        condition: service_healthy
     restart: on-failure
 
 volumes:
