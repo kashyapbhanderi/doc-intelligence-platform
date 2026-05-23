@@ -31,13 +31,23 @@ app = FastAPI(
 
 # ── CORS middleware ───────────────────────────────────────
 # Allows browser frontends to call the API
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+import uuid 
+from fastapi import Request
+
+@app.middleware("http")
+async def add_request_id(
+    request: Request,
+    call_next
+):
+    """
+    Adds X-Request-ID header to every response.
+    Essential for debugging in production —
+    you can trace a specific request through logs.
+    """
+    request_id = str(uuid.uuid4())[:8]
+    response   = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    return response
 
 # ── Include routers ───────────────────────────────────────
 app.include_router(
@@ -69,15 +79,27 @@ async def root():
 
 
 # ── Health endpoint ───────────────────────────────────────
-@app.get("/api/v1/health",
-         response_model=dict)
+import time as _time
+
+# Simple cache for health check
+_health_cache = {"data": None, "expires": 0}
+
+
+@app.get("/api/v1/health")
 async def health():
     """
-    Check system health — Weaviate, chunk count.
-    Used by Docker health checks and monitoring.
+    Check system health.
+    Cached for 30 seconds — prevents hammering
+    Weaviate on every health check.
     """
+    global _health_cache
+
+    # Return cached if still fresh
+    if _time.time() < _health_cache["expires"]:
+        return _health_cache["data"]
+
     weaviate_status = "unknown"
-    total_chunks = 0
+    total_chunks    = 0
 
     try:
         import weaviate
@@ -97,13 +119,20 @@ async def health():
     except Exception as e:
         weaviate_status = f"error: {str(e)[:50]}"
 
-    return {
-        "status": "healthy",
-        "version": "1.0.0",
-        "weaviate": weaviate_status,
+    data = {
+        "status":       "healthy",
+        "version":      "1.0.0",
+        "weaviate":     weaviate_status,
         "total_chunks": total_chunks
     }
 
+    # Cache for 30 seconds
+    _health_cache = {
+        "data":    data,
+        "expires": _time.time() + 30
+    }
+
+    return data
 
 if __name__ == "__main__":
     import uvicorn
