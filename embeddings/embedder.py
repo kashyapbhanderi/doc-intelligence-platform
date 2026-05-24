@@ -1,365 +1,352 @@
 import os
-import json
-import time
-from pathlib import Path
+import sys
+
+sys.path.insert(0, os.path.abspath('.'))
+
 from sentence_transformers import SentenceTransformer
 import weaviate
-import weaviate.classes 
+from weaviate.classes.config import Property, DataType
+from weaviate.classes.query import MetadataQuery
 
+# ── Configuration ──────────────────────────────────────────
 
-# ── Configuration ──────────────────────────────────────────────
 MODEL_NAME = "all-MiniLM-L6-v2"
-WEAVIATE_URL = "http://localhost:8080"
 CLASS_NAME = "Document"
-VECTOR_DIM = 384  # all-MiniLM-L6-v2 produces 384-dim vectors
-# ───────────────────────────────────────────────────────────────
+VECTOR_DIM = 384
+
+_embedder = None
 
 
 class DocumentEmbedder:
     """
-    Handles embedding documents and storing them in Weaviate.
-
-    Industry term: This is called a 'vector store' wrapper.
-    It abstracts the embedding model + database into one class.
+    Handles embedding documents and storing/searching
+    in Weaviate v4.
     """
 
-    def __init__(self,
-             model_name: str = MODEL_NAME,
-             weaviate_url: str = WEAVIATE_URL,
-             model_path: str = None):
-        """
-        model_path: if provided, loads fine-tuned model
-                    from local path instead of HuggingFace
-        """
+    def __init__(
+        self,
+        model_name: str = MODEL_NAME,
+        model_path: str = None
+    ):
+
+        ft_default = "models/finetuned/final"
+
+        # Load fine-tuned model if available
         if model_path and os.path.exists(model_path):
             print(f"Loading fine-tuned model: {model_path}")
             self.model = SentenceTransformer(model_path)
             self.model_name = model_path
+
+        elif os.path.exists(ft_default):
+            print(f"Loading fine-tuned model: {ft_default}")
+            self.model = SentenceTransformer(ft_default)
+            self.model_name = ft_default
+
         else:
             print(f"Loading model: {model_name}")
             self.model = SentenceTransformer(model_name)
             self.model_name = model_name
 
-        # Connect to Weaviate (always, regardless of model source)
         # Connect to Weaviate v4
-        print(f"Connecting to Weaviate at {weaviate_url}")
+        print("Connecting to Weaviate...")
 
         self.client = weaviate.connect_to_local(
-            host="localhost",      # use "localhost" if running outside Docker
+            host="localhost",
             port=8080,
-            grpc_port=50051,
-            skip_init_checks=True
+            grpc_port=50051
         )
 
-        # Test connection
         try:
-            if self.client.is_ready():
-                print("Weaviate connected successfully!")
+            self.client.is_ready()
+            print("Weaviate connected successfully!")
+
         except Exception as e:
             raise ConnectionError(
-                f"Cannot connect to Weaviate at {weaviate_url}.\n"
-                f"Make sure Docker is running and run:\n"
-                f"docker-compose up -d weaviate\n"
+                f"Cannot connect to Weaviate.\n"
+                f"Make sure Docker is running.\n"
                 f"Error: {e}"
             )
 
+    # ── Schema ────────────────────────────────────────────────
+
     def create_schema(self, force_recreate: bool = False):
-        """
-        Create the Document class schema in Weaviate.
 
-        Schema defines what fields each document has.
-        Like creating a table in SQL.
-
-        Args:
-            force_recreate: If True, deletes existing schema first
-        """
-        # Check if class already exists
         existing = self.client.collections.list_all()
-        classes = list(existing.keys())
 
-        if CLASS_NAME in classes:
+        if CLASS_NAME in existing:
+
             if force_recreate:
-                print(f"Deleting existing {CLASS_NAME} schema...")
+                print(f"Deleting existing collection: {CLASS_NAME}")
                 self.client.collections.delete(CLASS_NAME)
+
             else:
-                print(f"Schema '{CLASS_NAME}' already exists. Skipping.")
+                print(f"Collection '{CLASS_NAME}' already exists.")
                 return
 
-        print(f"Creating schema for '{CLASS_NAME}'...")
-
-        class_obj = {
-            "class": CLASS_NAME,
-            "description": "A chunk of text from a document",
-            "vectorizer": "none",  # we provide our own vectors
-            "vectorIndexConfig": {
-                "distance": "cosine",
-                "ef": 100,
-                "maxConnections": 64  # cosine similarity for search
-            },
-            "invertedIndexConfig": {
-                "bm25": {
-                    "b": 0.75,   # BM25 parameter
-                    "k1": 1.2    # BM25 parameter
-                }
-            },
-            "properties": [
-                {
-                    "name": "text",
-                    "dataType": ["text"],
-                    "description": "The chunk text content",
-                    "invertedIndexConfig": {
-                        "indexSearchable": True  # enables BM25
-                    }
-                },
-                {
-                    "name": "source",
-                    "dataType": ["text"],
-                    "description": "Source PDF filename"
-                },
-                {
-                    "name": "page",
-                    "dataType": ["int"],
-                    "description": "Page number in source PDF"
-                },
-                {
-                    "name": "chunkId",
-                    "dataType": ["text"],
-                    "description": "Unique chunk identifier"
-                },
-                {
-                    "name": "chunkType",
-                    "dataType": ["text"],
-                    "description": "text or vision"
-                },
-                {
-                    "name": "charCount",
-                    "dataType": ["int"],
-                    "description": "Character count of chunk"
-                }
-            ]
-        }
+        print(f"Creating collection '{CLASS_NAME}'...")
 
         self.client.collections.create(
             name=CLASS_NAME,
+
+            vectorizer_config=None,
+
             properties=[
-                weaviate.classes.config.Property(
+                Property(
                     name="text",
-                    data_type=weaviate.classes.config.DataType.TEXT
+                    data_type=DataType.TEXT
                 ),
-                weaviate.classes.config.Property(
+
+                Property(
                     name="source",
-                    data_type=weaviate.classes.config.DataType.TEXT
+                    data_type=DataType.TEXT
                 ),
-                weaviate.classes.config.Property(
+
+                Property(
                     name="page",
-                    data_type=weaviate.classes.config.DataType.INT
+                    data_type=DataType.INT
                 ),
-                weaviate.classes.config.Property(
+
+                Property(
                     name="chunkId",
-                    data_type=weaviate.classes.config.DataType.TEXT
+                    data_type=DataType.TEXT
                 ),
-                weaviate.classes.config.Property(
+
+                Property(
                     name="chunkType",
-                    data_type=weaviate.classes.config.DataType.TEXT
+                    data_type=DataType.TEXT
                 ),
-                weaviate.classes.config.Property(
+
+                Property(
                     name="charCount",
-                    data_type=weaviate.classes.config.DataType.INT
+                    data_type=DataType.INT
                 ),
             ]
         )
-        print(f"Schema created successfully!")
+
+        print("Collection created successfully!")
+
+    # ── Embedding ─────────────────────────────────────────────
 
     def embed_text(self, text: str) -> list:
-        """
-        Convert a text string into a vector embedding.
-
-        Args:
-            text: Any text string
-
-        Returns:
-            List of floats (the vector)
-        """
-        vector = self.model.encode(text)
-        return vector.tolist()
+        return self.model.encode(text).tolist()
 
     def embed_batch(self, texts: list) -> list:
-        """
-        Embed multiple texts at once (faster than one by one).
 
-        Args:
-            texts: List of text strings
+        vectors = self.model.encode(
+            texts,
+            batch_size=32,
+            show_progress_bar=False
+        )
 
-        Returns:
-            List of vectors
-        """
-        vectors = self.model.encode(texts, batch_size=32,
-                                    show_progress_bar=False)
         return [v.tolist() for v in vectors]
 
+    # ── Insert ────────────────────────────────────────────────
+
     def insert_chunk(self, chunk: dict) -> bool:
-        """
-        Insert a single chunk into Weaviate with its vector.
 
-        Args:
-            chunk: Dict with text, source, page, etc.
-
-        Returns:
-            True if successful
-        """
         try:
             vector = self.embed_text(chunk["text"])
 
-            properties = {
-                "text": chunk.get("text", ""),
-                "source": chunk.get("source", ""),
-                "page": chunk.get("page", 0),
-                "chunkId": str(chunk.get("chunk_id", "")),
-                "chunkType": chunk.get("chunk_type", "text"),
-                "charCount": chunk.get("char_count", 0)
-            }
+            collection = self.client.collections.get(CLASS_NAME)
 
-            self.client.data_object.create(
-                data_object=properties,
-                class_name=CLASS_NAME,
+            collection.data.insert(
+                properties={
+                    "text": chunk.get("text", ""),
+                    "source": chunk.get("source", ""),
+                    "page": chunk.get("page", 0),
+                    "chunkId": str(chunk.get("chunk_id", "")),
+                    "chunkType": chunk.get("chunk_type", "text"),
+                    "charCount": chunk.get("char_count", 0),
+                },
                 vector=vector
             )
+
             return True
 
         except Exception as e:
-            print(f"  Error inserting chunk: {e}")
+            print(f"Insert error: {e}")
             return False
 
+    # ── Count ─────────────────────────────────────────────────
+
     def get_document_count(self) -> int:
-        """Get total number of documents in Weaviate."""
+
         try:
-            result = (
-                self.client.query
-                .aggregate(CLASS_NAME)
-                .with_meta_count()
-                .do()
+            collection = self.client.collections.get(CLASS_NAME)
+
+            result = collection.aggregate.over_all(
+                total_count=True
             )
-            count = (result["data"]["Aggregate"][CLASS_NAME]
-                     [0]["meta"]["count"])
-            return count
+
+            return result.total_count or 0
+
         except Exception:
             return 0
 
-    def search_vector(self, query: str, top_k: int = 5) -> list:
+    # ── Vector Search ─────────────────────────────────────────
+
+    def search_vector(
+        self,
+        query: str,
+        top_k: int = 5
+    ) -> list:
 
         query_vector = self.embed_text(query)
 
-        collection = self.client.collections.get(CLASS_NAME)
-
-        response = collection.query.near_vector(
-            near_vector=query_vector,
-            limit=top_k,
-            return_metadata=["distance"]
-        )
-
-        results = []
-
-        for obj in response.objects:
-            results.append({
-                "text": obj.properties.get("text", ""),
-                "source": obj.properties.get("source", ""),
-                "page": obj.properties.get("page", 0),
-                "chunkId": obj.properties.get("chunkId", ""),
-                "distance": getattr(obj.metadata, "distance", None)
-            })
-
-        return results
-
-    def search_bm25(self, query: str, top_k: int = 5) -> list:
-
-        collection = self.client.collections.get(CLASS_NAME)
-
-        response = collection.query.bm25(
-            query=query,
-            limit=top_k
-        )
-
-        results = []
-
-        for obj in response.objects:
-            results.append({
-                "text": obj.properties.get("text", ""),
-                "source": obj.properties.get("source", ""),
-                "page": obj.properties.get("page", 0),
-                "chunkId": obj.properties.get("chunkId", "")
-            })
-
-        return results
-    def search_hybrid(self, query: str, top_k: int = 5,
-                  alpha: float = 0.5) -> list:
-        """
-        Hybrid search using manual RRF (Reciprocal Rank Fusion).
-
-        Why manual RRF instead of Weaviate's built-in?
-        More control, works with all Weaviate versions,
-        and RRF is the industry standard fusion algorithm.
-
-        RRF formula: score = sum(1 / (rank + 60))
-        Higher score = more relevant result.
-
-        Args:
-            query: Search query
-            top_k: Number of results to return
-            alpha: Balance (unused in RRF but kept for API compat)
-
-        Returns:
-            List of top_k most relevant chunks
-        """
         try:
-            # Get more results from each method to fuse
-            fetch_k = top_k * 3
+            collection = self.client.collections.get(CLASS_NAME)
 
-            bm25_results = self.search_bm25(query,
-                                            top_k=fetch_k) or []
-            vector_results = self.search_vector(query,
-                                                top_k=fetch_k) or []
-
-            # Build score map using chunk text as unique key
-            scores = {}
-            chunk_map = {}
-
-            # Score BM25 results
-            for rank, result in enumerate(bm25_results):
-                key = result.get("text", "")[:100]
-                if key not in scores:
-                    scores[key] = 0
-                    chunk_map[key] = result
-                # RRF formula
-                scores[key] += 1 / (rank + 60)
-
-            # Score vector results
-            for rank, result in enumerate(vector_results):
-                key = result.get("text", "")[:100]
-                if key not in scores:
-                    scores[key] = 0
-                    chunk_map[key] = result
-                # RRF formula
-                scores[key] += 1 / (rank + 60)
-
-            # Sort by combined score
-            sorted_keys = sorted(
-                scores.keys(),
-                key=lambda k: scores[k],
-                reverse=True
+            response = collection.query.near_vector(
+                near_vector=query_vector,
+                limit=top_k,
+                return_metadata=MetadataQuery(
+                    distance=True
+                )
             )
 
-            # Return top_k results
-            return [chunk_map[k] for k in sorted_keys[:top_k]]
+            results = []
+
+            for obj in response.objects:
+
+                props = obj.properties
+                distance = obj.metadata.distance or 1.0
+
+                results.append({
+                    "text": props.get("text", ""),
+                    "source": props.get("source", ""),
+                    "page": props.get("page", 0),
+                    "chunkId": props.get("chunkId", ""),
+                    "_additional": {
+                        "distance": distance,
+                        "certainty": 1.0 - distance
+                    }
+                })
+
+            return results
 
         except Exception as e:
-            print(f"  Hybrid search error: {e}")
+            print(f"Vector search error: {e}")
             return []
 
+    # ── BM25 Search ───────────────────────────────────────────
+
+    def search_bm25(
+        self,
+        query: str,
+        top_k: int = 5
+    ) -> list:
+
+        try:
+            collection = self.client.collections.get(CLASS_NAME)
+
+            response = collection.query.bm25(
+                query=query,
+                limit=top_k,
+                return_metadata=MetadataQuery(score=True)
+            )
+
+            results = []
+
+            for obj in response.objects:
+
+                props = obj.properties
+                score = obj.metadata.score
+
+                results.append({
+                    "text": props.get("text", ""),
+                    "source": props.get("source", ""),
+                    "page": props.get("page", 0),
+                    "chunkId": props.get("chunkId", ""),
+                    "_additional": {
+                        "score": score
+                    }
+                })
+
+            return results
+
+        except Exception as e:
+            print(f"BM25 search error: {e}")
+            return []
+
+    # ── Hybrid Search ─────────────────────────────────────────
+
+    def search_hybrid(
+        self,
+        query: str,
+        top_k: int = 5
+    ) -> list:
+
+        try:
+            collection = self.client.collections.get(CLASS_NAME)
+
+            # MANUALLY EMBED QUERY
+            query_vector = self.embed_text(query)
+
+            response = collection.query.hybrid(
+                query=query,
+                vector=query_vector,
+                alpha=0.5,
+                limit=top_k,
+                return_metadata=MetadataQuery(
+                    score=True,
+                    distance=True
+                )
+            )
+
+            results = []
+
+            for obj in response.objects:
+
+                props = obj.properties
+
+                results.append({
+                    "text": props.get("text", ""),
+                    "source": props.get("source", ""),
+                    "page": props.get("page", 0),
+                    "chunkId": props.get("chunkId", ""),
+                    "_additional": {
+                        "score": obj.metadata.score,
+                        "distance": obj.metadata.distance
+                    }
+                })
+
+            return results
+
+        except Exception as e:
+            print(f"Hybrid search error: {e}")
+            return []
+
+
+# ── Quick Test ──────────────────────────────────────────────
+
 if __name__ == "__main__":
-    # Quick test
+
     embedder = DocumentEmbedder()
+
     embedder.create_schema()
 
     count = embedder.get_document_count()
+
     print(f"\nDocuments in Weaviate: {count}")
+
+    if count > 0:
+
+        print("\nTest search:")
+
+        results = embedder.search_hybrid(
+            "retrieval augmented generation",
+            top_k=3
+        )
+
+        for r in results:
+
+            print(f"\nSource: {r.get('source')}")
+            print(f"Text: {r.get('text', '')[:80]}...")
+
+    else:
+        print("\nNo documents found.")
+        print("Run embeddings/ingest.py")
+
+    embedder.close()
+
     print("\nEmbedder ready!")

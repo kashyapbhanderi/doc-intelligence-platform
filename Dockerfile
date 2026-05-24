@@ -15,8 +15,9 @@ COPY requirements.docker.txt .
 # Install packages — use clean requirements only
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
-    --extra-index-url https://download.pytorch.org/whl/cpu \
-    -r requirements.docker.txt
+        --extra-index-url https://download.pytorch.org/whl/cpu \
+        -c constraints.txt \
+        -r requirements.txt
 
 # Copy app code
 COPY . .
