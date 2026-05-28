@@ -1,0 +1,109 @@
+{
+  "title": "Doc Intelligence Platform",
+  "uid":   "rag-monitor",
+  "time":  {"from": "now-1h", "to": "now"},
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Total Requests",
+      "type": "stat",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "targets": [{
+        "expr": "sum(http_requests_total)",
+        "legendFormat": "Total"
+      }],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Request Rate (req/s)",
+      "type": "stat",
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+      "targets": [{
+        "expr": "sum(rate(http_requests_total[5m]))",
+        "legendFormat": "req/s"
+      }],
+      "options": {"colorMode": "value", "graphMode": "area"}
+    },
+    {
+      "id": 3,
+      "title": "Weaviate Chunks",
+      "type": "stat",
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+      "targets": [{
+        "expr": "weaviate_chunks_total",
+        "legendFormat": "Chunks"
+      }],
+      "options": {"colorMode": "value"}
+    },
+    {
+      "id": 4,
+      "title": "Faithfulness Rate",
+      "type": "stat",
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+      "targets": [{
+        "expr": "faithful_answers_total / (faithful_answers_total + unfaithful_answers_total)",
+        "legendFormat": "Faithful %"
+      }],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "reduceOptions": {"calcs": ["lastNotNull"]}
+      }
+    },
+    {
+      "id": 5,
+      "title": "Request Rate Over Time",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[1m])",
+          "legendFormat": "{{handler}}"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "P95 Latency (ms)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "targets": [{
+        "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) * 1000",
+        "legendFormat": "p95 ms"
+      }]
+    },
+    {
+      "id": 7,
+      "title": "RAG Query Success vs Error",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+      "targets": [
+        {
+          "expr": "rag_queries_total{status=\"success\"}",
+          "legendFormat": "Success"
+        },
+        {
+          "expr": "rag_queries_total{status=\"error\"}",
+          "legendFormat": "Error"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Active Queries",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+      "targets": [{
+        "expr": "active_rag_queries",
+        "legendFormat": "Active"
+      }]
+    }
+  ],
+  "schemaVersion": 38
+}

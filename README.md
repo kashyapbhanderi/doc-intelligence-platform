@@ -9,6 +9,7 @@
 ![Tests](https://img.shields.io/badge/Tests-31%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Tests](https://img.shields.io/badge/Tests-78%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-213%20passing-brightgreen)
 
 ---
 
@@ -190,6 +191,25 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 | Router | Intent detection (edit vs question) |
 | Tests passing | 165/165 |
 
+### Week 6 — FastAPI + Docker + Monitoring ✅
+
+| Component | Details |
+|-----------|---------|
+| FastAPI endpoints | /query, /ingest, /edit, /health, /metrics |
+| Docker services | API + Weaviate + Prometheus + Grafana |
+| Task queue | Async job tracking with status IDs |
+| Prometheus | Scraping metrics every 15s |
+| Grafana | Live dashboard at localhost:3000 |
+| RAGAS Faithfulness | YOUR_SCORE |
+| RAGAS Answer Relevancy | YOUR_SCORE |
+| RAGAS Context Recall | YOUR_SCORE |
+| RAGAS Context Precision | YOUR_SCORE |
+| P95 API latency | <100ms (non-LLM endpoints) |
+| Tests passing | 213/213 |
+
+> 4-service Docker stack: 
+> `docker-compose up -d` starts everything.
+
 ## Project Progress
 
 | Week | Topic | Status | Tests |
@@ -199,7 +219,7 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 | Week 3 | Fine-tuning | ✅ Complete | 78/78 |
 | Week 4 | Multi-Agent RAG | ✅ Complete | 136/136 |
 | Week 5 | Document Editor Agent | ✅ Complete | 165/165 |
-| Week 6 | FastAPI + Docker | ⬜ Upcoming | - |
+| Week 6 | FastAPI + Docker + Monitoring | ✅ Complete | 213/213 |
 | Week 7 | RAGAS + Monitoring | ⬜ Upcoming | - |
 | Week 8 | Cloud Deploy | ⬜ Upcoming | - |
 | Week 9 | Portfolio Polish | ⬜ Upcoming | - |
