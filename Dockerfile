@@ -11,13 +11,14 @@ RUN apt-get update && apt-get install -y \
 
 # Copy clean requirements
 COPY requirements.docker.txt .
+COPY constraints.txt .
 
 # Install packages — use clean requirements only
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
         --extra-index-url https://download.pytorch.org/whl/cpu \
         -c constraints.txt \
-        -r requirements.txt
+        -r requirements.docker.txt
 
 # Copy app code
 COPY . .
@@ -33,7 +34,4 @@ HEALTHCHECK --interval=30s --timeout=10s \
     CMD curl -f http://localhost:8000/api/v1/health \
     || exit 1
 
-CMD ["uvicorn", "api.main:app", \
-     "--host", "0.0.0.0", \
-     "--port", "8000", \
-     "--workers", "1"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -12,10 +12,18 @@ sys.path.insert(0, os.path.abspath('.'))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from prometheus_fastapi_instrumentator import Instrumentator
+from api.metrics import WEAVIATE_CHUNKS
+import threading
+import time as _time
 
 load_dotenv()
 
 from api.routers import query, ingest, edit
+# ── Prometheus instrumentation ────────────────────────────
+# Auto-instruments every endpoint with request count
+# and latency histograms.
+# Metrics exposed at GET /metrics
 
 # ── App creation ──────────────────────────────────────────
 app = FastAPI(
@@ -28,6 +36,43 @@ app = FastAPI(
     docs_url="/docs",      # Swagger UI at /docs
     redoc_url="/redoc",    # ReDoc at /redoc
 )
+Instrumentator().instrument(app).expose(app)
+
+
+# ── Background chunk counter ──────────────────────────────
+def update_weaviate_gauge():
+    """
+    Updates Weaviate chunk count gauge every 60s.
+    Prometheus scrapes /metrics — this keeps the
+    gauge current without blocking requests.
+    """
+    while True:
+        try:
+            import weaviate
+            client = weaviate.Client(
+                "http://localhost:8080")
+            result = (
+                client.query
+                .aggregate("Document")
+                .with_meta_count()
+                .do()
+            )
+            count = (
+                result["data"]["Aggregate"]
+                       ["Document"][0]["meta"]["count"]
+            )
+            WEAVIATE_CHUNKS.set(count)
+        except Exception:
+            pass
+            _time.sleep(60)
+
+
+# Start background thread
+threading.Thread(
+    target=update_weaviate_gauge,
+    daemon=True
+).start()
+
 
 # ── CORS middleware ───────────────────────────────────────
 # Allows browser frontends to call the API

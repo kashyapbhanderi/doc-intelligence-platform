@@ -81,65 +81,98 @@ def retrieve_chunks(
     return chunks
 
 
-def generate_answer(question: str, chunks: list) -> str:
+# def generate_answer(question: str, chunks: list) -> str:
+#     """
+#     Build grounded prompt and generate answer.
+#     """
+
+#     api_key = os.getenv("OPENAI_API_KEY")
+#     base_url = os.getenv(
+#         "OPENAI_BASE_URL",
+#         "https://api.openai.com/v1"
+#     )
+
+#     client = OpenAIClient(
+#         api_key=api_key,
+#         base_url=base_url,
+#         default_headers={
+#             "HTTP-Referer":
+#                 "https://github.com/kashyapbhanderi/doc-intelligence-platform",
+#             "X-Title":
+#                 "Doc Intelligence Platform"
+#         }
+#     )
+
+#     context = "\n\n".join([
+#     c["text"][:120] for c in chunks[:2]
+#     ])
+
+#     prompt = f"""
+# You are a strict RAG assistant.
+
+# Answer ONLY using the provided context.
+
+# If the answer is not explicitly stated in the context,
+# say:
+# "I could not find this information in the provided documents."
+
+# Keep answers concise and factual.
+
+# Context:
+# {context}
+
+# Question:
+# {question}
+
+# Answer:
+# """
+
+#     response = client.chat.completions.create(
+#         model="openai/gpt-5.4-mini",
+#         messages=[
+#             {"role": "user", "content": prompt}
+#         ],
+#         temperature=0.1,
+#         max_tokens=5
+
+#      )
+
+#     return response.choices[0].message.content
+def generate_answer(question, chunks):
     """
-    Build grounded prompt and generate answer.
+    Generate concise answer from retrieved chunks.
     """
 
-    api_key = os.getenv("OPENAI_API_KEY")
-    base_url = os.getenv(
-        "OPENAI_BASE_URL",
-        "https://api.openai.com/v1"
+    from openai import OpenAI
+    import os
+
+    client = OpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        base_url=os.getenv("OPENAI_BASE_URL")
     )
 
-    client = OpenAIClient(
-        api_key=api_key,
-        base_url=base_url,
-        default_headers={
-            "HTTP-Referer":
-                "https://github.com/kashyapbhanderi/doc-intelligence-platform",
-            "X-Title":
-                "Doc Intelligence Platform"
-        }
-    )
+    # ULTRA-SHORT context
+    context = ""
 
-    context = "\n\n".join(
-    f"[{i}] {c['text'][:120]}"
-    for i, c in enumerate(chunks[:2], 1)
-    )
+    if chunks:
+        context = chunks[0]["text"][:40]
 
-    prompt = f"""
-You are a strict RAG assistant.
-
-Answer ONLY using the provided context.
-
-If the answer is not explicitly stated in the context,
-say:
-"I could not find this information in the provided documents."
-
-Keep answers concise and factual.
-
-Context:
-{context}
-
-Question:
-{question}
-
-Answer:
-"""
+    # VERY SHORT PROMPT
+    prompt = f"Q:{question}\nC:{context}\nA:"
 
     response = client.chat.completions.create(
-        model="openai/gpt-5.4-mini",
+        model="openai/gpt-4o-mini",
         messages=[
-            {"role": "user", "content": prompt}
+            {
+                "role": "user",
+                "content": prompt
+            }
         ],
-        temperature=0.1,
-        max_tokens=40
+        max_tokens=16,
+        temperature=0
+    )
 
-     )
-
-    return response.choices[0].message.content
-
+    return response.choices[0].message.content.strip()
 
 def build_query_engine(top_k: int = 5):
     """

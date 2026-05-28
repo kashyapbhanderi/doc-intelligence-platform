@@ -14,43 +14,57 @@ from api.models import QueryRequest, QueryResponse
 router = APIRouter()
 
 
-@router.post("/query",
-             response_model=QueryResponse)
+import time as _time
+from api.metrics import (
+    QUERY_TOTAL,
+    QUERY_LATENCY,
+    ACTIVE_QUERIES,
+    FAITHFUL_ANSWERS,
+    UNFAITHFUL_ANSWERS,
+)
+
+@router.post("/query", response_model=QueryResponse)
 async def query_endpoint(request: QueryRequest):
     """
-    Ask a question — runs through
-    Planner → Executor → Critic pipeline.
-
-    Returns answer with sources and faithfulness check.
+    Ask a question — Planner → Executor → Critic.
+    Records Prometheus metrics for every request.
     """
+    ACTIVE_QUERIES.inc()
+    start = _time.time()
+
     try:
         from agents.graph import ask
 
-        start  = time.time()
-        result = ask(
-            request.question,
-            verbose=False
-        )
-        elapsed = time.time() - start
+        result  = ask(request.question, verbose=False)
+        elapsed = _time.time() - start
+
+        # Record metrics
+        QUERY_LATENCY.observe(elapsed)
+        QUERY_TOTAL.labels(status="success").inc()
+
+        is_faithful = result.get("is_faithful", False)
+        if is_faithful:
+            FAITHFUL_ANSWERS.inc()
+        else:
+            UNFAITHFUL_ANSWERS.inc()
 
         return QueryResponse(
             question=request.question,
-            answer=result.get(
-                "final_answer", ""),
+            answer=result.get("final_answer", ""),
             sources=result.get("sources", []),
-            is_faithful=result.get(
-                "is_faithful", False),
-            sub_queries=result.get(
-                "sub_queries", []),
+            is_faithful=is_faithful,
+            sub_queries=result.get("sub_queries", []),
             latency_seconds=round(elapsed, 2)
         )
 
     except Exception as e:
+        QUERY_TOTAL.labels(status="error").inc()
         raise HTTPException(
             status_code=500,
             detail=f"Query failed: {str(e)}"
         )
-
+    finally:
+        ACTIVE_QUERIES.dec()
 
 @router.post("/query/stream")
 async def query_stream(request: QueryRequest):
