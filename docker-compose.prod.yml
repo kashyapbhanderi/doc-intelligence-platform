@@ -1,0 +1,31 @@
+# docker-compose.prod.yml
+# Production overrides for EC2 deployment.
+# Use with: docker-compose -f docker-compose.yml
+#                          -f docker-compose.prod.yml up -d
+
+services:
+
+  api:
+    restart: always           # auto-restart on crash
+    environment:
+      - WEAVIATE_URL=http://weaviate:8080
+    deploy:
+      resources:
+        limits:
+          memory: 2G          # prevent OOM on t3.medium
+
+  weaviate:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  prometheus:
+    restart: always
+
+  grafana:
+    restart: always
+    environment:
+      - GF_SERVER_ROOT_URL=http://%(domain)s:3000
+      - GF_SECURITY_ADMIN_PASSWORD=changeme123
