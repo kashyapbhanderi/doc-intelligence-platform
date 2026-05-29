@@ -225,6 +225,15 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 | Week 9 | Portfolio Polish | ⬜ Upcoming | - |
 | Week 10 | Job Applications | ⬜ Upcoming | - |
 
+## Live Demo
+
+| Service | URL |
+|---------|-----|
+| API Swagger UI | http://3.110.191.49:8000/docs |
+| Health Check | http://3.110.191.49:8000/api/v1/health |
+| Prometheus | http://3.110.191.49:9090 |
+| Grafana | http://3.110.191.49:3000 |
+
 ---
 
 ## Pipeline Flow
