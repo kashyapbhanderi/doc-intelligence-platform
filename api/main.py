@@ -17,6 +17,10 @@ from api.metrics import WEAVIATE_CHUNKS
 import threading
 import time as _time
 
+# from memory.memory_agent import MemoryEnabledAgent
+# from agents.graph import ask 
+# memory_agent = MemoryEnabledAgent(ask) 
+
 load_dotenv()
 
 from api.routers import query, ingest, edit
@@ -46,25 +50,24 @@ def update_weaviate_gauge():
     Prometheus scrapes /metrics — this keeps the
     gauge current without blocking requests.
     """
+    weaviate_host = os.getenv("WEAVIATE_HOST", "localhost")
     while True:
         try:
             import weaviate
-            client = weaviate.Client(
-                "http://localhost:8080")
-            result = (
-                client.query
-                .aggregate("Document")
-                .with_meta_count()
-                .do()
+            client = weaviate.connect_to_local(
+                host=weaviate_host,
+                port=8080,
+                grpc_port=50051,
+                skip_init_checks=True
             )
-            count = (
-                result["data"]["Aggregate"]
-                       ["Document"][0]["meta"]["count"]
-            )
+            collection = client.collections.get("Document")
+            result = collection.aggregate.over_all(total_count=True)
+            count = result.total_count or 0
             WEAVIATE_CHUNKS.set(count)
+            client.close()
         except Exception:
             pass
-            _time.sleep(60)
+        _time.sleep(60)
 
 
 # Start background thread
@@ -111,6 +114,34 @@ app.include_router(
     tags=["Edit"]
 )
 
+# ── GraphRAG + Memory wiring ───────────────────────────────
+from agents.graph import build_agent_graph   # your existing LangGraph builder
+from memory.memory_agent import MemoryEnabledAgent
+from knowledge_graph.graph_builder import GraphBuilder
+from knowledge_graph.hybrid_graphrag import HybridGraphRAG
+from embeddings.search import hybrid_search
+from api.memory_routes import (
+    memory_router, graphrag_router,
+    set_memory_agent, set_graphrag
+)
+
+# Build the underlying agent graph (same one your /query uses)
+_agent_graph = build_agent_graph()
+memory_agent = MemoryEnabledAgent(_agent_graph)
+
+# Build/load the knowledge graph
+_gb = GraphBuilder()
+_gb.load()
+_graphrag = HybridGraphRAG(_gb, hybrid_search, graph_weight=0.4)
+
+# Register routes
+app.include_router(memory_router,   prefix="/memory",   tags=["Long-Term Memory"])
+app.include_router(graphrag_router, prefix="/graphrag",  tags=["GraphRAG"])
+
+# Share instances with the routes
+set_memory_agent(memory_agent)
+set_graphrag(_graphrag)
+
 
 # ── Root endpoint ─────────────────────────────────────────
 @app.get("/")
@@ -132,14 +163,7 @@ _health_cache = {"data": None, "expires": 0}
 
 @app.get("/api/v1/health")
 async def health():
-    """
-    Check system health.
-    Cached for 30 seconds — prevents hammering
-    Weaviate on every health check.
-    """
     global _health_cache
-
-    # Return cached if still fresh
     if _time.time() < _health_cache["expires"]:
         return _health_cache["data"]
 
@@ -148,12 +172,10 @@ async def health():
 
     try:
         import weaviate
-        client = weaviate.connect_to_local(
-            host="weaviate",
-            port=8080,
-            grpc_port=50051,
-            skip_init_checks=True
-        )
+        weaviate_url = os.getenv(
+            "WEAVIATE_URL", "http://localhost:8080")
+        client = weaviate.Client(weaviate_url)
+
         result = (
             client.query
             .aggregate("Document")
@@ -174,13 +196,7 @@ async def health():
         "weaviate":     weaviate_status,
         "total_chunks": total_chunks
     }
-
-    # Cache for 30 seconds
-    _health_cache = {
-        "data":    data,
-        "expires": _time.time() + 30
-    }
-
+    _health_cache = {"data": data, "expires": _time.time() + 30}
     return data
 
 if __name__ == "__main__":
