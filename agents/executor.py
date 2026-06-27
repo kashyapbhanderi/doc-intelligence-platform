@@ -336,9 +336,8 @@ from knowledge_graph.graph_builder import GraphBuilder
 from knowledge_graph.hybrid_graphrag import HybridGraphRAG
 from embeddings.search import hybrid_search  
 
-_gb = GraphBuilder()
-_gb.load()
-_graphrag = HybridGraphRAG(_gb, hybrid_search, graph_weight=0.4)
+from knowledge_graph.shared import get_hybrid_graphrag
+_graphrag = get_hybrid_graphrag()
 
 WEAVIATE_URL = os.getenv("WEAVIATE_URL",
                           "http://localhost:8080")
@@ -541,7 +540,7 @@ def executor_node(state: dict) -> dict:
         }
         for c in deduped[:5]
     ]
-    
+
     print(f"   ✓ Answer generated "
           f"({len(answer)} chars)")
 

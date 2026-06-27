@@ -87,7 +87,7 @@ Return ONLY the JSON. No explanation. No markdown."""
     try:
         from openai import OpenAI
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # cheaper than gpt-4o
+            model="llama-3.3-70b-versatile",  # Groq fast inference
             messages=[
                 {"role": "user", "content": prompt}
             ],
@@ -173,7 +173,7 @@ def generate_dataset(
     failures = 0
 
     print(f"\nGenerating Q&A pairs...")
-    print(f"Model: gpt-4o-mini (cost: ~$0.001 per pair)")
+    print(f"Model: llama-3.3-70b-versatile (Groq fast inference)")
     print(f"Estimated cost: ~${needed * 0.001:.3f}")
     print("-" * 50)
 

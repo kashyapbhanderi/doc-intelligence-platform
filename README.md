@@ -210,6 +210,7 @@ Fine-tuned model checkpoints are not stored in this repo (too large for GitHub).
 > 4-service Docker stack: 
 > `docker-compose up -d` starts everything.
 
+
 ## Project Progress
 
 | Week | Topic | Status | Tests |

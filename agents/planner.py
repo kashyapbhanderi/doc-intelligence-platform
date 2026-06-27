@@ -23,30 +23,43 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+# def get_llm():
+#     """Get LLM client — supports OpenAI + OpenRouter."""
+#     from langchain_openai import ChatOpenAI
+
+#     api_key = os.getenv("OPENAI_API_KEY")
+#     base_url = os.getenv(
+#         "OPENAI_BASE_URL",
+#         "https://api.openai.com/v1"
+#     )
+
+#     # Use cheaper model for planning
+#     if "openrouter" in base_url:
+#         model = "openai/gpt-4o-mini"
+#     else:
+#         model = "gpt-4o-mini"
+
+#     return ChatOpenAI(
+#         model=model,
+#         api_key=api_key,
+#         base_url=base_url,
+#         temperature=0.1,
+#         max_tokens=150  #<-- was 300, planner only needs a short list
+#     )
+
 def get_llm():
-    """Get LLM client — supports OpenAI + OpenRouter."""
+    """Get LLM — auto-detects OpenRouter vs Ollama."""
     from langchain_openai import ChatOpenAI
+    from config.llm_config import get_llm_config
 
-    api_key = os.getenv("OPENAI_API_KEY")
-    base_url = os.getenv(
-        "OPENAI_BASE_URL",
-        "https://api.openai.com/v1"
-    )
-
-    # Use cheaper model for planning
-    if "openrouter" in base_url:
-        model = "openai/gpt-4o-mini"
-    else:
-        model = "gpt-4o-mini"
-
+    cfg = get_llm_config()
     return ChatOpenAI(
-        model=model,
-        api_key=api_key,
-        base_url=base_url,
+        model=cfg["model"],
+        api_key=cfg["api_key"],
+        base_url=cfg["base_url"],
         temperature=0.1,
-        max_tokens=150  #<-- was 300, planner only needs a short list
+        max_tokens=300
     )
-
 
 def planner_node(state: dict) -> dict:
     """

@@ -174,7 +174,7 @@ def run_ragas_evaluation(
             from ragas.llms import LangchainLLMWrapper
 
             llm = ChatOpenAI(
-                model="openai/gpt-5.4-mini",
+                model="llama-3.3-70b-versatile",
                 api_key=os.getenv("OPENAI_API_KEY"),
                 base_url=base_url,
                 temperature=0,

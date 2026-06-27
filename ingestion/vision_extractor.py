@@ -101,7 +101,7 @@ If no visual elements found, return the structure with empty lists and false val
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {
                     "role": "user",

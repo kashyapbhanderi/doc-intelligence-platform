@@ -50,21 +50,23 @@ def update_weaviate_gauge():
     Prometheus scrapes /metrics — this keeps the
     gauge current without blocking requests.
     """
-    weaviate_host = os.getenv("WEAVIATE_HOST", "localhost")
+    weaviate_url = os.getenv(
+        "WEAVIATE_URL", "http://localhost:8080")
     while True:
         try:
             import weaviate
-            client = weaviate.connect_to_local(
-                host=weaviate_host,
-                port=8080,
-                grpc_port=50051,
-                skip_init_checks=True
+            client = weaviate.Client(weaviate_url)
+            result = (
+                client.query
+                .aggregate("Document")
+                .with_meta_count()
+                .do()
             )
-            collection = client.collections.get("Document")
-            result = collection.aggregate.over_all(total_count=True)
-            count = result.total_count or 0
+            count = (
+                result["data"]["Aggregate"]
+                ["Document"][0]["meta"]["count"]
+            )
             WEAVIATE_CHUNKS.set(count)
-            client.close()
         except Exception:
             pass
         _time.sleep(60)
@@ -130,9 +132,9 @@ _agent_graph = build_agent_graph()
 memory_agent = MemoryEnabledAgent(_agent_graph)
 
 # Build/load the knowledge graph
-_gb = GraphBuilder()
-_gb.load()
-_graphrag = HybridGraphRAG(_gb, hybrid_search, graph_weight=0.4)
+from knowledge_graph.shared import get_graph_builder, get_hybrid_graphrag
+_gb = get_graph_builder()
+_graphrag = get_hybrid_graphrag()
 
 # Register routes
 app.include_router(memory_router,   prefix="/memory",   tags=["Long-Term Memory"])

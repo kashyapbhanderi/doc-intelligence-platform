@@ -28,19 +28,32 @@ load_dotenv()
 from openai import OpenAI as OpenAIClient
 
 
+# def get_llm_client():
+#     api_key  = os.getenv("OPENAI_API_KEY")
+#     base_url = os.getenv(
+#         "OPENAI_BASE_URL", "https://api.openai.com/v1")
+#     return OpenAIClient(
+#         api_key=api_key,
+#         base_url=base_url,
+#         default_headers={
+#             "HTTP-Referer": "https://github.com/kashyapbhanderi/doc-intelligence-platform",
+#             "X-Title": "Doc Intelligence Platform"
+#         }
+#     )
+
 def get_llm_client():
-    api_key  = os.getenv("OPENAI_API_KEY")
-    base_url = os.getenv(
-        "OPENAI_BASE_URL", "https://api.openai.com/v1")
+    from openai import OpenAI as OpenAIClient
+    from config.llm_config import get_llm_config
+
+    cfg = get_llm_config()
     return OpenAIClient(
-        api_key=api_key,
-        base_url=base_url,
+        api_key=cfg["api_key"],
+        base_url=cfg["base_url"],
         default_headers={
             "HTTP-Referer": "https://github.com/kashyapbhanderi/doc-intelligence-platform",
             "X-Title": "Doc Intelligence Platform"
         }
     )
-
 
 def check_faithfulness(
     answer:  str,
@@ -89,7 +102,7 @@ VERDICT: UNFAITHFUL
 REASON: [specific claim that is not in context]"""
 
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.0,    # deterministic for judging
         max_tokens=150

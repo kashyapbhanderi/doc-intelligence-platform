@@ -29,7 +29,8 @@ sys.path.insert(0, os.path.abspath('.'))
 from dotenv import load_dotenv
 load_dotenv()
 
-from langchain_openai import ChatOpenAI
+
+from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage
 from langgraph.prebuilt import create_react_agent
 from agents.editor_tools.tool_registry import (
@@ -38,26 +39,18 @@ from agents.editor_tools.tool_registry import (
 
 
 def get_editor_llm():
-    """Get LLM for Editor Agent."""
-    api_key  = os.getenv("OPENAI_API_KEY")
-    base_url = os.getenv(
-        "OPENAI_BASE_URL",
-        "https://api.openai.com/v1"
-    )
+    """Get LLM for Editor Agent — uses centralized config."""
+    from langchain_openai import ChatOpenAI
+    from config.llm_config import get_llm_config
 
-    if "openrouter" in base_url:
-        model = "openai/gpt-4o-mini"
-    else:
-        model = "gpt-4o-mini"
-
+    cfg = get_llm_config()
     return ChatOpenAI(
-        model=model,
-        api_key=api_key,
-        base_url=base_url,
+        model=cfg["model"],
+        api_key=cfg["api_key"],
+        base_url=cfg["base_url"],
         temperature=0.0,
         max_tokens=512
     )
-
 
 def build_editor_agent():
     """

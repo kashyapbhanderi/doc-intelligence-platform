@@ -158,6 +158,7 @@ class MemoryEnabledAgent:
         Returns:
             agent result dict with an extra key "memory_context_used" (bool)
         """
+        print(f"[DEBUG] invoke() instance={id(self)} user={user_id} buffer_len={len(self._sessions.get(user_id, []))}")
         # ── 1. Retrieve relevant memories ─────────────
         memory_context = build_memory_context(question, user_id, self.store)
 
@@ -224,6 +225,7 @@ class MemoryEnabledAgent:
         Returns:
             {"episodic_stored": 1, "semantic_stored": 3}
         """
+        print(f"[DEBUG] end_session() instance={id(self)} user={user_id} buffer_len={len(self._sessions.get(user_id, []))}")
         messages = self._sessions.get(user_id, [])
         if len(messages) < 2:
             self._sessions.pop(user_id, None)

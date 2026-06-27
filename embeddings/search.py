@@ -156,7 +156,7 @@ def hybrid_search(query: str, top_k: int = 10) -> list:
             model_path="models/finetuned/best"
         )
 
-    raw_results = _embedder_singleton.search_hybrid(query, top_k=top_k)
+    raw_results = _embedder_singleton.hybrid_search(query, top_k=top_k)
 
     normalized = []
     for r in raw_results:

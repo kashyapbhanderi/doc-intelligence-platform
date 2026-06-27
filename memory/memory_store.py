@@ -28,6 +28,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
+from datetime import datetime, timezone
 
 from sentence_transformers import SentenceTransformer
 
@@ -55,10 +56,14 @@ class MemoryStore:
 
     def __init__(
         self,
-        weaviate_url:  str = "http://localhost:8080",
+        weaviate_url:  str = None,
         model_name:    str = "all-MiniLM-L6-v2",     # already used by your embedder
         fallback_path: str = "data/memories.json",
     ):
+        import os
+        weaviate_url = weaviate_url or os.getenv(
+            "WEAVIATE_URL", "http://localhost:8080")
+        self.model = SentenceTransformer(model_name)
         self.model = SentenceTransformer(model_name)
         self._fallback = Path(fallback_path)
         self._fallback.parent.mkdir(parents=True, exist_ok=True)
@@ -154,7 +159,7 @@ class MemoryStore:
         """
         mem_id     = str(uuid.uuid4())
         session_id = session_id or mem_id
-        timestamp  = datetime.utcnow().isoformat()
+        timestamp  = datetime.now(timezone.utc).isoformat()
         vector     = self.model.encode(summary).tolist()
 
         if self._use_weaviate:
@@ -200,7 +205,7 @@ class MemoryStore:
         """
         Return the most relevant past episodes for this query.
         """
-        cutoff = (datetime.utcnow() - timedelta(days=days_back)).isoformat()
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=days_back)).isoformat()
         vector = self.model.encode(query).tolist()
 
         if self._use_weaviate:
@@ -257,7 +262,7 @@ class MemoryStore:
                 return existing[0].get("id", "")   # already known
 
         mem_id = str(uuid.uuid4())
-        now    = datetime.utcnow().isoformat()
+        now    = datetime.now(timezone.utc).isoformat()
         vector = self.model.encode(fact).tolist()
 
         if self._use_weaviate:

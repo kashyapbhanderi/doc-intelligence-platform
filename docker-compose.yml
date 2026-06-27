@@ -75,7 +75,20 @@ services:
     restart: on-failure
     depends_on:
       - prometheus    
-
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - PROMETHEUS_URL=http://localhost:9090
+      - GRAFANA_URL=http://localhost:3000
+    depends_on:
+      - api
+    restart: on-failure
+ 
 volumes:
   weaviate_data:
   prometheus_data:  

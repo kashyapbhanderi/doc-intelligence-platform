@@ -36,6 +36,7 @@ langchain==0.3.13
 langchain-core==0.3.28
 langchain-openai==0.2.14
 langchain-text-splitters==0.3.4
+langchain-groq==0.2.1
 langgraph==0.2.60
 langgraph-prebuilt==0.1.7
 langsmith==0.2.3

@@ -18,6 +18,12 @@ Each node reads what it needs and writes its output.
 """
 import os
 import sys
+
+# Force UTF-8 output so Unicode characters (arrows, emoji)
+# print correctly in Windows terminals (cp1252 by default)
+if sys.stdout.encoding != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 sys.path.insert(0, os.path.abspath('.'))
 
 from langgraph.graph import StateGraph, END
@@ -108,7 +114,7 @@ if __name__ == "__main__":
     ]
 
     print("Testing Full Agent Pipeline")
-    print("Planner → Executor → Critic")
+    print("Planner -> Executor -> Critic")
     print("=" * 60)
 
     for question in test_questions:

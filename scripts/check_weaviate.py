@@ -11,8 +11,8 @@ print(f"Current chunks in Weaviate: {count}")
 print(f"Expected total: ~11089")
 
 if count < 1000:
-    print("Need to ingest more documents — run ingest_all.py")
+    print("Need to ingest more documents — run embeddings/reembed.py")
 elif count < 8000:
-    print("Partially ingested — run ingest_all.py to complete")
+    print("Partially ingested — run embeddings/reembed.py to complete")
 else:
     print("All documents ingested!")

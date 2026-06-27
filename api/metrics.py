@@ -40,6 +40,10 @@ EDIT_TOTAL = Counter(
     ["file_type"]       # labels: docx / pdf / image
 )
 
+GRAPHRAG_QUERIES      = Counter("graphrag_queries_total", "...")
+MEMORY_CONTEXT_USED   = Counter("memory_context_used_total", "...")
+MEMORY_FACTS_STORED   = Gauge("memory_semantic_facts_total", "...", ["user_id"])
+
 # ── Latency histograms ────────────────────────────────────
 # Buckets in seconds — gives p50, p95, p99
 

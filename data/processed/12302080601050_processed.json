@@ -1,0 +1,108 @@
+{
+  "source": "12302080601050.pdf",
+  "full_path": "data/uploads/12302080601050.pdf",
+  "total_pages": 2,
+  "text_chunks": 12,
+  "vision_chunks": 0,
+  "total_chunks": 12,
+  "embedded_images": 0,
+  "chunks": [
+    {
+      "chunk_id": 0,
+      "text": "KASHYAP BHANDERI \nAI / ML Engineer  ·  Python Developer  ·  Computer Vision Enthusiast \n+91 8799271918  |  kashyapbhanderi15260@gmail.com  |  linkedin.com/in/Kashyap-Bhanderi  |  github.com/kashyapbhanderi  |  \nSurat, Gujarat, India \n \nSUMMARY \n \nB.Tech IT student (2023–2027) with hands-on industry experience as an ML Intern at WeProvision Infotech, where I \narchitected and shipped a production-grade Multimodal Agentic AI Document Intelligence Platform serving end-to-end RAG",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 479,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 1,
+      "text": "workflows across 3+ modalities. Skilled in LangChain, LangGraph, GraphRAG, computer vision, and full-stack AI systems. \nOracle AI Foundations Associate certified. \nEXPERIENCE \n \nMachine Learning Intern \nMay 2025 – Jun 2025 \nWeProvision Infotech  |  Sarthana Jakatnaka, Surat, Gujarat, 395013 \n• Designed and built the Multimodal Agentic AI Document Intelligence Platform — a production-grade RAG system using",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 408,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 2,
+      "text": "LangChain, LangGraph, Weaviate, and FastAPI, reducing average query latency by ~35% compared to baseline retrieval \nthrough hybrid BM25 + vector search. \n• Implemented LoRA/PEFT fine-tuning pipeline, PaddleOCR integration, and async task processing with Redis/Celery, \ncutting document ingestion time by ~40% via parallel async workers. \n• Extended the platform post-internship as a Final Year Project with GraphRAG knowledge-graph retrieval, agentic long-",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 456,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 3,
+      "text": "term memory, MLflow experiment tracking, and RAGAS evaluation — improving retrieval precision by ~28% on multi-\nhop queries over 5+ document types. \nPROJECTS \n \nMultimodal Agentic AI — Document Intelligence Platform \nFinal Year Project · Initiated at WeProvision Infotech \nTech: Python · LangChain · LangGraph · FastAPI · Weaviate · GraphRAG · NetworkX · spaCy · Docker · MLflow · LoRA/PEFT · RAGAS",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 398,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 4,
+      "text": "• Architected a production-grade multi-agent platform for intelligent document ingestion, hybrid semantic search (BM25 \n+ vector), and multimodal (text + chart/image) understanding using a LangChain + LangGraph Planner–Executor–Critic \npipeline. \n• Implemented GraphRAG — built a NetworkX knowledge graph from spaCy-extracted entities and LLM-derived \nrelationships, fused with vector search via Reciprocal Rank Fusion to enable multi-hop reasoning across documents and",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 469,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 5,
+      "text": "improve retrieval on complex, multi-entity queries. \n• Added agentic long-term memory (episodic + semantic) backed by Weaviate, enabling the agent to recall user \npreferences and prior corrections across sessions for personalized, context-aware responses. \n• Delivered an end-to-end RAG pipeline with async FastAPI backend (Redis/Celery, SSE streaming), Prometheus + Grafana \nobservability, validated through RAGAS evaluation and MLflow experiment tracking to reduce hallucinations and",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 485,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 6,
+      "text": "monitor retrieval quality. \nAI Stock Predictor \nAcademic Project \nTech: Python · TensorFlow · LSTM · FinBERT · Streamlit · NLP \n• Engineered a \"Dual-Brain\" trading dashboard combining a 60-day LSTM price model with live FinBERT sentiment \nanalysis on real-time news, generating unified Buy/Sell/Hold signals with confidence scores. \n• Deployed an interactive Streamlit dashboard for real-time prediction visualization and model confidence scoring,",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 447,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 7,
+      "text": "enabling end-to-end pipeline from raw data to actionable signal in under 2 seconds.",
+      "source": "12302080601050.pdf",
+      "page": 1,
+      "char_count": 83,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 8,
+      "text": "Vision-Based Multimodal HCI System \nPersonal Project \nTech: Python · OpenCV · MediaPipe · Speech Recognition · Gesture AI \n• Built a real-time touchless HCI system using OpenCV and MediaPipe for hand/eye tracking and gesture-based \napplication control, supporting 10+ gesture commands out of the box. \n• Optimized inference to sub-50 ms on standard webcams via multithreading; integrated voice commands for fully \nmultimodal input without any dedicated hardware. \nEDUCATION \n \nB.Tech in Information Technology",
+      "source": "12302080601050.pdf",
+      "page": 2,
+      "char_count": 509,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 9,
+      "text": "EDUCATION \n \nB.Tech in Information Technology \n2023 – 2027 \nA.D. Patel Institute of Technology, Anand, Gujarat \nCurrently Pursuing \nHigher Secondary Certificate (Class 12) \n2022 – 2023 \nGujarat Secondary & Higher Secondary Education Board \nScore: 68.77%  ·  Percentile: 84.23 \nSecondary School Certificate (Class 10) \n2020 – 2021 \nGujarat Secondary Education Board \nScore: 77.17%  ·  Percentile: 87.98 \nTECHNICAL SKILLS \n \nProgramming Languages: Python, C/C++, HTML, CSS",
+      "source": "12302080601050.pdf",
+      "page": 2,
+      "char_count": 470,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 10,
+      "text": "Programming Languages: Python, C/C++, HTML, CSS \nAI & ML: LangChain, LangGraph, RAG, GraphRAG, NetworkX, spaCy, HuggingFace, RAGAS, LSTM, Weaviate, MLflow,  \n                 LoRA/PEFT, FinBERT \nComputer Vision: OpenCV, MediaPipe, PaddleOCR, Gesture AI \nBackend / Ops: FastAPI, Redis, Celery, REST APIs, Docker \nDev Tools: Git, VS Code, Jupyter, Power BI, Tableau, Grafana \nCERTIFICATIONS \n \n• Oracle AI Foundations Associate — Oracle Corporation \n• SIH 2025 Participant — Smart India Hackathon",
+      "source": "12302080601050.pdf",
+      "page": 2,
+      "char_count": 494,
+      "chunk_type": "text"
+    },
+    {
+      "chunk_id": 11,
+      "text": "• SIH 2025 Participant — Smart India Hackathon \nLANGUAGES & SOFT SKILLS \n \nLanguages: Gujarati (Native)  ·  English  ·  Hindi \nStrengths: Critical Thinking  ·  Problem Solving  ·  Adaptability  ·  Leadership  ·  Time Management",
+      "source": "12302080601050.pdf",
+      "page": 2,
+      "char_count": 227,
+      "chunk_type": "text"
+    }
+  ],
+  "vision_data": []
+}

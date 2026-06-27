@@ -8,6 +8,7 @@ from tqdm import tqdm
 sys.path.insert(0, os.path.abspath('.'))
 
 from embeddings.embedder import DocumentEmbedder
+from weaviate.util import generate_uuid5   # add this import at the top
 
 
 def load_chunks_from_file(json_path: str) -> list:
@@ -42,6 +43,7 @@ def ingest_documents(
 
     # Setup embedder
     embedder = DocumentEmbedder()
+    embedder.client.schema.delete_class("Document")  
     embedder.create_schema()
 
     # Count what's already in Weaviate
@@ -85,13 +87,14 @@ def ingest_documents(
                             ),
                             "charCount": chunk.get(
                                 "char_count", 0
-                            )
+                            )    
                         }
-
+                        chunk_uuid = generate_uuid5(f"{chunk.get('source','')}_{chunk.get('chunk_id','')}")
                         weaviate_batch.add_data_object(
                             data_object=properties,
                             class_name="Document",
-                            vector=vector
+                            vector=vector,
+                            uuid=chunk_uuid
                         )
                         total_inserted += 1
 
